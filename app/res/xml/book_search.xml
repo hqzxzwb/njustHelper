@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<searchable xmlns:android="http://schemas.android.com/apk/res/android"
+    android:hint="@string/title_activity_lib_search"
+    android:label="@string/title_activity_lib_search"
+    android:searchSuggestAuthority="com.njust.helper.library.SearchSuggestionProvider"
+    android:searchSuggestSelection=" ?" />

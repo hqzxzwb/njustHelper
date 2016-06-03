@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CourseView">
+        <attr name="courseNum" format="integer" />
+        <attr name="numColumnSize" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="CourseHomeView">
+        <attr name="maxHeight" format="dimension" />
+        <attr name="emptyText" format="string" />
+    </declare-styleable>
+</resources>

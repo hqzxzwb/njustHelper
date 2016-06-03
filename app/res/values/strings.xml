@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="action_back">返回</string>
+    <string name="action_settings">设置</string>
+    <string name="app_name">南理工助手</string>
+    <string name="button_about_advice">意见反馈</string>
+    <string name="button_course_pick_week">第%1$d周</string>
+    <string name="label_classroom_buildings">教学楼：</string>
+    <string name="radio_classroom_building_four">四工</string>
+    <string name="radio_classroom_building_one">一工</string>
+    <string name="radio_classroom_building_two">二工</string>
+    <string name="label_classroom_date">日期：</string>
+    <string name="label_classroom_section">节次：</string>
+    <string name="label_about_upper">本产品为教务处钦定恶意软件，听说上面的内容都是错的。祝您使用愉快→_→</string>
+    <string name="label_about_lower">如果您觉得这款app还不错，请使用上面的二维码或右上角的分享按钮将它推荐给更多需要的人吧^_^</string>
+    <string name="share_about">南理工助手\n课表、图书馆、成绩查询尽在掌握\n下载地址：\nhttp://app.mi.com/detail/54580</string>
+    <string name="text_course_today">今天是%1$s 第%2$d周</string>
+    <string name="text_home_no_recent_courses">最近三天没有课程</string>
+    <string name="text_course_not_this_week">[非本周]%1$s</string>
+    <string name="text_courseQuery_day_and_section">星期%1$d第%2$d大节</string>
+    <string name="radio_classroom_day_after">后天</string>
+    <string name="date_course_week">yyyy年MMMdd日</string>
+    <string name="date_course_today">yyyy年MMMdd日 EEEE</string>
+    <string name="radio_classroom_today">今天</string>
+    <string name="radio_classroom_tomorrow">明天</string>
+    <string name="hint_account_input_id">请输入学号</string>
+    <string name="hint_account_input_jwc_password">教务系统密码</string>
+    <string name="hint_account_input_lib_password">图书馆密码</string>
+    <string name="text_libCollection_code">索书号：%1$s</string>
+    <string name="pref_mode_def_value">0</string>
+    <string name="text_classroom_no_info">无教室信息</string>
+    <string name="text_classroom_fail">查询失败</string>
+    <string name="message_course_import_success">课表导入成功</string>
+    <string name="message_server_error">学校服务器抽了，过一会儿再来吧</string>
+    <string name="message_server_error_lib">图书馆服务器偷懒睡着啦</string>
+    <string name="message_net_error">网络不稳定，请稍后重试</string>
+    <string name="message_no_result">未找到任何结果</string>
+    <string name="message_no_result_libBorrow">您没有借阅任何图书</string>
+    <string name="message_wrong_password">您输入了错误的用户名或密码</string>
+    <string name="message_account_passwords"><![CDATA[新生密码默认和学号相同。\n图书馆默认密码为学号。若忘记密码，请联系 tsgsys@njust.edu.cn 或025-84315903获取帮助。]]></string>
+    <string name="title_courseQuery">蹭课查询</string>
+    <string name="title_activity_exception">错误反馈</string>
+    <string name="title_activity_reserve">预约查询</string>
+    <string name="title_activity_about">关于</string>
+    <string name="title_activity_account">账号</string>
+    <string name="title_activity_cengke_result">蹭课查询结果</string>
+    <string name="title_activity_course">课程表</string>
+    <string name="title_activity_course_all">全部课表</string>
+    <string name="title_activity_cr">自习室查询</string>
+    <string name="title_activity_exams">考试查询</string>
+    <string name="title_activity_exam_detail">考试查询结果</string>
+    <string name="title_activity_pj">一键评教</string>
+    <string name="title_activity_grade">成绩查询</string>
+    <string name="title_activity_lib_collection">图书收藏</string>
+    <string name="title_activity_lib_detail">图书详情</string>
+    <string name="title_activity_lib_search">图书检索</string>
+    <string name="title_activity_my_lib">借书查询</string>
+    <string name="title_activity_links">常用链接</string>
+    <string name="title_activity_search_result">搜索结果</string>
+    <string name="title_dialog_attention">Attention</string>
+    <string name="toast_cr_choose_one_section">请至少选择一节课</string>
+    <string name="toast_input_id">请输入学号</string>
+    <string name="toast_input_jwc_pwd">请输入教务处密码</string>
+    <string name="toast_input_lib_pwd">请输入图书馆密码</string>
+    <string name="update_info">发现新版本：\n%1$s</string>
+    <string name="update_log">更新日志</string>
+
+    <string-array name="day_of_week">
+        <item>星期日</item>
+        <item>星期一</item>
+        <item>星期二</item>
+        <item>星期三</item>
+        <item>星期四</item>
+        <item>星期五</item>
+        <item>星期六</item>
+    </string-array>
+    <string-array name="day_of_week_short">
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+        <item>日</item>
+    </string-array>
+    <string-array name="spinner_cengke_timeofday">
+        <item>不限</item>
+        <item>第一大节</item>
+        <item>第二大节</item>
+        <item>第三大节</item>
+        <item>第四大节</item>
+        <item>第五大节</item>
+    </string-array>
+    <string-array name="spinner_cengke_date">
+        <item>不限</item>
+        <item>今天</item>
+        <item>明天</item>
+        <item>后天</item>
+        <item>自定义</item>
+    </string-array>
+    <string-array name="spinner_cr_time">
+        <item>第一大节</item>
+        <item>第二大节</item>
+        <item>第三大节</item>
+        <item>第四大节</item>
+        <item>第五大节</item>
+    </string-array>
+    <string-array name="pref_mode_entry">
+        <item>前一天</item>
+        <item>当天</item>
+        <item>关闭</item>
+    </string-array>
+    <string-array name="pref_mode_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="section_start">
+        <item>8:00</item>
+        <item>10:40</item>
+        <item>14:00</item>
+        <item>15:50</item>
+        <item>19:00</item>
+    </string-array>
+    <string name="button_comment">评分</string>
+    <string name="content_collection_no_result">没有收藏任何图书\n图书详情页点击右上角五角星即可收藏</string>
+    <string name="button_cr_query">开始查询</string>
+    <string name="button_cr_querying">正在查询……</string>
+    <string name="message_update">建议您升级到最新的%1$s版本\n大小：%2$s\n更新日志：\n%3$s</string>
+    <string name="title_activity_captcha">请输入验证码</string>
+    <string name="title_activity_level">等级考试成绩</string>
+    <string name="title_activity_update">检查更新</string>
+    <string name="dialog_account_help">帮助</string>
+    <string name="notification_app_new_version">南理工助手-发现新版本</string>
+    <string name="dialog_base_modify_immediately">立即修改</string>
+</resources>

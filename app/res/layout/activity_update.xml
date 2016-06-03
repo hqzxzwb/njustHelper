@@ -1,0 +1,58 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="updateInfo"
+            type="com.njust.helper.model.UpdateInfo" />
+
+        <variable
+            name="status"
+            type="int" />
+
+        <variable
+            name="progress"
+            type="int" />
+
+        <import type="com.njust.helper.settings.UpdateActivity" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.njust.helper.settings.UpdateActivity">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="16dp"
+            android:text="@{UpdateActivity.getMessageText(updateInfo,status)}"
+            tools:text="更新日志" />
+
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:progress="@{progress}" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:drawable/divider_horizontal_bright" />
+
+        <Button
+            android:id="@+id/button1"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="@{status!=1 &amp;&amp; status!=5}"
+            android:onClick="onClick"
+            android:text="@{UpdateActivity.getButtonText(status)}"
+            tools:text="检查更新" />
+    </LinearLayout>
+</layout>

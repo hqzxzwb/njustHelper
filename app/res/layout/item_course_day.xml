@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.njust.helper.course.fragment.CourseDayAdapter" />
+
+        <variable
+            name="course"
+            type="com.njust.helper.model.Course" />
+
+        <variable
+            name="multiple"
+            type="boolean" />
+
+        <variable
+            name="valid"
+            type="boolean" />
+
+        <variable
+            name="empty"
+            type="boolean" />
+
+        <variable
+            name="position"
+            type="int" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:paddingBottom="12dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="12dp">
+
+        <TextView
+            android:id="@+id/course_number"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:gravity="center_horizontal"
+            android:text="@{String.valueOf(position+1)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/course_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:enabled="@{valid}"
+            android:text="@{@stringArray/section_start[position]}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="8:00" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/course_time"
+            android:layout_toRightOf="@id/course_number"
+            android:ellipsize="end"
+            android:enabled="@{valid}"
+            android:singleLine="true"
+            android:text='@{valid? course.name:@string/text_course_not_this_week(course.name)}'
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/course_name"
+            android:visibility="@{empty?View.INVISIBLE:View.VISIBLE}"
+            tools:text="course_name" />
+
+        <TextView
+            android:id="@+id/tvClassroom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvName"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/course_number"
+            android:drawableLeft="@drawable/ic_course_classroom"
+            android:enabled="@{valid}"
+            android:text="@{course.classroom}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:visibility="@{empty?View.INVISIBLE:View.VISIBLE}"
+            tools:text="classroom" />
+
+        <TextView
+            android:id="@+id/tvTeacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/tvClassroom"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/tvClassroom"
+            android:drawableLeft="@drawable/ic_course_teacher"
+            android:enabled="@{valid}"
+            android:text="@{course.teacher}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:visibility="@{empty?View.INVISIBLE:View.VISIBLE}"
+            tools:text="teacher" />
+
+        <TextView
+            android:id="@+id/tvWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvClassroom"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/course_number"
+            android:drawableLeft="@drawable/ic_course_week"
+            android:ellipsize="end"
+            android:enabled="@{valid}"
+            android:singleLine="true"
+            android:text="@{course.week1}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:visibility="@{empty?View.INVISIBLE:View.VISIBLE}"
+            tools:text="weeks" />
+
+        <TextView
+            android:id="@+id/tvMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:text="更多>"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:visibility="@{multiple?View.VISIBLE:View.INVISIBLE}" />
+    </RelativeLayout>
+</layout>

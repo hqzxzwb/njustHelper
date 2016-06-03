@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.njust.helper">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:fullBackupContent="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/action_settings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".course.CourseActivity"
+            android:label="@string/title_activity_course"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".settings.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".library.mylib.LibBorrowActivity"
+            android:label="@string/title_activity_my_lib"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".library.LibSearchActivity"
+            android:label="@string/title_activity_lib_search"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/book_search" />
+        </activity>
+        <activity
+            android:name=".library.LibDetailActivity"
+            android:label="@string/title_activity_lib_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".classroom.CourseQueryActivity"
+            android:label="@string/title_courseQuery"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".classroom.CourseQueryResultActivity"
+            android:label="@string/title_activity_cengke_result"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".grade.GradeActivity"
+            android:label="@string/title_activity_grade"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".grade.GradeLevelActivity"
+            android:label="@string/title_activity_level"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".grade.CommentTeacherActivity"
+            android:label="@string/title_activity_pj"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".classroom.ClassroomActivity"
+            android:label="@string/title_activity_cr"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AccountActivity"
+            android:label="@string/title_activity_account"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".grade.ExamsActivity"
+            android:label="@string/title_activity_exam_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LinksActivity"
+            android:label="@string/title_activity_links"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".library.mylib.LibCollectionActivity"
+            android:label="@string/title_activity_lib_collection"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".settings.UpdateActivity"
+            android:label="@string/title_activity_update"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".CaptchaActivity"
+            android:label="@string/title_activity_captcha"
+            android:screenOrientation="portrait" />
+
+        <receiver android:name=".tools.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".BackgroundService" />
+
+        <provider
+            android:name=".library.SearchSuggestionProvider"
+            android:authorities="com.njust.helper.library.SearchSuggestionProvider"
+            android:exported="false" />
+    </application>
+</manifest>
