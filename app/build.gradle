@@ -40,7 +40,7 @@ android {
         release {
             keyAlias p.getProperty('keyAlias')
             keyPassword p.getProperty('keyPassword')
-            storeFile file('../keystore.key')
+            storeFile file(p.getProperty('storeFilePath'))
             storePassword p.getProperty('storePassword')
         }
     }

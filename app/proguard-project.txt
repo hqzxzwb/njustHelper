@@ -2,12 +2,6 @@
     <fields>;
 }
 
-#-keep class android.support.v7.widget.SearchView {
-#    *;
-#}
-
--keepclassmembers class **.FloatingActionButton$Behavior {
-}
 
 -keepclassmembers class **{
     @**.JavascriptInterface <methods>;
