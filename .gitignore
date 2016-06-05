@@ -3,6 +3,7 @@ local.properties
 build
 keystore.key
 .gradle
+.idea
 gradle
 gradlew
 gradlew.bat
