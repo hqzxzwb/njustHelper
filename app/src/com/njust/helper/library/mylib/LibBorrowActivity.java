@@ -15,10 +15,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.njust.helper.AccountActivity;
+import com.njust.helper.BuildConfig;
 import com.njust.helper.R;
 import com.njust.helper.activity.ProgressActivity;
 import com.njust.helper.tools.AppHttpHelper;
-import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.Prefs;
 import com.zwb.commonlibs.injection.ViewInjection;
@@ -66,7 +66,7 @@ public class LibBorrowActivity extends ProgressActivity {
                 dialog = ProgressDialog.show(LibBorrowActivity.this, "正在加载", "请稍候……");
 
                 Request<JsonData<String>> request = new Request<JsonData<String>>(Request.Method.POST,
-                        Constants.BASE_URL + "libBorrow.php",
+                        BuildConfig.BASE_URL + "libBorrow.php",
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {

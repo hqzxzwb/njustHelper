@@ -47,6 +47,7 @@ android {
 
     buildTypes {
         release {
+            buildConfigField "String", "BASE_URL", '"http://njusthelper.duapp.com/njust0909/"'
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project.txt'

@@ -25,21 +25,19 @@ import java.util.Map;
 // TODO: 2016/6/4 change to volley implementation
 public final class AppHttpHelper extends HttpHelper {
     private static AppHttpHelper instance = new AppHttpHelper();
-
-    public RequestQueue getRequestQueue() {
-        return requestQueue;
-    }
-
     private RequestQueue requestQueue;
 
     public static AppHttpHelper getInstance() {
         return instance;
     }
 
+    public RequestQueue getRequestQueue() {
+        return requestQueue;
+    }
+
     public void init(Context context) {
         requestQueue = Volley.newRequestQueue(context);
     }
-
 
 
     @Override
@@ -52,7 +50,7 @@ public final class AppHttpHelper extends HttpHelper {
 
     @Override
     public String getGetResult(String form, HttpMap params) throws IOException {
-        StringRequest request = new StringRequest(Request.Method.GET, Constants.BASE_URL + form + "?" + params.toString(),
+        StringRequest request = new StringRequest(Request.Method.GET, BuildConfig.BASE_URL + form + "?" + params.toString(),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -75,11 +73,11 @@ public final class AppHttpHelper extends HttpHelper {
             }
         };
         requestQueue.add(request);
-        return super.getGetResult(Constants.BASE_URL + form, params);
+        return super.getGetResult(BuildConfig.BASE_URL + form, params);
     }
 
     @Override
     public String getPostResult(String form, HttpMap params) throws IOException {
-        return super.getPostResult(Constants.BASE_URL + form, params);
+        return super.getPostResult(BuildConfig.BASE_URL + form, params);
     }
 }

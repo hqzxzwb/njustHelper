@@ -68,7 +68,7 @@ public class BackgroundService extends Service {
         protected JsonData<UpdateInfo> doInBackground(Void... params) {
             AppHttpHelper httpHelper = new AppHttpHelper();
             try {
-                String s = httpHelper.getGetResult(Constants.BASE_URL + "update_info.php");
+                String s = httpHelper.getGetResult(BuildConfig.BASE_URL + "update_info.php");
                 return new JsonData<UpdateInfo>(s) {
                     @Override
                     protected UpdateInfo parseData(JSONObject jsonObject) throws Exception {
