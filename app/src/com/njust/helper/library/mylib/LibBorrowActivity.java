@@ -9,18 +9,25 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.njust.helper.AccountActivity;
 import com.njust.helper.R;
 import com.njust.helper.activity.ProgressActivity;
 import com.njust.helper.tools.AppHttpHelper;
+import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.JsonData;
-import com.njust.helper.tools.JsonTask;
 import com.njust.helper.tools.Prefs;
-import com.zwb.commonlibs.http.HttpHelper;
 import com.zwb.commonlibs.injection.ViewInjection;
 import com.zwb.commonlibs.ui.ExtendedSwipeRefreshLayout;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LibBorrowActivity extends ProgressActivity {
     private String stuid, pwd;
@@ -28,6 +35,7 @@ public class LibBorrowActivity extends ProgressActivity {
     private WebView webView;
     @ViewInjection(R.id.progressBar)
     private ProgressBar progressBar;
+    private ProgressDialog dialog;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -47,7 +55,6 @@ public class LibBorrowActivity extends ProgressActivity {
                 progressBar.setVisibility(View.GONE);
             }
         });
-        attachAsyncTask(new UrlTask());
     }
 
     @Override
@@ -56,7 +63,68 @@ public class LibBorrowActivity extends ProgressActivity {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                attachAsyncTask(new UrlTask());
+                dialog = ProgressDialog.show(LibBorrowActivity.this, "正在加载", "请稍候……");
+
+                Request<JsonData<String>> request = new Request<JsonData<String>>(Request.Method.POST,
+                        Constants.BASE_URL + "libBorrow.php",
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                                setRefreshing(false);
+                                showSnack(R.string.message_net_error);
+                            }
+                        }) {
+                    Response.Listener<JsonData<String>> listener = new Response.Listener<JsonData<String>>() {
+                        @Override
+                        public void onResponse(JsonData<String> response) {
+                            if (dialog != null) {
+                                dialog.dismiss();
+                            }
+                            setRefreshing(false);
+                            switch (response.getStatus()) {
+                                case JsonData.STATUS_SUCCESS:
+                                    webView.loadUrl(response.getData());
+                                    break;
+                                case JsonData.STATUS_LOG_FAIL:
+                                    changeAccount(AccountActivity.REQUEST_LIB);
+                                    break;
+                            }
+                        }
+                    };
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("stuid", stuid);
+                        map.put("pwd", pwd);
+                        return map;
+                    }
+
+                    @Override
+                    protected Response<JsonData<String>> parseNetworkResponse(NetworkResponse response) {
+                        try {
+                            JsonData<String> jsonData = new JsonData<String>(new String(response.data)) {
+                                @Override
+                                protected String parseData(JSONObject jsonObject) throws Exception {
+                                    return jsonObject.getString("content");
+                                }
+                            };
+                            return Response.success(jsonData, null);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return Response.error(new VolleyError("数据解析失败"));
+                    }
+
+                    @Override
+                    protected void deliverResponse(JsonData<String> response) {
+                        listener.onResponse(response);
+                    }
+                };
+                AppHttpHelper.getInstance().getRequestQueue().add(request);
             }
         });
     }
@@ -64,58 +132,5 @@ public class LibBorrowActivity extends ProgressActivity {
     @Override
     protected int layoutRes() {
         return R.layout.activity_lib_borrow;
-    }
-
-    private class UrlTask extends JsonTask<Void, String> {
-        private ProgressDialog dialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog = ProgressDialog.show(LibBorrowActivity.this, "正在加载", "请稍候……");
-        }
-
-        @Override
-        protected JsonData<String> doInBackground(Void... params) {
-            HttpHelper.HttpMap data = new HttpHelper.HttpMap();
-            data.addParam("stuid", stuid).addParam("pwd", pwd);
-            try {
-                String s = new AppHttpHelper().getPostResult("libBorrow.php", data);
-                return new JsonData<String>(s) {
-                    @Override
-                    protected String parseData(JSONObject jsonObject) throws Exception {
-                        return jsonObject.getString("content");
-                    }
-                };
-            } catch (Exception e) {
-                e.printStackTrace();
-                return JsonData.newNetErrorInstance();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(JsonData<String> stringJsonData) {
-            super.onPostExecute(stringJsonData);
-
-            if (dialog != null) {
-                dialog.dismiss();
-            }
-            setRefreshing(false);
-        }
-
-        @Override
-        protected void onSuccess(String s) {
-            webView.loadUrl(s);
-        }
-
-        @Override
-        protected void onLogFailed() {
-            changeAccount(AccountActivity.REQUEST_LIB);
-        }
-
-        @Override
-        protected void onNetError() {
-            showSnack(R.string.message_net_error);
-        }
     }
 }

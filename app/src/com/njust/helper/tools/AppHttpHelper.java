@@ -25,6 +25,11 @@ import java.util.Map;
 // TODO: 2016/6/4 change to volley implementation
 public final class AppHttpHelper extends HttpHelper {
     private static AppHttpHelper instance = new AppHttpHelper();
+
+    public RequestQueue getRequestQueue() {
+        return requestQueue;
+    }
+
     private RequestQueue requestQueue;
 
     public static AppHttpHelper getInstance() {
@@ -34,6 +39,8 @@ public final class AppHttpHelper extends HttpHelper {
     public void init(Context context) {
         requestQueue = Volley.newRequestQueue(context);
     }
+
+
 
     @Override
     protected void setupURLConnection(HttpURLConnection urlConnection) {

@@ -163,6 +163,7 @@ public class UpdateActivity extends AppCompatActivity {
                 byte[] buffer = new byte[1024];
                 inputStream = new BufferedInputStream(connection.getInputStream());
                 File file = getExternalCacheDir();
+                //此处用STATUS_CAPTCHA_ERROR临时代替文件错误
                 if (file == null) return JsonData.STATUS_CAPTCHA_ERROR;
                 if (!file.isDirectory()) {
                     if (!file.delete()) return JsonData.STATUS_CAPTCHA_ERROR;

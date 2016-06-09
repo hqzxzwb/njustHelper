@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.njust.helper.tools.AppHttpHelper;
 
 public class App extends Application {
     private static Tracker mTracker;
@@ -28,5 +29,7 @@ public class App extends Application {
         GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
         // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
         mTracker = analytics.newTracker(R.xml.global_tracker);
+
+        AppHttpHelper.getInstance().init(this);
     }
 }
