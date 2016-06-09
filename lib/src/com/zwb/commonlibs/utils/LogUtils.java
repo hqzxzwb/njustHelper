@@ -2,15 +2,7 @@ package com.zwb.commonlibs.utils;
 
 import android.util.Log;
 
-import com.zwb.commonlibs.BuildConfig;
-
 public final class LogUtils {
-    private static boolean DEBUG = BuildConfig.DEBUG;
-
-    public static void init(boolean debug) {
-        DEBUG = debug;
-    }
-
     public static void i(Object o, Object log) {
         i(o.getClass().getSimpleName() + "@" + Integer.toHexString(o.hashCode()), log);
     }
@@ -20,13 +12,11 @@ public final class LogUtils {
     }
 
     public static void i(String tag, Object log) {
-        if (DEBUG)
-            Log.i(tag, toString(log));
+        Log.i(tag, toString(log));
     }
 
     public static void w(String tag, Object log) {
-        if (DEBUG)
-            Log.w(tag, toString(log));
+        Log.w(tag, toString(log));
     }
 
     private static String toString(Object o) {

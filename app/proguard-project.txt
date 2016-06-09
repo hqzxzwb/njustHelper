@@ -9,3 +9,9 @@
 }
 
 -dontwarn com.xiaomi.**
+
+-assumenosideeffects class android.util.Log {
+    int v(...);
+    int d(...);
+    int i(...);
+}

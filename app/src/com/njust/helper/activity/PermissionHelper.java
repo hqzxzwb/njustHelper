@@ -7,8 +7,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
-import com.google.repacked.kotlin.jvm.internal.CollectionToArray;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +27,10 @@ public class PermissionHelper {
         if (list.size() == 0) {
             successCallback.run();
         } else {
-            final String[] permissionsToGrant = (String[]) CollectionToArray.toArray(list);
+            final String[] permissionsToGrant = new String[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                permissionsToGrant[i] = list.get(i);
+            }
             StringBuilder builder = new StringBuilder();
             for (String permission : permissionsToGrant) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
