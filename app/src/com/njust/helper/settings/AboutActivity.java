@@ -38,36 +38,34 @@ public class AboutActivity extends BaseActivity {
         return true;
     }
 
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button1:
-                new AlertDialog.Builder(this)
-                        .setTitle("意见反馈")
-                        .setMessage("您可以加入QQ群217887769进行反馈")
-                        .setPositiveButton("点击直接加群", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setData(Uri.parse("http://jq.qq.com/?_wv=1027&k=2HCZ1MK"));
-                                startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton("返回", null)
-                        .show();
-                break;
-            case R.id.button2:
-                try {
-                    Uri uri = Uri.parse("market://details?id=" + getPackageName());
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    showSnack("未找到应用市场");
-                }
-                break;
-            case R.id.button3:
-                UpdateLogDialog.showUpdateDialog(this);
-                break;
+    public void feedback(View view) {
+        new AlertDialog.Builder(this)
+                .setTitle("意见反馈")
+                .setMessage("您可以加入QQ群217887769进行反馈")
+                .setPositiveButton("点击直接加群", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("http://jq.qq.com/?_wv=1027&k=2HCZ1MK"));
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("返回", null)
+                .show();
+    }
+
+    public void comment(View view) {
+        try {
+            Uri uri = Uri.parse("market://details?id=" + getPackageName());
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            showSnack("未找到应用市场");
         }
+    }
+
+    public void updateLog(View view) {
+        UpdateLogDialog.showUpdateDialog(this);
     }
 }

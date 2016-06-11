@@ -1,8 +1,8 @@
 package com.zwb.commonlibs.ui;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AbsListView;
 
@@ -30,6 +30,17 @@ public class ExtendedSwipeRefreshLayout extends SwipeRefreshLayout {
         if (swipeView == null) {
             swipeView = getChildAt(0);
         }
-        return swipeView.canScrollVertically(-1);
+        if (android.os.Build.VERSION.SDK_INT < 14) {
+            if (swipeView instanceof AbsListView) {
+                final AbsListView absListView = (AbsListView) swipeView;
+                return absListView.getChildCount() > 0
+                        && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
+                        .getTop() < absListView.getPaddingTop());
+            } else {
+                return ViewCompat.canScrollVertically(swipeView, -1) || swipeView.getScrollY() > 0;
+            }
+        } else {
+            return ViewCompat.canScrollVertically(swipeView, -1);
+        }
     }
 }

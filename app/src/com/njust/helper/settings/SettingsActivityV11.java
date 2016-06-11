@@ -1,5 +1,7 @@
 package com.njust.helper.settings;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -9,7 +11,8 @@ import android.preference.PreferenceFragment;
 import com.njust.helper.R;
 import com.njust.helper.activity.BaseActivity;
 
-public class SettingsActivity extends BaseActivity {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class SettingsActivityV11 extends BaseActivity {
     private HolderFragment fragment;
 
     @Override

@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".settings.SettingsActivityV11"
             android:label="@string/action_settings"
             android:screenOrientation="portrait" />
         <activity
@@ -139,5 +139,10 @@
             android:name=".library.SearchSuggestionProvider"
             android:authorities="com.njust.helper.library.SearchSuggestionProvider"
             android:exported="false" />
+
+        <activity
+            android:name=".settings.SettingsActivityV9"
+            android:theme="@android:style/Theme.Light" />
     </application>
+
 </manifest>

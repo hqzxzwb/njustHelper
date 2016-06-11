@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="time">
+
+    <PreferenceCategory
+        android:key="time"
+        android:title="课程提醒">
+        <ListPreference
+            android:defaultValue="@string/pref_mode_def_value"
+            android:entries="@array/pref_mode_entry"
+            android:entryValues="@array/pref_mode_value"
+            android:key="mode"
+            android:title="提醒日期" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="course_vib"
+            android:title="是否振动" />
+
+        <com.njust.helper.settings.TimeSettingPreference
+            android:key="course_time"
+            android:title="提醒时间" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

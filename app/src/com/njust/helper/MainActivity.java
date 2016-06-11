@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -28,7 +29,8 @@ import com.njust.helper.library.mylib.LibCollectionActivity;
 import com.njust.helper.model.Course;
 import com.njust.helper.model.UpdateInfo;
 import com.njust.helper.settings.AboutActivity;
-import com.njust.helper.settings.SettingsActivity;
+import com.njust.helper.settings.SettingsActivityV11;
+import com.njust.helper.settings.SettingsActivityV9;
 import com.njust.helper.settings.UpdateActivity;
 import com.njust.helper.settings.UpdateLogDialog;
 import com.njust.helper.tools.Constants;
@@ -176,7 +178,8 @@ public class MainActivity extends ProgressActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_settings:
-                startActivity(SettingsActivity.class);
+                startActivity(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
+                        SettingsActivityV11.class : SettingsActivityV9.class);
                 return true;
             case R.id.item_about:
                 startActivity(AboutActivity.class);

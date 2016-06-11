@@ -1,14 +1,16 @@
--keepclassmembers class **.model.*{
+-keepclassmembers class com.njust.helper.model.* {
     <fields>;
 }
 
 
--keepclassmembers class **{
+-keepclassmembers class ** {
     @**.JavascriptInterface <methods>;
     @**.IntentInjection <fields>;
 }
 
--dontwarn com.xiaomi.**
+-assumenosideeffects class com.zwb.commonlibs.utils.LogUtils {
+    *;
+}
 
 -assumenosideeffects class android.util.Log {
     int v(...);

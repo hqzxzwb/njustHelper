@@ -50,7 +50,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             showOverFlowButton();
         }
 
@@ -167,8 +168,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         for (int result : grantResults) {
             if (result != PackageManager.PERMISSION_GRANTED) {
                 Runnable runnable = permissionDeniedActions.get(requestCode);
-                if (runnable != null)
-                    runnable.run();
+                if (runnable != null) runnable.run();
                 return;
             }
         }
