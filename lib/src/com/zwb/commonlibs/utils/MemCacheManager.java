@@ -3,7 +3,7 @@ package com.zwb.commonlibs.utils;
 import android.support.v4.util.LruCache;
 
 /**
- * 内存缓存，使用软引用实现
+ * 内存缓存，使用LruCache实现
  *
  * @author zwb
  */

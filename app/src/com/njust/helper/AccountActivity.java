@@ -2,7 +2,6 @@ package com.njust.helper;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -92,12 +91,6 @@ public class AccountActivity extends BaseActivity {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                return true;
-            case R.id.item_help:
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.dialog_account_help)
-                        .setMessage(R.string.message_account_passwords)
-                        .show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

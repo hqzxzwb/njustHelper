@@ -18,6 +18,7 @@ android {
     defaultConfig{
         minSdkVersion 9
         targetSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
+        consumerProguardFile('proguard-consumer.txt')
     }
 
     sourceSets {

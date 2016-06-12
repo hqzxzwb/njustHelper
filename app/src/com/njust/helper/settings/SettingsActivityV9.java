@@ -20,6 +20,7 @@ public class SettingsActivityV9 extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //noinspection deprecation
         addPreferencesFromResource(R.xml.preference_v9);
 
         ListPreference preference = (ListPreference) findPreference("mode");

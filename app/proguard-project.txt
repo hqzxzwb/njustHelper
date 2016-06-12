@@ -2,14 +2,9 @@
     <fields>;
 }
 
-
 -keepclassmembers class ** {
     @**.JavascriptInterface <methods>;
     @**.IntentInjection <fields>;
-}
-
--assumenosideeffects class com.zwb.commonlibs.utils.LogUtils {
-    *;
 }
 
 -assumenosideeffects class android.util.Log {
@@ -17,3 +12,6 @@
     int d(...);
     int i(...);
 }
+
+-repackageclasses 'z'
+-allowaccessmodification

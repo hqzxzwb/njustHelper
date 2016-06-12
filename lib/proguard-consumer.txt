@@ -1,0 +1,3 @@
+-assumenosideeffects class com.zwb.commonlibs.utils.LogUtils {
+    *;
+}
