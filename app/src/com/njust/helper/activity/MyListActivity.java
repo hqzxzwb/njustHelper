@@ -45,14 +45,14 @@ public abstract class MyListActivity<T, U extends ViewDataBinding> extends Progr
         adapter = onCreateAdapter();
         recyclerView.setAdapter(adapter);
 
-        refreshId();
+        loadId();
         mCacheName = buildCacheName();
     }
 
     @NonNull
     protected abstract ListRecycleAdapter<T, U> onCreateAdapter();
 
-    protected void refreshId() {
+    protected void loadId() {
 
     }
 
@@ -111,13 +111,17 @@ public abstract class MyListActivity<T, U extends ViewDataBinding> extends Progr
         attachAsyncTask(new ListTask());
     }
 
+    protected boolean emptyParam(){
+        return false;
+    }
+
     public abstract static class ListRecycleAdapter<T, S extends ViewDataBinding> extends RecyclerView.Adapter<DataBindingHolder<S>> {
         private List<T> data = new ArrayList<>();
 
         public ListRecycleAdapter() {
         }
 
-        protected T getItem(int position){
+        protected T getItem(int position) {
             return data.get(position);
         }
 
@@ -148,6 +152,9 @@ public abstract class MyListActivity<T, U extends ViewDataBinding> extends Progr
 
         @Override
         protected JsonData<List<T>> doInBackground(Void... params) {
+            if (emptyParam()) {
+                return JsonData.newLogFailedInstance();
+            }
             try {
                 String string = getResponse();
                 return new JsonData<List<T>>(string) {

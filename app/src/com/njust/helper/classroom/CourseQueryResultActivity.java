@@ -50,6 +50,7 @@ public class CourseQueryResultActivity extends MyListActivity<CourseQuery, ItemC
         return CourseQuery.class;
     }
 
+
     private static class CourseQueryAdapter extends ListRecycleAdapter<CourseQuery, ItemCourseQueryBinding> {
         @Override
         protected int getLayoutRes() {

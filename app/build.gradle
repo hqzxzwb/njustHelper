@@ -28,6 +28,9 @@ android {
         versionName "3.8.2"
         resConfigs "zh"
         buildConfigField "String", "BASE_URL", p.getProperty('localUrl')
+        resValue "string", "testStuid", p.getProperty('testStuid')
+        resValue "string", "testJwcPwd", p.getProperty('testJwcPwd')
+        resValue "string", "testLibPwd", p.getProperty('testLibPwd')
     }
 
     signingConfigs {
@@ -84,7 +87,7 @@ android {
     }
     dexOptions {
         preDexLibraries true
-        javaMaxHeapSize "3g"
+        javaMaxHeapSize "4g"
         incremental true
         dexInProcess = true
     }

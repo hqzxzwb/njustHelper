@@ -10,5 +10,8 @@ local.properties为本地参数配置。除了默认的SDK路径之外，还需�
     storeFilePath 签名文件路径
     storePassword 签名存储密码
     localUrl 局域网调试使用的地址，没有局域网环境可以使用线上地址http://njusthelper.duapp.com/njust0909/
+    testStuid 测试用学号
+    testJwcPwd 测试用教务处密码
+    testLibPwd 测试用图书馆密码
 
 app/google-services.json为google analytics配置文件。我现在也不知道怎么让工程在没有它的情况下跑起来。

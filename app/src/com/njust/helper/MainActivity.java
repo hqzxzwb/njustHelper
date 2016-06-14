@@ -117,7 +117,10 @@ public class MainActivity extends ProgressActivity {
         Prefs.putVersion(this, BuildConfig.VERSION_CODE);
         if (preVersion == 0) {
             if (BuildConfig.DEBUG) {
-                Prefs.putIdValues(this, "913106840228", "161374", "913106840228");
+                Prefs.putIdValues(this,
+                        getString(R.string.testStuid),
+                        getString(R.string.testJwcPwd),
+                        getString(R.string.testLibPwd));
             }
         }
     }

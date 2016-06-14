@@ -24,7 +24,7 @@ public class GradeLevelActivity extends WebViewActivity {
     }
 
     @Override
-    protected String createCacheName() {
+    protected String buildCacheName() {
         return "GradeLevel_" + stuid;
     }
 }

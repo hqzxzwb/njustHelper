@@ -34,7 +34,7 @@ public abstract class WebViewActivity extends ProgressActivity implements SwipeR
 
         loadId();
 
-        mCacheName = createCacheName();
+        mCacheName = buildCacheName();
     }
 
     protected WebView getWebView() {
@@ -74,7 +74,7 @@ public abstract class WebViewActivity extends ProgressActivity implements SwipeR
 
     protected abstract void loadId();
 
-    protected abstract String createCacheName();
+    protected abstract String buildCacheName();
 
     @Override
     public void onRefresh() {

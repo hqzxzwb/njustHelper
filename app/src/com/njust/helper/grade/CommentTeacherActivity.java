@@ -33,7 +33,7 @@ public class CommentTeacherActivity extends WebViewActivity {
     }
 
     @Override
-    protected String createCacheName() {
+    protected String buildCacheName() {
         return "pingjiao_" + stuid;
     }
 

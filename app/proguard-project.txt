@@ -1,4 +1,4 @@
--keepclassmembers class com.njust.helper.model.* {
+-keep class com.njust.helper.model.* {
     <fields>;
 }
 
