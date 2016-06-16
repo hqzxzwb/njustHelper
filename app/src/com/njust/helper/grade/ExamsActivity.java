@@ -46,6 +46,11 @@ public class ExamsActivity extends MyListActivity<Exam, ItemExamBinding> {
     }
 
     @Override
+    protected int getNoResultText() {
+        return R.string.message_no_exams_found;
+    }
+
+    @Override
     protected Class<Exam> getItemClass() {
         return Exam.class;
     }

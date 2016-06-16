@@ -2,8 +2,6 @@ package com.njust.helper.grade;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.view.ViewCompat;
 import android.webkit.JavascriptInterface;
 
 import com.njust.helper.activity.WebViewActivity;
@@ -13,13 +11,6 @@ import com.zwb.commonlibs.http.HttpHelper;
 
 public class GradeActivity extends WebViewActivity {
     private String stuid, pwd;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        ViewCompat.setTransitionName(getWebView(), "webView");
-    }
 
     @Override
     protected String getResponse() throws Exception {

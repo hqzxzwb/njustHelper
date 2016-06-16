@@ -1,12 +1,14 @@
 package com.njust.helper.course;
 
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -110,18 +112,25 @@ public class CourseHomeView extends TextView {
 
     public void expand() {
         if (!expanded) {
-            ValueAnimator animator = ValueAnimator.ofInt(getHeight(), realHeight)
-                    .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
             final ViewGroup.LayoutParams params = getLayoutParams();
-            //扩展高度到实际需要的高度
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    params.height = (Integer) animation.getAnimatedValue();
-                    setLayoutParams(params);
-                }
-            });
-            animator.start();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+                ValueAnimator animator = ValueAnimator.ofInt(getHeight(), realHeight)
+                        .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
+
+                //扩展高度到实际需要的高度
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        params.height = (Integer) animation.getAnimatedValue();
+                        requestLayout();
+                    }
+                });
+                animator.start();
+            } else {
+                params.height = realHeight;
+                requestLayout();
+            }
         }
     }
 
@@ -151,7 +160,6 @@ public class CourseHomeView extends TextView {
         }
         if (!expanded) {
             canvas.translate(0, getHeight() - fadeHeight);
-//            canvas.drawLine(0, 0, getWidth(), 0, mTextPaint);
             canvas.drawRect(0, 0, getWidth(), fadeHeight, mFadePaint);
         }
     }
@@ -164,7 +172,7 @@ public class CourseHomeView extends TextView {
                 //把触摸cancel掉。否则控件将一直处于按下状态。
                 event.setAction((event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
                         | MotionEvent.ACTION_CANCEL);
-                return super.onTouchEvent(event);
+                return true;
             }
         }
         return super.onTouchEvent(event);

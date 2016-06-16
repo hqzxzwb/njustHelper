@@ -38,7 +38,8 @@
     <string name="message_no_result">未找到任何结果</string>
     <string name="message_no_result_libBorrow">您没有借阅任何图书</string>
     <string name="message_wrong_password">您输入了错误的用户名或密码</string>
-    <string name="message_account_passwords"><![CDATA[新生密码默认和学号相同。\n图书馆默认密码为学号。若忘记密码，请联系 tsgsys@njust.edu.cn 或025-84315903获取帮助。]]></string>
+    <string name="message_account_passwords"><![CDATA[新生密码默认和学号相同。\n图书馆默认密码为学号。若忘记密码，请联系 tsgsys@njust.edu.cn 或025\-84315903获取帮助。]]></string>
+    <string name="message_no_exams_found">您最近没有考试信息</string>
     <string name="title_courseQuery">蹭课查询</string>
     <string name="title_activity_exception">错误反馈</string>
     <string name="title_activity_reserve">预约查询</string>
