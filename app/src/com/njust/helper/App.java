@@ -2,6 +2,9 @@ package com.njust.helper;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -31,5 +34,20 @@ public class App extends Application {
         mTracker = analytics.newTracker(R.xml.global_tracker);
 
         AppHttpHelper.getInstance().init(this);
+
+        checkSignature();
+    }
+
+    private void checkSignature() {
+        try {
+            PackageInfo packageInfo = getPackageManager()
+                    .getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            Signature[] signatures = packageInfo.signatures;
+            for (Signature signature : signatures) {
+                System.out.println(signature.toCharsString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
