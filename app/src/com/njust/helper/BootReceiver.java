@@ -1,4 +1,4 @@
-package com.njust.helper.tools;
+package com.njust.helper;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

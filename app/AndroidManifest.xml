@@ -127,7 +127,7 @@
             android:label="@string/title_activity_captcha"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".tools.BootReceiver">
+        <receiver android:name=".BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
