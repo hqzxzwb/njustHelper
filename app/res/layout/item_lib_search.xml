@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="com.njust.helper.library.LibSearchActivity.LibSearchAdapter" />
+
         <variable
             name="libSearch"
             type="com.njust.helper.model.LibSearch" />
@@ -16,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{libSearch.onClick}"
+        android:onClick="@{(v)->LibSearchAdapter.onClick(v,libSearch.id)}"
         android:orientation="vertical"
         android:paddingBottom="4dp"
         android:paddingLeft="16dp"

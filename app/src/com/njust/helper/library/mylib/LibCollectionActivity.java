@@ -59,7 +59,7 @@ public class LibCollectionActivity extends BaseActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setAdapter(adapter);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+        final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
             @Override
             public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 return makeMovementFlags(0, ItemTouchHelper.START | ItemTouchHelper.END);
@@ -86,6 +86,12 @@ public class LibCollectionActivity extends BaseActivity {
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
+        adapter.setSwipeMethod(new LibCollectionAdapter.Swipe() {
+            @Override
+            public void swipe(RecyclerView.ViewHolder viewHolder) {
+                itemTouchHelper.startSwipe(viewHolder);
+            }
+        });
 
         if (!Prefs.getLibCollectionHint(this)) {
             showSnack("图书详情页可以收藏\n左右滑动条目以删除", "不再提示", new View.OnClickListener() {
@@ -165,6 +171,7 @@ public class LibCollectionActivity extends BaseActivity {
         private LibCollectionActivity mActivity;
         private LibCollectItem restoreItem;
         private int restorePosition;
+        private Swipe swipe;
 
         public LibCollectionAdapter(List<LibCollectItem> data, LibCollectionActivity activity) {
             this.mData = data;
@@ -175,20 +182,47 @@ public class LibCollectionActivity extends BaseActivity {
             return "收藏时间：" + DATE_FORMAT.format(new Date(time));
         }
 
-        @Override
-        public DataBindingHolder<ItemLibCollectBinding> onCreateViewHolder(ViewGroup parent, int viewType) {
-            ItemLibCollectBinding binding = ItemLibCollectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new DataBindingHolder<>(binding);
+        public static void handleClick(View view, String id) {
+            LibDetailActivity.showLibDetail(view.getContext(), id);
+        }
+
+        public void setSwipeMethod(Swipe swipe) {
+            this.swipe = swipe;
         }
 
         @Override
-        public void onBindViewHolder(DataBindingHolder<ItemLibCollectBinding> holder, int position) {
-            holder.getDataBinding().setItem(mData.get(position));
+        public DataBindingHolder<ItemLibCollectBinding> onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new DataBindingHolder<>(ItemLibCollectBinding.inflate(
+                    LayoutInflater.from(parent.getContext()), parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(final DataBindingHolder<ItemLibCollectBinding> holder, int position) {
+            final LibCollectItem libCollectItem = mData.get(position);
+            holder.getDataBinding().setItem(libCollectItem);
             final String id = mData.get(position).getId();
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mActivity.showLibDetail(id);
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    new AlertDialog.Builder(view.getContext())
+                            .setMessage("确定删除这条收藏吗?\n" + libCollectItem.getName())
+                            .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (swipe != null) {
+                                        swipe.swipe(holder);
+                                    }
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .show();
+                    return true;
                 }
             });
         }
@@ -214,6 +248,10 @@ public class LibCollectionActivity extends BaseActivity {
         @Override
         public int getItemCount() {
             return mData.size();
+        }
+
+        interface Swipe {
+            void swipe(RecyclerView.ViewHolder viewHolder);
         }
     }
 }

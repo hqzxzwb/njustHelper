@@ -1,6 +1,6 @@
 package com.njust.helper.library;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,7 +42,7 @@ public class LibDetailActivity extends ProgressActivity implements SwipeRefreshL
 
     private Intent resultIntent = new Intent();
 
-    public static void showLibDetail(Activity context, String idString) {
+    public static void showLibDetail(Context context, String idString) {
         Intent intent = new Intent(context, LibDetailActivity.class);
         intent.putExtra("id", idString);
         context.startActivity(intent);

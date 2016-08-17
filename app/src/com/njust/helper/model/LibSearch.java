@@ -25,7 +25,4 @@ public class LibSearch {
         return id;
     }
 
-    public void onClick(View view) {
-        LibDetailActivity.showLibDetail((Activity) view.getContext(), id);
-    }
 }

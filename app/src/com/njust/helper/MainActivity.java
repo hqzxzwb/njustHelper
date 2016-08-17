@@ -45,6 +45,7 @@ import java.util.List;
 public class MainActivity extends ProgressActivity {
     public static final int RESULT_COURSE_REFRESH = 2;
     public static final int REQUEST_COURSE_REFRESH = 0;
+    private static final int LAYOUT_ID = R.layout.activity_main;
 
     @ViewInjection(R.id.courseHomeView)
     private CourseHomeView courseHomeView;
@@ -127,7 +128,7 @@ public class MainActivity extends ProgressActivity {
 
     @Override
     protected int layoutRes() {
-        return R.layout.activity_main;
+        return LAYOUT_ID;
     }
 
     public void lib_borrow(View view) {

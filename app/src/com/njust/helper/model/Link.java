@@ -15,9 +15,4 @@ public class Link {
         return url;
     }
 
-    public void openUrl(View view) {
-        Intent intent = new Intent().setAction(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        view.getContext().startActivity(intent);
-    }
 }

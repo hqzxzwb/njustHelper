@@ -135,4 +135,7 @@
     <string name="dialog_account_help">帮助</string>
     <string name="notification_app_new_version">南理工助手-发现新版本</string>
     <string name="dialog_base_modify_immediately">立即修改</string>
+    <string name="text_home_courses">课程表</string>
+    <string name="text_home_all_courses">全部课表</string>
+    <string name="text_home_library">图书馆</string>
 </resources>

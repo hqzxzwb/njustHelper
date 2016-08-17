@@ -13,6 +13,10 @@ import com.njust.helper.tools.AppHttpHelper;
 public class App extends Application {
     private static Tracker mTracker;
 
+    static {
+
+    }
+
     /**
      * Gets the default {@link Tracker} for this {@link Application}.
      *
@@ -32,22 +36,8 @@ public class App extends Application {
         GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
         // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
         mTracker = analytics.newTracker(R.xml.global_tracker);
+        mTracker.enableAutoActivityTracking(true);
 
         AppHttpHelper.getInstance().init(this);
-
-        checkSignature();
-    }
-
-    private void checkSignature() {
-        try {
-            PackageInfo packageInfo = getPackageManager()
-                    .getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-            Signature[] signatures = packageInfo.signatures;
-            for (Signature signature : signatures) {
-                System.out.println(signature.toCharsString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

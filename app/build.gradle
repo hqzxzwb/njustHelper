@@ -7,7 +7,7 @@ dependencies {
     compile project.ANDROID_SUPPORT_DESIGN
     compile project.ANDROID_SUPPORT_V7_CARD_VIEW
     compile 'com.android.volley:volley:1.0.0'
-    compile 'com.google.android.gms:play-services-analytics:9.0.2'
+    compile 'com.google.android.gms:play-services-analytics:9.4.0'
 }
 
 android {
@@ -22,7 +22,7 @@ android {
 
     defaultConfig {
         applicationId "com.njust.helper"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
         versionCode 20160604
         versionName "3.8.2"
@@ -107,7 +107,7 @@ android {
                 "resources.arsc"
         ]
         sevenzip {
-            artifact = 'com.tencent.mm:SevenZip:1.1.8'
+            artifact = 'com.tencent.mm:SevenZip:1.1.9'
             //path = "/usr/local/bin/7za"
         }
     }

@@ -1,5 +1,6 @@
 package com.njust.helper.library;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -114,11 +115,15 @@ public class LibSearchActivity extends MyListActivity<LibSearch, ItemLibSearchBi
         return LibSearch.class;
     }
 
-    private static class LibSearchAdapter extends ListRecycleAdapter<LibSearch, ItemLibSearchBinding> {
+    public static class LibSearchAdapter extends ListRecycleAdapter<LibSearch, ItemLibSearchBinding> {
         private LibSearchActivity activity;
 
         private LibSearchAdapter(LibSearchActivity activity) {
             this.activity = activity;
+        }
+
+        public static void onClick(View view, String id) {
+            LibDetailActivity.showLibDetail((Activity) view.getContext(), id);
         }
 
         @Override

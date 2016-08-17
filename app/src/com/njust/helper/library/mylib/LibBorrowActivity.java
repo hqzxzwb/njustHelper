@@ -23,6 +23,7 @@ import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.Prefs;
 import com.zwb.commonlibs.injection.ViewInjection;
 import com.zwb.commonlibs.ui.ExtendedSwipeRefreshLayout;
+import com.zwb.commonlibs.utils.LogUtils;
 
 import org.json.JSONObject;
 
@@ -106,7 +107,9 @@ public class LibBorrowActivity extends ProgressActivity {
                     @Override
                     protected Response<JsonData<String>> parseNetworkResponse(NetworkResponse response) {
                         try {
-                            JsonData<String> jsonData = new JsonData<String>(new String(response.data)) {
+                            String string = new String(response.data);
+                            LogUtils.i(this, string);
+                            JsonData<String> jsonData = new JsonData<String>(string) {
                                 @Override
                                 protected String parseData(JSONObject jsonObject) throws Exception {
                                     return jsonObject.getString("content");

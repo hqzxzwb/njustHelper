@@ -9,34 +9,34 @@
         android:orientation="vertical"
         android:paddingTop="16dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:background="?attr/selectableItemBackground"
             android:onClick="course"
-            android:orientation="horizontal"
             android:paddingBottom="4dp"
             android:paddingTop="4dp">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_weight="1"
-                android:text="课程表"
+                android:text="@string/text_home_courses"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="?attr/colorPrimary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="16dp"
-                android:text="全部课表"
+                android:text="@string/text_home_all_courses"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textColor="?attr/colorPrimary" />
-        </LinearLayout>
+        </RelativeLayout>
 
 
         <android.support.v7.widget.CardView
@@ -62,7 +62,7 @@
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:text="图书馆"
+            android:text="@string/text_home_library"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="?attr/colorPrimary" />
 
@@ -92,12 +92,12 @@
                 android:layout_marginBottom="4dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:onClick="lib_borrow">
+                android:layout_weight="1">
 
-                <TextView
+                <Button
                     style="@style/TextViewHome"
                     android:lines="2"
+                    android:onClick="lib_borrow"
                     android:text="查看借书" />
             </android.support.v7.widget.CardView>
 
