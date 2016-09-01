@@ -1,7 +1,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +25,7 @@
                 android:layout_marginLeft="16dp"
                 android:text="@string/text_home_courses"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="?attr/colorPrimary" />
+                android:textColor="?attr/colorPrimary"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -35,7 +36,7 @@
                 android:layout_marginRight="16dp"
                 android:text="@string/text_home_all_courses"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="?attr/colorPrimary" />
+                android:textColor="?attr/colorPrimary"/>
         </RelativeLayout>
 
 
@@ -53,7 +54,54 @@
                 android:gravity="left"
                 android:onClick="course"
                 app:emptyText="@string/text_home_no_recent_courses"
-                app:maxHeight="96dp" />
+                app:maxHeight="96dp"/>
+        </android.support.v7.widget.CardView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="card"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="@string/text_home_card"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="?attr/colorPrimary"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="16dp"
+                android:text="明细"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="?attr/colorPrimary"/>
+        </RelativeLayout>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:id="@+id/tvCardBalance"
+                style="@style/TextViewHome"
+                android:gravity="center_vertical"
+                android:onClick="card"
+                tools:text="@string/text_home_card_balance"/>
         </android.support.v7.widget.CardView>
 
         <TextView
@@ -64,7 +112,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/text_home_library"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="?attr/colorPrimary" />
+            android:textColor="?attr/colorPrimary"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +131,7 @@
                     style="@style/TextViewHome"
                     android:lines="2"
                     android:onClick="lib_search"
-                    android:text="检索图书" />
+                    android:text="检索图书"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -98,7 +146,7 @@
                     style="@style/TextViewHome"
                     android:lines="2"
                     android:onClick="lib_borrow"
-                    android:text="查看借书" />
+                    android:text="查看借书"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -114,7 +162,7 @@
                     style="@style/TextViewHome"
                     android:lines="2"
                     android:onClick="lib_collection"
-                    android:text="收藏的图书" />
+                    android:text="收藏的图书"/>
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
@@ -126,7 +174,7 @@
             android:layout_marginTop="8dp"
             android:text="考试与成绩"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="?attr/colorPrimary" />
+            android:textColor="?attr/colorPrimary"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -146,7 +194,7 @@
                     style="@style/TextViewHome"
                     android:lines="2"
                     android:onClick="exams"
-                    android:text="@string/title_activity_exams" />
+                    android:text="@string/title_activity_exams"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -162,7 +210,7 @@
                     style="@style/TextViewHome"
                     android:lines="2"
                     android:onClick="grade"
-                    android:text="成绩/GPA查询" />
+                    android:text="成绩/GPA查询"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -179,7 +227,7 @@
                     style="@style/TextViewHome"
                     android:lines="2"
                     android:onClick="level_grades"
-                    android:text="等级考试成绩" />
+                    android:text="等级考试成绩"/>
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
@@ -191,7 +239,7 @@
             android:layout_marginTop="8dp"
             android:text="其他"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="?attr/colorPrimary" />
+            android:textColor="?attr/colorPrimary"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -210,7 +258,7 @@
                 <TextView
                     style="@style/TextViewHome"
                     android:onClick="classroom"
-                    android:text="@string/title_activity_cr" />
+                    android:text="@string/title_activity_cr"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -225,7 +273,7 @@
                 <TextView
                     style="@style/TextViewHome"
                     android:onClick="course_query"
-                    android:text="蹭课查询" />
+                    android:text="蹭课查询"/>
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
@@ -242,7 +290,7 @@
             <TextView
                 style="@style/TextViewHome"
                 android:onClick="links"
-                android:text="@string/title_activity_links" />
+                android:text="@string/title_activity_links"/>
         </android.support.v7.widget.CardView>
     </LinearLayout>
 </ScrollView>

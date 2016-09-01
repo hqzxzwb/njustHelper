@@ -3,14 +3,15 @@ package com.njust.helper.activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.os.AsyncTaskCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ViewGroup;
 
-import com.zwb.commonlibs.ui.ExtendedSwipeRefreshLayout;
+import com.njust.helper.R;
 
 import java.util.WeakHashMap;
 
 public abstract class ProgressActivity extends BaseActivity {
-    private ExtendedSwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private WeakHashMap<String, AsyncTask<?, ?, ?>> taskMap = new WeakHashMap<>();
 
@@ -27,7 +28,7 @@ public abstract class ProgressActivity extends BaseActivity {
 
     protected abstract void prepareViews();
 
-    protected void setupPullLayout(ExtendedSwipeRefreshLayout refreshLayout) {
+    protected void setupPullLayout(SwipeRefreshLayout refreshLayout) {
         refreshLayout.setEnabled(false);
     }
 
@@ -35,18 +36,27 @@ public abstract class ProgressActivity extends BaseActivity {
 
     }
 
+    protected boolean addRefreshLayoutAutomatically() {
+        return true;
+    }
+
     @Override
     public void setContentView(int layoutResID) {
-        mSwipeRefreshLayout = new ExtendedSwipeRefreshLayout(this);
-        //noinspection deprecation
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(android.R.color.holo_blue_bright),
-                getResources().getColor(android.R.color.holo_green_light),
-                getResources().getColor(android.R.color.holo_orange_light));
-        mSwipeRefreshLayout.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-        getLayoutInflater().inflate(layoutResID, mSwipeRefreshLayout);
-        setContentView(mSwipeRefreshLayout);
+        if (addRefreshLayoutAutomatically()) {
+            mSwipeRefreshLayout = new SwipeRefreshLayout(this);
+            //noinspection deprecation
+            mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(android.R.color.holo_blue_bright),
+                    getResources().getColor(android.R.color.holo_green_light),
+                    getResources().getColor(android.R.color.holo_orange_light));
+            mSwipeRefreshLayout.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            getLayoutInflater().inflate(layoutResID, mSwipeRefreshLayout);
+            setContentView(mSwipeRefreshLayout);
+        } else {
+            super.setContentView(layoutResID);
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        }
     }
 
     public void setRefreshing(final boolean b) {

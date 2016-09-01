@@ -9,10 +9,12 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.njust.helper.activity.ProgressActivity;
 import com.njust.helper.classroom.ClassroomActivity;
@@ -33,22 +35,31 @@ import com.njust.helper.settings.SettingsActivityV11;
 import com.njust.helper.settings.SettingsActivityV9;
 import com.njust.helper.settings.UpdateActivity;
 import com.njust.helper.settings.UpdateLogDialog;
+import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.Constants;
+import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.Prefs;
+import com.njust.helper.tools.ProgressAsyncTask;
 import com.zwb.commonlibs.http.HttpHelper;
 import com.zwb.commonlibs.injection.ViewInjection;
+import com.zwb.commonlibs.utils.MemCacheManager;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends ProgressActivity {
+public class MainActivity extends ProgressActivity implements SwipeRefreshLayout.OnRefreshListener {
     public static final int RESULT_COURSE_REFRESH = 2;
     public static final int REQUEST_COURSE_REFRESH = 0;
+    private static final String ONE_CARD_CACHE_NAME = "OCCN";
     private static final int LAYOUT_ID = R.layout.activity_main;
 
     @ViewInjection(R.id.courseHomeView)
     private CourseHomeView courseHomeView;
+    @ViewInjection(R.id.tvCardBalance)
+    private TextView cardBalanceView;
 
     private BroadcastReceiver receiver;
     private ProgressDialog checkUpdateDialog;
@@ -96,34 +107,44 @@ public class MainActivity extends ProgressActivity {
         }
         //每学期更新
         int preVersion = Prefs.getVersion(this);
-        if (BuildConfig.VERSION_CODE == preVersion) {
-            return;
-        }
-
-        File file = getExternalCacheDir();
-        if (file != null) {
-            File[] files = file.listFiles();
-            if (files != null) {
-                for (File f : files) {
-                    if (f.toString().endsWith(".apk")) {
-                        //尝试删除之前下载到缓存目录的更新文件，并不关心删除是否成功
-                        //noinspection ResultOfMethodCallIgnored
-                        f.delete();
+        if (BuildConfig.VERSION_CODE != preVersion) {
+            File file = getExternalCacheDir();
+            if (file != null) {
+                File[] files = file.listFiles();
+                if (files != null) {
+                    for (File f : files) {
+                        if (f.toString().endsWith(".apk")) {
+                            //尝试删除之前下载到缓存目录的更新文件，并不关心删除是否成功
+                            //noinspection ResultOfMethodCallIgnored
+                            f.delete();
+                        }
                     }
                 }
             }
-        }
 
-        UpdateLogDialog.showUpdateDialog(this);
-        Prefs.putVersion(this, BuildConfig.VERSION_CODE);
-        if (preVersion == 0) {
-            if (BuildConfig.DEBUG) {
-                Prefs.putIdValues(this,
-                        getString(R.string.testStuid),
-                        getString(R.string.testJwcPwd),
-                        getString(R.string.testLibPwd));
+            UpdateLogDialog.showUpdateDialog(this);
+            Prefs.putVersion(this, BuildConfig.VERSION_CODE);
+            if (preVersion == 0) {
+                if (BuildConfig.DEBUG) {
+                    Prefs.putIdValues(this,
+                            getString(R.string.testStuid),
+                            getString(R.string.testJwcPwd),
+                            getString(R.string.testLibPwd));
+                }
             }
         }
+        //刷新一卡通余额
+        String string = MemCacheManager.get(ONE_CARD_CACHE_NAME);
+        if (string != null) {
+            setCardBalance(string);
+        } else {
+            setCardBalance("");
+            onRefresh();
+        }
+    }
+
+    private void setCardBalance(String balance) {
+        cardBalanceView.setText(getString(R.string.text_home_card_balance, balance));
     }
 
     @Override
@@ -170,6 +191,11 @@ public class MainActivity extends ProgressActivity {
 
     @Override
     protected void setupActionBar() {
+    }
+
+    @Override
+    protected void setupPullLayout(SwipeRefreshLayout layout) {
+        layout.setOnRefreshListener(this);
     }
 
     @Override
@@ -277,5 +303,45 @@ public class MainActivity extends ProgressActivity {
             }
             courseHomeView.setData(strings);
         }
+    }
+
+    public void card(View view) {
+        startActivity(OneCardActivity.class);
+    }
+
+    @Override
+    public void onRefresh() {
+        attachAsyncTask(new ProgressAsyncTask<Void, String>(this) {
+            @Override
+            protected JsonData<String> doInBackground(Void... voids) {
+                HttpHelper.HttpMap map = new HttpHelper.HttpMap();
+                map.addParam("stuid", Prefs.getId(MainActivity.this));
+                try {
+                    String s = new AppHttpHelper().getPostResult("cardInfo.php", map);
+                    return new JsonData<String>(s) {
+                        @Override
+                        protected String parseData(JSONObject jsonObject) throws Exception {
+                            return jsonObject.getString("content");
+                        }
+                    };
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return JsonData.newNetErrorInstance();
+            }
+
+            @Override
+            protected void onPostExecute(JsonData<String> stringJsonData) {
+                super.onPostExecute(stringJsonData);
+
+                if (stringJsonData.isValid()) {
+                    String result = stringJsonData.getData();
+                    setCardBalance(result);
+                    MemCacheManager.put(ONE_CARD_CACHE_NAME, result);
+                } else {
+                    setCardBalance("查询失败");
+                }
+            }
+        });
     }
 }

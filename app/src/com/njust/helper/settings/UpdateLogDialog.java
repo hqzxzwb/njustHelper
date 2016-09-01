@@ -13,8 +13,7 @@ public class UpdateLogDialog {
                 .append(" v")
                 .append(BuildConfig.VERSION_NAME)
                 .append("更新日志：\n");
-        builder.append("1.修复 后台闪退的问题\n");
-        builder.append("2.修改 加入Google analytics\n");
+        builder.append("1.新增 一卡通余额及明细查询\n");
         return builder;
     }
 

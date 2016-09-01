@@ -172,6 +172,7 @@ public class CourseHomeView extends TextView {
                 //把触摸cancel掉。否则控件将一直处于按下状态。
                 event.setAction((event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
                         | MotionEvent.ACTION_CANCEL);
+                super.onTouchEvent(event);
                 return true;
             }
         }

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.njust.helper">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.njust.helper">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
         android:name=".App"
@@ -21,26 +21,26 @@
         <activity
             android:name=".settings.SettingsActivityV11"
             android:label="@string/action_settings"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".course.CourseActivity"
             android:label="@string/title_activity_course"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".MainActivity"/>
         </activity>
         <activity
             android:name=".settings.AboutActivity"
             android:label="@string/title_activity_about"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".library.mylib.LibBorrowActivity"
             android:label="@string/title_activity_my_lib"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".MainActivity"/>
         </activity>
         <activity
             android:name=".library.LibSearchActivity"
@@ -50,68 +50,68 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/book_search" />
+                android:resource="@xml/book_search"/>
         </activity>
         <activity
             android:name=".library.LibDetailActivity"
             android:label="@string/title_activity_lib_detail"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".classroom.CourseQueryActivity"
             android:label="@string/title_courseQuery"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity
             android:name=".classroom.CourseQueryResultActivity"
             android:label="@string/title_activity_cengke_result"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".grade.GradeActivity"
             android:label="@string/title_activity_grade"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".grade.GradeLevelActivity"
             android:label="@string/title_activity_level"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".grade.CommentTeacherActivity"
             android:label="@string/title_activity_pj"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".classroom.ClassroomActivity"
             android:label="@string/title_activity_cr"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".AccountActivity"
             android:label="@string/title_activity_account"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".grade.ExamsActivity"
             android:label="@string/title_activity_exam_detail"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".LinksActivity"
             android:label="@string/title_activity_links"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".library.mylib.LibCollectionActivity"
             android:label="@string/title_activity_lib_collection"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
@@ -120,29 +120,32 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".MainActivity"/>
         </activity>
         <activity
             android:name=".CaptchaActivity"
             android:label="@string/title_activity_captcha"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
 
         <receiver android:name=".BootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 
-        <service android:name=".BackgroundService" />
+        <service android:name=".BackgroundService"/>
 
         <provider
             android:name=".library.SearchSuggestionProvider"
             android:authorities="com.njust.helper.library.SearchSuggestionProvider"
-            android:exported="false" />
+            android:exported="false"/>
 
         <activity
             android:name=".settings.SettingsActivityV9"
-            android:theme="@android:style/Theme.Light" />
+            android:theme="@android:style/Theme.Light"/>
+        <activity
+            android:name=".OneCardActivity"
+            android:label="@string/title_activity_card"/>
     </application>
 
 </manifest>

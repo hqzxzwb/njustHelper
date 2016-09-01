@@ -110,7 +110,7 @@ public class Prefs {
 
     public static long getTermStartTime(Context context) {
         String dateString = getTermStartString(context);
-        DateFormat dd = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        DateFormat dd = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
         try {
             Date date = dd.parse(dateString);
             return date.getTime();

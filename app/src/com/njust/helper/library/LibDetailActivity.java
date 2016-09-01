@@ -19,7 +19,6 @@ import com.zwb.commonlibs.http.HttpHelper;
 import com.zwb.commonlibs.injection.IntentInjection;
 import com.zwb.commonlibs.injection.ViewInjection;
 import com.zwb.commonlibs.ui.DividerItemDecoration;
-import com.zwb.commonlibs.ui.ExtendedSwipeRefreshLayout;
 import com.zwb.commonlibs.utils.JsonUtils;
 import com.zwb.commonlibs.utils.MemCacheManager;
 
@@ -77,9 +76,8 @@ public class LibDetailActivity extends ProgressActivity implements SwipeRefreshL
     }
 
     @Override
-    protected void setupPullLayout(ExtendedSwipeRefreshLayout layout) {
+    protected void setupPullLayout(SwipeRefreshLayout layout) {
         layout.setOnRefreshListener(this);
-        layout.setSwipeView(recyclerView);
     }
 
     private void notifyData(LibDetailData data) {

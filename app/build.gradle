@@ -24,8 +24,8 @@ android {
         applicationId "com.njust.helper"
         minSdkVersion 14
         targetSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
-        versionCode 20160604
-        versionName "3.8.2"
+        versionCode 20160901
+        versionName "3.8.3"
         resConfigs "zh"
         buildConfigField "String", "BASE_URL", p.getProperty('localUrl')
         resValue "string", "testStuid", p.getProperty('testStuid')

@@ -10,7 +10,6 @@ import com.njust.helper.R;
 import com.njust.helper.model.CaptchaData;
 import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.ProgressAsyncTask;
-import com.zwb.commonlibs.ui.ExtendedSwipeRefreshLayout;
 import com.zwb.commonlibs.utils.MemCacheManager;
 
 import org.json.JSONException;
@@ -29,7 +28,6 @@ public abstract class WebViewActivity extends ProgressActivity implements SwipeR
     @Override
     protected void prepareViews() {
         mWebView = (WebView) findViewById(R.id.webView1);
-        assert mWebView != null;
         mWebView.getSettings().setJavaScriptEnabled(true);
 
         loadId();
@@ -67,9 +65,8 @@ public abstract class WebViewActivity extends ProgressActivity implements SwipeR
     }
 
     @Override
-    protected void setupPullLayout(ExtendedSwipeRefreshLayout layout) {
+    protected void setupPullLayout(SwipeRefreshLayout layout) {
         layout.setOnRefreshListener(this);
-        layout.setSwipeView(mWebView);
     }
 
     protected abstract void loadId();

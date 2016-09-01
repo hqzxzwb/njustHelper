@@ -19,7 +19,6 @@ import com.njust.helper.tools.DataBindingHolder;
 import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.ProgressAsyncTask;
 import com.zwb.commonlibs.ui.DividerItemDecoration;
-import com.zwb.commonlibs.ui.ExtendedSwipeRefreshLayout;
 import com.zwb.commonlibs.utils.JsonUtils;
 import com.zwb.commonlibs.utils.MemCacheManager;
 
@@ -69,8 +68,7 @@ public abstract class MyListActivity<T, U extends ViewDataBinding> extends Progr
     }
 
     @Override
-    protected void setupPullLayout(ExtendedSwipeRefreshLayout layout) {
-        layout.setSwipeView(recyclerView);
+    protected void setupPullLayout(SwipeRefreshLayout layout) {
         layout.setOnRefreshListener(this);
     }
 
@@ -111,7 +109,7 @@ public abstract class MyListActivity<T, U extends ViewDataBinding> extends Progr
         attachAsyncTask(new ListTask());
     }
 
-    protected boolean emptyParam(){
+    protected boolean emptyParam() {
         return false;
     }
 
