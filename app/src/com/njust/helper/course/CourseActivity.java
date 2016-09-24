@@ -45,7 +45,6 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
     private SimpleDateFormat dateFormat;
     private CourseDayFragment dayFragment;
     private CourseWeekFragment weekFragment;
-    private CourseListFragment listFragment;
     @ViewInjection(R.id.txtToday)
     private TextView todayTextView;
     @ViewInjection(R.id.tvPickWeek)
@@ -304,12 +303,13 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
         }
     }
 
-    public void showCourseList(List<Course> courses) {
-        if (listFragment == null) {
-            listFragment = new CourseListFragment();
-        }
-        listFragment.setData(courses);
-        listFragment.show(getSupportFragmentManager(), "courseList");
+    @Override
+    public void showCourseList(List<Course> courses, int day, int section) {
+        String title = getResources().getStringArray(R.array.days_of_week)[day] +
+                getResources().getStringArray(R.array.sections)[section];
+        String subTitle = getResources().getStringArray(R.array.section_start_end)[section];
+        CourseListFragment.getInstance(courses, title, subTitle)
+                .show(getSupportFragmentManager(), "courseList");
     }
 
     public void pickWeek(View view) {

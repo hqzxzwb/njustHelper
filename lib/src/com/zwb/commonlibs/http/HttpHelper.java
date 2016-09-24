@@ -23,7 +23,7 @@ import java.util.Map;
 public class HttpHelper {
     private String encoding = "utf-8";
 
-    public static String inputStream2String(InputStream is, String encoding) throws IOException {
+    private static String inputStream2String(InputStream is, String encoding) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int i;
         while ((i = is.read()) != -1) {
@@ -38,7 +38,7 @@ public class HttpHelper {
         return networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED;
     }
 
-    public static String buildUrl(String url, HttpMap map) {
+    private static String buildUrl(String url, HttpMap map) {
         return map != null ? url + "?" + map : url;
     }
 
@@ -79,7 +79,7 @@ public class HttpHelper {
             urlConnection.getOutputStream().flush();
             urlConnection.getOutputStream().close();
         }
-        LogUtils.i(this, "responseCode=" + urlConnection.getResponseCode());
+//        LogUtils.i(this, "responseCode=" + urlConnection.getResponseCode());
         return urlConnection.getInputStream();
     }
 

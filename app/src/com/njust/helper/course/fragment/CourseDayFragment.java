@@ -95,7 +95,8 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
             protected void updateView(View view, int position) {
                 RecyclerView recyclerView = (RecyclerView) view;
                 CourseDayAdapter adapter = new CourseDayAdapter(CourseDayFragment.this);
-                adapter.setData(mLists[position % 7], position / 7 + 1);
+                int dayOfWeek=position%7;
+                adapter.setData(mLists[dayOfWeek], position / 7 + 1, dayOfWeek);
                 recyclerView.setAdapter(adapter);
                 view.setTag(position);
             }
@@ -121,7 +122,7 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
     @Override
     public void onAttach(Context context) {
         listener = (Listener) context;
-        dayOfWeek = getResources().getStringArray(R.array.day_of_week_short);
+        dayOfWeek = getResources().getStringArray(R.array.days_of_week_short);
         super.onAttach(context);
     }
 
@@ -190,6 +191,6 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
 
         void onDayPressed(int day);
 
-        void showCourseList(List<Course> courses);
+        void showCourseList(List<Course> courses, int day, int section);
     }
 }

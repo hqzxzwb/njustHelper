@@ -16,15 +16,17 @@ public class CourseDayAdapter extends RecyclerView.Adapter<DataBindingHolder<Ite
     @SuppressWarnings("unchecked")
     private List<Course>[] mData = new List[0];
     private int mWeek = 0;
+    private int mDay = 0;
     private CourseDayFragment fragment;
 
-    public CourseDayAdapter(CourseDayFragment fragment) {
+    CourseDayAdapter(CourseDayFragment fragment) {
         this.fragment = fragment;
     }
 
-    public void setData(@NonNull List<Course>[] data, int week) {
+    public void setData(@NonNull List<Course>[] data, int week, int day) {
         mData = data;
         mWeek = week;
+        mDay = day;
         notifyDataSetChanged();
     }
 
@@ -37,7 +39,7 @@ public class CourseDayAdapter extends RecyclerView.Adapter<DataBindingHolder<Ite
     @Override
     public void onBindViewHolder(DataBindingHolder<ItemCourseDayBinding> holder, int position) {
         final List<Course> list = mData[position];
-        ItemCourseDayBinding binding = holder.getDataBinding();
+        final ItemCourseDayBinding binding = holder.getDataBinding();
         binding.setEmpty(list.size() == 0);
         binding.setMultiple(list.size() > 1);
         binding.setPosition(position);
@@ -55,7 +57,7 @@ public class CourseDayAdapter extends RecyclerView.Adapter<DataBindingHolder<Ite
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    fragment.getListener().showCourseList(list);
+                    fragment.getListener().showCourseList(list, mDay, binding.getPosition());
                 }
             });
         } else {

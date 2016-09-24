@@ -35,8 +35,8 @@ public class CourseWeekFragment extends Fragment {
         InjectionHelper.injectView(this, view);
         courseView.setListener(new CourseView.OnSelectCourseListener() {
             @Override
-            public void onSelectCourse(List<Course> courses) {
-                listener.showCourseList(courses);
+            public void onSelectCourse(List<Course> courses, int day, int section) {
+                listener.showCourseList(courses, day, section);
             }
         });
         return view;
@@ -72,6 +72,6 @@ public class CourseWeekFragment extends Fragment {
     }
 
     public interface Listener {
-        void showCourseList(List<Course> courses);
+        void showCourseList(List<Course> courses, int day, int section);
     }
 }

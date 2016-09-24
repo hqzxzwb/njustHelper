@@ -38,7 +38,7 @@
     <string name="message_no_result">未找到任何结果</string>
     <string name="message_no_result_libBorrow">您没有借阅任何图书</string>
     <string name="message_wrong_password">您输入了错误的用户名或密码</string>
-    <string name="message_account_passwords"><![CDATA[新生密码默认和学号相同。\n图书馆默认密码为学号。若忘记密码，请联系 tsgsys@njust.edu.cn 或025\-84315903获取帮助。]]></string>
+    <string name="message_account_passwords"><![CDATA[新生默认教务处密码为学号(也可能为身份证后六位)。\n图书馆默认密码为学号。若忘记图书馆密码，请联系 tsgsys@njust.edu.cn 或025\-84315903获取帮助。]]></string>
     <string name="message_no_exams_found">您最近没有考试信息</string>
     <string name="title_courseQuery">蹭课查询</string>
     <string name="title_activity_exception">错误反馈</string>
@@ -67,16 +67,16 @@
     <string name="update_info">发现新版本：\n%1$s</string>
     <string name="update_log">更新日志</string>
 
-    <string-array name="day_of_week">
-        <item>星期日</item>
+    <string-array name="days_of_week">
         <item>星期一</item>
         <item>星期二</item>
         <item>星期三</item>
         <item>星期四</item>
         <item>星期五</item>
         <item>星期六</item>
+        <item>星期日</item>
     </string-array>
-    <string-array name="day_of_week_short">
+    <string-array name="days_of_week_short">
         <item>一</item>
         <item>二</item>
         <item>三</item>
@@ -100,7 +100,7 @@
         <item>后天</item>
         <item>自定义</item>
     </string-array>
-    <string-array name="spinner_cr_time">
+    <string-array name="sections">
         <item>第一大节</item>
         <item>第二大节</item>
         <item>第三大节</item>
@@ -123,6 +123,13 @@
         <item>14:00</item>
         <item>15:50</item>
         <item>19:00</item>
+    </string-array>
+    <string-array name="section_start_end">
+        <item>8:00~10:25</item>
+        <item>10:40~12:15</item>
+        <item>14:00~15:35</item>
+        <item>15:50~18:15</item>
+        <item>19:00~21:25</item>
     </string-array>
     <string name="button_comment">评分</string>
     <string name="content_collection_no_result">没有收藏任何图书\n图书详情页点击右上角五角星即可收藏</string>

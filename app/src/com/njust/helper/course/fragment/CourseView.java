@@ -110,7 +110,7 @@ public class CourseView extends View {
                 if (x == downX && y == downY && mListener != null) {
                     List<Course> list = mData[x][y];
                     if (list != null)
-                        mListener.onSelectCourse(mData[x][y]);
+                        mListener.onSelectCourse(mData[x][y], x, y);
                 }
                 return true;
         }
@@ -212,6 +212,6 @@ public class CourseView extends View {
     }
 
     public interface OnSelectCourseListener {
-        void onSelectCourse(List<Course> courses);
+        void onSelectCourse(List<Course> courses, int day, int section);
     }
 }

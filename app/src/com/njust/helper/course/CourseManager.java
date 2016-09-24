@@ -54,11 +54,10 @@ public class CourseManager {
     }
 
     public synchronized List<Course> getCourses() {
-        List<Course> list;
         SQLiteDatabase database = helper.getReadableDatabase();
         String[] columns = {"a.id", "a.name", "a.teacher", "b.classroom", "b.week1", "b.week2", "b.sec1", "b.sec2", "b.day"};
         Cursor cursor = database.query("info as a,loc as b", columns, "a.id=b.id", null, null, null, "b.day,b.sec1");
-        list = DatabaseUtils.parseArray(cursor, Course.class);
+        List<Course> list = DatabaseUtils.parseArray(cursor, Course.class);
         cursor.close();
         return list;
     }

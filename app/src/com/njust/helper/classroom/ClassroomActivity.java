@@ -58,7 +58,7 @@ public class ClassroomActivity extends ProgressActivity {
         checkBoxes[4] = (CheckBox) findViewById(R.id.checkBox5);
 
         long time = (System.currentTimeMillis() - Prefs.getTermStartTime(this)) % Constants.MILLIS_IN_ONE_DAY;
-        String[] captions = getResources().getStringArray(R.array.spinner_cr_time);
+        String[] captions = getResources().getStringArray(R.array.sections);
         int i = 0;
         for (; i < 5; i++) {
             checkBoxes[i].setText(captions[i]);
