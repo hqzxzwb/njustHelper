@@ -8,10 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.njust.helper.R;
 import com.njust.helper.course.CourseListAdapter;
+import com.njust.helper.databinding.BottomSheetCourseListBinding;
 import com.njust.helper.model.Course;
 import com.zwb.commonlibs.ui.DividerItemDecoration;
 
@@ -52,13 +51,13 @@ public class CourseListFragment extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.bottom_sheet_course_list, container, false);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        BottomSheetCourseListBinding binding = BottomSheetCourseListBinding.inflate(inflater, container, false);
+        binding.setTitle(title);
+        binding.setSubTitle(subTitle);
+        RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setAdapter(adapter);
-        ((TextView) view.findViewById(R.id.tvTitle)).setText(title);
-        ((TextView) view.findViewById(R.id.tvSubTitle)).setText(subTitle);
-        return view;
+        return binding.getRoot();
     }
 }

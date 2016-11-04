@@ -59,4 +59,3 @@
             android:text="@string/message_account_passwords" />
     </LinearLayout>
 </ScrollView>
-

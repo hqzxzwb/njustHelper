@@ -123,7 +123,7 @@ public class LibSearchActivity extends MyListActivity<LibSearch, ItemLibSearchBi
         }
 
         public static void onClick(View view, String id) {
-            LibDetailActivity.showLibDetail((Activity) view.getContext(), id);
+            LibDetailActivity.showLibDetail(view.getContext(), id);
         }
 
         @Override
