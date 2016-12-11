@@ -3,18 +3,14 @@ package com.njust.helper.activity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.Window;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -24,36 +20,14 @@ import com.njust.helper.BuildConfig;
 import com.njust.helper.R;
 import com.zwb.commonlibs.injection.InjectionHelper;
 import com.zwb.commonlibs.utils.LogUtils;
-
-import java.lang.reflect.Field;
+import com.zwb.commonlibs.utils.PermissionUtils;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private SparseArray<Runnable> permissionActions = new SparseArray<>();
-    private SparseArray<Runnable> permissionDeniedActions = new SparseArray<>();
     private long startTime;
-
-    /**
-     * 强制显示OverFlowButton
-     */
-    private void showOverFlowButton() {
-        try {
-            ViewConfiguration config = ViewConfiguration.get(this);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-            menuKeyField.setAccessible(true);
-            menuKeyField.setBoolean(config, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            showOverFlowButton();
-        }
 
         setContentView(layoutRes());
 
@@ -156,22 +130,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void registerRequestPermissionsAction(int requestCode, Runnable successCallback, Runnable failCallback) {
-        permissionActions.put(requestCode, successCallback);
-        permissionDeniedActions.put(requestCode, failCallback);
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        for (int result : grantResults) {
-            if (result != PackageManager.PERMISSION_GRANTED) {
-                Runnable runnable = permissionDeniedActions.get(requestCode);
-                if (runnable != null) runnable.run();
-                return;
-            }
-        }
-        permissionActions.get(requestCode).run();
+        PermissionUtils.handlePermissionResult(requestCode, grantResults);
     }
 }

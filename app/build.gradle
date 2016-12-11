@@ -30,7 +30,7 @@ android {
     defaultConfig {
         applicationId "com.njust.helper"
         minSdkVersion 14
-        targetSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
+        targetSdkVersion project.COMPILE_SDK_VERSION
         versionCode vc
         versionName vn
         resConfigs "zh"
