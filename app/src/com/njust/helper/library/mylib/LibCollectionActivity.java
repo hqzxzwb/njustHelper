@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.njust.helper.R;
 import com.njust.helper.activity.BaseActivity;
@@ -40,6 +41,8 @@ public class LibCollectionActivity extends BaseActivity {
     private RecyclerView recyclerView;
     @ViewInjection(R.id.coordinatorLayout)
     private CoordinatorLayout coordinatorLayout;
+    @ViewInjection(R.id.textView1)
+    private TextView emptyView;
 
     @Override
     protected int layoutRes() {
@@ -53,6 +56,12 @@ public class LibCollectionActivity extends BaseActivity {
         manager = LibraryDatabaseManager.getInstance(this);
         mList = manager.findCollect();
         adapter = new LibCollectionAdapter(mList, this);
+        adapter.setListener(new LibCollectionAdapter.OnEmptyStateChangeListener() {
+            @Override
+            public void onEmptyStateChange(boolean empty) {
+                emptyView.setVisibility(mList.isEmpty() ? View.VISIBLE : View.GONE);
+            }
+        });
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -72,24 +81,14 @@ public class LibCollectionActivity extends BaseActivity {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                itemsToRemove.add(adapter.delete(viewHolder.getAdapterPosition()).getId());
-                showSnack("您删除了一本图书", "撤销", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        LibCollectItem libCollectItem = adapter.restore();
-                        if (libCollectItem != null) {
-                            itemsToRemove.remove(libCollectItem.getId());
-                        }
-                        showSnack("已撤销更改");
-                    }
-                });
+                deleteItem(viewHolder.getAdapterPosition());
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
-        adapter.setSwipeMethod(new LibCollectionAdapter.Swipe() {
+        adapter.setOnDeleteInDialogListener(new LibCollectionAdapter.OnDeleteInDialogListener() {
             @Override
-            public void swipe(RecyclerView.ViewHolder viewHolder) {
-                itemTouchHelper.startSwipe(viewHolder);
+            public void onDeleteInDialog(RecyclerView.ViewHolder viewHolder) {
+                deleteItem(viewHolder.getAdapterPosition());
             }
         });
 
@@ -101,6 +100,20 @@ public class LibCollectionActivity extends BaseActivity {
                 }
             });
         }
+    }
+
+    private void deleteItem(int position) {
+        itemsToRemove.add(adapter.delete(position).getId());
+        showSnack("您删除了一本图书", "撤销", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LibCollectItem libCollectItem = adapter.restore();
+                if (libCollectItem != null) {
+                    itemsToRemove.remove(libCollectItem.getId());
+                }
+                showSnack("已撤销更改");
+            }
+        });
     }
 
     @Override
@@ -171,7 +184,8 @@ public class LibCollectionActivity extends BaseActivity {
         private LibCollectionActivity mActivity;
         private LibCollectItem restoreItem;
         private int restorePosition;
-        private Swipe swipe;
+        private OnDeleteInDialogListener onDeleteInDialogListener;
+        private OnEmptyStateChangeListener listener;
 
         public LibCollectionAdapter(List<LibCollectItem> data, LibCollectionActivity activity) {
             this.mData = data;
@@ -186,8 +200,8 @@ public class LibCollectionActivity extends BaseActivity {
             LibDetailActivity.showLibDetail(view.getContext(), id);
         }
 
-        public void setSwipeMethod(Swipe swipe) {
-            this.swipe = swipe;
+        public void setOnDeleteInDialogListener(OnDeleteInDialogListener onDeleteInDialogListener) {
+            this.onDeleteInDialogListener = onDeleteInDialogListener;
         }
 
         @Override
@@ -211,12 +225,13 @@ public class LibCollectionActivity extends BaseActivity {
                 @Override
                 public boolean onLongClick(View view) {
                     new AlertDialog.Builder(view.getContext())
-                            .setMessage("确定删除这条收藏吗?\n" + libCollectItem.getName())
+                            .setTitle("确定删除这条收藏吗?")
+                            .setMessage(libCollectItem.getName())
                             .setPositiveButton("删除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    if (swipe != null) {
-                                        swipe.swipe(holder);
+                                    if (onDeleteInDialogListener != null) {
+                                        onDeleteInDialogListener.onDeleteInDialog(holder);
                                     }
                                 }
                             })
@@ -231,12 +246,14 @@ public class LibCollectionActivity extends BaseActivity {
             restoreItem = mData.remove(position);
             restorePosition = position;
             notifyItemRemoved(position);
+            listener.onEmptyStateChange(mData.isEmpty());
             return restoreItem;
         }
 
         public LibCollectItem restore() {
             if (restoreItem != null) {
                 mData.add(restorePosition, restoreItem);
+                listener.onEmptyStateChange(mData.isEmpty());
                 notifyItemInserted(restorePosition);
                 LibCollectItem libCollectItem = restoreItem;
                 restoreItem = null;
@@ -250,8 +267,17 @@ public class LibCollectionActivity extends BaseActivity {
             return mData.size();
         }
 
-        interface Swipe {
-            void swipe(RecyclerView.ViewHolder viewHolder);
+        public void setListener(OnEmptyStateChangeListener listener) {
+            this.listener = listener;
+            listener.onEmptyStateChange(mData.isEmpty());
+        }
+
+        interface OnDeleteInDialogListener {
+            void onDeleteInDialog(RecyclerView.ViewHolder viewHolder);
+        }
+
+        interface OnEmptyStateChangeListener {
+            void onEmptyStateChange(boolean empty);
         }
     }
 }

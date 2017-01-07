@@ -13,7 +13,8 @@ public class UpdateLogDialog {
                 .append(" v")
                 .append(BuildConfig.VERSION_NAME)
                 .append("更新日志：\n");
-        builder.append("1.新增 一卡通余额及明细查询\n");
+        builder.append("1.修复 收藏的图书长按删除没有效果的问题\n");
+        builder.append("2.优化 无收藏的图书时，界面显示相应的提示\n");
         return builder;
     }
 

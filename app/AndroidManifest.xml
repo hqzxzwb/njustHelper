@@ -141,9 +141,6 @@
             android:exported="false"/>
 
         <activity
-            android:name=".settings.SettingsActivityV9"
-            android:theme="@android:style/Theme.Light"/>
-        <activity
             android:name=".OneCardActivity"
             android:label="@string/title_activity_card"/>
     </application>

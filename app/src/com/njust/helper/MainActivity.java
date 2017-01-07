@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -32,7 +31,6 @@ import com.njust.helper.model.Course;
 import com.njust.helper.model.UpdateInfo;
 import com.njust.helper.settings.AboutActivity;
 import com.njust.helper.settings.SettingsActivityV11;
-import com.njust.helper.settings.SettingsActivityV9;
 import com.njust.helper.settings.UpdateActivity;
 import com.njust.helper.settings.UpdateLogDialog;
 import com.njust.helper.tools.AppHttpHelper;
@@ -208,8 +206,7 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_settings:
-                startActivity(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
-                        SettingsActivityV11.class : SettingsActivityV9.class);
+                startActivity(SettingsActivityV11.class);
                 return true;
             case R.id.item_about:
                 startActivity(AboutActivity.class);
