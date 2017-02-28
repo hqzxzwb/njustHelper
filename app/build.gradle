@@ -7,7 +7,7 @@ dependencies {
     compile project.ANDROID_SUPPORT_DESIGN
     compile project.ANDROID_SUPPORT_V7_CARD_VIEW
     compile 'com.android.volley:volley:1.0.0'
-    compile 'com.google.android.gms:play-services-analytics:9.8.0'
+    compile 'com.google.android.gms:play-services-analytics:10.2.0'
 }
 
 android {
@@ -25,7 +25,7 @@ android {
     int month = c.get(Calendar.MONTH) + 1;
     int day = c.get(Calendar.DAY_OF_MONTH);
     int vc = year * 10000 + month * 100 + day;
-    String vn = (year - 2010) + "." + month + "." + day;
+    String vn = (year - 2013) + "." + month + "." + day;
 
     defaultConfig {
         applicationId "com.njust.helper"

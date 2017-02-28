@@ -83,6 +83,15 @@ public class CourseView extends View {
     }
 
     public void setCourses(List<Course> courses) {
+        for (List[] lists : mData) {
+            if (lists != null) {
+                for (List list : lists) {
+                    if (list != null) {
+                        list.clear();
+                    }
+                }
+            }
+        }
         for (Course course : courses) {
             List<Course> list = mData[course.getDay()][course.getSec1()];
             if (list == null) {

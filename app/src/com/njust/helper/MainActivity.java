@@ -52,12 +52,11 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
     public static final int RESULT_COURSE_REFRESH = 2;
     public static final int REQUEST_COURSE_REFRESH = 0;
     private static final String ONE_CARD_CACHE_NAME = "OCCN";
-    private static final int LAYOUT_ID = R.layout.activity_main;
 
     @ViewInjection(R.id.courseHomeView)
     private CourseHomeView courseHomeView;
-    @ViewInjection(R.id.tvCardBalance)
-    private TextView cardBalanceView;
+//    @ViewInjection(R.id.tvCardBalance)
+//    private TextView cardBalanceView;
 
     private BroadcastReceiver receiver;
     private ProgressDialog checkUpdateDialog;
@@ -131,23 +130,23 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
                 }
             }
         }
-        //刷新一卡通余额
-        String string = MemCacheManager.get(ONE_CARD_CACHE_NAME);
-        if (string != null) {
-            setCardBalance(string);
-        } else {
-            setCardBalance("");
-            onRefresh();
-        }
+//        //刷新一卡通余额
+//        String string = MemCacheManager.get(ONE_CARD_CACHE_NAME);
+//        if (string != null) {
+//            setCardBalance(string);
+//        } else {
+//            setCardBalance("");
+//            onRefresh();
+//        }
     }
 
-    private void setCardBalance(String balance) {
-        cardBalanceView.setText(getString(R.string.text_home_card_balance, balance));
-    }
+//    private void setCardBalance(String balance) {
+//        cardBalanceView.setText(getString(R.string.text_home_card_balance, balance));
+//    }
 
     @Override
     protected int layoutRes() {
-        return LAYOUT_ID;
+        return R.layout.activity_main;
     }
 
     public void lib_borrow(View view) {
@@ -191,10 +190,10 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
     protected void setupActionBar() {
     }
 
-    @Override
-    protected void setupPullLayout(SwipeRefreshLayout layout) {
-        layout.setOnRefreshListener(this);
-    }
+//    @Override
+//    protected void setupPullLayout(SwipeRefreshLayout layout) {
+//        layout.setOnRefreshListener(this);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -308,37 +307,37 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
 
     @Override
     public void onRefresh() {
-        attachAsyncTask(new ProgressAsyncTask<Void, String>(this) {
-            @Override
-            protected JsonData<String> doInBackground(Void... voids) {
-                HttpHelper.HttpMap map = new HttpHelper.HttpMap();
-                map.addParam("stuid", Prefs.getId(MainActivity.this));
-                try {
-                    String s = new AppHttpHelper().getPostResult("cardInfo.php", map);
-                    return new JsonData<String>(s) {
-                        @Override
-                        protected String parseData(JSONObject jsonObject) throws Exception {
-                            return jsonObject.getString("content");
-                        }
-                    };
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return JsonData.newNetErrorInstance();
-            }
-
-            @Override
-            protected void onPostExecute(JsonData<String> stringJsonData) {
-                super.onPostExecute(stringJsonData);
-
-                if (stringJsonData.isValid()) {
-                    String result = stringJsonData.getData();
-                    setCardBalance(result);
-                    MemCacheManager.put(ONE_CARD_CACHE_NAME, result);
-                } else {
-                    setCardBalance("查询失败");
-                }
-            }
-        });
+//        attachAsyncTask(new ProgressAsyncTask<Void, String>(this) {
+//            @Override
+//            protected JsonData<String> doInBackground(Void... voids) {
+//                HttpHelper.HttpMap map = new HttpHelper.HttpMap();
+//                map.addParam("stuid", Prefs.getId(MainActivity.this));
+//                try {
+//                    String s = new AppHttpHelper().getPostResult("cardInfo.php", map);
+//                    return new JsonData<String>(s) {
+//                        @Override
+//                        protected String parseData(JSONObject jsonObject) throws Exception {
+//                            return jsonObject.getString("content");
+//                        }
+//                    };
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                return JsonData.newNetErrorInstance();
+//            }
+//
+//            @Override
+//            protected void onPostExecute(JsonData<String> stringJsonData) {
+//                super.onPostExecute(stringJsonData);
+//
+//                if (stringJsonData.isValid()) {
+//                    String result = stringJsonData.getData();
+//                    setCardBalance(result);
+//                    MemCacheManager.put(ONE_CARD_CACHE_NAME, result);
+//                } else {
+//                    setCardBalance("查询失败");
+//                }
+//            }
+//        });
     }
 }
