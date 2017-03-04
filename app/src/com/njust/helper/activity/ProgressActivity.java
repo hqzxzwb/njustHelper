@@ -71,7 +71,10 @@ public abstract class ProgressActivity extends BaseActivity {
 
     @SafeVarargs
     public final <Params> void attachAsyncTask(AsyncTask<Params, ?, ?> task, Params... params) {
-        taskMap.put(task.getClass().getName(), AsyncTaskCompat.executeParallel(task, params));
+        AsyncTask prevTask = taskMap.put(task.getClass().getName(), AsyncTaskCompat.executeParallel(task, params));
+        if (prevTask != null) {
+            prevTask.cancel(true);
+        }
     }
 
     @Override

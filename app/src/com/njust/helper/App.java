@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.njust.helper.localapi.ApiConfiguration;
 import com.njust.helper.tools.AppHttpHelper;
 
 public class App extends Application {
@@ -36,5 +37,6 @@ public class App extends Application {
         mTracker.enableAutoActivityTracking(true);
 
         AppHttpHelper.getInstance().init(this);
+        ApiConfiguration.init(this);
     }
 }

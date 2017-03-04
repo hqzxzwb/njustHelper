@@ -1,0 +1,19 @@
+{
+  "libSearch": {
+    "actions": [
+      {
+        "method": "get",
+        "url": "http:\/\/202.119.83.14:8080\/uopac\/opac\/search_adv_result.php?sType0=any&pageSize=100&sort=score&desc=true&q0={word}",
+        "regexMode": "list",
+        "regex": "href=\"item.php\\?marc_no=(\\d*)\">([^<]*)<.*\\s*.*>(.*)<.*\\s*.*>(.*)<"
+      }
+    ],
+    "map": [
+      "",
+      "id",
+      "title",
+      "author",
+      "press"
+    ]
+  }
+}

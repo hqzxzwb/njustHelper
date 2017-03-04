@@ -8,6 +8,7 @@ dependencies {
     compile project.ANDROID_SUPPORT_V7_CARD_VIEW
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.google.android.gms:play-services-analytics:10.2.0'
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
 }
 
 android {

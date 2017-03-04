@@ -4,6 +4,7 @@ dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
     compile project.ANDROID_SUPPORT_V7_RECYCLER_VIEW
     compile project.ANDROID_SUPPORT_V4
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
 }
 
 android {

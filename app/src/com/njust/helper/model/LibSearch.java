@@ -1,12 +1,6 @@
 package com.njust.helper.model;
 
-import android.app.Activity;
-import android.view.View;
-
-import com.njust.helper.library.LibDetailActivity;
-
 public class LibSearch {
-
     private String title, author, press, id;
 
     public String getTitle() {
@@ -24,5 +18,4 @@ public class LibSearch {
     public String getId() {
         return id;
     }
-
 }

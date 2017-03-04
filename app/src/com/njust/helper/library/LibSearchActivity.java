@@ -1,37 +1,44 @@
 package com.njust.helper.library;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
-import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.njust.helper.R;
 import com.njust.helper.activity.MyListActivity;
+import com.njust.helper.activity.ProgressActivity;
 import com.njust.helper.databinding.ItemLibSearchBinding;
+import com.njust.helper.localapi.ApiConfiguration;
 import com.njust.helper.model.LibSearch;
-import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.DataBindingHolder;
-import com.zwb.commonlibs.http.HttpHelper;
 import com.zwb.commonlibs.injection.ViewInjection;
 
+import java.util.Collections;
 import java.util.List;
 
-public class LibSearchActivity extends MyListActivity<LibSearch, ItemLibSearchBinding> {
+public class LibSearchActivity extends ProgressActivity {
     @ViewInjection(R.id.toolbar)
     private Toolbar toolbar;
     @ViewInjection(R.id.searchView)
     private SearchView searchView;
+    @ViewInjection(R.id.recyclerView)
+    private RecyclerView recyclerView;
 
     private String search;
     private SearchRecentSuggestions suggestions;
+    private LibSearchAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,14 @@ public class LibSearchActivity extends MyListActivity<LibSearch, ItemLibSearchBi
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setQueryRefinementEnabled(true);
+    }
+
+    @Override
+    protected void prepareViews() {
+        adapter = new LibSearchAdapter(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
 
     @Override
@@ -75,7 +90,31 @@ public class LibSearchActivity extends MyListActivity<LibSearch, ItemLibSearchBi
         getSuggestions().saveRecentQuery(query, null);
 
         search = query;
-        onRefresh();
+        attachAsyncTask(new AsyncTask<String, String, List<LibSearch>>() {
+            @Override
+            protected List<LibSearch> doInBackground(String... params) {
+                return ApiConfiguration.getConfiguration("libSearch")
+                        .execute(Collections.singletonMap("word", params[0]), LibSearch.class,
+                                new ApiConfiguration.ProgressCallback() {
+                                    @Override
+                                    public void onProgress(String progress) {
+                                        publishProgress(progress);
+                                    }
+                                });
+            }
+
+            @Override
+            protected void onPostExecute(List<LibSearch> libSearches) {
+                if (libSearches != null) {
+                    adapter.setData(libSearches);
+                }
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                showSnack(values[0]);
+            }
+        }, search);
     }
 
     private SearchRecentSuggestions getSuggestions() {
@@ -86,36 +125,7 @@ public class LibSearchActivity extends MyListActivity<LibSearch, ItemLibSearchBi
         return suggestions;
     }
 
-
-    @Override
-    protected int getServerErrorText() {
-        return R.string.message_server_error_lib;
-    }
-
-    @NonNull
-    @Override
-    protected ListRecycleAdapter<LibSearch, ItemLibSearchBinding> onCreateAdapter() {
-        return new LibSearchAdapter(this);
-    }
-
-    @Override
-    protected String buildCacheName() {
-        return null;
-    }
-
-    @Override
-    protected String getResponse() throws Exception {
-        HttpHelper.HttpMap data = new HttpHelper.HttpMap();
-        data.addParam("search", search);
-        return new AppHttpHelper().getPostResult("libSearch.php", data);
-    }
-
-    @Override
-    protected Class<LibSearch> getItemClass() {
-        return LibSearch.class;
-    }
-
-    public static class LibSearchAdapter extends ListRecycleAdapter<LibSearch, ItemLibSearchBinding> {
+    public static class LibSearchAdapter extends MyListActivity.ListRecycleAdapter<LibSearch, ItemLibSearchBinding> {
         private LibSearchActivity activity;
 
         private LibSearchAdapter(LibSearchActivity activity) {
