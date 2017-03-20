@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.njust.helper.activity.ProgressActivity;
 import com.njust.helper.classroom.ClassroomActivity;
@@ -33,16 +32,10 @@ import com.njust.helper.settings.AboutActivity;
 import com.njust.helper.settings.SettingsActivityV11;
 import com.njust.helper.settings.UpdateActivity;
 import com.njust.helper.settings.UpdateLogDialog;
-import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.Constants;
-import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.Prefs;
-import com.njust.helper.tools.ProgressAsyncTask;
 import com.zwb.commonlibs.http.HttpHelper;
 import com.zwb.commonlibs.injection.ViewInjection;
-import com.zwb.commonlibs.utils.MemCacheManager;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;

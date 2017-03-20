@@ -35,6 +35,7 @@ android {
         versionName vn
         resConfigs "zh"
         buildConfigField "String", "BASE_URL", p.getProperty('localUrl')
+        buildConfigField "String", "XIAOMI_AD_ID", p.getProperty('xiaomiAdId')
         resValue "string", "testStuid", p.getProperty('testStuid')
         resValue "string", "testJwcPwd", p.getProperty('testJwcPwd')
         resValue "string", "testLibPwd", p.getProperty('testLibPwd')

@@ -85,8 +85,8 @@ public class HttpHelper {
 
     protected void setupURLConnection(HttpURLConnection urlConnection) {
         urlConnection.setRequestProperty("content-type", "application/x-www-form-urlencoded");
-        urlConnection.setConnectTimeout(10000);
-        urlConnection.setReadTimeout(10000);
+        urlConnection.setConnectTimeout(15000);
+        urlConnection.setReadTimeout(15000);
     }
 
     public static class HttpMap {

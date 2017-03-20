@@ -13,6 +13,10 @@
     int i(...);
 }
 
+-keep class com.xiaomi.ad.**{*;}
+-keep class com.miui.analytics.**{*;}
+-keep class com.xiaomi.analytics.*{public protected *;}
+
 -repackageclasses '蛤'
 -allowaccessmodification
 

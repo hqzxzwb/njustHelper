@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.njust.helper.tools.AppHttpHelper;
+import com.xiaomi.ad.AdSdk;
 
 public class App extends Application {
     private static Tracker mTracker;
@@ -36,5 +37,7 @@ public class App extends Application {
         mTracker.enableAutoActivityTracking(true);
 
         AppHttpHelper.getInstance().init(this);
+
+        AdSdk.initialize(this, BuildConfig.XIAOMI_AD_ID);
     }
 }
