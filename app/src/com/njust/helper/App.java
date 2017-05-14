@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.njust.helper.tools.AppHttpHelper;
+import com.tencent.bugly.crashreport.CrashReport;
 
 public class App extends Application {
     private static Tracker mTracker;
@@ -34,6 +35,7 @@ public class App extends Application {
         // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
         mTracker = analytics.newTracker(R.xml.global_tracker);
         mTracker.enableAutoActivityTracking(true);
+        CrashReport.initCrashReport(this, BuildConfig.TENCENT_BUGLY_ID, BuildConfig.DEBUG);
 
         AppHttpHelper.getInstance().init(this);
     }
