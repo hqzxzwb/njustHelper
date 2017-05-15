@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.njust.helper.activity.ProgressActivity;
 import com.njust.helper.classroom.ClassroomActivity;
@@ -30,19 +29,13 @@ import com.njust.helper.library.mylib.LibCollectionActivity;
 import com.njust.helper.model.Course;
 import com.njust.helper.model.UpdateInfo;
 import com.njust.helper.settings.AboutActivity;
-import com.njust.helper.settings.SettingsActivityV11;
+import com.njust.helper.settings.SettingsActivity;
 import com.njust.helper.settings.UpdateActivity;
 import com.njust.helper.settings.UpdateLogDialog;
-import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.Constants;
-import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.Prefs;
-import com.njust.helper.tools.ProgressAsyncTask;
 import com.zwb.commonlibs.http.HttpHelper;
 import com.zwb.commonlibs.injection.ViewInjection;
-import com.zwb.commonlibs.utils.MemCacheManager;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -205,7 +198,7 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_settings:
-                startActivity(SettingsActivityV11.class);
+                startActivity(SettingsActivity.class);
                 return true;
             case R.id.item_about:
                 startActivity(AboutActivity.class);

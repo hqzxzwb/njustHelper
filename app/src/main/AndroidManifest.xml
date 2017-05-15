@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".settings.SettingsActivityV11"
+            android:name=".settings.SettingsActivity"
             android:label="@string/action_settings"
             android:screenOrientation="portrait"/>
         <activity
