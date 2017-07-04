@@ -13,18 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
-import com.google.android.gms.analytics.HitBuilders;
 import com.njust.helper.AccountActivity;
-import com.njust.helper.App;
-import com.njust.helper.BuildConfig;
 import com.njust.helper.R;
 import com.zwb.commonlibs.injection.InjectionHelper;
 import com.zwb.commonlibs.utils.LogUtils;
 import com.zwb.commonlibs.utils.PermissionUtils;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private long startTime;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,38 +29,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         InjectionHelper.injectActivity(this);
 
         setupActionBar();
-
-        if (!BuildConfig.DEBUG) {
-            App.getDefaultTracker().send(new HitBuilders.EventBuilder()
-                    .setCategory(getClass().getSimpleName())
-                    .setAction("onCreate")
-                    .build());
-            startTime = System.currentTimeMillis();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (!BuildConfig.DEBUG) {
-            App.getDefaultTracker().send(new HitBuilders.EventBuilder()
-                    .setCategory(getClass().getSimpleName())
-                    .setAction("onDestroy")
-                    .setLabel("stayed for ? milliseconds")
-                    .setValue(System.currentTimeMillis() - startTime)
-                    .build());
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (!BuildConfig.DEBUG) {
-            App.getDefaultTracker().setScreenName(getClass().getSimpleName());
-            App.getDefaultTracker().send(new HitBuilders.ScreenViewBuilder().build());
-        }
     }
 
     @LayoutRes

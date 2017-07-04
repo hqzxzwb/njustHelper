@@ -7,7 +7,6 @@ dependencies {
     compile project.ANDROID_SUPPORT_DESIGN
     compile project.ANDROID_SUPPORT_V7_CARD_VIEW
     compile 'com.android.volley:volley:1.0.0'
-    compile 'com.google.android.gms:play-services-analytics:10.2.4'
     compile 'com.tencent.bugly:crashreport:2.6.0'
 }
 
@@ -97,5 +96,3 @@ android {
         }
     }
 }
-
-apply plugin: 'com.google.gms.google-services'
