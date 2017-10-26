@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: 'AndResGuard'
 
 dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
-    compile project(':lib')
-    compile project.ANDROID_SUPPORT_DESIGN
-    compile project.ANDROID_SUPPORT_V7_CARD_VIEW
-    compile 'com.android.volley:volley:1.0.0'
-    compile 'com.tencent.bugly:crashreport:2.6.0'
+    implementation project(':lib')
+    implementation project.ANDROID_SUPPORT_DESIGN
+    implementation project.ANDROID_SUPPORT_V7_CARD_VIEW
+    implementation 'com.android.volley:volley:1.0.0'
+    implementation 'com.tencent.bugly:crashreport:2.6.5'
 }
 
 android {
@@ -61,7 +60,7 @@ android {
             buildConfigField "String", "BASE_URL", '"http://njusthelper.duapp.com/njust0909/"'
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
             signingConfig signingConfigs.release
         }
     }
@@ -74,25 +73,5 @@ android {
         preDexLibraries true
         javaMaxHeapSize "4g"
         dexInProcess = true
-    }
-
-    andResGuard {
-        mappingFile = null
-        use7zip = true
-        useSign = true
-        keepRoot = false
-        whiteList = [
-        ]
-        compressFilePattern = [
-                "*.png",
-                "*.jpg",
-                "*.jpeg",
-                "*.gif",
-                "resources.arsc"
-        ]
-        sevenzip {
-            artifact = 'com.tencent.mm:SevenZip:1.1.9'
-            //path = "/usr/local/bin/7za"
-        }
     }
 }

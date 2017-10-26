@@ -16,8 +16,8 @@
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 
-#-repackageclasses '蛤'
-#-allowaccessmodification
-#
-#-obfuscationdictionary 'dict.txt'
-#-classobfuscationdictionary 'dict.txt'
+-repackageclasses '蛤'
+-allowaccessmodification
+
+-obfuscationdictionary 'dict.txt'
+-classobfuscationdictionary 'dict.txt'
