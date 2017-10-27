@@ -1,9 +1,11 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
     compile project.ANDROID_SUPPORT_V7_RECYCLER_VIEW
     compile project.ANDROID_SUPPORT_V4
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 android {
@@ -20,4 +22,7 @@ android {
         targetSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
         consumerProguardFile('proguard-consumer.txt')
     }
+}
+repositories {
+    mavenCentral()
 }

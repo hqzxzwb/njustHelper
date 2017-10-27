@@ -3,6 +3,7 @@ package com.njust.helper.library;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -15,10 +16,9 @@ import com.njust.helper.model.LibDetailItem;
 import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.JsonTask;
-import com.zwb.commonlibs.http.HttpHelper;
+import com.zwb.commonlibs.http.HttpMap;
 import com.zwb.commonlibs.injection.IntentInjection;
 import com.zwb.commonlibs.injection.ViewInjection;
-import com.zwb.commonlibs.ui.DividerItemDecoration;
 import com.zwb.commonlibs.utils.JsonUtils;
 import com.zwb.commonlibs.utils.MemCacheManager;
 
@@ -57,7 +57,7 @@ public class LibDetailActivity extends ProgressActivity implements SwipeRefreshL
         manager = LibraryDatabaseManager.getInstance(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = new LibDetailAdapter(this);
         recyclerView.setAdapter(adapter);
 
@@ -189,7 +189,7 @@ public class LibDetailActivity extends ProgressActivity implements SwipeRefreshL
 
         @Override
         protected JsonData<LibDetailData> doInBackground(Void... params) {
-            HttpHelper.HttpMap data = new HttpHelper.HttpMap();
+            HttpMap data = new HttpMap();
             data.addParam("id", idString);
             try {
                 String string = new AppHttpHelper().getPostResult("libDetail.php", data);

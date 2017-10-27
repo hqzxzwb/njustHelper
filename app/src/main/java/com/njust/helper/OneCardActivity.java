@@ -8,13 +8,9 @@ import com.njust.helper.model.CardItem;
 import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.DataBindingHolder;
 import com.njust.helper.tools.Prefs;
-import com.zwb.commonlibs.http.HttpHelper;
+import com.zwb.commonlibs.http.HttpMap;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class OneCardActivity extends MyListActivity<CardItem, ItemCardBinding> {
     private String stuid;
@@ -37,7 +33,7 @@ public class OneCardActivity extends MyListActivity<CardItem, ItemCardBinding> {
 
     @Override
     protected String getResponse() throws Exception {
-        HttpHelper.HttpMap data = new HttpHelper.HttpMap();
+        HttpMap data = new HttpMap();
         data.addParam("stuid", stuid);
         return new AppHttpHelper().getPostResult("cardDetail.php", data);
     }

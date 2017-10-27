@@ -7,7 +7,7 @@ import android.webkit.JavascriptInterface;
 import com.njust.helper.activity.WebViewActivity;
 import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.Prefs;
-import com.zwb.commonlibs.http.HttpHelper;
+import com.zwb.commonlibs.http.HttpMap;
 
 public class CommentTeacherActivity extends WebViewActivity {
     private String stuid;
@@ -26,7 +26,7 @@ public class CommentTeacherActivity extends WebViewActivity {
 
     @Override
     protected String getResponse() throws Exception {
-        HttpHelper.HttpMap data = new HttpHelper.HttpMap();
+        HttpMap data = new HttpMap();
 //        data.addParam("cookie", Prefs.getCookie(this), "url", Prefs.getUrl(this));
 //TODO
         return new AppHttpHelper().getPostResult("commentTeacher0620.php", data);

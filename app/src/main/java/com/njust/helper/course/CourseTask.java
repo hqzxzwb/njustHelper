@@ -11,7 +11,7 @@ import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.JsonTask;
 import com.njust.helper.tools.Prefs;
-import com.zwb.commonlibs.http.HttpHelper;
+import com.zwb.commonlibs.http.HttpMap;
 import com.zwb.commonlibs.utils.JsonUtils;
 
 import org.json.JSONObject;
@@ -31,7 +31,7 @@ class CourseTask extends JsonTask<Void, CourseData> {
 
     @Override
     protected JsonData<CourseData> doInBackground(Void... params) {
-        HttpHelper.HttpMap data = new HttpHelper.HttpMap();
+        HttpMap data = new HttpMap();
 
         String stuid = Prefs.getId(mActivity);
         String pwd = Prefs.getJwcPwd(mActivity);

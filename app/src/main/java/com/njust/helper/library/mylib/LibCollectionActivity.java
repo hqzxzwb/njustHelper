@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -22,7 +23,6 @@ import com.njust.helper.model.LibCollectItem;
 import com.njust.helper.tools.DataBindingHolder;
 import com.njust.helper.tools.Prefs;
 import com.zwb.commonlibs.injection.ViewInjection;
-import com.zwb.commonlibs.ui.DividerItemDecoration;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class LibCollectionActivity extends BaseActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
 
         final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {

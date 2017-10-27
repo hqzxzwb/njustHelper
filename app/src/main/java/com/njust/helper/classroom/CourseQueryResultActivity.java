@@ -8,7 +8,7 @@ import com.njust.helper.databinding.ItemCourseQueryBinding;
 import com.njust.helper.model.CourseQuery;
 import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.DataBindingHolder;
-import com.zwb.commonlibs.http.HttpHelper;
+import com.zwb.commonlibs.http.HttpMap;
 import com.zwb.commonlibs.injection.IntentInjection;
 import com.zwb.commonlibs.utils.LogUtils;
 
@@ -37,7 +37,7 @@ public class CourseQueryResultActivity extends MyListActivity<CourseQuery, ItemC
 
     @Override
     protected String getResponse() throws Exception {
-        HttpHelper.HttpMap data = new HttpHelper.HttpMap();
+        HttpMap data = new HttpMap();
         data.addParam("section", section)
                 .addParam("day", day)
                 .addParam("name", name)

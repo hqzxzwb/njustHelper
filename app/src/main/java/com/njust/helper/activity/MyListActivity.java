@@ -6,6 +6,7 @@ import android.databinding.ViewDataBinding;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +19,6 @@ import com.njust.helper.model.CaptchaData;
 import com.njust.helper.tools.DataBindingHolder;
 import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.ProgressAsyncTask;
-import com.zwb.commonlibs.ui.DividerItemDecoration;
 import com.zwb.commonlibs.utils.JsonUtils;
 import com.zwb.commonlibs.utils.MemCacheManager;
 
@@ -40,7 +40,7 @@ public abstract class MyListActivity<T, U extends ViewDataBinding> extends Progr
         //noinspection ConstantConditions
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = onCreateAdapter();
         recyclerView.setAdapter(adapter);
 

@@ -15,7 +15,7 @@ import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.Prefs;
 import com.njust.helper.tools.ProgressAsyncTask;
-import com.zwb.commonlibs.http.HttpHelper;
+import com.zwb.commonlibs.http.HttpMap;
 import com.zwb.commonlibs.injection.ViewInjection;
 
 import org.json.JSONObject;
@@ -129,7 +129,7 @@ public class ClassroomActivity extends ProgressActivity {
 
         @Override
         protected JsonData<String> doInBackground(String... params) {
-            HttpHelper.HttpMap data = new HttpHelper.HttpMap();
+            HttpMap data = new HttpMap();
             data.addParam("date", params[0])
                     .addParam("building", params[1])
                     .addParam("timeofday", params[2]);

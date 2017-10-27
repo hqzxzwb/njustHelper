@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,7 +23,6 @@ import com.njust.helper.tools.Constants;
 import com.zwb.commonlibs.adapter.EfficientPagerAdapter;
 import com.zwb.commonlibs.injection.InjectionHelper;
 import com.zwb.commonlibs.injection.ViewInjection;
-import com.zwb.commonlibs.ui.DividerItemDecoration;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -106,7 +106,7 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
                 RecyclerView view = (RecyclerView) getActivity().getLayoutInflater().inflate(
                         R.layout.pager_course_day, container, false);
                 view.setLayoutManager(new LinearLayoutManager(getActivity()));
-                view.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+                view.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
                 return view;
             }
         };

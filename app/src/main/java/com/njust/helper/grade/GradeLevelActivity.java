@@ -3,7 +3,7 @@ package com.njust.helper.grade;
 import com.njust.helper.activity.WebViewActivity;
 import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.Prefs;
-import com.zwb.commonlibs.http.HttpHelper;
+import com.zwb.commonlibs.http.HttpMap;
 
 
 public class GradeLevelActivity extends WebViewActivity {
@@ -11,7 +11,7 @@ public class GradeLevelActivity extends WebViewActivity {
 
     @Override
     protected String getResponse() throws Exception {
-        HttpHelper.HttpMap data = new HttpHelper.HttpMap();
+        HttpMap data = new HttpMap();
         data.addParam("stuid", stuid).addParam("pwd", pwd);
 
         return new AppHttpHelper().getPostResult("grade_level.php", data);

@@ -1,6 +1,5 @@
 package com.njust.helper.library;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +18,7 @@ import com.njust.helper.databinding.ItemLibSearchBinding;
 import com.njust.helper.model.LibSearch;
 import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.DataBindingHolder;
-import com.zwb.commonlibs.http.HttpHelper;
+import com.zwb.commonlibs.http.HttpMap;
 import com.zwb.commonlibs.injection.ViewInjection;
 
 import java.util.List;
@@ -105,7 +104,7 @@ public class LibSearchActivity extends MyListActivity<LibSearch, ItemLibSearchBi
 
     @Override
     protected String getResponse() throws Exception {
-        HttpHelper.HttpMap data = new HttpHelper.HttpMap();
+        HttpMap data = new HttpMap();
         data.addParam("search", search);
         return new AppHttpHelper().getPostResult("libSearch.php", data);
     }

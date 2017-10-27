@@ -21,7 +21,7 @@ import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.JsonTask;
 import com.njust.helper.tools.Prefs;
-import com.zwb.commonlibs.http.HttpHelper;
+import com.zwb.commonlibs.http.HttpMap;
 import com.zwb.commonlibs.injection.IntentInjection;
 import com.zwb.commonlibs.injection.ViewInjection;
 import com.zwb.commonlibs.utils.JsonUtils;
@@ -156,7 +156,7 @@ public class CaptchaActivity extends ProgressActivity {
 
         @Override
         protected JsonData<LoginResult> doInBackground(String... params) {
-            HttpHelper.HttpMap data = new HttpHelper.HttpMap();
+            HttpMap data = new HttpMap();
             data.addParam("stuid", stuid)
                     .addParam("pwd", pwd)
                     .addParam("captcha", params[0])

@@ -34,7 +34,7 @@ import com.njust.helper.settings.UpdateActivity;
 import com.njust.helper.settings.UpdateLogDialog;
 import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.Prefs;
-import com.zwb.commonlibs.http.HttpHelper;
+import com.zwb.commonlibs.http.NetState;
 import com.zwb.commonlibs.injection.ViewInjection;
 
 import java.io.File;
@@ -90,7 +90,7 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
         long last_time = Prefs.getLastCheckUpdateTime(this);
         long time = now - last_time;
         if (time < 0 || time > 18000000L) {
-            if (HttpHelper.getNetworkState(this)) {
+            if (NetState.getNetworkState(this)) {
                 startService(new Intent(this, BackgroundService.class)
                         .putExtra("action", "checkUpdate"));
             }

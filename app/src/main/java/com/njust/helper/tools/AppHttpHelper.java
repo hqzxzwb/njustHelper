@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.njust.helper.BuildConfig;
 import com.zwb.commonlibs.http.HttpHelper;
+import com.zwb.commonlibs.http.HttpMap;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

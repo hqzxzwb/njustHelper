@@ -3,6 +3,7 @@ package com.njust.helper.course.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 import com.njust.helper.course.CourseListAdapter;
 import com.njust.helper.databinding.BottomSheetCourseListBinding;
 import com.njust.helper.model.Course;
-import com.zwb.commonlibs.ui.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class CourseListFragment extends BottomSheetDialogFragment {
         binding.setSubTitle(subTitle);
         RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
         return binding.getRoot();
     }

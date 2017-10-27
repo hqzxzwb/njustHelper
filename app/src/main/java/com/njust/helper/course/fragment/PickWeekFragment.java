@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +15,6 @@ import com.njust.helper.R;
 import com.njust.helper.databinding.ItemPickWeekBinding;
 import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.DataBindingHolder;
-import com.zwb.commonlibs.ui.DividerItemDecoration;
 
 /**
  * Created by zwb on 2016/4/4.
@@ -31,8 +31,8 @@ public class PickWeekFragment extends BottomSheetDialogFragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         assert recyclerView != null;
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL));
         recyclerView.setAdapter(adapter);
         return view;
     }
