@@ -23,6 +23,3 @@ android {
         consumerProguardFile('proguard-consumer.txt')
     }
 }
-repositories {
-    mavenCentral()
-}
