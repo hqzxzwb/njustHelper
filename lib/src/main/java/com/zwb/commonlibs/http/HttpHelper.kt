@@ -44,7 +44,7 @@ open class HttpHelper {
     }
 
     @Throws(IOException::class)
-    open fun getPostResult(url: String, data: HttpMap): String {
+    open fun getPostResult(url: String, data: HttpMap?): String {
         val string = inputStreamToString(getPostInputStream(url, data), encoding)
         LogUtils.i(this, string)
         return string

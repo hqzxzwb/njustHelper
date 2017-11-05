@@ -18,14 +18,10 @@ import org.json.JSONObject
 
 class BackgroundService : Service() {
     companion object {
-        @JvmField
-        val ACTION_UPDATE_INFO = "com.njust.helper.UPDATE_INFO"
-        @JvmField
-        val UPDATE_STATUS_NO_UPDATE = 0
-        @JvmField
-        val UPDATE_STATUS_UPDATE = 1
-        @JvmField
-        val UPDATE_STATUS_FAIL = 2
+        const val ACTION_UPDATE_INFO = "com.njust.helper.UPDATE_INFO"
+        const val UPDATE_STATUS_NO_UPDATE = 0
+        const val UPDATE_STATUS_UPDATE = 1
+        const val UPDATE_STATUS_FAIL = 2
     }
 
     /**
