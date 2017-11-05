@@ -83,15 +83,12 @@ public class LibBorrowActivity extends ProgressActivity implements SwipeRefreshL
 
         Request<JsonData<String>> request = new Request<JsonData<String>>(Request.Method.POST,
                 BuildConfig.BASE_URL + "libBorrow.php",
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (dialog != null) {
-                            dialog.dismiss();
-                        }
-                        setRefreshing(false);
-                        showSnack(R.string.message_net_error);
+                error -> {
+                    if (dialog != null) {
+                        dialog.dismiss();
                     }
+                    setRefreshing(false);
+                    showSnack(R.string.message_net_error);
                 }) {
             Response.Listener<JsonData<String>> listener = new Response.Listener<JsonData<String>>() {
                 @Override

@@ -42,13 +42,10 @@ public class AboutActivity extends BaseActivity {
         new AlertDialog.Builder(this)
                 .setTitle("意见反馈")
                 .setMessage("您可以加入QQ群217887769进行反馈")
-                .setPositiveButton("点击直接加群", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("http://jq.qq.com/?_wv=1027&k=2HCZ1MK"));
-                        startActivity(intent);
-                    }
+                .setPositiveButton("点击直接加群", (dialog, which) -> {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://jq.qq.com/?_wv=1027&k=2HCZ1MK"));
+                    startActivity(intent);
                 })
                 .setNegativeButton("返回", null)
                 .show();

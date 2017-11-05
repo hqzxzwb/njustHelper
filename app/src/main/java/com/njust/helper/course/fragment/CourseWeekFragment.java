@@ -33,12 +33,7 @@ public class CourseWeekFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fgmt_course_week, container, false);
         InjectionHelper.injectView(this, view);
-        courseView.setListener(new CourseView.OnSelectCourseListener() {
-            @Override
-            public void onSelectCourse(List<Course> courses, int day, int section) {
-                listener.showCourseList(courses, day, section);
-            }
-        });
+        courseView.setListener((courses, day, section) -> listener.showCourseList(courses, day, section));
         return view;
     }
 

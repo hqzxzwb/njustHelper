@@ -1,6 +1,6 @@
 package com.njust.helper.model
 
-class Link {
-    lateinit var name: String
-    lateinit var url: String
-}
+data class Link(
+        val name: String = "",
+        val url: String = ""
+)

@@ -1,7 +1,6 @@
 package com.njust.helper.library;
 
 import android.app.SearchManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
@@ -57,12 +56,7 @@ public class LibSearchActivity extends MyListActivity<LibSearch, ItemLibSearchBi
         new AlertDialog.Builder(this)
                 .setTitle("图书馆")
                 .setMessage("您确定清除搜索历史吗？")
-                .setPositiveButton("清除", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getSuggestions().clearHistory();
-                    }
-                })
+                .setPositiveButton("清除", (dialog, which) -> getSuggestions().clearHistory())
                 .setNegativeButton(R.string.action_back, null).show();
     }
 

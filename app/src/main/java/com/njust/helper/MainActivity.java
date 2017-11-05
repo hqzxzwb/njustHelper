@@ -226,13 +226,7 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
                                 new AlertDialog.Builder(MainActivity.this)
                                         .setTitle("发现新版本")
                                         .setMessage(updateInfo.toString())
-                                        .setPositiveButton("立即查看", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                startActivity(new Intent(MainActivity.this, UpdateActivity.class)
-                                                        .putExtra("updateInfo", updateInfo));
-                                            }
-                                        })
+                                        .setPositiveButton("立即查看", (dialog, which) -> startActivity(new Intent(MainActivity.this, UpdateActivity.class).putExtra("updateInfo", updateInfo)))
                                         .setNegativeButton("以后再说", null)
                                         .show();
                             }

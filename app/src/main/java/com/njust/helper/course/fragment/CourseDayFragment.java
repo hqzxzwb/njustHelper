@@ -76,12 +76,7 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
 
         for (int i = 0; i < 7; i++) {
             final int j = i;
-            mTextViews[i].setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onDayPressed(j);
-                }
-            });
+            mTextViews[i].setOnClickListener(v -> listener.onDayPressed(j));
         }
         mTextViews[0].setBackgroundColor(Color.GRAY);
 

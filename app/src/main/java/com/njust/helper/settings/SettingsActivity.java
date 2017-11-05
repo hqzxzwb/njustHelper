@@ -29,13 +29,11 @@ public class SettingsActivity extends BaseActivity {
     }
 
     public static class HolderFragment extends PreferenceFragment {
-        private final OnPreferenceChangeListener mModeOnPreferenceListener = new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                setListModeSummary(preference, (String) newValue);
-                return true;
-            }
-        };
+        private final OnPreferenceChangeListener mModeOnPreferenceListener =
+                (preference, newValue) -> {
+                    setListModeSummary(preference, (String) newValue);
+                    return true;
+                };
 
         @Override
         public void onCreate(Bundle savedInstanceState) {

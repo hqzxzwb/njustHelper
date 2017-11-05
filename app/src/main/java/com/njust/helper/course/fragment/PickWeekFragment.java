@@ -1,6 +1,6 @@
 package com.njust.helper.course.fragment;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -38,10 +38,10 @@ public class PickWeekFragment extends BottomSheetDialogFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        listener = (Listener) activity;
+        listener = (Listener) context;
     }
 
     public void setChosenWeek(int week) {
@@ -73,12 +73,9 @@ public class PickWeekFragment extends BottomSheetDialogFragment {
             holder.getDataBinding().setWeek(position);
             holder.getDataBinding().setChosen(chosenWeek == position + 1);
             final int p = holder.getAdapterPosition();
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fragment.listener.setWeek(p + 1);
-                    fragment.dismiss();
-                }
+            holder.itemView.setOnClickListener(v -> {
+                fragment.listener.setWeek(p + 1);
+                fragment.dismiss();
             });
         }
 

@@ -1,15 +1,14 @@
 package com.njust.helper.course;
 
 import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -26,7 +25,7 @@ import java.util.List;
 /**
  * 主页显示课表的View
  */
-public class CourseHomeView extends TextView {
+public class CourseHomeView extends AppCompatTextView {
     private List<String> data;
     private TextPaint mTextPaint;
     private boolean expanded;
@@ -113,24 +112,15 @@ public class CourseHomeView extends TextView {
     public void expand() {
         if (!expanded) {
             final ViewGroup.LayoutParams params = getLayoutParams();
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-                ValueAnimator animator = ValueAnimator.ofInt(getHeight(), realHeight)
-                        .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
+            ValueAnimator animator = ValueAnimator.ofInt(getHeight(), realHeight)
+                    .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
 
-                //扩展高度到实际需要的高度
-                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        params.height = (Integer) animation.getAnimatedValue();
-                        requestLayout();
-                    }
-                });
-                animator.start();
-            } else {
-                params.height = realHeight;
+            //扩展高度到实际需要的高度
+            animator.addUpdateListener(animation -> {
+                params.height = (Integer) animation.getAnimatedValue();
                 requestLayout();
-            }
+            });
+            animator.start();
         }
     }
 

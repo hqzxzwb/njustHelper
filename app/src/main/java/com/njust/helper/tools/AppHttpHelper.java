@@ -52,17 +52,11 @@ public final class AppHttpHelper extends HttpHelper {
     @Override
     public String getGetResult(String form, HttpMap params) throws IOException {
         StringRequest request = new StringRequest(Request.Method.GET, BuildConfig.BASE_URL + form + "?" + params.toString(),
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                response -> {
 
-                    }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                error -> {
 
-                    }
                 }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

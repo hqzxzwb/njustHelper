@@ -61,12 +61,7 @@ public abstract class ProgressActivity extends BaseActivity {
 
     public void setRefreshing(final boolean b) {
 //        mSwipeRefreshLayout.setRefreshing(b);
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(b);
-            }
-        });
+        mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(b));
     }
 
     @SafeVarargs

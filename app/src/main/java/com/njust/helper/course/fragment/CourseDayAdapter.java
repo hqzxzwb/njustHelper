@@ -3,7 +3,6 @@ package com.njust.helper.course.fragment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.njust.helper.databinding.ItemCourseDayBinding;
@@ -54,12 +53,8 @@ public class CourseDayAdapter extends RecyclerView.Adapter<DataBindingHolder<Ite
             assert course != null;
             binding.setValid(course.getWeek2().contains(weekString));
             binding.setCourse(course);
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fragment.getListener().showCourseList(list, mDay, binding.getPosition());
-                }
-            });
+            binding.getRoot().setOnClickListener(v ->
+                    fragment.getListener().showCourseList(list, mDay, binding.getPosition()));
         } else {
             binding.getRoot().setOnClickListener(null);
         }

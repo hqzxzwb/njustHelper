@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.njust.helper.AccountActivity;
@@ -63,18 +62,15 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
         //noinspection ConstantConditions
         RadioGroup group = (RadioGroup) getSupportActionBar().getCustomView();
         ((RadioButton) group.findViewById(R.id.radio0)).setChecked(true);
-        group.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.radio0) {
-                    //noinspection ConstantConditions
-                    dayView.setVisibility(View.VISIBLE);
-                    weekView.setVisibility(View.GONE);
-                } else {
-                    //noinspection ConstantConditions
-                    dayView.setVisibility(View.GONE);
-                    weekView.setVisibility(View.VISIBLE);
-                }
+        group.setOnCheckedChangeListener((group1, checkedId) -> {
+            if (checkedId == R.id.radio0) {
+                //noinspection ConstantConditions
+                dayView.setVisibility(View.VISIBLE);
+                weekView.setVisibility(View.GONE);
+            } else {
+                //noinspection ConstantConditions
+                dayView.setVisibility(View.GONE);
+                weekView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -87,16 +83,13 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
             @Override
             public void run() {
                 final List<Course> mainList = CourseManager.getInstance(CourseActivity.this).getCourses();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mainList.size() == 0) {
-                            //课表为空时，提示导入课表
-                            promptImportMessage();
-                        }
-                        dayFragment.setList(mainList);
-                        weekFragment.setList(mainList);
+                runOnUiThread(() -> {
+                    if (mainList.size() == 0) {
+                        //课表为空时，提示导入课表
+                        promptImportMessage();
                     }
+                    dayFragment.setList(mainList);
+                    weekFragment.setList(mainList);
                 });
             }
         }.start();
@@ -110,17 +103,14 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
     }
 
     private void promptImportMessage() {
-        DialogInterface.OnClickListener importListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case AlertDialog.BUTTON_POSITIVE:
-                        importCourses();
-                        break;
-                    case AlertDialog.BUTTON_NEGATIVE:
-                        finish();
-                        break;
-                }
+        DialogInterface.OnClickListener importListener = (dialog, which) -> {
+            switch (which) {
+                case AlertDialog.BUTTON_POSITIVE:
+                    importCourses();
+                    break;
+                case AlertDialog.BUTTON_NEGATIVE:
+                    finish();
+                    break;
             }
         };
         new AlertDialog.Builder(this)
@@ -160,12 +150,9 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
                 new AlertDialog.Builder(this)
                         .setTitle("清空课表")
                         .setMessage("确认删除所有课程？")
-                        .setPositiveButton("确认删除", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                CourseManager.getInstance(CourseActivity.this).clear();
-                                refresh();
-                            }
+                        .setPositiveButton("确认删除", (dialog, which) -> {
+                            CourseManager.getInstance(CourseActivity.this).clear();
+                            refresh();
                         })
                         .setNegativeButton(android.R.string.cancel, null)
                         .show();

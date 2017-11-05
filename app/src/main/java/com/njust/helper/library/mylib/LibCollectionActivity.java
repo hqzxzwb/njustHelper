@@ -56,12 +56,7 @@ public class LibCollectionActivity extends BaseActivity {
         manager = LibraryDatabaseManager.getInstance(this);
         mList = manager.findCollect();
         adapter = new LibCollectionAdapter(mList, this);
-        adapter.setListener(new LibCollectionAdapter.OnEmptyStateChangeListener() {
-            @Override
-            public void onEmptyStateChange(boolean empty) {
-                emptyView.setVisibility(mList.isEmpty() ? View.VISIBLE : View.GONE);
-            }
-        });
+        adapter.setListener(empty -> emptyView.setVisibility(mList.isEmpty() ? View.VISIBLE : View.GONE));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -85,34 +80,22 @@ public class LibCollectionActivity extends BaseActivity {
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
-        adapter.setOnDeleteInDialogListener(new LibCollectionAdapter.OnDeleteInDialogListener() {
-            @Override
-            public void onDeleteInDialog(RecyclerView.ViewHolder viewHolder) {
-                deleteItem(viewHolder.getAdapterPosition());
-            }
-        });
+        adapter.setOnDeleteInDialogListener(viewHolder -> deleteItem(viewHolder.getAdapterPosition()));
 
         if (!Prefs.getLibCollectionHint(this)) {
-            showSnack("图书详情页可以收藏\n左右滑动条目以删除", "不再提示", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Prefs.putLibCollectionHint(LibCollectionActivity.this, true);
-                }
-            });
+            showSnack("图书详情页可以收藏\n左右滑动条目以删除", "不再提示",
+                    v -> Prefs.putLibCollectionHint(LibCollectionActivity.this, true));
         }
     }
 
     private void deleteItem(int position) {
         itemsToRemove.add(adapter.delete(position).getId());
-        showSnack("您删除了一本图书", "撤销", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LibCollectItem libCollectItem = adapter.restore();
-                if (libCollectItem != null) {
-                    itemsToRemove.remove(libCollectItem.getId());
-                }
-                showSnack("已撤销更改");
+        showSnack("您删除了一本图书", "撤销", v -> {
+            LibCollectItem libCollectItem = adapter.restore();
+            if (libCollectItem != null) {
+                itemsToRemove.remove(libCollectItem.getId());
             }
+            showSnack("已撤销更改");
         });
     }
 
@@ -141,14 +124,11 @@ public class LibCollectionActivity extends BaseActivity {
         if (itemsToRemove.size() == 0) {
             finish();
         } else {
-            DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (which == DialogInterface.BUTTON_POSITIVE) {
-                        manager.removeCollects(itemsToRemove);
-                    }
-                    finish();
+            DialogInterface.OnClickListener listener = (dialog, which) -> {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    manager.removeCollects(itemsToRemove);
                 }
+                finish();
             };
             new AlertDialog.Builder(this)
                     .setTitle("注意")
@@ -215,30 +195,22 @@ public class LibCollectionActivity extends BaseActivity {
             final LibCollectItem libCollectItem = mData.get(position);
             holder.getDataBinding().setItem(libCollectItem);
             final String id = mData.get(position).getId();
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mActivity.showLibDetail(id);
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    new AlertDialog.Builder(view.getContext())
-                            .setTitle("确定删除这条收藏吗?")
-                            .setMessage(libCollectItem.getName())
-                            .setPositiveButton("删除", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    if (onDeleteInDialogListener != null) {
-                                        onDeleteInDialogListener.onDeleteInDialog(holder);
-                                    }
+            holder.itemView.setOnClickListener(v -> mActivity.showLibDetail(id));
+            holder.itemView.setOnLongClickListener(view -> {
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle("确定删除这条收藏吗?")
+                        .setMessage(libCollectItem.getName())
+                        .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (onDeleteInDialogListener != null) {
+                                    onDeleteInDialogListener.onDeleteInDialog(holder);
                                 }
-                            })
-                            .setNegativeButton("取消", null)
-                            .show();
-                    return true;
-                }
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .show();
+                return true;
             });
         }
 

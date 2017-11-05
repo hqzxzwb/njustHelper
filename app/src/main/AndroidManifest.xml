@@ -80,10 +80,6 @@
             android:label="@string/title_activity_level"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".grade.CommentTeacherActivity"
-            android:label="@string/title_activity_pj"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".classroom.ClassroomActivity"
             android:label="@string/title_activity_cr"
             android:screenOrientation="portrait"
