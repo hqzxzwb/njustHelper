@@ -2,7 +2,7 @@
 南理工助手
 
 编译须知：
-开源工程缺少文件local.properties和app/google-services.json
+开源工程缺少文件local.properties
 
 local.properties为本地参数配置。除了默认的SDK路径之外，还需在其中配置以下几个参数：
     keyAlias 签名别名
@@ -13,5 +13,4 @@ local.properties为本地参数配置。除了默认的SDK路径之外，还需�
     testStuid 测试用学号
     testJwcPwd 测试用教务处密码
     testLibPwd 测试用图书馆密码
-
-app/google-services.json为google analytics配置文件。我现在也不知道怎么让工程在没有它的情况下跑起来。
+    tencentBuglyId 腾讯Bugly的Id，没有的话也能跑
