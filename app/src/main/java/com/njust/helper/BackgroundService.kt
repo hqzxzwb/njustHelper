@@ -4,12 +4,12 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.AsyncTask
 import android.os.IBinder
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.app.TaskStackBuilder
 import android.support.v4.content.LocalBroadcastManager
-import android.support.v4.os.AsyncTaskCompat
 import com.njust.helper.model.UpdateInfo
 import com.njust.helper.settings.UpdateActivity
 import com.njust.helper.tools.*
@@ -43,7 +43,7 @@ class BackgroundService : Service() {
         } else if ("checkUpdate" == action) {
             silentlyCheckUpdate = intent.getBooleanExtra("silentlyCheckUpdate", true)
             if (!isCheckingUpdate) {
-                AsyncTaskCompat.executeParallel(UpdateTask())
+                UpdateTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
             }
         }
         return START_STICKY
@@ -77,7 +77,7 @@ class BackgroundService : Service() {
 
         override fun onSuccess(result: UpdateInfo?) {
             if (silentlyCheckUpdate) {
-                val builder = NotificationCompat.Builder(this@BackgroundService)
+                val builder = NotificationCompat.Builder(this@BackgroundService, "update")
                         .setContentTitle("南理工助手-发现新版本")
                         .setContentText("点击查看")
                         .setAutoCancel(true)
