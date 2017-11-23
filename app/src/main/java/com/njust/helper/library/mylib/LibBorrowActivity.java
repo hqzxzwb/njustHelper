@@ -21,7 +21,6 @@ import com.njust.helper.activity.ProgressActivity;
 import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.Prefs;
-import com.zwb.commonlibs.injection.ViewInjection;
 import com.zwb.commonlibs.utils.LogUtils;
 
 import org.json.JSONObject;
@@ -29,12 +28,14 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+
 public class LibBorrowActivity extends ProgressActivity implements SwipeRefreshLayout.OnRefreshListener {
     private String stuid, pwd;
-    @ViewInjection(R.id.webView1)
-    private WebView webView;
-    @ViewInjection(R.id.progressBar)
-    private ProgressBar progressBar;
+    @BindView(R.id.webView1)
+    WebView webView;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
     private ProgressDialog dialog;
 
     @SuppressLint("SetJavaScriptEnabled")

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 
 import com.zwb.commonlibs.utils.LogUtils;
 
@@ -12,20 +11,6 @@ import java.lang.reflect.Field;
 
 public class InjectionHelper {
     private static final String TAG = "InjectionHelper";
-
-    public static void injectView(Object object, View view) {
-        for (Field field : object.getClass().getDeclaredFields()) {
-            ViewInjection injection = field.getAnnotation(ViewInjection.class);
-            if (injection != null) {
-                field.setAccessible(true);
-                try {
-                    field.set(object, view.findViewById(injection.value()));
-                } catch (Exception e) {
-                    reportError(field);
-                }
-            }
-        }
-    }
 
     public static void injectIntent(Activity activity, Intent intent) {
         Bundle bundle = intent.getExtras();
@@ -65,16 +50,6 @@ public class InjectionHelper {
         Bundle bundle = activity.getIntent().getExtras();
         Uri uri = activity.getIntent().getData();
         for (Field field : activity.getClass().getDeclaredFields()) {
-            ViewInjection viewInjection = field.getAnnotation(ViewInjection.class);
-            if (viewInjection != null) {
-                field.setAccessible(true);
-                try {
-                    field.set(activity, activity.findViewById(viewInjection.value()));
-                } catch (Exception e) {
-                    reportError(field);
-                }
-            }
-
             IntentInjection intentInjection = field.getAnnotation(IntentInjection.class);
             if (intentInjection != null) {
                 field.setAccessible(true);

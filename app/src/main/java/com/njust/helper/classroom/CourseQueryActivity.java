@@ -9,7 +9,8 @@ import android.widget.RadioGroup;
 
 import com.njust.helper.R;
 import com.njust.helper.activity.ProgressActivity;
-import com.zwb.commonlibs.injection.ViewInjection;
+
+import butterknife.BindView;
 
 public class CourseQueryActivity extends ProgressActivity {
     private static final SparseIntArray MAP1 = new SparseIntArray(6);
@@ -33,16 +34,16 @@ public class CourseQueryActivity extends ProgressActivity {
         MAP2.put(R.id.radio14, 6);
     }
 
-    @ViewInjection(R.id.button1)
-    private FloatingActionButton button;
-    @ViewInjection(R.id.editText1)
-    private EditText classnameText;
-    @ViewInjection(R.id.editText2)
-    private EditText teacherText;
-    @ViewInjection(R.id.radioGroup1)
-    private RadioGroup sectionGroup;
-    @ViewInjection(R.id.radioGroup2)
-    private RadioGroup dayOfWeekGroup;
+    @BindView(R.id.button1)
+    FloatingActionButton button;
+    @BindView(R.id.editText1)
+    EditText classnameText;
+    @BindView(R.id.editText2)
+    EditText teacherText;
+    @BindView(R.id.radioGroup1)
+    RadioGroup sectionGroup;
+    @BindView(R.id.radioGroup2)
+    RadioGroup dayOfWeekGroup;
 
     @Override
     protected int layoutRes() {

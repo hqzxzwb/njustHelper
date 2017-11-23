@@ -10,20 +10,20 @@ import android.widget.TextView;
 
 import com.njust.helper.R;
 import com.njust.helper.model.Course;
-import com.zwb.commonlibs.injection.InjectionHelper;
-import com.zwb.commonlibs.injection.ViewInjection;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class CourseWeekFragment extends Fragment {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    @ViewInjection(R.id.textView1)
-    private TextView textView;
-    @ViewInjection(R.id.courseView)
-    private CourseView courseView;
+public class CourseWeekFragment extends Fragment {
+    @BindView(R.id.textView1)
+    TextView textView;
+    @BindView(R.id.courseView)
+    CourseView courseView;
 
     private long beginTimeInMillis;
     private SimpleDateFormat dateFormat;
@@ -32,8 +32,8 @@ public class CourseWeekFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fgmt_course_week, container, false);
-        InjectionHelper.injectView(this, view);
-        courseView.setListener((courses, day, section) -> listener.showCourseList(courses, day, section));
+        ButterKnife.bind(this, view);
+        courseView.setListener(listener::showCourseList);
         return view;
     }
 

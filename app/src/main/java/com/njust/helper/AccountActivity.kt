@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
+import butterknife.BindView
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.tools.Prefs
 import com.zwb.commonlibs.injection.IntentInjection
-import com.zwb.commonlibs.injection.ViewInjection
 
 /**
  * 账户切换
@@ -22,11 +22,11 @@ class AccountActivity : BaseActivity() {
         const val EXTRA_PASSWORD_TYPE = "password_type"
     }
 
-    @ViewInjection(R.id.editText1)
+    @BindView(R.id.editText1)
     lateinit var stuidText: EditText
-    @ViewInjection(R.id.editText2)
+    @BindView(R.id.editText2)
     lateinit var jwcPwdText: EditText
-    @ViewInjection(R.id.editText3)
+    @BindView(R.id.editText3)
     lateinit var libPwdText: EditText
 
     @IntentInjection(EXTRA_PASSWORD_TYPE)

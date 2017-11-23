@@ -4,8 +4,9 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.os.AsyncTaskCompat;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +28,6 @@ import com.njust.helper.course.fragment.PickWeekFragment;
 import com.njust.helper.model.Course;
 import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.Prefs;
-import com.zwb.commonlibs.injection.ViewInjection;
 import com.zwb.commonlibs.ui.DatePickerDialogFix;
 
 import java.text.SimpleDateFormat;
@@ -35,6 +35,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import butterknife.BindView;
 
 public class CourseActivity extends BaseActivity implements OnDateSetListener,
         CourseDayFragment.Listener, PickWeekFragment.Listener, CourseWeekFragment.Listener {
@@ -44,10 +46,10 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
     private SimpleDateFormat dateFormat;
     private CourseDayFragment dayFragment;
     private CourseWeekFragment weekFragment;
-    @ViewInjection(R.id.txtToday)
-    private TextView todayTextView;
-    @ViewInjection(R.id.tvPickWeek)
-    private Button pickWeekButton;
+    @BindView(R.id.txtToday)
+    TextView todayTextView;
+    @BindView(R.id.tvPickWeek)
+    Button pickWeekButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +143,7 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_import:
                 importCourses();
@@ -165,7 +167,7 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
 
     private void importCourses() {
         setResult(MainActivity.RESULT_COURSE_REFRESH);
-        AsyncTaskCompat.executeParallel(new CourseTask(this));
+        new CourseTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void refresh() {
@@ -285,7 +287,7 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                AsyncTaskCompat.executeParallel(new CourseTask(this));
+                new CourseTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }
     }

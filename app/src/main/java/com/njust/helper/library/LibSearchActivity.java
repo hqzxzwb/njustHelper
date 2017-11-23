@@ -18,15 +18,16 @@ import com.njust.helper.model.LibSearch;
 import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.DataBindingHolder;
 import com.zwb.commonlibs.http.HttpMap;
-import com.zwb.commonlibs.injection.ViewInjection;
 
 import java.util.List;
 
+import butterknife.BindView;
+
 public class LibSearchActivity extends MyListActivity<LibSearch, ItemLibSearchBinding> {
-    @ViewInjection(R.id.toolbar)
-    private Toolbar toolbar;
-    @ViewInjection(R.id.searchView)
-    private SearchView searchView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.searchView)
+    SearchView searchView;
 
     private String search;
     private SearchRecentSuggestions suggestions;

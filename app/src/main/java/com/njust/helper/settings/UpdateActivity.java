@@ -8,16 +8,12 @@ import android.os.Bundle;
 import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.njust.helper.R;
 import com.njust.helper.databinding.ActivityUpdateBinding;
 import com.njust.helper.model.UpdateInfo;
 import com.njust.helper.tools.JsonData;
-import com.zwb.commonlibs.injection.InjectionHelper;
 import com.zwb.commonlibs.injection.IntentInjection;
-import com.zwb.commonlibs.injection.ViewInjection;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -30,11 +26,6 @@ import java.net.URL;
 
 
 public class UpdateActivity extends AppCompatActivity {
-    @ViewInjection(R.id.textView1)
-    private TextView textView;
-    @ViewInjection(R.id.button1)
-    private Button button;
-
     @IntentInjection
     private UpdateInfo updateInfo;
     /**
@@ -97,7 +88,6 @@ public class UpdateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        InjectionHelper.injectActivity(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_update);
         if (updateInfo != null) {
             binding.setUpdateInfo(updateInfo);
@@ -118,7 +108,7 @@ public class UpdateActivity extends AppCompatActivity {
         }
     }
 
-    private void startInstall(){
+    private void startInstall() {
         File file;
         try {
             file = new File(getExternalCacheDir(), updateInfo.getVersionCode() + "update.apk");

@@ -18,13 +18,14 @@ import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.JsonTask;
 import com.zwb.commonlibs.http.HttpMap;
 import com.zwb.commonlibs.injection.IntentInjection;
-import com.zwb.commonlibs.injection.ViewInjection;
 import com.zwb.commonlibs.utils.JsonUtils;
 import com.zwb.commonlibs.utils.MemCacheManager;
 
 import org.json.JSONObject;
 
 import java.util.List;
+
+import butterknife.BindView;
 
 public class LibDetailActivity extends ProgressActivity implements SwipeRefreshLayout.OnRefreshListener {
     @IntentInjection("id")
@@ -35,8 +36,8 @@ public class LibDetailActivity extends ProgressActivity implements SwipeRefreshL
     private boolean isCollected = false;
     private LibDetailAdapter adapter;
 
-    @ViewInjection(R.id.recyclerView)
-    private RecyclerView recyclerView;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
     private String code;
 
     private Intent resultIntent = new Intent();

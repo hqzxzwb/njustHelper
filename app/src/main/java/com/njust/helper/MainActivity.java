@@ -3,7 +3,6 @@ package com.njust.helper;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -35,20 +34,21 @@ import com.njust.helper.settings.UpdateLogDialog;
 import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.Prefs;
 import com.zwb.commonlibs.http.NetState;
-import com.zwb.commonlibs.injection.ViewInjection;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 public class MainActivity extends ProgressActivity implements SwipeRefreshLayout.OnRefreshListener {
     public static final int RESULT_COURSE_REFRESH = 2;
     public static final int REQUEST_COURSE_REFRESH = 0;
     private static final String ONE_CARD_CACHE_NAME = "OCCN";
 
-    @ViewInjection(R.id.courseHomeView)
-    private CourseHomeView courseHomeView;
-//    @ViewInjection(R.id.tvCardBalance)
+    @BindView(R.id.courseHomeView)
+    CourseHomeView courseHomeView;
+//    @BindView(R.id.tvCardBalance)
 //    private TextView cardBalanceView;
 
     private BroadcastReceiver receiver;

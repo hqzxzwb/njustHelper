@@ -13,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -21,14 +20,15 @@ import com.njust.helper.R;
 import com.njust.helper.model.Course;
 import com.njust.helper.tools.Constants;
 import com.zwb.commonlibs.adapter.EfficientPagerAdapter;
-import com.zwb.commonlibs.injection.InjectionHelper;
-import com.zwb.commonlibs.injection.ViewInjection;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class CourseDayFragment extends Fragment implements OnPageChangeListener {
     @SuppressWarnings("unchecked")
@@ -38,10 +38,10 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
     private String[] dayOfWeek;
 
     private TextView[] mTextViews;
-    @ViewInjection(R.id.textMonth)
-    private TextView mMonthView;
-    @ViewInjection(R.id.viewPager)
-    private ViewPager mViewPager;
+    @BindView(R.id.textMonth)
+    TextView mMonthView;
+    @BindView(R.id.viewPager)
+    ViewPager mViewPager;
 
     private long beginTimeInMillis;
     private Listener listener;
@@ -61,7 +61,7 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        InjectionHelper.injectView(this, view);
+        ButterKnife.bind(this, view);
 
         mViewPager.addOnPageChangeListener(this);
 
@@ -90,7 +90,7 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
             protected void updateView(View view, int position) {
                 RecyclerView recyclerView = (RecyclerView) view;
                 CourseDayAdapter adapter = new CourseDayAdapter(CourseDayFragment.this);
-                int dayOfWeek=position%7;
+                int dayOfWeek = position % 7;
                 adapter.setData(mLists[dayOfWeek], position / 7 + 1, dayOfWeek);
                 recyclerView.setAdapter(adapter);
                 view.setTag(position);

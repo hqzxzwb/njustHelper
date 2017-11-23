@@ -22,13 +22,14 @@ import com.njust.helper.library.LibDetailActivity;
 import com.njust.helper.model.LibCollectItem;
 import com.njust.helper.tools.DataBindingHolder;
 import com.njust.helper.tools.Prefs;
-import com.zwb.commonlibs.injection.ViewInjection;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import butterknife.BindView;
 
 public class LibCollectionActivity extends BaseActivity {
     private static final int REQUEST_CODE_LIB_DETAIL = 0;
@@ -37,12 +38,12 @@ public class LibCollectionActivity extends BaseActivity {
     private List<LibCollectItem> mList;
     private List<String> itemsToRemove = new ArrayList<>();
 
-    @ViewInjection(R.id.recyclerView)
-    private RecyclerView recyclerView;
-    @ViewInjection(R.id.coordinatorLayout)
-    private CoordinatorLayout coordinatorLayout;
-    @ViewInjection(R.id.textView1)
-    private TextView emptyView;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.textView1)
+    TextView emptyView;
 
     @Override
     protected int layoutRes() {

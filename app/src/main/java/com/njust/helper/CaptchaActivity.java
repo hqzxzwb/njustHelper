@@ -23,23 +23,24 @@ import com.njust.helper.tools.JsonTask;
 import com.njust.helper.tools.Prefs;
 import com.zwb.commonlibs.http.HttpMap;
 import com.zwb.commonlibs.injection.IntentInjection;
-import com.zwb.commonlibs.injection.ViewInjection;
 import com.zwb.commonlibs.utils.JsonUtils;
 import com.zwb.commonlibs.utils.LogUtils;
 
 import org.json.JSONObject;
 
+import butterknife.BindView;
+
 public class CaptchaActivity extends ProgressActivity {
     public static final int REQUEST_CAPTCHA = CaptchaActivity.class.hashCode() >> 16;
     private String stuid, pwd;
-    @ViewInjection(R.id.imageView1)
-    private ImageView imageView;
-    @ViewInjection(R.id.editText1)
-    private EditText editText;
-    @ViewInjection(R.id.button1)
-    private Button button;
-    @ViewInjection(R.id.layoutCaptcha)
-    private TextInputLayout textInputLayout;
+    @BindView(R.id.imageView1)
+    ImageView imageView;
+    @BindView(R.id.editText1)
+    EditText editText;
+    @BindView(R.id.button1)
+    Button button;
+    @BindView(R.id.layoutCaptcha)
+    TextInputLayout textInputLayout;
     private String cookie;
     /**
      * 0 - 教务处, 1 - 图书馆

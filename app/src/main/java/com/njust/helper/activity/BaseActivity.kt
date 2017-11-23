@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
+import butterknife.ButterKnife
 import com.njust.helper.AccountActivity
 import com.njust.helper.R
 import com.zwb.commonlibs.injection.InjectionHelper
@@ -23,6 +24,7 @@ abstract class BaseActivity : AppCompatActivity() {
         setContentView(layoutRes())
 
         InjectionHelper.injectActivity(this)
+        ButterKnife.bind(this)
 
         setupActionBar()
     }

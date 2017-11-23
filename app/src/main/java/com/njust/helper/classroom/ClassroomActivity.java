@@ -16,13 +16,14 @@ import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.Prefs;
 import com.njust.helper.tools.ProgressAsyncTask;
 import com.zwb.commonlibs.http.HttpMap;
-import com.zwb.commonlibs.injection.ViewInjection;
 
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import butterknife.BindView;
 
 /**
  * 自习室查询
@@ -34,28 +35,27 @@ public class ClassroomActivity extends ProgressActivity {
 
     private CheckBox[] checkBoxes;
 
-    @ViewInjection(R.id.radioGroup1)
-    private RadioGroup dateGroup;
-    @ViewInjection(R.id.radioGroup2)
-    private RadioGroup buildingGroup;
-    @ViewInjection(R.id.textView1)
-    private TextView textView;
-    @ViewInjection(R.id.button1)
-    private FloatingActionButton button;
-    @ViewInjection(R.id.coordinatorLayout)
-    private CoordinatorLayout coordinatorLayout;
-    @ViewInjection(R.id.toolbar)
-    private Toolbar toolbar;
+    @BindView(R.id.radioGroup1)
+    RadioGroup dateGroup;
+    @BindView(R.id.radioGroup2)
+    RadioGroup buildingGroup;
+    @BindView(R.id.textView1)
+    TextView textView;
+    @BindView(R.id.button1)
+    FloatingActionButton button;
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void prepareViews() {
-
         checkBoxes = new CheckBox[5];
-        checkBoxes[0] = (CheckBox) findViewById(R.id.checkBox1);
-        checkBoxes[1] = (CheckBox) findViewById(R.id.checkBox2);
-        checkBoxes[2] = (CheckBox) findViewById(R.id.checkBox3);
-        checkBoxes[3] = (CheckBox) findViewById(R.id.checkBox4);
-        checkBoxes[4] = (CheckBox) findViewById(R.id.checkBox5);
+        checkBoxes[0] = findViewById(R.id.checkBox1);
+        checkBoxes[1] = findViewById(R.id.checkBox2);
+        checkBoxes[2] = findViewById(R.id.checkBox3);
+        checkBoxes[3] = findViewById(R.id.checkBox4);
+        checkBoxes[4] = findViewById(R.id.checkBox5);
 
         long time = (System.currentTimeMillis() - Prefs.getTermStartTime(this)) % Constants.MILLIS_IN_ONE_DAY;
         String[] captions = getResources().getStringArray(R.array.sections);
