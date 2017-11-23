@@ -56,7 +56,7 @@ public class CourseView extends View {
 
     public CourseView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(attrs, 0);
+        init(attrs, defStyleAttr);
     }
 
     private void init(AttributeSet attrs, int defStyleAttr) {
@@ -106,8 +106,6 @@ public class CourseView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        int unitWidth = (getWidth() - mLeftColumnSize) / 7;
-//        int unitHeight = getHeight() / mHeight;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downX = ((int) event.getX() - mLeftColumnSize) / unitWidth;
@@ -128,7 +126,12 @@ public class CourseView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.UNSPECIFIED) {
+            setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
+                    Math.max(getSuggestedMinimumHeight(), MeasureSpec.getSize(heightMeasureSpec)));
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
         unitWidth = (getMeasuredWidth() - mLeftColumnSize) / 7;
         unitHeight = getMeasuredHeight() / mHeight;
         int delta2 = unitWidth / 15;
