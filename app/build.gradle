@@ -4,8 +4,6 @@ apply plugin: 'kotlin-android'
 dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
     implementation project(':lib')
-    implementation project.ANDROID_SUPPORT_DESIGN
-    implementation project.ANDROID_SUPPORT_V7_CARD_VIEW
     implementation 'com.android.volley:volley:1.0.0'
     implementation 'com.tencent.bugly:crashreport:2.6.5'
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
@@ -17,8 +15,8 @@ dependencies {
 }
 
 android {
-    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
-    buildToolsVersion project.BUILD_TOOLS_VERSION
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
     dataBinding {
         enabled = true
     }
@@ -26,17 +24,17 @@ android {
     Properties p = new Properties()
     p.load(project.rootProject.file('local.properties').newDataInputStream())
 
-    Calendar c = Calendar.getInstance();
-    int year = c.get(Calendar.YEAR);
-    int month = c.get(Calendar.MONTH) + 1;
-    int day = c.get(Calendar.DAY_OF_MONTH);
-    int vc = year * 10000 + month * 100 + day;
-    String vn = (year - 2013) + "." + month + "." + day;
+    Calendar c = Calendar.getInstance()
+    int year = c.get(Calendar.YEAR)
+    int month = c.get(Calendar.MONTH) + 1
+    int day = c.get(Calendar.DAY_OF_MONTH)
+    int vc = year * 10000 + month * 100 + day
+    String vn = (year - 2013) + "." + month + "." + day
 
     defaultConfig {
         applicationId "com.njust.helper"
         minSdkVersion 14
-        targetSdkVersion project.COMPILE_SDK_VERSION
+        targetSdkVersion compile_sdk_version
         versionCode vc
         versionName vn
         resConfigs "zh"
