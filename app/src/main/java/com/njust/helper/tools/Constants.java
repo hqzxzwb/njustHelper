@@ -1,5 +1,7 @@
 package com.njust.helper.tools;
 
+import com.njust.helper.BuildConfig;
+
 public final class Constants {
     public static final String DEFAULT_SEMESTER_START = "2017-08-28";
     public static final String APP_NAME = "南理工助手";
@@ -13,4 +15,6 @@ public final class Constants {
     public static final int[] SECTION_END = {37500000, 44100000, 56100000, 65700000, 77100000};
 
     public static final long MILLIS_IN_ONE_DAY = 24 * 3600 * 1000L;
+
+    public static final String FILE_PROVIDER_AUTH = BuildConfig.APPLICATION_ID + ".files";
 }

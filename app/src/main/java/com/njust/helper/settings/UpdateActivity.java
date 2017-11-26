@@ -4,14 +4,16 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.os.AsyncTaskCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.njust.helper.R;
 import com.njust.helper.databinding.ActivityUpdateBinding;
 import com.njust.helper.model.UpdateInfo;
+import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.JsonData;
 import com.zwb.commonlibs.injection.IntentInjection;
 
@@ -100,7 +102,7 @@ public class UpdateActivity extends AppCompatActivity {
             case 2:
             case 7:
             case 8:
-                AsyncTaskCompat.executeParallel(new DownloadTask(updateInfo.getUrl()));
+                new DownloadTask(updateInfo.getUrl()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 break;
             case 6:
                 startInstall();
@@ -111,17 +113,33 @@ public class UpdateActivity extends AppCompatActivity {
     private void startInstall() {
         File file;
         try {
-            file = new File(getExternalCacheDir(), updateInfo.getVersionCode() + "update.apk");
+            file = getUpdateFile(updateInfo.getVersionCode());
             if (!file.exists()) throw new Exception("更新文件已被删除");
         } catch (Exception e) {
             binding.setStatus(7);
             return;
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        intent.setDataAndType(getUriFromFile(file), "application/vnd.android.package-archive");
         //新启Task。否则安装过程app退出会导致安装界面也退出，体验不好。
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         startActivity(intent);
+    }
+
+    private Uri getUriFromFile(File file) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            // Maybe some old devices don't support non-file uri.
+            return Uri.fromFile(file);
+        } else {
+            return FileProvider.getUriForFile(this, Constants.FILE_PROVIDER_AUTH, file);
+        }
+    }
+
+    File getUpdateFile(int versionCode) {
+        File file = new File(getExternalCacheDir(), "update/" + versionCode + "update.apk");
+        //noinspection ResultOfMethodCallIgnored
+        file.getParentFile().mkdirs();
+        return file;
     }
 
     private class DownloadTask extends AsyncTask<Void, Integer, Integer> {
@@ -152,16 +170,9 @@ public class UpdateActivity extends AppCompatActivity {
                 long contentLength = connection.getContentLength();
                 byte[] buffer = new byte[1024];
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                File file = getExternalCacheDir();
-                //此处用STATUS_CAPTCHA_ERROR临时代替文件错误
-                if (file == null) return JsonData.STATUS_CAPTCHA_ERROR;
-                if (!file.isDirectory()) {
-                    if (!file.delete()) return JsonData.STATUS_CAPTCHA_ERROR;
-                }
-                if (!file.exists()) {
-                    if (!file.mkdir()) return JsonData.STATUS_CAPTCHA_ERROR;
-                }
-                file = new File(getExternalCacheDir(), updateInfo.getVersionCode() + "update.apk");
+                File file = getUpdateFile(updateInfo.getVersionCode());
+                //noinspection ResultOfMethodCallIgnored
+                file.getParentFile().mkdirs();
                 if (file.exists()) {
                     if (!file.isDirectory() && file.length() == contentLength) {
                         publishProgress(100);
