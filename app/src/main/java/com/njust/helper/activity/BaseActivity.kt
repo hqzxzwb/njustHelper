@@ -21,7 +21,12 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(layoutRes())
+        val res = layoutRes()
+        if (res != 0) {
+            setContentView(res)
+        } else {
+            layout()
+        }
 
         InjectionHelper.injectActivity(this)
         ButterKnife.bind(this)
@@ -31,6 +36,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     @LayoutRes
     protected abstract fun layoutRes(): Int
+
+    open protected fun layout() {
+    }
 
     open protected fun setupActionBar() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)

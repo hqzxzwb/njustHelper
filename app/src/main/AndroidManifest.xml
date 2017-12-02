@@ -29,7 +29,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".main.MainActivity"/>
         </activity>
         <activity
             android:name=".settings.AboutActivity"
@@ -41,7 +41,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".main.MainActivity"/>
         </activity>
         <activity
             android:name=".library.LibSearchActivity"
@@ -102,7 +102,7 @@
             android:label="@string/title_activity_lib_collection"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -117,7 +117,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".main.MainActivity"/>
         </activity>
         <activity
             android:name=".CaptchaActivity"

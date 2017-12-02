@@ -1,245 +1,260 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="vm"
+            type="com.njust.helper.main.MainViewModel"/>
+
+        <variable
+            name="clickHandler"
+            type="com.njust.helper.main.MainActivity"/>
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="16dp">
+        android:layout_height="match_parent">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:onClick="course"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp">
+            android:orientation="vertical"
+            android:paddingTop="16dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:background="?attr/selectableItemBackground"
+                android:onClick="@{clickHandler::openCourseActivity}"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/text_home_courses"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="?attr/colorPrimary"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="16dp"
+                    android:text="@string/text_home_all_courses"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                    android:textColor="?attr/colorPrimary"/>
+            </FrameLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp">
+
+                <com.njust.helper.course.CourseHomeView
+                    android:id="@+id/courseHomeView"
+                    style="@style/TextViewHome"
+                    android:gravity="left"
+                    android:onClick="@{clickHandler::openCourseActivity}"
+                    app:data="@{vm.courses}"
+                    app:emptyText="@string/text_home_no_recent_courses"
+                    app:maxHeight="96dp"/>
+            </android.support.v7.widget.CardView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:layout_marginLeft="16dp"
-                android:text="@string/text_home_courses"
+                android:layout_marginTop="8dp"
+                android:text="@string/text_home_library"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="?attr/colorPrimary"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        style="@style/TextViewHome"
+                        android:lines="2"
+                        android:onClick="@{clickHandler::openLibSearchActivity}"
+                        android:text="检索图书"/>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1">
+
+                    <Button
+                        style="@style/TextViewHome"
+                        android:lines="2"
+                        android:onClick="@{clickHandler::openLibBorrowActivity}"
+                        android:text="查看借书"/>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        style="@style/TextViewHome"
+                        android:lines="2"
+                        android:onClick="@{clickHandler::openLibCollectionActivity}"
+                        android:text="收藏的图书"/>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:layout_marginRight="16dp"
-                android:text="@string/text_home_all_courses"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:text="考试与成绩"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="?attr/colorPrimary"/>
-        </FrameLayout>
 
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="4dp">
-
-            <com.njust.helper.course.CourseHomeView
-                android:id="@+id/courseHomeView"
-                style="@style/TextViewHome"
-                android:gravity="left"
-                android:onClick="course"
-                app:emptyText="@string/text_home_no_recent_courses"
-                app:maxHeight="96dp"/>
-        </android.support.v7.widget.CardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/text_home_library"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="?attr/colorPrimary"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1">
+                android:orientation="horizontal">
 
-                <TextView
-                    style="@style/TextViewHome"
-                    android:lines="2"
-                    android:onClick="lib_search"
-                    android:text="检索图书"/>
-            </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardExams"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1">
+                    <TextView
+                        style="@style/TextViewHome"
+                        android:lines="2"
+                        android:onClick="@{clickHandler::openExamsActivity}"
+                        android:text="@string/title_activity_exams"/>
+                </android.support.v7.widget.CardView>
 
-                <Button
-                    style="@style/TextViewHome"
-                    android:lines="2"
-                    android:onClick="lib_borrow"
-                    android:text="查看借书"/>
-            </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardGrade"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1">
+                    <TextView
+                        style="@style/TextViewHome"
+                        android:lines="2"
+                        android:onClick="@{clickHandler::openGradeActivity}"
+                        android:text="成绩/GPA查询"/>
+                </android.support.v7.widget.CardView>
 
-                <TextView
-                    style="@style/TextViewHome"
-                    android:lines="2"
-                    android:onClick="lib_collection"
-                    android:text="收藏的图书"/>
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardLevel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:text="考试与成绩"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="?attr/colorPrimary"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardExams"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1">
-
-                <TextView
-                    style="@style/TextViewHome"
-                    android:lines="2"
-                    android:onClick="exams"
-                    android:text="@string/title_activity_exams"/>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardGrade"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1">
-
-                <TextView
-                    style="@style/TextViewHome"
-                    android:lines="2"
-                    android:onClick="grade"
-                    android:text="成绩/GPA查询"/>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardLevel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1">
-
-                <TextView
-                    style="@style/TextViewHome"
-                    android:lines="2"
-                    android:onClick="level_grades"
-                    android:text="等级考试成绩"/>
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:text="其他"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="?attr/colorPrimary"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardClassroom"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1">
-
-                <TextView
-                    style="@style/TextViewHome"
-                    android:onClick="classroom"
-                    android:text="@string/title_activity_cr"/>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardCengke"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1">
-
-                <TextView
-                    style="@style/TextViewHome"
-                    android:onClick="course_query"
-                    android:text="蹭课查询"/>
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardLinks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="4dp">
+                    <TextView
+                        style="@style/TextViewHome"
+                        android:lines="2"
+                        android:onClick="@{clickHandler::openGradeLevelActivity}"
+                        android:text="等级考试成绩"/>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
 
             <TextView
-                style="@style/TextViewHome"
-                android:onClick="links"
-                android:text="@string/title_activity_links"/>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-</ScrollView>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:text="其他"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="?attr/colorPrimary"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardClassroom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        style="@style/TextViewHome"
+                        android:onClick="@{clickHandler::openClassroomActivity}"
+                        android:text="@string/title_activity_cr"/>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardCengke"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        style="@style/TextViewHome"
+                        android:onClick="@{clickHandler::openCourseQueryActivity}"
+                        android:text="蹭课查询"/>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardLinks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    style="@style/TextViewHome"
+                    android:onClick="@{clickHandler::openLinksActivity}"
+                    android:text="@string/title_activity_links"/>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</layout>

@@ -14,12 +14,9 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.njust.helper.R;
-import com.zwb.commonlibs.utils.LogUtils;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -54,16 +51,9 @@ public class CourseHomeView extends AppCompatTextView {
     }
 
     private void init(AttributeSet attrs, int defStyleAttr) {
-        try {
-            Field field = TextView.class.getDeclaredField("mTextPaint");
-            field.setAccessible(true);
-            mTextPaint = (TextPaint) field.get(this);
-        } catch (Exception e) {
-            LogUtils.i(this, "获取TextPaint失败");
-            e.printStackTrace();
-            mTextPaint = new TextPaint();
-            mTextPaint.setTextSize(getResources().getDimensionPixelSize(R.dimen.course_view_text_size));
-        }
+        mTextPaint = new TextPaint();
+        mTextPaint.setTextSize(getTextSize());
+        mTextPaint.setAntiAlias(true);
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CourseHomeView, defStyleAttr, 0);
         maxHeight = typedArray.getDimensionPixelSize(R.styleable.CourseHomeView_maxHeight, Integer.MAX_VALUE);
         mEmptyString = typedArray.getString(R.styleable.CourseHomeView_emptyText);
@@ -73,6 +63,14 @@ public class CourseHomeView extends AppCompatTextView {
         float[] position = {0f, 1f};
         LinearGradient linearGradient = new LinearGradient(0, 0, 0, fadeHeight, colors, position, Shader.TileMode.REPEAT);
         mFadePaint.setShader(linearGradient);
+    }
+
+    @Override
+    public void setTextSize(float size) {
+        super.setTextSize(size);
+        if (mTextPaint != null) {
+            mTextPaint.setTextSize(size);
+        }
     }
 
     public void setData(@Nullable List<String> data) {

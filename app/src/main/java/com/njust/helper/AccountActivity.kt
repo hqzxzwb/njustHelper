@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.EditText
 import butterknife.BindView
 import com.njust.helper.activity.BaseActivity
+import com.njust.helper.main.MainActivity
 import com.njust.helper.tools.Prefs
 import com.zwb.commonlibs.injection.IntentInjection
 

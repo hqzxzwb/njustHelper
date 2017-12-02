@@ -1,10 +1,11 @@
-package com.njust.helper;
+package com.njust.helper.main;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,12 +14,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.njust.helper.activity.ProgressActivity;
+import com.njust.helper.AccountActivity;
+import com.njust.helper.BackgroundService;
+import com.njust.helper.BuildConfig;
+import com.njust.helper.LinksActivity;
+import com.njust.helper.R;
+import com.njust.helper.activity.BaseActivity;
 import com.njust.helper.classroom.ClassroomActivity;
 import com.njust.helper.classroom.CourseQueryActivity;
 import com.njust.helper.course.CourseActivity;
-import com.njust.helper.course.CourseHomeView;
 import com.njust.helper.course.CourseManager;
+import com.njust.helper.databinding.ActivityMainBinding;
 import com.njust.helper.grade.ExamsActivity;
 import com.njust.helper.grade.GradeActivity;
 import com.njust.helper.grade.GradeLevelActivity;
@@ -39,23 +45,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
-public class MainActivity extends ProgressActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
     public static final int RESULT_COURSE_REFRESH = 2;
     public static final int REQUEST_COURSE_REFRESH = 0;
-    private static final String ONE_CARD_CACHE_NAME = "OCCN";
-
-    @BindView(R.id.courseHomeView)
-    CourseHomeView courseHomeView;
-//    @BindView(R.id.tvCardBalance)
-//    private TextView cardBalanceView;
 
     private BroadcastReceiver receiver;
     ProgressDialog checkUpdateDialog;
 
+    private MainViewModel viewModel = new MainViewModel();
+
     @Override
-    protected void prepareViews() {
+    protected void layout() {
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setVm(viewModel);
+        binding.setClickHandler(this);
     }
 
     @Override
@@ -72,6 +75,8 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
             LocalBroadcastManager.getInstance(this)
                     .registerReceiver(receiver, new IntentFilter(BackgroundService.ACTION_UPDATE_INFO));
         }
+
+        checkUpdate();
     }
 
     @Override
@@ -83,19 +88,18 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
         }
     }
 
-    @Override
-    protected void firstRefresh() {
-        // 如果距离上次刷新超过五小时,检查更新
+    private void checkUpdate() {
+        // 如果距离上次刷新超过一天,检查更新
         long now = System.currentTimeMillis();
         long last_time = Prefs.getLastCheckUpdateTime(this);
         long time = now - last_time;
-        if (time < 0 || time > 18000000L) {
+        if (time < 0 || time > 24 * 3600 * 1000L) {
             if (NetState.getNetworkState(this)) {
                 startService(new Intent(this, BackgroundService.class)
                         .putExtra("action", "checkUpdate"));
             }
         }
-        //每学期更新
+        // 删除更新文件并弹出更新日志
         int preVersion = Prefs.getVersion(this);
         if (BuildConfig.VERSION_CODE != preVersion) {
             File file = getExternalCacheDir();
@@ -123,50 +127,34 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
                 }
             }
         }
-//        //刷新一卡通余额
-//        String string = MemCacheManager.get(ONE_CARD_CACHE_NAME);
-//        if (string != null) {
-//            setCardBalance(string);
-//        } else {
-//            setCardBalance("");
-//            onRefresh();
-//        }
     }
-
-//    private void setCardBalance(String balance) {
-//        cardBalanceView.setText(getString(R.string.text_home_card_balance, balance));
-//    }
 
     @Override
     protected int layoutRes() {
-        return R.layout.activity_main;
+        return 0;
     }
 
-    public void lib_borrow(View view) {
+    public void openLibBorrowActivity(View view) {
         startActivity(LibBorrowActivity.class);
     }
 
-    public void lib_collection(View view) {
+    public void openLibCollectionActivity(View view) {
         startActivity(LibCollectionActivity.class);
     }
 
-    public void lib_search(View view) {
+    public void openLibSearchActivity(View view) {
         startActivity(LibSearchActivity.class);
     }
 
-    public void id(View view) {
-        startActivity(AccountActivity.class);
-    }
-
-    public void course_query(View view) {
+    public void openCourseQueryActivity(View view) {
         startActivity(CourseQueryActivity.class);
     }
 
-    public void level_grades(View v) {
+    public void openGradeLevelActivity(View v) {
         startActivity(GradeLevelActivity.class);
     }
 
-    public void links(View view) {
+    public void openLinksActivity(View view) {
         startActivity(LinksActivity.class);
     }
 
@@ -182,11 +170,6 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
     @Override
     protected void setupActionBar() {
     }
-
-//    @Override
-//    protected void setupPullLayout(SwipeRefreshLayout layout) {
-//        layout.setOnRefreshListener(this);
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -242,19 +225,19 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
         }
     }
 
-    public void course(View view) {
+    public void openCourseActivity(View view) {
         startActivityForResult(CourseActivity.class, REQUEST_COURSE_REFRESH);
     }
 
-    public void classroom(View view) {
+    public void openClassroomActivity(View view) {
         startActivity(ClassroomActivity.class);
     }
 
-    public void exams(View view) {
+    public void openExamsActivity(View view) {
         startActivity(ExamsActivity.class);
     }
 
-    public void grade(View v) {
+    public void openGradeActivity(View v) {
         startActivity(GradeActivity.class);
     }
 
@@ -269,7 +252,7 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
         List<Course> list2 = manager.getCourses(++day);
         List<Course> list3 = manager.getCourses(++day);
         if (list1.size() + list2.size() + list3.size() == 0) {
-            courseHomeView.setData(null);
+            viewModel.setCourses(null);
         } else {
             List<String> strings = new ArrayList<>();
             String[] timeList = getResources().getStringArray(R.array.section_start);
@@ -284,47 +267,11 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
             for (Course course : list3) {
                 strings.add("后天" + timeList[course.getSec1()] + "/" + course.getClassroom() + "/" + course.getName());
             }
-            courseHomeView.setData(strings);
+            viewModel.setCourses(strings);
         }
-    }
-
-    public void card(View view) {
-        startActivity(OneCardActivity.class);
     }
 
     @Override
     public void onRefresh() {
-//        attachAsyncTask(new ProgressAsyncTask<Void, String>(this) {
-//            @Override
-//            protected JsonData<String> doInBackground(Void... voids) {
-//                HttpHelper.HttpMap map = new HttpHelper.HttpMap();
-//                map.addParam("stuid", Prefs.getId(MainActivity.this));
-//                try {
-//                    String s = new AppHttpHelper().getPostResult("cardInfo.php", map);
-//                    return new JsonData<String>(s) {
-//                        @Override
-//                        protected String parseData(JSONObject jsonObject) throws Exception {
-//                            return jsonObject.getString("content");
-//                        }
-//                    };
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                return JsonData.newNetErrorInstance();
-//            }
-//
-//            @Override
-//            protected void onPostExecute(JsonData<String> stringJsonData) {
-//                super.onPostExecute(stringJsonData);
-//
-//                if (stringJsonData.isValid()) {
-//                    String result = stringJsonData.getData();
-//                    setCardBalance(result);
-//                    MemCacheManager.put(ONE_CARD_CACHE_NAME, result);
-//                } else {
-//                    setCardBalance("查询失败");
-//                }
-//            }
-//        });
     }
 }

@@ -18,13 +18,13 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.njust.helper.AccountActivity;
-import com.njust.helper.MainActivity;
 import com.njust.helper.R;
 import com.njust.helper.activity.BaseActivity;
 import com.njust.helper.course.fragment.CourseDayFragment;
 import com.njust.helper.course.fragment.CourseListFragment;
 import com.njust.helper.course.fragment.CourseWeekFragment;
 import com.njust.helper.course.fragment.PickWeekFragment;
+import com.njust.helper.main.MainActivity;
 import com.njust.helper.model.Course;
 import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.Prefs;
