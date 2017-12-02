@@ -15,6 +15,7 @@ import com.njust.helper.databinding.ActivityUpdateBinding;
 import com.njust.helper.model.UpdateInfo;
 import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.JsonData;
+import com.zwb.commonlibs.injection.InjectionHelper;
 import com.zwb.commonlibs.injection.IntentInjection;
 
 import java.io.BufferedInputStream;
@@ -29,7 +30,7 @@ import java.net.URL;
 
 public class UpdateActivity extends AppCompatActivity {
     @IntentInjection
-    private UpdateInfo updateInfo;
+    UpdateInfo updateInfo;
     /**
      * status
      * 0 - 等待
@@ -42,7 +43,7 @@ public class UpdateActivity extends AppCompatActivity {
      * 7 - 文件原因下载失败
      * 8 - 网络原因下载失败
      */
-    private ActivityUpdateBinding binding;
+    ActivityUpdateBinding binding;
 
     public static String getButtonText(int status) {
         switch (status) {
@@ -91,6 +92,7 @@ public class UpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_update);
+        InjectionHelper.injectActivity(this);
         if (updateInfo != null) {
             binding.setUpdateInfo(updateInfo);
             binding.setStatus(2);
@@ -110,7 +112,7 @@ public class UpdateActivity extends AppCompatActivity {
         }
     }
 
-    private void startInstall() {
+    void startInstall() {
         File file;
         try {
             file = getUpdateFile(updateInfo.getVersionCode());
@@ -122,7 +124,8 @@ public class UpdateActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(getUriFromFile(file), "application/vnd.android.package-archive");
         //新启Task。否则安装过程app退出会导致安装界面也退出，体验不好。
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(intent);
     }
 
@@ -145,7 +148,7 @@ public class UpdateActivity extends AppCompatActivity {
     private class DownloadTask extends AsyncTask<Void, Integer, Integer> {
         private String url;
 
-        private DownloadTask(String url) {
+        DownloadTask(String url) {
             this.url = url;
         }
 
