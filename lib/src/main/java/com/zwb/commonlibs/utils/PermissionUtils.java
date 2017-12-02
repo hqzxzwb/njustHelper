@@ -16,9 +16,9 @@ import java.util.Random;
 
 public class PermissionUtils {
     private static final String TAG = "PermissionUtils";
-    private static Random random = new Random();
+    static Random random = new Random();
     // TODO: 16/10/11 如果一次权限请求没有返回结果(一般也不会发生),说不定就会有内存泄漏。待优化。
-    private static SparseArray<Holder> holderSparseArray = new SparseArray<>();
+    static SparseArray<Holder> holderSparseArray = new SparseArray<>();
 
     public static void checkPermission(final Activity activity, final Holder holder) {
         final List<String> toRequest = new ArrayList<>();

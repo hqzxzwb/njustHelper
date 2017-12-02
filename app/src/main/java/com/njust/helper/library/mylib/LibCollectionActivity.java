@@ -89,7 +89,7 @@ public class LibCollectionActivity extends BaseActivity {
         }
     }
 
-    private void deleteItem(int position) {
+    void deleteItem(int position) {
         itemsToRemove.add(adapter.delete(position).getId());
         showSnack("您删除了一本图书", "撤销", v -> {
             LibCollectItem libCollectItem = adapter.restore();
@@ -114,7 +114,7 @@ public class LibCollectionActivity extends BaseActivity {
         return coordinatorLayout;
     }
 
-    private void showLibDetail(String id) {
+    void showLibDetail(String id) {
         Intent intent = new Intent(this, LibDetailActivity.class);
         intent.putExtra("id", id);
         startActivityForResult(intent, REQUEST_CODE_LIB_DETAIL);
@@ -165,7 +165,7 @@ public class LibCollectionActivity extends BaseActivity {
         private LibCollectionActivity mActivity;
         private LibCollectItem restoreItem;
         private int restorePosition;
-        private OnDeleteInDialogListener onDeleteInDialogListener;
+        OnDeleteInDialogListener onDeleteInDialogListener;
         private OnEmptyStateChangeListener listener;
 
         public LibCollectionAdapter(List<LibCollectItem> data, LibCollectionActivity activity) {

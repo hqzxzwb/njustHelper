@@ -31,12 +31,12 @@ import java.util.Map;
 import butterknife.BindView;
 
 public class LibBorrowActivity extends ProgressActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private String stuid, pwd;
+    String stuid, pwd;
     @BindView(R.id.webView1)
     WebView webView;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    private ProgressDialog dialog;
+    ProgressDialog dialog;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override

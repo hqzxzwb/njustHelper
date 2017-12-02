@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 
 public class CourseDayFragment extends Fragment implements OnPageChangeListener {
     @SuppressWarnings("unchecked")
-    private final List<Course>[][] mLists = new List[7][5];
+    final List<Course>[][] mLists = new List[7][5];
     private SimpleDateFormat DATE_MONTH_FORMAT = new SimpleDateFormat("MMM", Locale.CHINA);
     private SimpleDateFormat DATE_DAY_FORMAT = new SimpleDateFormat("d", Locale.CHINA);
     private String[] dayOfWeek;

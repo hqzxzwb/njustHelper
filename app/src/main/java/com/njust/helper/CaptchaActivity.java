@@ -32,7 +32,7 @@ import butterknife.BindView;
 
 public class CaptchaActivity extends ProgressActivity {
     public static final int REQUEST_CAPTCHA = CaptchaActivity.class.hashCode() >> 16;
-    private String stuid, pwd;
+    String stuid, pwd;
     @BindView(R.id.imageView1)
     ImageView imageView;
     @BindView(R.id.editText1)
@@ -41,12 +41,12 @@ public class CaptchaActivity extends ProgressActivity {
     Button button;
     @BindView(R.id.layoutCaptcha)
     TextInputLayout textInputLayout;
-    private String cookie;
+    String cookie;
     /**
      * 0 - 教务处, 1 - 图书馆
      */
     @IntentInjection
-    private int type;
+    int type;
 
     public static void startCaptcha(Activity activity, int type) {
         Intent intent = new Intent(activity, CaptchaActivity.class);
@@ -54,7 +54,7 @@ public class CaptchaActivity extends ProgressActivity {
         activity.startActivityForResult(intent, REQUEST_CAPTCHA);
     }
 
-    private Bitmap getBitmapFromBase64String(String string) {
+    Bitmap getBitmapFromBase64String(String string) {
         byte[] bytes = Base64.decode(string, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }

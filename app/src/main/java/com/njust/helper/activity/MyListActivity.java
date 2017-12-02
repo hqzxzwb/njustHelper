@@ -32,7 +32,7 @@ public abstract class MyListActivity<T, U extends ViewDataBinding> extends Progr
 
     protected ListRecycleAdapter<T, U> adapter;
 
-    private String mCacheName;
+    String mCacheName;
 
     @Override
     protected void prepareViews() {

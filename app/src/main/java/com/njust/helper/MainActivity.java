@@ -52,7 +52,7 @@ public class MainActivity extends ProgressActivity implements SwipeRefreshLayout
 //    private TextView cardBalanceView;
 
     private BroadcastReceiver receiver;
-    private ProgressDialog checkUpdateDialog;
+    ProgressDialog checkUpdateDialog;
 
     @Override
     protected void prepareViews() {

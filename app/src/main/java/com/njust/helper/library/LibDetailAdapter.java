@@ -60,7 +60,7 @@ public class LibDetailAdapter extends Adapter<LibDetailAdapter.LibDetailHolder> 
     }
 
     public static class LibDetailHolder extends ViewHolder {
-        private TextView code, place, state;
+        TextView code, place, state;
 
         public LibDetailHolder(View itemView, int type) {
             super(itemView);

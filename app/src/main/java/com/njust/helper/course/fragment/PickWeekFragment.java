@@ -22,7 +22,7 @@ import com.njust.helper.tools.DataBindingHolder;
  */
 public class PickWeekFragment extends BottomSheetDialogFragment {
     private PickWeekAdapter adapter = new PickWeekAdapter(this);
-    private Listener listener;
+    Listener listener;
 
     @Nullable
     @Override
@@ -56,7 +56,7 @@ public class PickWeekFragment extends BottomSheetDialogFragment {
         private int chosenWeek;
         private PickWeekFragment fragment;
 
-        private PickWeekAdapter(PickWeekFragment fragment) {
+        PickWeekAdapter(PickWeekFragment fragment) {
             this.fragment = fragment;
         }
 

@@ -44,8 +44,8 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
     private long termStartTime;
     private int currentDay, currentWeek;
     private SimpleDateFormat dateFormat;
-    private CourseDayFragment dayFragment;
-    private CourseWeekFragment weekFragment;
+    CourseDayFragment dayFragment;
+    CourseWeekFragment weekFragment;
     @BindView(R.id.txtToday)
     TextView todayTextView;
     @BindView(R.id.tvPickWeek)
@@ -104,7 +104,7 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
         showIntentCourse();
     }
 
-    private void promptImportMessage() {
+    void promptImportMessage() {
         DialogInterface.OnClickListener importListener = (dialog, which) -> {
             switch (which) {
                 case AlertDialog.BUTTON_POSITIVE:

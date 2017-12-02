@@ -29,7 +29,7 @@ import butterknife.BindView;
 
 public class LibDetailActivity extends ProgressActivity implements SwipeRefreshLayout.OnRefreshListener {
     @IntentInjection("id")
-    private String idString;
+    String idString;
 
     private LibraryDatabaseManager manager;
     private String title;
@@ -81,7 +81,7 @@ public class LibDetailActivity extends ProgressActivity implements SwipeRefreshL
         layout.setOnRefreshListener(this);
     }
 
-    private void notifyData(LibDetailData data) {
+    void notifyData(LibDetailData data) {
         String[] strings = data.getHead().split("\n");
         if (strings.length > 1) {
             title = strings[1];
@@ -129,7 +129,7 @@ public class LibDetailActivity extends ProgressActivity implements SwipeRefreshL
         }
     }
 
-    private String getCacheName() {
+    String getCacheName() {
         return "libDetail_" + idString;
     }
 

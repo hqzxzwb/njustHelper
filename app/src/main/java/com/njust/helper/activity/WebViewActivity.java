@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 public abstract class WebViewActivity extends ProgressActivity implements SwipeRefreshLayout.OnRefreshListener {
     private WebView mWebView;
-    private String mCacheName;
+    String mCacheName;
 
     @Override
     protected int layoutRes() {
@@ -78,7 +78,7 @@ public abstract class WebViewActivity extends ProgressActivity implements SwipeR
         attachAsyncTask(new MyTask());
     }
 
-    private void show_html(String string) {
+    void show_html(String string) {
         mWebView.loadDataWithBaseURL(null, string, null, "utf-8", null);
     }
 

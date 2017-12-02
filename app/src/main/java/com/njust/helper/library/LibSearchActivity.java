@@ -112,7 +112,7 @@ public class LibSearchActivity extends MyListActivity<LibSearch, ItemLibSearchBi
     public static class LibSearchAdapter extends ListRecycleAdapter<LibSearch, ItemLibSearchBinding> {
         private LibSearchActivity activity;
 
-        private LibSearchAdapter(LibSearchActivity activity) {
+        LibSearchAdapter(LibSearchActivity activity) {
             this.activity = activity;
         }
 
