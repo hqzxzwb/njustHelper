@@ -16,6 +16,7 @@ public class UpdateLogDialog {
         builder.append("1.修复 收藏的图书长按删除没有效果的问题\n");
         builder.append("2.优化 无收藏的图书时，界面显示相应的提示\n");
         builder.append("3.删除 移除一卡通功能入口\n");
+        builder.append("4.修复 修复更新包安装出错的问题\n");
         return builder;
     }
 
