@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.njust.helper.AccountActivity;
+import com.njust.helper.account.AccountActivity;
 import com.njust.helper.BackgroundService;
 import com.njust.helper.BuildConfig;
 import com.njust.helper.LinksActivity;

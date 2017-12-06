@@ -11,7 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.Window
 import butterknife.ButterKnife
-import com.njust.helper.AccountActivity
+import com.njust.helper.account.AccountActivity
 import com.njust.helper.R
 import com.zwb.commonlibs.injection.InjectionHelper
 import com.zwb.commonlibs.utils.LogUtils

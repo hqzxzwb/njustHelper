@@ -1,4 +1,4 @@
-package com.njust.helper;
+package com.njust.helper.account;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.njust.helper.R;
 import com.njust.helper.activity.ProgressActivity;
 import com.njust.helper.model.CaptchaData;
 import com.njust.helper.model.LoginResult;

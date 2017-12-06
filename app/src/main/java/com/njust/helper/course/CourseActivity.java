@@ -17,7 +17,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.njust.helper.AccountActivity;
+import com.njust.helper.account.AccountActivity;
 import com.njust.helper.R;
 import com.njust.helper.activity.BaseActivity;
 import com.njust.helper.course.fragment.CourseDayFragment;

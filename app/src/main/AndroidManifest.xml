@@ -85,7 +85,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".AccountActivity"
+            android:name=".account.AccountActivity"
             android:label="@string/title_activity_account"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
@@ -120,7 +120,7 @@
                 android:value=".main.MainActivity"/>
         </activity>
         <activity
-            android:name=".CaptchaActivity"
+            android:name=".account.CaptchaActivity"
             android:label="@string/title_activity_captcha"
             android:screenOrientation="portrait"/>
 

@@ -1,12 +1,11 @@
 package com.njust.helper.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.webkit.WebView;
 
-import com.njust.helper.AccountActivity;
 import com.njust.helper.R;
+import com.njust.helper.account.AccountActivity;
 import com.njust.helper.model.CaptchaData;
 import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.ProgressAsyncTask;
@@ -24,19 +23,13 @@ public abstract class WebViewActivity extends ProgressActivity implements SwipeR
         return R.layout.activity_only_webview;
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void prepareViews() {
-        mWebView = (WebView) findViewById(R.id.webView1);
-        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView = findViewById(R.id.webView1);
 
         loadId();
 
         mCacheName = buildCacheName();
-    }
-
-    protected WebView getWebView() {
-        return mWebView;
     }
 
     @Override

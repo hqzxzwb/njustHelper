@@ -1,4 +1,4 @@
-package com.njust.helper
+package com.njust.helper.account
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import butterknife.BindView
+import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.main.MainActivity
 import com.njust.helper.tools.Prefs

@@ -14,7 +14,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.njust.helper.AccountActivity;
+import com.njust.helper.account.AccountActivity;
 import com.njust.helper.BuildConfig;
 import com.njust.helper.R;
 import com.njust.helper.activity.ProgressActivity;

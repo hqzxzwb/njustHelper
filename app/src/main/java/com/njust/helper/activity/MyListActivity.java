@@ -12,8 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.njust.helper.AccountActivity;
-import com.njust.helper.CaptchaActivity;
+import com.njust.helper.account.AccountActivity;
+import com.njust.helper.account.CaptchaActivity;
 import com.njust.helper.R;
 import com.njust.helper.model.CaptchaData;
 import com.njust.helper.tools.DataBindingHolder;
