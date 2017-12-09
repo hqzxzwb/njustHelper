@@ -1,12 +1,12 @@
 package com.njust.helper.course;
 
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,8 +17,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.njust.helper.account.AccountActivity;
 import com.njust.helper.R;
+import com.njust.helper.account.AccountActivity;
 import com.njust.helper.activity.BaseActivity;
 import com.njust.helper.course.data.CourseManager;
 import com.njust.helper.course.day.CourseDayFragment;
@@ -76,7 +76,7 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
             }
         });
 
-        FragmentManager manager = getFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
 
         dayFragment = (CourseDayFragment) manager.findFragmentById(R.id.course_day_fragment);
         weekFragment = (CourseWeekFragment) manager.findFragmentById(R.id.course_week_fragment);

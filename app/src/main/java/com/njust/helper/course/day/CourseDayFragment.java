@@ -1,10 +1,11 @@
 package com.njust.helper.course.day;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -66,13 +67,13 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
         mViewPager.addOnPageChangeListener(this);
 
         mTextViews = new TextView[7];
-        mTextViews[0] = (TextView) view.findViewById(R.id.dayOfWeek0);
-        mTextViews[1] = (TextView) view.findViewById(R.id.dayOfWeek1);
-        mTextViews[2] = (TextView) view.findViewById(R.id.dayOfWeek2);
-        mTextViews[3] = (TextView) view.findViewById(R.id.dayOfWeek3);
-        mTextViews[4] = (TextView) view.findViewById(R.id.dayOfWeek4);
-        mTextViews[5] = (TextView) view.findViewById(R.id.dayOfWeek5);
-        mTextViews[6] = (TextView) view.findViewById(R.id.dayOfWeek6);
+        mTextViews[0] = view.findViewById(R.id.dayOfWeek0);
+        mTextViews[1] = view.findViewById(R.id.dayOfWeek1);
+        mTextViews[2] = view.findViewById(R.id.dayOfWeek2);
+        mTextViews[3] = view.findViewById(R.id.dayOfWeek3);
+        mTextViews[4] = view.findViewById(R.id.dayOfWeek4);
+        mTextViews[5] = view.findViewById(R.id.dayOfWeek5);
+        mTextViews[6] = view.findViewById(R.id.dayOfWeek6);
 
         for (int i = 0; i < 7; i++) {
             final int j = i;
@@ -87,7 +88,7 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
             }
 
             @Override
-            protected void updateView(View view, int position) {
+            protected void updateView(@NonNull View view, int position) {
                 RecyclerView recyclerView = (RecyclerView) view;
                 CourseDayAdapter adapter = new CourseDayAdapter(CourseDayFragment.this);
                 int dayOfWeek = position % 7;
@@ -96,8 +97,9 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
                 view.setTag(position);
             }
 
+            @NonNull
             @Override
-            protected View onCreateNewView(ViewGroup container) {
+            protected View onCreateNewView(@NonNull ViewGroup container) {
                 RecyclerView view = (RecyclerView) getActivity().getLayoutInflater().inflate(
                         R.layout.pager_course_day, container, false);
                 view.setLayoutManager(new LinearLayoutManager(getActivity()));
