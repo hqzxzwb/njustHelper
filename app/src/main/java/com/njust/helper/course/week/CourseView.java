@@ -29,6 +29,7 @@ import java.util.Map;
  * 课程表View
  */
 public class CourseView extends View {
+    private static final int COLUMN_COUNT = 7;
     private List<Course>[][] mData;
     private Map<String, Layout> mLayoutContainer = new HashMap<>();
     private int mWeek;
@@ -38,7 +39,7 @@ public class CourseView extends View {
     private Paint mDarkPaint = new Paint();
     private Path path;
     private int mLeftColumnSize;
-    private int mHeight;
+    private int mSectionCount;
     private int unitHeight, unitWidth;
 
     private OnSelectCourseListener mListener;
@@ -62,9 +63,9 @@ public class CourseView extends View {
 
     private void init(AttributeSet attrs, int defStyleAttr) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CourseView, defStyleAttr, 0);
-        mHeight = typedArray.getInt(R.styleable.CourseView_courseNum, 5);
+        mSectionCount = typedArray.getInt(R.styleable.CourseView_courseNum, 5);
         //noinspection unchecked
-        mData = new List[7][mHeight];
+        mData = new List[7][mSectionCount];
         mLeftColumnSize = typedArray.getDimensionPixelSize(R.styleable.CourseView_numColumnSize, getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin));
         typedArray.recycle();
 
@@ -119,6 +120,8 @@ public class CourseView extends View {
                 int x = ((int) event.getX() - mLeftColumnSize) / unitWidth;
                 int y = (int) event.getY() / unitHeight;
                 if (x == downX && y == downY && mListener != null) {
+                    x = Math.min(x, COLUMN_COUNT);
+                    y = Math.min(y, mSectionCount);
                     List<Course> list = mData[x][y];
                     if (list != null) {
                         mListener.onSelectCourse(mData[x][y], x, y);
@@ -138,7 +141,7 @@ public class CourseView extends View {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
         unitWidth = (getMeasuredWidth() - mLeftColumnSize) / 7;
-        unitHeight = getMeasuredHeight() / mHeight;
+        unitHeight = getMeasuredHeight() / mSectionCount;
         int delta2 = unitWidth / 15;
         int side = unitWidth / 4;
         path.moveTo(unitWidth - delta2, unitHeight - delta2 - side);
@@ -158,7 +161,7 @@ public class CourseView extends View {
         super.onDraw(canvas);
 
 //        int unitWidth = (getWidth() - mLeftColumnSize) / 7;
-//        int unitHeight = getHeight() / mHeight;
+//        int unitHeight = getHeight() / mSectionCount;
         float delta = unitWidth / 20;
         for (float i = unitHeight; i < getHeight() + unitHeight; i += unitHeight) {
             for (float j = 0; j < getWidth() - mLeftColumnSize; j += unitWidth) {
@@ -176,7 +179,7 @@ public class CourseView extends View {
         float width = unitWidth - 2 * delta;
         float height = unitHeight - 2 * delta;
         for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < mHeight; j++) {
+            for (int j = 0; j < mSectionCount; j++) {
                 List<Course> list = mData[i][j];
                 Course course = null;
                 if (list == null || list.size() == 0) {
@@ -220,7 +223,7 @@ public class CourseView extends View {
                 layout.draw(canvas);
                 canvas.translate(0, unitHeight);
             }
-            canvas.translate(unitWidth, -unitHeight * mHeight);
+            canvas.translate(unitWidth, -unitHeight * mSectionCount);
         }
     }
 
