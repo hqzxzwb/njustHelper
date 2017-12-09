@@ -3,6 +3,7 @@ package com.njust.helper.course;
 import android.app.ProgressDialog;
 
 import com.njust.helper.R;
+import com.njust.helper.course.data.CourseManager;
 import com.njust.helper.model.CaptchaData;
 import com.njust.helper.model.CourseData;
 import com.njust.helper.model.CourseInfo;

@@ -1,4 +1,4 @@
-package com.njust.helper.course.fragment;
+package com.njust.helper.course.week;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.njust.helper.R;
+import com.njust.helper.databinding.FgmtCourseWeekBinding;
 import com.njust.helper.model.Course;
 
 import java.text.SimpleDateFormat;
@@ -16,25 +16,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class CourseWeekFragment extends Fragment {
-    @BindView(R.id.textView1)
-    TextView textView;
-    @BindView(R.id.courseView)
-    CourseView courseView;
-
     private long beginTimeInMillis;
     private SimpleDateFormat dateFormat;
     private Listener listener;
 
+    private FgmtCourseWeekBinding binding;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fgmt_course_week, container, false);
-        ButterKnife.bind(this, view);
-        courseView.setListener(listener::showCourseList);
-        return view;
+        binding = FgmtCourseWeekBinding.inflate(inflater, container, false);
+        binding.courseView.setListener(listener::showCourseList);
+        return binding.getRoot();
     }
 
     @Override
@@ -54,12 +47,12 @@ public class CourseWeekFragment extends Fragment {
     }
 
     public void setWeek(int week) {
-        textView.setText(getTime(week));
-        courseView.setWeek(week);
+        binding.setDateRange(getTime(week));
+        binding.setWeek(week);
     }
 
     public void setList(List<Course> courses) {
-        courseView.setCourses(courses);
+        binding.setCourses(courses);
     }
 
     public void setBeginTimeInMillis(long time) {

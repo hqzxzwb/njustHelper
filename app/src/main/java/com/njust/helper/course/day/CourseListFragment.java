@@ -1,4 +1,4 @@
-package com.njust.helper.course.fragment;
+package com.njust.helper.course.day;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

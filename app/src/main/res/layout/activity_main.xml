@@ -57,7 +57,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="4dp">
 
-                <com.njust.helper.course.CourseHomeView
+                <com.njust.helper.main.CourseHomeView
                     android:id="@+id/courseHomeView"
                     style="@style/TextViewHome"
                     android:gravity="left"

@@ -1,4 +1,4 @@
-package com.njust.helper.course;
+package com.njust.helper.course.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,11 +21,9 @@ public class CourseManager {
     }
 
     public static CourseManager getInstance(Context context) {
-        if (instance == null) {
-            synchronized (CourseManager.class) {
-                if (instance == null) {
-                    instance = new CourseManager(context.getApplicationContext());
-                }
+        synchronized (CourseManager.class) {
+            if (instance == null) {
+                instance = new CourseManager(context.getApplicationContext());
             }
         }
         return instance;

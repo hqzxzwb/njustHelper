@@ -12,13 +12,13 @@
 
         <fragment
             android:id="@+id/course_day_fragment"
-            android:name="com.njust.helper.course.fragment.CourseDayFragment"
+            android:name="com.njust.helper.course.day.CourseDayFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <fragment
             android:id="@+id/course_week_fragment"
-            android:name="com.njust.helper.course.fragment.CourseWeekFragment"
+            android:name="com.njust.helper.course.week.CourseWeekFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout="@layout/fgmt_course_week" />

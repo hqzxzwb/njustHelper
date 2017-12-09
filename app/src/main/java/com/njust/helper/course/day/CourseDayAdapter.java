@@ -1,4 +1,4 @@
-package com.njust.helper.course.fragment;
+package com.njust.helper.course.day;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

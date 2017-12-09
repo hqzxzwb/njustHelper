@@ -22,7 +22,7 @@ import com.njust.helper.activity.BaseActivity;
 import com.njust.helper.classroom.ClassroomActivity;
 import com.njust.helper.classroom.CourseQueryActivity;
 import com.njust.helper.course.CourseActivity;
-import com.njust.helper.course.CourseManager;
+import com.njust.helper.course.data.CourseManager;
 import com.njust.helper.databinding.ActivityMainBinding;
 import com.njust.helper.grade.ExamsActivity;
 import com.njust.helper.grade.GradeActivity;

@@ -1,4 +1,4 @@
-package com.njust.helper.course;
+package com.njust.helper.course.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,7 +9,7 @@ class CourseOpenHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "course.db";
     private static final int VERSION = 4;
 
-    public CourseOpenHelper(Context context) {
+    CourseOpenHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
     }
 

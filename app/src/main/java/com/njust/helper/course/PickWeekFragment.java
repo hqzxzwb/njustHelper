@@ -1,4 +1,4 @@
-package com.njust.helper.course.fragment;
+package com.njust.helper.course;
 
 import android.content.Context;
 import android.os.Bundle;

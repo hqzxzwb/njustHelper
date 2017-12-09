@@ -1,4 +1,4 @@
-package com.njust.helper.course.fragment;
+package com.njust.helper.course.day;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;

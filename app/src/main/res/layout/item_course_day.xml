@@ -6,7 +6,7 @@
 
         <import type="android.view.View"/>
 
-        <import type="com.njust.helper.course.fragment.CourseDayAdapter"/>
+        <import type="com.njust.helper.course.day.CourseDayAdapter"/>
 
         <variable
             name="course"

@@ -1,4 +1,4 @@
-package com.njust.helper.course.fragment;
+package com.njust.helper.course.week;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,6 +19,7 @@ import com.njust.helper.R;
 import com.njust.helper.model.Course;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +84,9 @@ public class CourseView extends View {
     }
 
     public void setCourses(List<Course> courses) {
+        if (courses == null) {
+            courses = Collections.emptyList();
+        }
         for (List[] lists : mData) {
             if (lists != null) {
                 for (List list : lists) {
@@ -116,8 +120,9 @@ public class CourseView extends View {
                 int y = (int) event.getY() / unitHeight;
                 if (x == downX && y == downY && mListener != null) {
                     List<Course> list = mData[x][y];
-                    if (list != null)
+                    if (list != null) {
                         mListener.onSelectCourse(mData[x][y], x, y);
+                    }
                 }
                 return true;
         }

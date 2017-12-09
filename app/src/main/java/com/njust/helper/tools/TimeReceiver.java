@@ -10,7 +10,7 @@ import android.support.v4.app.TaskStackBuilder;
 
 import com.njust.helper.R;
 import com.njust.helper.course.CourseActivity;
-import com.njust.helper.course.CourseManager;
+import com.njust.helper.course.data.CourseManager;
 
 import java.util.Calendar;
 

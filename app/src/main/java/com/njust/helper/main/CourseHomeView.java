@@ -1,4 +1,4 @@
-package com.njust.helper.course;
+package com.njust.helper.main;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
