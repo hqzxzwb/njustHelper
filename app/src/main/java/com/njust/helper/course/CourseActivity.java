@@ -293,11 +293,11 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
     }
 
     @Override
-    public void showCourseList(List<Course> courses, int day, int section) {
+    public void showCourseList(@NonNull List<? extends Course> courses, int day, int section) {
         String title = getResources().getStringArray(R.array.days_of_week)[day] +
                 getResources().getStringArray(R.array.sections)[section];
         String subTitle = getResources().getStringArray(R.array.section_start_end)[section];
-        CourseListFragment.getInstance(courses, title, subTitle)
+        CourseListFragment.getInstance((List<Course>) courses, title, subTitle)
                 .show(getSupportFragmentManager(), "courseList");
     }
 
