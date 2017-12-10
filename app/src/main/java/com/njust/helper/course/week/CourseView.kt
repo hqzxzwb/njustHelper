@@ -67,8 +67,8 @@ class CourseView : View {
         mLeftColumnSize = typedArray.getDimensionPixelSize(R.styleable.CourseView_numColumnSize, resources.getDimensionPixelSize(R.dimen.activity_horizontal_margin))
         typedArray.recycle()
 
-        mLightPaint.color = -0x1f1f20
-        mDarkPaint.color = -0x7f7f80
+        mLightPaint.color = CourseViewConstants.LIGHT_PAINT_COLOR
+        mDarkPaint.color = CourseViewConstants.DARK_PAINT_COLOR
         val textSize = resources.getDimensionPixelSize(R.dimen.course_view_text_size)
         mTextPaint.textSize = textSize.toFloat()
         mTextPaint.color = Color.GRAY
