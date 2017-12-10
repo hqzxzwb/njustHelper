@@ -306,6 +306,8 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
             pickWeekFragment = new PickWeekFragment();
         }
         pickWeekFragment.setChosenWeek(currentWeek);
-        pickWeekFragment.show(getSupportFragmentManager(), "pickWeek");
+        if (!pickWeekFragment.isAdded()) {
+            pickWeekFragment.show(getSupportFragmentManager(), "pickWeek");
+        }
     }
 }
