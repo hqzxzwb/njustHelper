@@ -188,6 +188,6 @@ public class CourseDayFragment extends Fragment implements OnPageChangeListener 
 
         void onDayPressed(int day);
 
-        void showCourseList(List<? extends Course> courses, int day, int section);
+        void showCourseList(List<Course> courses, int day, int section);
     }
 }
