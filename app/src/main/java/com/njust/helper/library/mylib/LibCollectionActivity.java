@@ -3,6 +3,7 @@ package com.njust.helper.library.mylib;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +21,7 @@ import com.njust.helper.activity.BaseActivity;
 import com.njust.helper.databinding.ItemLibCollectBinding;
 import com.njust.helper.library.LibDetailActivity;
 import com.njust.helper.model.LibCollectItem;
+import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.DataBindingHolder;
 import com.njust.helper.tools.Prefs;
 
@@ -109,15 +111,14 @@ public class LibCollectionActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @NonNull
     @Override
     protected View getViewForSnackBar() {
         return coordinatorLayout;
     }
 
     void showLibDetail(String id) {
-        Intent intent = new Intent(this, LibDetailActivity.class);
-        intent.putExtra("id", id);
-        startActivityForResult(intent, REQUEST_CODE_LIB_DETAIL);
+        startActivityForResult(LibDetailActivity.buildIntent(this, id), REQUEST_CODE_LIB_DETAIL);
     }
 
     @Override
@@ -147,7 +148,7 @@ public class LibCollectionActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE_LIB_DETAIL) {
             if (resultCode == RESULT_OK) {
                 if (!data.getBooleanExtra("isCollected", true)) {
-                    String id = data.getStringExtra("id");
+                    String id = data.getStringExtra(Constants.EXTRA_ID);
                     for (int i = 0; i < mList.size(); i++) {
                         if (mList.get(i).getId().equals(id)) {
                             adapter.delete(i);
@@ -177,11 +178,7 @@ public class LibCollectionActivity extends BaseActivity {
             return "收藏时间：" + DATE_FORMAT.format(new Date(time));
         }
 
-        public static void handleClick(View view, String id) {
-            LibDetailActivity.showLibDetail(view.getContext(), id);
-        }
-
-        public void setOnDeleteInDialogListener(OnDeleteInDialogListener onDeleteInDialogListener) {
+        void setOnDeleteInDialogListener(OnDeleteInDialogListener onDeleteInDialogListener) {
             this.onDeleteInDialogListener = onDeleteInDialogListener;
         }
 
@@ -201,12 +198,9 @@ public class LibCollectionActivity extends BaseActivity {
                 new AlertDialog.Builder(view.getContext())
                         .setTitle("确定删除这条收藏吗?")
                         .setMessage(libCollectItem.getName())
-                        .setPositiveButton("删除", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (onDeleteInDialogListener != null) {
-                                    onDeleteInDialogListener.onDeleteInDialog(holder);
-                                }
+                        .setPositiveButton("删除", (dialogInterface, i) -> {
+                            if (onDeleteInDialogListener != null) {
+                                onDeleteInDialogListener.onDeleteInDialog(holder);
                             }
                         })
                         .setNegativeButton("取消", null)
@@ -215,7 +209,7 @@ public class LibCollectionActivity extends BaseActivity {
             });
         }
 
-        public LibCollectItem delete(int position) {
+        LibCollectItem delete(int position) {
             restoreItem = mData.remove(position);
             restorePosition = position;
             notifyItemRemoved(position);
@@ -223,7 +217,7 @@ public class LibCollectionActivity extends BaseActivity {
             return restoreItem;
         }
 
-        public LibCollectItem restore() {
+        LibCollectItem restore() {
             if (restoreItem != null) {
                 mData.add(restorePosition, restoreItem);
                 listener.onEmptyStateChange(mData.isEmpty());

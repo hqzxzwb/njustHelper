@@ -14,10 +14,10 @@ import com.njust.helper.activity.ProgressActivity;
 import com.njust.helper.library.mylib.LibraryDatabaseManager;
 import com.njust.helper.model.LibDetailItem;
 import com.njust.helper.tools.AppHttpHelper;
+import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.JsonData;
 import com.njust.helper.tools.JsonTask;
 import com.zwb.commonlibs.http.HttpMap;
-import com.zwb.commonlibs.injection.IntentInjection;
 import com.zwb.commonlibs.utils.JsonUtils;
 import com.zwb.commonlibs.utils.MemCacheManager;
 
@@ -28,7 +28,6 @@ import java.util.List;
 import butterknife.BindView;
 
 public class LibDetailActivity extends ProgressActivity implements SwipeRefreshLayout.OnRefreshListener {
-    @IntentInjection("id")
     String idString;
 
     private LibraryDatabaseManager manager;
@@ -42,10 +41,10 @@ public class LibDetailActivity extends ProgressActivity implements SwipeRefreshL
 
     private Intent resultIntent = new Intent();
 
-    public static void showLibDetail(Context context, String idString) {
+    public static Intent buildIntent(Context context, String idString) {
         Intent intent = new Intent(context, LibDetailActivity.class);
-        intent.putExtra("id", idString);
-        context.startActivity(intent);
+        intent.putExtra(Constants.EXTRA_ID, idString);
+        return intent;
     }
 
     @Override
@@ -55,6 +54,7 @@ public class LibDetailActivity extends ProgressActivity implements SwipeRefreshL
 
     @Override
     protected void prepareViews() {
+        idString = getIntent().getStringExtra(Constants.EXTRA_ID);
         manager = LibraryDatabaseManager.getInstance(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -62,7 +62,7 @@ public class LibDetailActivity extends ProgressActivity implements SwipeRefreshL
         adapter = new LibDetailAdapter(this);
         recyclerView.setAdapter(adapter);
 
-        resultIntent.putExtra("id", idString);
+        resultIntent.putExtra(Constants.EXTRA_ID, idString);
         setResult(RESULT_OK, resultIntent);
     }
 

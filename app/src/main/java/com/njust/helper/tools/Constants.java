@@ -17,4 +17,6 @@ public final class Constants {
     public static final long MILLIS_IN_ONE_DAY = 24 * 3600 * 1000L;
 
     public static final String FILE_PROVIDER_AUTH = BuildConfig.APPLICATION_ID + ".files";
+
+    public static final String EXTRA_ID = "id";
 }

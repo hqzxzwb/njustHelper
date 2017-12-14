@@ -1,6 +1,7 @@
 package com.njust.helper.library;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
@@ -117,7 +118,8 @@ public class LibSearchActivity extends MyListActivity<LibSearch, ItemLibSearchBi
         }
 
         public static void onClick(View view, String id) {
-            LibDetailActivity.showLibDetail(view.getContext(), id);
+            Context context = view.getContext();
+            context.startActivity(LibDetailActivity.buildIntent(context, id));
         }
 
         @Override
