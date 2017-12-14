@@ -22,7 +22,6 @@ import com.njust.helper.account.AccountActivity;
 import com.njust.helper.activity.BaseActivity;
 import com.njust.helper.course.data.CourseManager;
 import com.njust.helper.course.day.CourseDayFragment;
-import com.njust.helper.course.day.CourseListFragment;
 import com.njust.helper.course.week.CourseWeekFragment;
 import com.njust.helper.main.MainActivity;
 import com.njust.helper.model.Course;
@@ -297,7 +296,7 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
         String title = getResources().getStringArray(R.array.days_of_week)[day] +
                 getResources().getStringArray(R.array.sections)[section];
         String subTitle = getResources().getStringArray(R.array.section_start_end)[section];
-        CourseListFragment.getInstance(courses, title, subTitle)
+        CourseListFragment.newInstance(courses, title, subTitle)
                 .show(getSupportFragmentManager(), "courseList");
     }
 

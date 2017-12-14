@@ -21,9 +21,7 @@ class CourseWeekFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FgmtCourseWeekBinding.inflate(inflater, container, false)
-        binding.courseView.setListener { courses, day, section ->
-            listener.showCourseList(courses, day, section)
-        }
+        binding.courseView.setListener(listener::showCourseList)
         return binding.root
     }
 
