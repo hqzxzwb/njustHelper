@@ -11,11 +11,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.Window
 import butterknife.ButterKnife
-import com.njust.helper.account.AccountActivity
 import com.njust.helper.R
+import com.njust.helper.account.AccountActivity
 import com.zwb.commonlibs.injection.InjectionHelper
 import com.zwb.commonlibs.utils.LogUtils
-import com.zwb.commonlibs.utils.PermissionUtils
 
 abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,11 +92,5 @@ abstract class BaseActivity : AppCompatActivity() {
         } catch (e: Exception) {
             LogUtils.i(this, "建立对话框失败")
         }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        PermissionUtils.handlePermissionResult(requestCode, grantResults)
     }
 }
