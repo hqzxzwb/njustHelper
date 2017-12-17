@@ -19,4 +19,6 @@ public final class Constants {
     public static final String FILE_PROVIDER_AUTH = BuildConfig.APPLICATION_ID + ".files";
 
     public static final String EXTRA_ID = "id";
+
+    public static final int COURSE_SECTION_COUNT = 5;
 }
