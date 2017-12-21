@@ -96,8 +96,9 @@ class ClassroomActivity : BaseActivity() {
         Observable
                 .fromCallable { loadClassRoom(dateString, building, sections) }
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::onResult, {}, {
+                .subscribe({
                     binding.loading = false
+                    onResult(it)
                 })
     }
 

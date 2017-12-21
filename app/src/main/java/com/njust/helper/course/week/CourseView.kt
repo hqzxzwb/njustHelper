@@ -112,7 +112,10 @@ class CourseView : View {
                 if (x == downX && y == downY) {
                     x = Math.min(x, COLUMN_COUNT - 1)
                     y = Math.min(y, mSectionCount - 1)
-                    mListener?.invoke(mData[x][y], x, y)
+                    val courses = mData[x][y]
+                    if (courses.isNotEmpty()) {
+                        mListener?.invoke(mData[x][y], x, y)
+                    }
                 }
                 return true
             }
