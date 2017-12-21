@@ -110,8 +110,8 @@ class CourseView : View {
                 var x = (event.x.toInt() - mLeftColumnSize) / unitWidth
                 var y = event.y.toInt() / unitHeight
                 if (x == downX && y == downY) {
-                    x = Math.min(x, COLUMN_COUNT)
-                    y = Math.min(y, mSectionCount)
+                    x = Math.min(x, COLUMN_COUNT - 1)
+                    y = Math.min(y, mSectionCount - 1)
                     mListener?.invoke(mData[x][y], x, y)
                 }
                 return true
