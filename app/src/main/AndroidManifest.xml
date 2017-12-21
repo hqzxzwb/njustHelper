@@ -82,8 +82,7 @@
         <activity
             android:name=".classroom.ClassroomActivity"
             android:label="@string/title_activity_cr"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".account.AccountActivity"
             android:label="@string/title_activity_account"

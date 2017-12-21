@@ -1,17 +1,19 @@
 package com.njust.helper.classroom
 
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.FloatingActionButton
-import android.support.v7.widget.Toolbar
+import android.databinding.DataBindingUtil
+import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
-import android.widget.RadioGroup
-import android.widget.TextView
-import butterknife.BindView
 import com.njust.helper.R
-import com.njust.helper.activity.ProgressActivity
-import com.njust.helper.tools.*
+import com.njust.helper.activity.BaseActivity
+import com.njust.helper.databinding.ActivityClassroomBinding
+import com.njust.helper.tools.AppHttpHelper
+import com.njust.helper.tools.Constants
+import com.njust.helper.tools.JsonData
+import com.njust.helper.tools.Prefs
 import com.zwb.commonlibs.http.HttpMap
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,40 +23,20 @@ import java.util.*
  *
  * @author zwb
  */
-class ClassroomActivity : ProgressActivity() {
+class ClassroomActivity : BaseActivity() {
     private lateinit var checkBoxes: Array<CheckBox>
 
-    @BindView(R.id.radioGroup1)
-    lateinit var dateGroup: RadioGroup
-    @BindView(R.id.radioGroup2)
-    lateinit var buildingGroup: RadioGroup
-    @BindView(R.id.textView1)
-    lateinit var textView: TextView
-    @BindView(R.id.button1)
-    lateinit var button: FloatingActionButton
-    @BindView(R.id.coordinatorLayout)
-    lateinit var coordinatorLayout: CoordinatorLayout
-    @BindView(R.id.toolbar)
-    lateinit var toolbar: Toolbar
+    lateinit var binding: ActivityClassroomBinding
 
-    override fun prepareViews() {
-        checkBoxes = arrayOf(
-                findViewById(R.id.checkBox1),
-                findViewById(R.id.checkBox2),
-                findViewById(R.id.checkBox3),
-                findViewById(R.id.checkBox4),
-                findViewById(R.id.checkBox5)
-        )
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         val time = (System.currentTimeMillis() - Prefs.getTermStartTime(this)) % Constants.MILLIS_IN_ONE_DAY
         val captions = resources.getStringArray(R.array.sections)
-        var i = 0
-        while (i < Constants.COURSE_SECTION_COUNT) {
-            checkBoxes[i].text = captions[i]
-            i++
-        }
+        (0 until checkBoxes.size)
+                .forEach { checkBoxes[it].text = captions[it] }
 
-        i = 0
+        var i = 0
         while (i < Constants.COURSE_SECTION_COUNT) {
             if (time < Constants.SECTION_END[i]) {
                 break
@@ -69,11 +51,23 @@ class ClassroomActivity : ProgressActivity() {
         }
     }
 
-    override fun layoutRes(): Int {
-        return R.layout.activity_classroom
+    override fun layoutRes(): Int = 0
+
+    override fun layout() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_classroom)
+
+        checkBoxes = arrayOf(
+                binding.checkBox1,
+                binding.checkBox2,
+                binding.checkBox3,
+                binding.checkBox4,
+                binding.checkBox5
+        )
+
+        binding.button1.setOnClickListener { onClickQueryButton() }
     }
 
-    fun onClick(view: View) {
+    private fun onClickQueryButton() {
         var sections = 0
         (0 until Constants.COURSE_SECTION_COUNT)
                 .asSequence()
@@ -83,7 +77,7 @@ class ClassroomActivity : ProgressActivity() {
             showSnack(R.string.toast_cr_choose_one_section)
             return
         }
-        val day = when (dateGroup.checkedRadioButtonId) {
+        val day = when (binding.dateGroup.checkedRadioButtonId) {
             R.id.radio0 -> 0
             R.id.radio1 -> 1
             else -> 2
@@ -92,61 +86,58 @@ class ClassroomActivity : ProgressActivity() {
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val date = Date(dateLong)
         val dateString = format.format(date)
-        val buildingIndex = when (buildingGroup.checkedRadioButtonId) {
+        val buildingIndex = when (binding.buildingGroup.checkedRadioButtonId) {
             R.id.radio3 -> 0
             R.id.radio4 -> 1
             else -> 2
         }
         val building = BUILDING_VALUE[buildingIndex]
-        attachAsyncTask(ClassRoomTask(), dateString, building, Integer.toString(sections))
+        binding.loading = true
+        Observable
+                .fromCallable { loadClassRoom(dateString, building, sections) }
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::onResult, {}, {
+                    binding.loading = false
+                })
     }
 
-    override fun setRefreshing(b: Boolean) {
-        super.setRefreshing(b)
-        button.isEnabled = !b
+    private fun loadClassRoom(date: String, building: String, sections: Int): JsonData<String> {
+        val data = HttpMap()
+        data.addParam("date", date)
+                .addParam("building", building)
+                .addParam("timeofday", Integer.toString(sections))
+        try {
+            val string = AppHttpHelper().getPostResult("classroom.php", data)
+            return object : JsonData<String>(string) {
+                @Throws(Exception::class)
+                override fun parseData(jsonObject: JSONObject): String {
+                    return jsonObject.getString("content")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return JsonData.newNetErrorInstance<String>()
     }
 
-    override fun setupActionBar() {
-        setSupportActionBar(toolbar)
-        super.setupActionBar()
+    private fun onResult(result: JsonData<String>) {
+        when (result.status) {
+            JsonData.STATUS_SUCCESS -> {
+                val s = result.data
+                if (s == "") {
+                    binding.text = getString(R.string.text_classroom_no_info)
+                } else {
+                    binding.text = s
+                }
+            }
+            JsonData.STATUS_NET_ERROR -> {
+                binding.text = getString(R.string.text_classroom_fail)
+            }
+        }
     }
 
     override fun getViewForSnackBar(): View {
-        return coordinatorLayout
-    }
-
-    private inner class ClassRoomTask : ProgressAsyncTask<String, String>(this@ClassroomActivity) {
-        override fun doInBackground(vararg params: String): JsonData<String> {
-            val data = HttpMap()
-            data.addParam("date", params[0])
-                    .addParam("building", params[1])
-                    .addParam("timeofday", params[2])
-            try {
-                val string = AppHttpHelper().getPostResult("classroom.php", data)
-                return object : JsonData<String>(string) {
-                    @Throws(Exception::class)
-                    override fun parseData(jsonObject: JSONObject): String {
-                        return jsonObject.getString("content")
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            return JsonData.newNetErrorInstance()
-        }
-
-        override fun onNetError() {
-            textView.setText(R.string.text_classroom_fail)
-        }
-
-        override fun onSuccess(s: String) {
-            if (s == "") {
-                textView.setText(R.string.text_classroom_no_info)
-            } else {
-                textView.text = s
-            }
-        }
+        return binding.coordinatorLayout
     }
 
     companion object {
