@@ -1,12 +1,16 @@
 package com.njust.helper.model;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class UpdateInfo implements Serializable {
+public class UpdateInfo implements Parcelable {
     private int versionCode;
     private String updateLog;
     private String url;
     private String versionName;
+
+    public UpdateInfo() {
+    }
 
     public String getUrl() {
         return url;
@@ -47,4 +51,36 @@ public class UpdateInfo implements Serializable {
                 + "更新日志：\n"
                 + updateLog;
     }
+
+    protected UpdateInfo(Parcel in) {
+        versionCode = in.readInt();
+        updateLog = in.readString();
+        url = in.readString();
+        versionName = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(versionCode);
+        dest.writeString(updateLog);
+        dest.writeString(url);
+        dest.writeString(versionName);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<UpdateInfo> CREATOR = new Creator<UpdateInfo>() {
+        @Override
+        public UpdateInfo createFromParcel(Parcel in) {
+            return new UpdateInfo(in);
+        }
+
+        @Override
+        public UpdateInfo[] newArray(int size) {
+            return new UpdateInfo[size];
+        }
+    };
 }

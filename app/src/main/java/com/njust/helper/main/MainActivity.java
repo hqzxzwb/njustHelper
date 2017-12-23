@@ -7,17 +7,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.njust.helper.account.AccountActivity;
 import com.njust.helper.BackgroundService;
 import com.njust.helper.BuildConfig;
 import com.njust.helper.LinksActivity;
 import com.njust.helper.R;
+import com.njust.helper.account.AccountActivity;
 import com.njust.helper.activity.BaseActivity;
 import com.njust.helper.classroom.ClassroomActivity;
 import com.njust.helper.classroom.CourseQueryActivity;
@@ -177,7 +178,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_settings:
                 startActivity(SettingsActivity.class);
@@ -189,7 +190,11 @@ public class MainActivity extends BaseActivity {
                 startActivity(AccountActivity.class);
                 return true;
             case R.id.item_update:
-                checkUpdateDialog = ProgressDialog.show(this, "请稍候", "正在检查更新……", true, false);
+                checkUpdateDialog = ProgressDialog.show(this,
+                        "请稍候",
+                        "正在检查更新……",
+                        true,
+                        false);
                 Intent intent = new Intent(this, BackgroundService.class);
                 intent.putExtra("silentlyCheckUpdate", false)
                         .putExtra("action", "checkUpdate");
@@ -197,21 +202,7 @@ public class MainActivity extends BaseActivity {
                     receiver = new BroadcastReceiver() {
                         @Override
                         public void onReceive(Context context, Intent intent) {
-                            checkUpdateDialog.dismiss();
-                            int status = intent.getIntExtra("updateStatus", BackgroundService.UPDATE_STATUS_FAIL);
-                            if (status == BackgroundService.UPDATE_STATUS_FAIL) {
-                                showSnack("检查更新失败，请检查网络后重试");
-                            } else if (status == BackgroundService.UPDATE_STATUS_NO_UPDATE) {
-                                showSnack("未检测到更新");
-                            } else {
-                                final UpdateInfo updateInfo = (UpdateInfo) intent.getSerializableExtra("updateInfo");
-                                new AlertDialog.Builder(MainActivity.this)
-                                        .setTitle("发现新版本")
-                                        .setMessage(updateInfo.toString())
-                                        .setPositiveButton("立即查看", (dialog, which) -> startActivity(new Intent(MainActivity.this, UpdateActivity.class).putExtra("updateInfo", updateInfo)))
-                                        .setNegativeButton("以后再说", null)
-                                        .show();
-                            }
+                            onReceiveUpdateIntent(intent);
                         }
                     };
                     LocalBroadcastManager.getInstance(this)
@@ -221,6 +212,25 @@ public class MainActivity extends BaseActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    void onReceiveUpdateIntent(Intent intent) {
+        checkUpdateDialog.dismiss();
+        int status = intent.getIntExtra("updateStatus", BackgroundService.UPDATE_STATUS_FAIL);
+        if (status == BackgroundService.UPDATE_STATUS_FAIL) {
+            showSnack("检查更新失败，请检查网络后重试");
+        } else if (status == BackgroundService.UPDATE_STATUS_NO_UPDATE) {
+            showSnack("未检测到更新");
+        } else {
+            UpdateInfo updateInfo = intent.getParcelableExtra("updateInfo");
+            Intent updateActivityIntent = UpdateActivity.createIntent(this, updateInfo);
+            new AlertDialog.Builder(this)
+                    .setTitle("发现新版本")
+                    .setMessage(updateInfo.toString())
+                    .setPositiveButton("立即查看", (dialog, which) -> startActivity(updateActivityIntent))
+                    .setNegativeButton("以后再说", null)
+                    .show();
         }
     }
 

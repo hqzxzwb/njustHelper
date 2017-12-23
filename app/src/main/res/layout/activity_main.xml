@@ -58,7 +58,6 @@
                 android:layout_marginTop="4dp">
 
                 <com.njust.helper.main.CourseHomeView
-                    android:id="@+id/courseHomeView"
                     style="@style/TextViewHome"
                     android:gravity="left"
                     android:onClick="@{clickHandler::openCourseActivity}"
@@ -145,7 +144,6 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/cardExams"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
@@ -161,7 +159,6 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/cardGrade"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
@@ -177,7 +174,6 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/cardLevel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
@@ -210,7 +206,6 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/cardClassroom"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
@@ -225,7 +220,6 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/cardCengke"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -242,7 +236,6 @@
 
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cardLinks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"

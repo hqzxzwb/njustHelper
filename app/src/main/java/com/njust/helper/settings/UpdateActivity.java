@@ -1,5 +1,6 @@
 package com.njust.helper.settings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -15,7 +16,6 @@ import com.njust.helper.databinding.ActivityUpdateBinding;
 import com.njust.helper.model.UpdateInfo;
 import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.JsonData;
-import com.zwb.commonlibs.injection.InjectionHelper;
 import com.zwb.commonlibs.injection.IntentInjection;
 
 import java.io.BufferedInputStream;
@@ -87,12 +87,17 @@ public class UpdateActivity extends AppCompatActivity {
         }
     }
 
+    public static Intent createIntent(Context context, UpdateInfo updateInfo) {
+        return new Intent(context, UpdateActivity.class)
+                .putExtra("updateInfo", updateInfo);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_update);
-        InjectionHelper.injectActivity(this);
+        updateInfo = getIntent().getParcelableExtra("updateInfo");
         if (updateInfo != null) {
             binding.setUpdateInfo(updateInfo);
             binding.setStatus(2);
