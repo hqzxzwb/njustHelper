@@ -30,8 +30,9 @@ class ClassroomActivity : BaseActivity() {
 
         val time = (System.currentTimeMillis() - Prefs.getTermStartTime(this)) % TimeUtil.ONE_DAY
         val captions = resources.getStringArray(R.array.sections)
-        (0 until checkBoxes.size)
-                .forEach { checkBoxes[it].text = captions[it] }
+        for (it in 0 until checkBoxes.size) {
+            checkBoxes[it].text = captions[it]
+        }
 
         var i = 0
         while (i < Constants.COURSE_SECTION_COUNT) {
@@ -66,10 +67,12 @@ class ClassroomActivity : BaseActivity() {
 
     private fun onClickQueryButton() {
         var sections = 0
-        (0 until Constants.COURSE_SECTION_COUNT)
-                .asSequence()
-                .filter { checkBoxes[it].isChecked }
-                .forEach { sections = sections or (1 shl it) }
+        @Suppress("LoopToCallChain") // Loop is faster.
+        for (it in 0 until Constants.COURSE_SECTION_COUNT) {
+            if (checkBoxes[it].isChecked) {
+                sections = sections or (1 shl it)
+            }
+        }
         if (sections == 0) {
             showSnack(R.string.toast_cr_choose_one_section)
             return

@@ -25,14 +25,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CourseDayFragment : Fragment(), OnPageChangeListener {
-    internal val mLists: Array<Array<MutableList<Course>>> = Array(7) {
-        Array<MutableList<Course>>(5) {
+    private val mLists: Array<Array<MutableList<Course>>> = Array(7) {
+        Array<MutableList<Course>>(Constants.COURSE_SECTION_COUNT) {
             arrayListOf()
         }
     }
-    private val DATE_MONTH_FORMAT = SimpleDateFormat("MMM", Locale.CHINA)
-    private val DATE_DAY_FORMAT = SimpleDateFormat("d", Locale.CHINA)
-    private var dayOfWeek: Array<String>? = null
+    private val dateMonthFormat = SimpleDateFormat("MMM", Locale.CHINA)
+    private val dateDayFormat = SimpleDateFormat("d", Locale.CHINA)
+    private lateinit var dayOfWeek: Array<String>
 
     private lateinit var mTextViews: Array<TextView>
     @BindView(R.id.textMonth)
@@ -41,8 +41,7 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
     lateinit var mViewPager: ViewPager
 
     private var beginTimeInMillis: Long = 0
-    var listener: Listener? = null
-        private set
+    private lateinit var listener: Listener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         ButterKnife.bind(this, view)
@@ -59,8 +58,8 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
                 view.findViewById(R.id.dayOfWeek6)
         )
 
-        for (i in 0..6) {
-            mTextViews[i].setOnClickListener { listener!!.onDayPressed(i) }
+        for (i in 0 until 7) {
+            mTextViews[i].setOnClickListener { listener.onDayPressed(i) }
         }
         mTextViews[0].setBackgroundColor(Color.GRAY)
 
@@ -90,26 +89,27 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fgmt_course_day, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fgmt_course_day, container, false)
     }
 
-    override fun onAttach(context: Context?) {
-        listener = context as Listener?
+    override fun onAttach(context: Context) {
+        listener = context as Listener
         dayOfWeek = resources.getStringArray(R.array.days_of_week_short)
         super.onAttach(context)
     }
 
     fun setList(courses: List<Course>) {
-        for (i in 0..6) {
-            for (j in 0..4)
+        for (i in 0 until 7) {
+            for (j in 0 until Constants.COURSE_SECTION_COUNT) {
                 mLists[i][j].clear()
+            }
         }
         for (course in courses) {
             mLists[course.day][course.sec1].add(course)
         }
-        val adapter = mViewPager.adapter
-        adapter?.notifyDataSetChanged()
+        val adapter = mViewPager.adapter!!
+        adapter.notifyDataSetChanged()
     }
 
     fun setPosition(position: Int) {
@@ -125,24 +125,24 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
     override fun onPageScrolled(arg0: Int, arg1: Float, arg2: Int) {}
 
     override fun onPageSelected(position: Int) {
-        for (i in 0..6) {
+        for (i in 0 until 7) {
             mTextViews[i].setBackgroundColor(Color.TRANSPARENT)
         }
         mTextViews[position % 7].setBackgroundColor(Color.GRAY)
-        listener!!.onDayChange(position)
+        listener.onDayChange(position)
     }
 
     @SuppressLint("SetTextI18n")
     fun setWeek(week: Int) {
         var time = beginTimeInMillis + (week - 1) * TimeUtil.ONE_WEEK
         val date = Date(time)
-        mMonthView.text = DATE_MONTH_FORMAT.format(date)
-        for (i in 0..6) {
-            val string = DATE_DAY_FORMAT.format(date)
+        mMonthView.text = dateMonthFormat.format(date)
+        for (i in 0 until 7) {
+            val string = dateDayFormat.format(date)
             if (i > 0 && string == "1") {
-                mTextViews[i].text = DATE_MONTH_FORMAT.format(date) + "\n" + dayOfWeek!![i]
+                mTextViews[i].text = dateMonthFormat.format(date) + "\n" + dayOfWeek[i]
             } else {
-                mTextViews[i].text = string + "\n" + dayOfWeek!![i]
+                mTextViews[i].text = string + "\n" + dayOfWeek[i]
             }
             time += TimeUtil.ONE_DAY
             date.time = time
@@ -151,6 +151,10 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
 
     fun setStartTime(time: Long) {
         beginTimeInMillis = time
+    }
+
+    fun showCourseList(courses: List<Course>, day: Int, section: Int) {
+        listener.showCourseList(courses, day, section)
     }
 
     interface Listener {
