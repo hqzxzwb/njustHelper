@@ -11,8 +11,8 @@ import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.app.TaskStackBuilder
 import android.support.v4.content.LocalBroadcastManager
 import com.njust.helper.model.UpdateInfo
-import com.njust.helper.update.UpdateActivity
 import com.njust.helper.tools.*
+import com.njust.helper.update.UpdateActivity
 import com.zwb.commonlibs.utils.JsonUtils
 import org.json.JSONObject
 
@@ -87,7 +87,6 @@ class BackgroundService : Service() {
                                 .addNextIntent(Intent(this@BackgroundService, UpdateActivity::class.java)
                                         .putExtra("updateInfo", result))
                                 .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT))
-                        .setVibrate(Constants.NOTIFICATION_VIBRATION_TIME)
                 NotificationManagerCompat.from(this@BackgroundService)
                         .notify(Constants.NOTIFICATION_CODE_UPDATE, builder.build())
             } else {
@@ -96,6 +95,7 @@ class BackgroundService : Service() {
                         .putExtra("updateStatus", UPDATE_STATUS_UPDATE)
                 LocalBroadcastManager.getInstance(this@BackgroundService).sendBroadcast(intent)
             }
+            Prefs.putLastCheckUpdateTime(this@BackgroundService)
         }
 
         override fun onNetError() {

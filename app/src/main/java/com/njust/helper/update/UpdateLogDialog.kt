@@ -9,7 +9,7 @@ import com.njust.helper.R
 object UpdateLogDialog {
     const val message =
             "${BuildConfig.VERSION_CODE} v${BuildConfig.VERSION_NAME}更新日志：\n" +
-                    "1.修复 修复闪退问题\n"
+                    "1.修复 修复检查到更新后频繁弹通知提醒的问题\n"
 
     @JvmStatic
     fun showUpdateDialog(context: Context) {
