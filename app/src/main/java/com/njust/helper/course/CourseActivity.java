@@ -27,6 +27,7 @@ import com.njust.helper.main.MainActivity;
 import com.njust.helper.model.Course;
 import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.Prefs;
+import com.njust.helper.tools.TimeUtil;
 import com.zwb.commonlibs.ui.DatePickerDialogFix;
 
 import java.text.SimpleDateFormat;
@@ -182,7 +183,7 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
     private void setTodayText() {
         Calendar calendar = Calendar.getInstance();
         long now = calendar.getTimeInMillis();
-        int week = (int) Math.floor((now - termStartTime) / 604800000d) + 1;
+        int week = (int) Math.floor((now - termStartTime) / (float) TimeUtil.ONE_WEEK) + 1;
         int day_of_week = calendar.get(Calendar.DAY_OF_WEEK);
         dayFragment.setCurrentDay(day_of_week > 1 ? day_of_week - 2 : 6);
         String string = dateFormat.format(new Date());
@@ -192,7 +193,7 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
     private void showIntentCourse() {
         setTodayText();
         long intentTime = getIntent().getLongExtra("time", System.currentTimeMillis());
-        currentDay = (int) ((intentTime - termStartTime) / 86400000L);
+        currentDay = (int) ((intentTime - termStartTime) / TimeUtil.ONE_DAY);
         if (currentDay <= 0) {
             currentDay = 1;
             updatePosition();
@@ -211,7 +212,7 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
     }
 
     private void showCourse(long timeInMillis) {
-        currentDay = (int) ((timeInMillis - termStartTime) / 86400000);
+        currentDay = (int) ((timeInMillis - termStartTime) / TimeUtil.ONE_DAY);
         updatePosition();
     }
 
@@ -240,7 +241,7 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
 
     public void pickDate(View view) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(termStartTime + currentDay * 86400000L);
+        calendar.setTimeInMillis(termStartTime + currentDay * TimeUtil.ONE_DAY);
         new DatePickerDialogFix(this, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)).show();
     }

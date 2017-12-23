@@ -35,6 +35,7 @@ import com.njust.helper.model.Course;
 import com.njust.helper.model.UpdateInfo;
 import com.njust.helper.settings.AboutActivity;
 import com.njust.helper.settings.SettingsActivity;
+import com.njust.helper.tools.TimeUtil;
 import com.njust.helper.update.UpdateActivity;
 import com.njust.helper.update.UpdateLogDialog;
 import com.njust.helper.tools.Constants;
@@ -252,7 +253,7 @@ public class MainActivity extends BaseActivity {
 
     private void updateCourse() {
         long minus = System.currentTimeMillis() - Prefs.getTermStartTime(this);
-        int day = (int) (minus / Constants.MILLIS_IN_ONE_DAY);
+        int day = (int) (minus / TimeUtil.ONE_DAY);
         if (minus < 0L) {
             day--;
         }
@@ -265,7 +266,7 @@ public class MainActivity extends BaseActivity {
         } else {
             List<String> strings = new ArrayList<>();
             String[] timeList = getResources().getStringArray(R.array.section_start);
-            int millisOfDay = (int) ((System.currentTimeMillis() - Prefs.getTermStartTime(this)) % Constants.MILLIS_IN_ONE_DAY);
+            int millisOfDay = (int) ((System.currentTimeMillis() - Prefs.getTermStartTime(this)) % TimeUtil.ONE_DAY);
             for (Course course : list1) {
                 if (millisOfDay > Constants.SECTION_END[course.getSec1()]) continue;
                 strings.add("今天" + timeList[course.getSec1()] + "/" + course.getClassroom() + "/" + course.getName());

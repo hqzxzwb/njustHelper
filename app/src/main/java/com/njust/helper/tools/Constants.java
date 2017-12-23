@@ -14,8 +14,6 @@ public final class Constants {
     public static final int[] SECTION_START = {28800000, 38400000, 50400000, 57000000, 68400000};
     public static final int[] SECTION_END = {37500000, 44100000, 56100000, 65700000, 77100000};
 
-    public static final long MILLIS_IN_ONE_DAY = 24 * 3600 * 1000L;
-
     public static final String FILE_PROVIDER_AUTH = BuildConfig.APPLICATION_ID + ".files";
 
     public static final String EXTRA_ID = "id";

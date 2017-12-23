@@ -47,7 +47,7 @@ public final class TimeReceiver extends BroadcastReceiver {
         if (minus < 0) {
             return;
         }
-        int day = (int) ((System.currentTimeMillis() - Prefs.getTermStartTime(mContext)) / (86400000L));
+        int day = (int) ((System.currentTimeMillis() - Prefs.getTermStartTime(mContext)) / TimeUtil.ONE_DAY);
         int count;
         String notiString = null;
         switch (mode) {
@@ -72,7 +72,7 @@ public final class TimeReceiver extends BroadcastReceiver {
                 .setContentIntent(TaskStackBuilder.create(mContext)
                         .addParentStack(CourseActivity.class)
                         .addNextIntent(new Intent(mContext, CourseActivity.class)
-                                .putExtra("time", now + (mode == 1 ? 0 : 1) * 86400000L))
+                                .putExtra("time", now + (mode == 1 ? 0 : 1) * TimeUtil.ONE_DAY))
                         .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
         if (mContext.getSharedPreferences("time", 0).getBoolean("course_vib", true)) {
             builder.setVibrate(Constants.NOTIFICATION_VIBRATION_TIME);

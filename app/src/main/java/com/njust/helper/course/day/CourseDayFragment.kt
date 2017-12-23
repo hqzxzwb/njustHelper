@@ -19,6 +19,7 @@ import butterknife.ButterKnife
 import com.njust.helper.R
 import com.njust.helper.model.Course
 import com.njust.helper.tools.Constants
+import com.njust.helper.tools.TimeUtil
 import com.zwb.commonlibs.adapter.EfficientPagerAdapter
 import java.text.SimpleDateFormat
 import java.util.*
@@ -133,7 +134,7 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
 
     @SuppressLint("SetTextI18n")
     fun setWeek(week: Int) {
-        var time = beginTimeInMillis + (week - 1) * 604800000L
+        var time = beginTimeInMillis + (week - 1) * TimeUtil.ONE_WEEK
         val date = Date(time)
         mMonthView.text = DATE_MONTH_FORMAT.format(date)
         for (i in 0..6) {
@@ -143,7 +144,7 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
             } else {
                 mTextViews[i].text = string + "\n" + dayOfWeek!![i]
             }
-            time += 86400000L
+            time += TimeUtil.ONE_DAY
             date.time = time
         }
     }

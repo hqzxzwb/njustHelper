@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.njust.helper.R
 import com.njust.helper.databinding.FgmtCourseWeekBinding
 import com.njust.helper.model.Course
+import com.njust.helper.tools.TimeUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,8 +33,8 @@ class CourseWeekFragment : Fragment() {
     }
 
     private fun getTime(week: Int): String {
-        val time = beginTimeInMillis + (week - 1) * 604800000L
-        return convert(time) + "~" + convert(time + 518400000L)
+        val time = beginTimeInMillis + (week - 1) * TimeUtil.ONE_WEEK
+        return convert(time) + "~" + convert(time + 6 * TimeUtil.ONE_DAY)
     }
 
     private fun convert(millis: Long): String {

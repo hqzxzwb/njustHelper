@@ -7,10 +7,7 @@ import android.widget.CheckBox
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityClassroomBinding
-import com.njust.helper.tools.AppHttpHelper
-import com.njust.helper.tools.Constants
-import com.njust.helper.tools.JsonData
-import com.njust.helper.tools.Prefs
+import com.njust.helper.tools.*
 import com.zwb.commonlibs.http.HttpMap
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -31,7 +28,7 @@ class ClassroomActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val time = (System.currentTimeMillis() - Prefs.getTermStartTime(this)) % Constants.MILLIS_IN_ONE_DAY
+        val time = (System.currentTimeMillis() - Prefs.getTermStartTime(this)) % TimeUtil.ONE_DAY
         val captions = resources.getStringArray(R.array.sections)
         (0 until checkBoxes.size)
                 .forEach { checkBoxes[it].text = captions[it] }
@@ -82,7 +79,7 @@ class ClassroomActivity : BaseActivity() {
             R.id.radio1 -> 1
             else -> 2
         }
-        val dateLong = System.currentTimeMillis() + 86400000 * day
+        val dateLong = System.currentTimeMillis() + TimeUtil.ONE_DAY * day
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val date = Date(dateLong)
         val dateString = format.format(date)
