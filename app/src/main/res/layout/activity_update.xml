@@ -1,28 +1,22 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <variable
-            name="updateInfo"
-            type="com.njust.helper.model.UpdateInfo" />
+        <import type="com.njust.helper.update.UpdateActivityVm"/>
 
         <variable
-            name="status"
-            type="int" />
+            name="vm"
+            type="UpdateActivityVm"/>
 
-        <variable
-            name="progress"
-            type="int" />
-
-        <import type="com.njust.helper.settings.UpdateActivity" />
+        <import type="com.njust.helper.update.UpdateActivity"/>
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.njust.helper.settings.UpdateActivity">
+        tools:context="com.njust.helper.update.UpdateActivity">
 
         <TextView
             android:id="@+id/textView1"
@@ -30,29 +24,29 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:padding="16dp"
-            android:text="@{UpdateActivity.getMessageText(updateInfo,status)}"
-            tools:text="更新日志" />
+            android:text="@{vm.messageText}"
+            tools:text="更新日志"/>
 
         <ProgressBar
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="false"
-            android:progress="@{progress}" />
+            android:progress="@{vm.progress}"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:drawable/divider_horizontal_bright" />
+            android:background="@android:drawable/divider_horizontal_bright"/>
 
         <Button
             android:id="@+id/button1"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="@{status!=1 &amp;&amp; status!=5}"
+            android:enabled="@{vm.state!=1 &amp;&amp; vm.state!=5}"
             android:onClick="onClick"
-            android:text="@{UpdateActivity.getButtonText(status)}"
-            tools:text="检查更新" />
+            android:text="@{vm.buttonText}"
+            tools:text="检查更新"/>
     </LinearLayout>
 </layout>

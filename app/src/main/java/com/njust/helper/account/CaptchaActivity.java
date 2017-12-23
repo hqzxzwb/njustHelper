@@ -110,7 +110,7 @@ public class CaptchaActivity extends ProgressActivity {
         @Override
         protected JsonData<CaptchaData> doInBackground(Void... params) {
             try {
-                String string = new AppHttpHelper().getGetResult(type == 0 ? "jwcCaptcha.php" : "libCaptcha.php", null);
+                String string = new AppHttpHelper().getGetResult(type == 0 ? "jwcCaptcha.php" : "libCaptcha.php", new HttpMap());
                 return new JsonData<CaptchaData>(string) {
                     @Override
                     protected CaptchaData parseData(JSONObject jsonObject) throws Exception {

@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.app.TaskStackBuilder
 import android.support.v4.content.LocalBroadcastManager
 import com.njust.helper.model.UpdateInfo
-import com.njust.helper.settings.UpdateActivity
+import com.njust.helper.update.UpdateActivity
 import com.njust.helper.tools.*
 import com.zwb.commonlibs.utils.JsonUtils
 import org.json.JSONObject

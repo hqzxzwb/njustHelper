@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.View
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
+import com.njust.helper.update.UpdateLogDialog
 
 /**
  * 关于

@@ -1,4 +1,4 @@
-package com.njust.helper.settings
+package com.njust.helper.update
 
 import android.content.Context
 import android.support.v7.app.AlertDialog
