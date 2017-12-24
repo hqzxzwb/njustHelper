@@ -17,7 +17,6 @@ import java.net.HttpURLConnection;
  * Created by zwb on 2015/4/12.
  * 扩展HttpHelper
  */
-// TODO: 2016/6/4 change to volley implementation
 public final class AppHttpHelper extends HttpHelper {
     private static AppHttpHelper instance = new AppHttpHelper();
     private RequestQueue requestQueue;

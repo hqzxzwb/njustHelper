@@ -6,9 +6,9 @@
 
         <variable
             name="item"
-            type="com.njust.helper.model.LibCollectItem" />
+            type="com.njust.helper.library.collection.LibCollectItem" />
 
-        <import type="com.njust.helper.library.mylib.LibCollectionActivity.LibCollectionAdapter" />
+        <import type="com.njust.helper.library.collection.LibCollectionActivity.LibCollectionAdapter" />
     </data>
 
     <LinearLayout

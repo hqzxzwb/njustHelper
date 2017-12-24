@@ -1,4 +1,4 @@
-package com.njust.helper.library.mylib;
+package com.njust.helper.library.collection;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +20,6 @@ import com.njust.helper.R;
 import com.njust.helper.activity.BaseActivity;
 import com.njust.helper.databinding.ItemLibCollectBinding;
 import com.njust.helper.library.LibDetailActivity;
-import com.njust.helper.model.LibCollectItem;
 import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.DataBindingHolder;
 import com.njust.helper.tools.Prefs;
@@ -35,7 +34,7 @@ import butterknife.BindView;
 
 public class LibCollectionActivity extends BaseActivity {
     private static final int REQUEST_CODE_LIB_DETAIL = 0;
-    private LibraryDatabaseManager manager;
+    private LibCollectManager manager;
     private LibCollectionAdapter adapter;
     private List<LibCollectItem> mList;
     private List<String> itemsToRemove = new ArrayList<>();
@@ -56,7 +55,7 @@ public class LibCollectionActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        manager = LibraryDatabaseManager.getInstance(this);
+        manager = LibCollectManager.Companion.getInstance(this);
         mList = manager.findCollect();
         adapter = new LibCollectionAdapter(mList, this);
         adapter.setListener(empty -> emptyView.setVisibility(mList.isEmpty() ? View.VISIBLE : View.GONE));
@@ -103,7 +102,7 @@ public class LibCollectionActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;

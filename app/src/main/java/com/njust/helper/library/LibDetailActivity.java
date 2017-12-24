@@ -11,7 +11,7 @@ import android.view.MenuItem;
 
 import com.njust.helper.R;
 import com.njust.helper.activity.ProgressActivity;
-import com.njust.helper.library.mylib.LibraryDatabaseManager;
+import com.njust.helper.library.collection.LibCollectManager;
 import com.njust.helper.model.LibDetailItem;
 import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.Constants;
@@ -30,7 +30,7 @@ import butterknife.BindView;
 public class LibDetailActivity extends ProgressActivity implements SwipeRefreshLayout.OnRefreshListener {
     String idString;
 
-    private LibraryDatabaseManager manager;
+    private LibCollectManager manager;
     private String title;
     private boolean isCollected = false;
     private LibDetailAdapter adapter;
@@ -55,7 +55,7 @@ public class LibDetailActivity extends ProgressActivity implements SwipeRefreshL
     @Override
     protected void prepareViews() {
         idString = getIntent().getStringExtra(Constants.EXTRA_ID);
-        manager = LibraryDatabaseManager.getInstance(this);
+        manager = LibCollectManager.Companion.getInstance(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
