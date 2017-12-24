@@ -12,7 +12,7 @@ import java.util.List;
  * Legacy data of library collection.
  */
 class LibraryHelper extends SQLiteOpenHelper {
-    private static final String DB_NAME = "library.db";
+    static final String DB_NAME = "library.db";
     private static final int VERSION = 8;
 
     public LibraryHelper(Context context) {

@@ -44,9 +44,14 @@ class LibCollectManager private constructor(context: Context) {
             .allowMainThreadQueries()
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
+                    val legacyDbFile = context.getDatabasePath(LibraryHelper.DB_NAME)
+                    if (!legacyDbFile.exists()) {
+                        return
+                    }
                     LibraryHelper(context).bindArgs.forEach {
                         db.execSQL("INSERT OR IGNORE INTO `collection`(`id`,`name`,`code`,`time`) VALUES (?,?,?,?)", it)
                     }
+                    legacyDbFile.delete()
                 }
             })
             .build()
