@@ -107,6 +107,9 @@ public class LibBorrowActivity extends ProgressActivity implements SwipeRefreshL
                         case JsonData.STATUS_LOG_FAIL:
                             changeAccount(AccountActivity.REQUEST_LIB);
                             break;
+                        case JsonData.STATUS_NET_ERROR:
+                            showSnack(R.string.message_net_error);
+                            break;
                     }
                 });
     }

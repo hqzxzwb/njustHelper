@@ -10,6 +10,7 @@ import com.njust.helper.databinding.ActivityClassroomBinding
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
+import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -89,6 +90,7 @@ class ClassroomActivity : BaseActivity() {
         val building = BUILDING_VALUE[buildingIndex]
         binding.loading = true
         ClassroomApi.INSTANCE.getClassrooms(dateString, building, sections)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     binding.loading = false
                     val s = it.data

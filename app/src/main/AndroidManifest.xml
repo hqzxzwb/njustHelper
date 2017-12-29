@@ -63,12 +63,12 @@
             android:label="@string/title_activity_lib_detail"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".classroom.CourseQueryActivity"
+            android:name=".coursequery.CourseQueryActivity"
             android:label="@string/title_courseQuery"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity
-            android:name=".classroom.CourseQueryResultActivity"
+            android:name=".coursequery.CourseQueryResultActivity"
             android:label="@string/title_activity_cengke_result"
             android:screenOrientation="portrait"/>
         <activity
