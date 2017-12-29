@@ -8,7 +8,7 @@
             name="item"
             type="com.njust.helper.library.collection.LibCollectItem" />
 
-        <import type="com.njust.helper.library.collection.LibCollectionActivity.LibCollectionAdapter" />
+        <import type="com.njust.helper.library.collection.LibCollectionActivity" />
     </data>
 
     <LinearLayout
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{LibCollectionAdapter.getDateString(item.time)}"
+            android:text="@{LibCollectionActivity.getDateString(item.time)}"
             tools:text="time" />
     </LinearLayout>
 </layout>

@@ -24,7 +24,7 @@ interface LibCollectDao {
     fun deleteCollects(ids: List<String>)
 
     @Query("select * from $TABLE_NAME order by time desc")
-    fun listCollects(): List<LibCollectItem>
+    fun listCollects(): MutableList<LibCollectItem>
 
     @Query("select * from $TABLE_NAME where id = :id")
     fun checkCollect(id: String): List<LibCollectItem>
@@ -75,11 +75,11 @@ class LibCollectManager private constructor(context: Context) {
         dao.deleteCollects(listOf(id))
     }
 
-    fun removeCollects(ids: List<String>) {
-        dao.deleteCollects(ids)
+    fun removeCollects(ids: Collection<String>) {
+        dao.deleteCollects(ArrayList(ids))
     }
 
-    fun findCollect(): List<LibCollectItem> {
+    fun listCollects(): MutableList<LibCollectItem> {
         return dao.listCollects()
     }
 
