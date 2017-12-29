@@ -4,7 +4,6 @@ import com.njust.helper.BuildConfig;
 
 public final class Constants {
     public static final String DEFAULT_SEMESTER_START = "2017-08-28";
-    public static final String APP_NAME = "南理工助手";
 
     public static final long[] NOTIFICATION_VIBRATION_TIME = {0, 200, 100, 200};
     public static final int NOTIFICATION_CODE_COURSE = 0;

@@ -1,11 +1,8 @@
 package com.njust.helper.tools;
 
-import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.njust.helper.BuildConfig;
 import com.zwb.commonlibs.http.HttpHelper;
 import com.zwb.commonlibs.http.HttpMap;
@@ -18,22 +15,6 @@ import java.net.HttpURLConnection;
  * 扩展HttpHelper
  */
 public final class AppHttpHelper extends HttpHelper {
-    private static AppHttpHelper instance = new AppHttpHelper();
-    private RequestQueue requestQueue;
-
-    public static AppHttpHelper getInstance() {
-        return instance;
-    }
-
-    public RequestQueue getRequestQueue() {
-        return requestQueue;
-    }
-
-    public void init(Context context) {
-        requestQueue = Volley.newRequestQueue(context);
-    }
-
-
     @Override
     protected void setupURLConnection(@NonNull HttpURLConnection urlConnection) {
         super.setupURLConnection(urlConnection);
