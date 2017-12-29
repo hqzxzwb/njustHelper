@@ -7,11 +7,9 @@ import android.widget.CheckBox
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityClassroomBinding
-import com.njust.helper.tools.*
-import com.zwb.commonlibs.http.HttpMap
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
-import org.json.JSONObject
+import com.njust.helper.tools.Constants
+import com.njust.helper.tools.Prefs
+import com.njust.helper.tools.TimeUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,7 +28,7 @@ class ClassroomActivity : BaseActivity() {
 
         val time = (System.currentTimeMillis() - Prefs.getTermStartTime(this)) % TimeUtil.ONE_DAY
         val captions = resources.getStringArray(R.array.sections)
-        for (it in 0 until checkBoxes.size) {
+        for (it in checkBoxes.indices) {
             checkBoxes[it].text = captions[it]
         }
 
@@ -67,12 +65,9 @@ class ClassroomActivity : BaseActivity() {
 
     private fun onClickQueryButton() {
         var sections = 0
-        @Suppress("LoopToCallChain") // Loop is faster.
-        for (it in 0 until Constants.COURSE_SECTION_COUNT) {
-            if (checkBoxes[it].isChecked) {
-                sections = sections or (1 shl it)
-            }
-        }
+        (0 until Constants.COURSE_SECTION_COUNT)
+                .filter { checkBoxes[it].isChecked }
+                .forEach { sections = sections or (1 shl it) }
         if (sections == 0) {
             showSnack(R.string.toast_cr_choose_one_section)
             return
@@ -93,48 +88,19 @@ class ClassroomActivity : BaseActivity() {
         }
         val building = BUILDING_VALUE[buildingIndex]
         binding.loading = true
-        Observable
-                .fromCallable { loadClassRoom(dateString, building, sections) }
-                .subscribeOn(Schedulers.io())
+        ClassroomApi.INSTANCE.getClassrooms(dateString, building, sections)
                 .subscribe({
                     binding.loading = false
-                    onResult(it)
+                    val s = it.data
+                    if (s == "") {
+                        binding.text = getString(R.string.text_classroom_no_info)
+                    } else {
+                        binding.text = s
+                    }
+                }, {
+                    binding.loading = false
+                    binding.text = getString(R.string.text_classroom_fail)
                 })
-    }
-
-    private fun loadClassRoom(date: String, building: String, sections: Int): JsonData<String> {
-        val data = HttpMap()
-        data.addParam("date", date)
-                .addParam("building", building)
-                .addParam("timeofday", Integer.toString(sections))
-        try {
-            val string = AppHttpHelper().getPostResult("classroom.php", data)
-            return object : JsonData<String>(string) {
-                @Throws(Exception::class)
-                override fun parseData(jsonObject: JSONObject): String {
-                    return jsonObject.getString("content")
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return JsonData.newNetErrorInstance<String>()
-    }
-
-    private fun onResult(result: JsonData<String>) {
-        when (result.status) {
-            JsonData.STATUS_SUCCESS -> {
-                val s = result.data
-                if (s == "") {
-                    binding.text = getString(R.string.text_classroom_no_info)
-                } else {
-                    binding.text = s
-                }
-            }
-            JsonData.STATUS_NET_ERROR -> {
-                binding.text = getString(R.string.text_classroom_fail)
-            }
-        }
     }
 
     override fun getViewForSnackBar(): View {
