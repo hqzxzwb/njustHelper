@@ -1,7 +1,12 @@
-package com.njust.helper.model;
+package com.njust.helper.library.book;
 
+import android.support.annotation.Keep;
+
+@Keep
 public class LibDetailItem {
-    private String code, place, state;
+    private String code;
+    private String place;
+    private String state;
 
     public String getCode() {
         return code;

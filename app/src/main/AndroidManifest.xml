@@ -59,7 +59,7 @@
                 android:resource="@xml/book_search"/>
         </activity>
         <activity
-            android:name=".library.LibDetailActivity"
+            android:name=".library.book.LibDetailActivity"
             android:label="@string/title_activity_lib_detail"
             android:screenOrientation="portrait"/>
         <activity

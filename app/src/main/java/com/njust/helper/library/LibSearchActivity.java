@@ -15,6 +15,7 @@ import android.view.View;
 import com.njust.helper.R;
 import com.njust.helper.activity.MyListActivity;
 import com.njust.helper.databinding.ItemLibSearchBinding;
+import com.njust.helper.library.book.LibDetailActivity;
 import com.njust.helper.model.LibSearch;
 import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.DataBindingHolder;

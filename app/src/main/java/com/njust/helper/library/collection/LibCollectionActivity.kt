@@ -18,7 +18,7 @@ import butterknife.BindView
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ItemLibCollectBinding
-import com.njust.helper.library.LibDetailActivity
+import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.DataBindingHolder
 import com.njust.helper.tools.Prefs

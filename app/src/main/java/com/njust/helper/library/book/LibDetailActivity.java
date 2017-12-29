@@ -1,4 +1,4 @@
-package com.njust.helper.library;
+package com.njust.helper.library.book;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import com.njust.helper.R;
 import com.njust.helper.activity.ProgressActivity;
 import com.njust.helper.library.collection.LibCollectManager;
-import com.njust.helper.model.LibDetailItem;
 import com.njust.helper.tools.AppHttpHelper;
 import com.njust.helper.tools.Constants;
 import com.njust.helper.tools.JsonData;

@@ -1,4 +1,4 @@
-package com.njust.helper.library;
+package com.njust.helper.library.book;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.njust.helper.R;
-import com.njust.helper.model.LibDetailItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +40,13 @@ public class LibDetailAdapter extends Adapter<LibDetailAdapter.LibDetailHolder> 
     }
 
     @Override
-    public void onBindViewHolder(LibDetailHolder arg0, int arg1) {
-        switch (getItemViewType(arg1)) {
+    public void onBindViewHolder(LibDetailHolder holder, int position) {
+        switch (getItemViewType(position)) {
             case 0:
-                arg0.code.setText(head);
+                holder.code.setText(head);
                 break;
             default:
-                arg0.setItem(mDetailItems.get(arg1 - 1));
+                holder.setItem(mDetailItems.get(position - 1));
         }
     }
 
@@ -60,18 +59,20 @@ public class LibDetailAdapter extends Adapter<LibDetailAdapter.LibDetailHolder> 
     }
 
     public static class LibDetailHolder extends ViewHolder {
-        TextView code, place, state;
+        TextView code;
+        TextView place;
+        TextView state;
 
-        public LibDetailHolder(View itemView, int type) {
+        LibDetailHolder(View itemView, int type) {
             super(itemView);
             switch (type) {
                 case 0:
                     code = (TextView) itemView;
                     break;
                 default:
-                    code = (TextView) itemView.findViewById(R.id.textView1);
-                    place = (TextView) itemView.findViewById(R.id.textView2);
-                    state = (TextView) itemView.findViewById(R.id.textView3);
+                    code = itemView.findViewById(R.id.textView1);
+                    place = itemView.findViewById(R.id.textView2);
+                    state = itemView.findViewById(R.id.textView3);
             }
         }
 
