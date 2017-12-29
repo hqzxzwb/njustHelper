@@ -1,13 +1,15 @@
 package com.njust.helper.library.collection
 
 import android.arch.persistence.db.SupportSQLiteDatabase
+import android.arch.persistence.db.SupportSQLiteQueryBuilder
 import android.arch.persistence.room.*
+import android.arch.persistence.room.migration.Migration
 import android.content.Context
 import com.zwb.commonlibs.utils.SingletonHolder
 
 private const val TABLE_NAME = "collection"
-private const val DB_NAME = "library_"
-private const val DB_VERSION = 1
+private const val DB_NAME = "library.db"
+private const val DB_VERSION = 9
 
 @Entity(tableName = TABLE_NAME)
 class LibCollectItem {
@@ -38,22 +40,56 @@ abstract class LibCollectDatabase : RoomDatabase() {
     abstract fun getLibCollectDao(): LibCollectDao
 }
 
+private class CollectMigration(startVersion: Int) : Migration(startVersion, DB_VERSION) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        if (startVersion < 4) {
+            database.execSQL("drop table if exists mylib")
+        }
+        if (startVersion < 5) {
+            database.execSQL("create table collection (id varchar primary key,name varchar,time long)")
+        }
+        if (startVersion < 6) {
+            database.execSQL("drop table if exists borrow")
+        }
+        if (startVersion < 7) {
+            database.execSQL("drop table if exists history")
+        }
+        if (startVersion < 8) {
+            database.execSQL("alter table collection add column code varchar")
+        }
+        if (startVersion < 9) {
+            val query = SupportSQLiteQueryBuilder.builder(TABLE_NAME)
+                    .columns(arrayOf("*"))
+                    .create()
+            val bindArgs = mutableListOf<Array<Any>>()
+            database.query(query).use { cursor ->
+                val idColumn = cursor.getColumnIndex("id")
+                val nameColumn = cursor.getColumnIndex("name")
+                val codeColumn = cursor.getColumnIndex("code")
+                val timeColumn = cursor.getColumnIndex("time")
+                while (cursor.moveToNext()) {
+                    bindArgs.add(arrayOf(
+                            cursor.getString(idColumn) ?: "",
+                            cursor.getString(nameColumn) ?: "",
+                            cursor.getString(codeColumn) ?: "",
+                            cursor.getLong(timeColumn)
+                    ))
+                }
+            }
+            database.execSQL("DROP TABLE IF EXISTS `collection`")
+            database.execSQL("CREATE TABLE IF NOT EXISTS `collection` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `code` TEXT NOT NULL, `time` INTEGER NOT NULL, PRIMARY KEY(`id`))")
+            bindArgs.forEach {
+                database.execSQL("INSERT OR IGNORE INTO `collection`(`id`,`name`,`code`,`time`) VALUES (?,?,?,?)", it)
+            }
+        }
+    }
+}
+
 class LibCollectManager private constructor(context: Context) {
     private val dao: LibCollectDao = Room
             .databaseBuilder(context, LibCollectDatabase::class.java, DB_NAME)
             .allowMainThreadQueries()
-            .addCallback(object : RoomDatabase.Callback() {
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    val legacyDbFile = context.getDatabasePath(LibraryHelper.DB_NAME)
-                    if (!legacyDbFile.exists()) {
-                        return
-                    }
-                    LibraryHelper(context).bindArgs.forEach {
-                        db.execSQL("INSERT OR IGNORE INTO `collection`(`id`,`name`,`code`,`time`) VALUES (?,?,?,?)", it)
-                    }
-                    legacyDbFile.delete()
-                }
-            })
+            .addMigrations(*((1 until DB_VERSION).map { CollectMigration(it) }.toTypedArray()))
             .build()
             .getLibCollectDao()
 
