@@ -31,6 +31,6 @@ interface UpdateApi {
                     }
                 })
                 .build()
-                .create(UpdateApi::class.java)
+                .create(UpdateApi::class.java)!!
     }
 }

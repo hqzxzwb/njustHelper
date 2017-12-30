@@ -2,14 +2,15 @@ package com.njust.helper.settings
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.ShareActionProvider
 import android.view.Menu
-import android.view.View
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
+import com.njust.helper.databinding.ActivityAboutBinding
 import com.njust.helper.update.UpdateLogDialog
 
 /**
@@ -18,9 +19,12 @@ import com.njust.helper.update.UpdateLogDialog
  * @author zwb
  */
 class AboutActivity : BaseActivity() {
-    override fun layoutRes(): Int {
-        return R.layout.activity_about
+    override fun layout() {
+        val binding = DataBindingUtil.setContentView<ActivityAboutBinding>(this, R.layout.activity_about)
+        binding.clickHandler = this
     }
+
+    override fun layoutRes(): Int = 0
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.about, menu)
@@ -34,7 +38,7 @@ class AboutActivity : BaseActivity() {
         return true
     }
 
-    fun feedback(view: View) {
+    fun onClickFeedback() {
         AlertDialog.Builder(this)
                 .setTitle("意见反馈")
                 .setMessage("您可以加入QQ群217887769进行反馈")
@@ -47,7 +51,7 @@ class AboutActivity : BaseActivity() {
                 .show()
     }
 
-    fun comment(view: View) {
+    fun onClickComment() {
         try {
             val uri = Uri.parse("market://details?id=" + packageName)
             val intent = Intent(Intent.ACTION_VIEW, uri)
@@ -59,7 +63,7 @@ class AboutActivity : BaseActivity() {
 
     }
 
-    fun updateLog(view: View) {
+    fun onClickUpdateLog() {
         UpdateLogDialog.showUpdateDialog(this)
     }
 }

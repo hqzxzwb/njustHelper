@@ -12,7 +12,7 @@
     <string name="radio_classroom_building_two">二工</string>
     <string name="label_classroom_date">日期：</string>
     <string name="label_classroom_section">节次：</string>
-    <string name="label_about_upper">本产品为教务处钦定恶意软件，听说上面的内容都是错的。祝您使用愉快→_→</string>
+    <string name="label_about_upper">App中数据均来自学校相关网站系统，数据转换过程有少量出错的可能，如遇到问题欢迎反馈。</string>
     <string name="label_about_lower">如果您觉得这款app还不错，请使用上面的二维码或右上角的分享按钮将它推荐给更多需要的人吧^_^</string>
     <string name="share_about">南理工助手\n课表、图书馆、成绩查询尽在掌握\n下载地址：\nhttp://app.mi.com/detail/54580</string>
     <string name="text_course_today">今天是%1$s 第%2$d周</string>
