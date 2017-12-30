@@ -1,17 +1,14 @@
 package com.njust.helper.coursequery
 
-import com.njust.helper.BuildConfig
 import com.njust.helper.model.CourseQuery
-import com.njust.helper.tools.HttpClients
+import com.njust.helper.tools.Apis
 import com.njust.helper.tools.JsonData
 import com.zwb.commonlibs.utils.JsonUtils
 import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -28,9 +25,7 @@ interface CourseQueryApi {
     ): Observable<JsonData<List<CourseQuery>>>
 
     companion object {
-        val INSTANCE: CourseQueryApi = Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+        val INSTANCE: CourseQueryApi = Apis.newRetrofitBuilder()
                 .addConverterFactory(object : Converter.Factory() {
                     override fun responseBodyConverter(type: Type?, annotations: Array<out Annotation>?, retrofit: Retrofit?): Converter<ResponseBody, *>? {
                         return Converter<ResponseBody, JsonData<List<CourseQuery>>> { it ->
@@ -43,7 +38,6 @@ interface CourseQueryApi {
                         }
                     }
                 })
-                .client(HttpClients.globalOkHttpClient)
                 .build()
                 .create(CourseQueryApi::class.java)
     }

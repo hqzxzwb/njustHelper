@@ -1,15 +1,12 @@
 package com.njust.helper.classroom
 
-import com.njust.helper.BuildConfig
-import com.njust.helper.tools.HttpClients
+import com.njust.helper.tools.Apis
 import com.njust.helper.tools.JsonData
 import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -25,9 +22,7 @@ interface ClassroomApi {
     ): Observable<JsonData<String>>
 
     companion object {
-        val INSTANCE: ClassroomApi = Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+        val INSTANCE: ClassroomApi = Apis.newRetrofitBuilder()
                 .addConverterFactory(object : Converter.Factory() {
                     override fun responseBodyConverter(type: Type?, annotations: Array<out Annotation>?, retrofit: Retrofit?): Converter<ResponseBody, *>? {
                         return Converter<ResponseBody, JsonData<String>> { it ->
@@ -40,7 +35,6 @@ interface ClassroomApi {
                         }
                     }
                 })
-                .client(HttpClients.globalOkHttpClient)
                 .build()
                 .create(ClassroomApi::class.java)
     }

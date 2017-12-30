@@ -4,17 +4,19 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.AsyncTask
 import android.os.IBinder
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.app.TaskStackBuilder
 import android.support.v4.content.LocalBroadcastManager
 import com.njust.helper.model.UpdateInfo
-import com.njust.helper.tools.*
+import com.njust.helper.tools.Constants
+import com.njust.helper.tools.JsonData
+import com.njust.helper.tools.Prefs
+import com.njust.helper.tools.TimeReceiver
 import com.njust.helper.update.UpdateActivity
-import com.zwb.commonlibs.utils.JsonUtils
-import org.json.JSONObject
+import com.njust.helper.update.UpdateApi
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 class BackgroundService : Service() {
     companion object {
@@ -43,76 +45,57 @@ class BackgroundService : Service() {
         } else if ("checkUpdate" == action) {
             silentlyCheckUpdate = intent.getBooleanExtra("silentlyCheckUpdate", true)
             if (!isCheckingUpdate) {
-                UpdateTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+                isCheckingUpdate = true
+                UpdateApi.INSTANCE.checkUpdate()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            isCheckingUpdate = false
+                            when (it.status) {
+                                JsonData.STATUS_SUCCESS -> onCheckUpdateResult(it.data)
+                                JsonData.STATUS_LOG_FAIL -> onNoUpdate()
+                            }
+                        }, {
+                            isCheckingUpdate = false
+                            if (!silentlyCheckUpdate) {
+                                LocalBroadcastManager.getInstance(this@BackgroundService)
+                                        .sendBroadcast(Intent(ACTION_UPDATE_INFO)
+                                                .putExtra("updateStatus", UPDATE_STATUS_FAIL))
+                            }
+                        })
             }
         }
         return START_STICKY
     }
 
-    inner class UpdateTask : JsonTask<Void, UpdateInfo>() {
-        override fun onPreExecute() {
-            isCheckingUpdate = true
+    private fun onCheckUpdateResult(result: UpdateInfo) {
+        if (silentlyCheckUpdate) {
+            val builder = NotificationCompat.Builder(this@BackgroundService, "update")
+                    .setContentTitle("南理工助手-发现新版本")
+                    .setContentText("点击查看")
+                    .setAutoCancel(true)
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContentIntent(TaskStackBuilder.create(this@BackgroundService)
+                            .addParentStack(UpdateActivity::class.java)
+                            .addNextIntent(Intent(this@BackgroundService, UpdateActivity::class.java)
+                                    .putExtra("updateInfo", result))
+                            .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT))
+            NotificationManagerCompat.from(this@BackgroundService)
+                    .notify(Constants.NOTIFICATION_CODE_UPDATE, builder.build())
+        } else {
+            val intent = Intent(ACTION_UPDATE_INFO)
+                    .putExtra("updateInfo", result)
+                    .putExtra("updateStatus", UPDATE_STATUS_UPDATE)
+            LocalBroadcastManager.getInstance(this@BackgroundService).sendBroadcast(intent)
         }
+        Prefs.putLastCheckUpdateTime(this@BackgroundService)
+    }
 
-        override fun doInBackground(vararg params: Void?): JsonData<UpdateInfo> {
-            val httpHelper = AppHttpHelper()
-            try {
-                val s = httpHelper.getGetResult(BuildConfig.BASE_URL + "update_info.php")
-                return object : JsonData<UpdateInfo>(s) {
-                    @Throws(Exception::class)
-                    override fun parseData(jsonObject: JSONObject): UpdateInfo {
-                        return JsonUtils.parseBean(jsonObject, UpdateInfo::class.java)
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            return JsonData.newNetErrorInstance()
+    private fun onNoUpdate() {
+        if (!silentlyCheckUpdate) {
+            LocalBroadcastManager.getInstance(this@BackgroundService)
+                    .sendBroadcast(Intent(ACTION_UPDATE_INFO)
+                            .putExtra("updateStatus", UPDATE_STATUS_NO_UPDATE))
         }
-
-        override fun onPostExecute(resultJsonData: JsonData<UpdateInfo>?) {
-            isCheckingUpdate = false
-            super.onPostExecute(resultJsonData)
-        }
-
-        override fun onSuccess(result: UpdateInfo?) {
-            if (silentlyCheckUpdate) {
-                val builder = NotificationCompat.Builder(this@BackgroundService, "update")
-                        .setContentTitle("南理工助手-发现新版本")
-                        .setContentText("点击查看")
-                        .setAutoCancel(true)
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentIntent(TaskStackBuilder.create(this@BackgroundService)
-                                .addParentStack(UpdateActivity::class.java)
-                                .addNextIntent(Intent(this@BackgroundService, UpdateActivity::class.java)
-                                        .putExtra("updateInfo", result))
-                                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT))
-                NotificationManagerCompat.from(this@BackgroundService)
-                        .notify(Constants.NOTIFICATION_CODE_UPDATE, builder.build())
-            } else {
-                val intent = Intent(ACTION_UPDATE_INFO)
-                        .putExtra("updateInfo", result)
-                        .putExtra("updateStatus", UPDATE_STATUS_UPDATE)
-                LocalBroadcastManager.getInstance(this@BackgroundService).sendBroadcast(intent)
-            }
-            Prefs.putLastCheckUpdateTime(this@BackgroundService)
-        }
-
-        override fun onNetError() {
-            if (!silentlyCheckUpdate) {
-                LocalBroadcastManager.getInstance(this@BackgroundService)
-                        .sendBroadcast(Intent(ACTION_UPDATE_INFO)
-                                .putExtra("updateStatus", UPDATE_STATUS_FAIL))
-            }
-        }
-
-        override fun onLogFailed() {
-            if (!silentlyCheckUpdate) {
-                LocalBroadcastManager.getInstance(this@BackgroundService)
-                        .sendBroadcast(Intent(ACTION_UPDATE_INFO)
-                                .putExtra("updateStatus", UPDATE_STATUS_NO_UPDATE))
-            }
-            Prefs.putLastCheckUpdateTime(this@BackgroundService)
-        }
+        Prefs.putLastCheckUpdateTime(this@BackgroundService)
     }
 }
