@@ -36,7 +36,7 @@
             android:label="@string/title_activity_about"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".library.borrowed.LibBorrowActivity"
+            android:name=".library.borrowed.BorrowedBooksActivity"
             android:label="@string/title_activity_my_lib"
             android:screenOrientation="portrait">
             <meta-data

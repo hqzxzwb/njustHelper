@@ -11,7 +11,7 @@ object HttpClients {
                 val request = it.request().newBuilder()
                         .addHeader("njusthelper", (BuildConfig.VERSION_CODE).toString())
                         .addHeader("sdk", (Build.VERSION.SDK_INT).toString())
-                        .addHeader("phone", Build.MANUFACTURER + " " + Build.MODEL)
+                        .addHeader("phone", "${Build.MANUFACTURER} ${Build.MODEL}")
                         .build()
                 it.proceed(request)
             }
