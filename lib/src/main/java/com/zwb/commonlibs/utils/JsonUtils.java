@@ -1,11 +1,11 @@
 package com.zwb.commonlibs.utils;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ public class JsonUtils {
                 key.set(t, val.getValue(object));
             } catch (Exception e) {
 //                e.printStackTrace();
-                LogUtils.w(TAG, key.getName() + "赋值失败\n" +
+                Log.w(TAG, key.getName() + "赋值失败\n" +
                         e.getClass().getSimpleName() + ":" + e.getMessage());
             }
         }

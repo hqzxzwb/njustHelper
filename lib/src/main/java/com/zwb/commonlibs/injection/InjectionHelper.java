@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.zwb.commonlibs.utils.LogUtils;
+import android.util.Log;
 
 import java.lang.reflect.Field;
 
@@ -81,6 +80,6 @@ public class InjectionHelper {
     }
 
     private static void reportError(Field field) {
-        LogUtils.w(TAG, field.getName() + "注入失败");
+        Log.w(TAG, field.getName() + "注入失败");
     }
 }

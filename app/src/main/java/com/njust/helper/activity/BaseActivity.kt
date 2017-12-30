@@ -7,6 +7,7 @@ import android.support.annotation.LayoutRes
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
@@ -14,7 +15,6 @@ import butterknife.ButterKnife
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.zwb.commonlibs.injection.InjectionHelper
-import com.zwb.commonlibs.utils.LogUtils
 
 abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +90,11 @@ abstract class BaseActivity : AppCompatActivity() {
                     .setNegativeButton(R.string.action_back, null)
                     .show()
         } catch (e: Exception) {
-            LogUtils.i(this, "建立对话框失败")
+            Log.i(TAG, "建立对话框失败")
         }
+    }
+
+    companion object {
+        const val TAG = "BaseActivity"
     }
 }

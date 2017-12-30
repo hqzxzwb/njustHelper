@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +26,6 @@ import com.njust.helper.tools.Prefs;
 import com.zwb.commonlibs.http.HttpMap;
 import com.zwb.commonlibs.injection.IntentInjection;
 import com.zwb.commonlibs.utils.JsonUtils;
-import com.zwb.commonlibs.utils.LogUtils;
 
 import org.json.JSONObject;
 
@@ -33,6 +33,7 @@ import butterknife.BindView;
 
 public class CaptchaActivity extends ProgressActivity {
     public static final int REQUEST_CAPTCHA = CaptchaActivity.class.hashCode() >> 16;
+    private static final String TAG = "CaptchaActivity";
     String stuid, pwd;
     @BindView(R.id.imageView1)
     ImageView imageView;
@@ -202,7 +203,7 @@ public class CaptchaActivity extends ProgressActivity {
 
         @Override
         protected void onSuccess(LoginResult result) {
-            LogUtils.i(this, result.getCookie());
+            Log.i(TAG, result.getCookie());
             Prefs.putCookie(CaptchaActivity.this, result.getCookie(), result.getUrl(), type);
             setResult(RESULT_OK);
             finish();

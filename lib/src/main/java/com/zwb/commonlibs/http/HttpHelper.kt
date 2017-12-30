@@ -1,6 +1,5 @@
 package com.zwb.commonlibs.http
 
-import com.zwb.commonlibs.utils.LogUtils
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -25,9 +24,7 @@ open class HttpHelper {
 
     @Throws(IOException::class)
     fun getGetResult(url: String): String {
-        val string = inputStreamToString(getGetInputStream(url), encoding)
-        LogUtils.i(this, string)
-        return string
+        return inputStreamToString(getGetInputStream(url), encoding)
     }
 
     @Throws(IOException::class)
@@ -45,9 +42,7 @@ open class HttpHelper {
 
     @Throws(IOException::class)
     open fun getPostResult(url: String, data: HttpMap?): String {
-        val string = inputStreamToString(getPostInputStream(url, data), encoding)
-        LogUtils.i(this, string)
-        return string
+        return inputStreamToString(getPostInputStream(url, data), encoding)
     }
 
     @Throws(IOException::class)
