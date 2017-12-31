@@ -40,7 +40,6 @@ import butterknife.BindView;
 
 public class CourseActivity extends BaseActivity implements OnDateSetListener,
         CourseDayFragment.Listener, PickWeekFragment.Listener, CourseWeekFragment.Listener {
-    public PickWeekFragment pickWeekFragment;
     private long termStartTime;
     private int currentDay, currentWeek;
     private SimpleDateFormat dateFormat;
@@ -302,12 +301,6 @@ public class CourseActivity extends BaseActivity implements OnDateSetListener,
     }
 
     public void pickWeek(View view) {
-        if (pickWeekFragment == null) {
-            pickWeekFragment = new PickWeekFragment();
-        }
-        pickWeekFragment.setChosenWeek(currentWeek);
-        if (!pickWeekFragment.isAdded()) {
-            pickWeekFragment.show(getSupportFragmentManager(), "pickWeek");
-        }
+        PickWeekFragment.newInstance(currentWeek).show(getSupportFragmentManager(), "pickWeek");
     }
 }

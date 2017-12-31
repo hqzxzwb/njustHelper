@@ -45,7 +45,7 @@ android {
         versionName vn
         resConfigs "zh"
         buildConfigField "String", "BASE_URL", '"http://njusthelper.duapp.com/njust0909/"'
-        buildConfigField "String", "TENCENT_BUGLY_ID", p.getProperty('tencentBuglyId')
+        buildConfigField "String", "TENCENT_BUGLY_ID", "\"${p.getProperty('tencentBuglyId')}\""
         resValue "string", "testStuid", p.getProperty('testStuid')
         resValue "string", "testJwcPwd", p.getProperty('testJwcPwd')
         resValue "string", "testLibPwd", p.getProperty('testLibPwd')
@@ -72,7 +72,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "BASE_URL", p.getProperty('localUrl')
+            buildConfigField "String", "BASE_URL", "\"${p.getProperty('localUrl')}\""
         }
         release {
             minifyEnabled true
