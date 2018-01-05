@@ -1,83 +1,109 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout
-        android:id="@+id/holder"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+    <data>
 
-        <fragment
-            android:id="@+id/course_day_fragment"
-            android:name="com.njust.helper.course.day.CourseDayFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <import type="android.view.View" />
 
-        <fragment
-            android:id="@+id/course_week_fragment"
-            android:name="com.njust.helper.course.week.CourseWeekFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fgmt_course_week" />
-    </FrameLayout>
+        <variable
+            name="vm"
+            type="com.njust.helper.course.CourseActivityVm" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button2"
-            style="@style/Widget.AppCompat.Button.Borderless"
+        <FrameLayout
+            android:id="@+id/holder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{vm.dayView?View.VISIBLE:View.GONE}">
+
+                <fragment
+                    android:id="@+id/course_day_fragment"
+                    android:name="com.njust.helper.course.day.CourseDayFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{vm.dayView?View.GONE:View.VISIBLE}">
+
+                <fragment
+                    android:id="@+id/course_week_fragment"
+                    android:name="com.njust.helper.course.week.CourseWeekFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:layout="@layout/fgmt_course_week" />
+            </FrameLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/button2"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:onClick="@{()->vm.clickHandler.weekBefore()}"
+                android:text=" ◁ " />
+
+            <Button
+                android:id="@+id/tvPickWeek"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:onClick="@{()->vm.clickHandler.pickWeek()}"
+                android:text="@{@string/button_course_pick_week(vm.displayingWeek)}" />
+
+            <Button
+                android:id="@+id/button3"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:onClick="@{()->vm.clickHandler.weekAfter()}"
+                android:text=" ▷ " />
+
+            <Button
+                android:id="@+id/button4"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:onClick="@{()->vm.clickHandler.toToday()}"
+                android:text="今天" />
+
+            <Button
+                android:id="@+id/button1"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:onClick="@{()->vm.clickHandler.pickDate()}"
+                android:text="指定日期" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtToday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="0dp"
-            android:onClick="week_before"
-            android:text=" ◁ " />
-
-        <Button
-            android:id="@+id/tvPickWeek"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="0dp"
-            android:onClick="pickWeek" />
-
-        <Button
-            android:id="@+id/button3"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="0dp"
-            android:onClick="week_after"
-            android:text=" ▷ " />
-
-        <Button
-            android:id="@+id/button4"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="0dp"
-            android:onClick="jump_to_today"
-            android:text="今天" />
-
-        <Button
-            android:id="@+id/button1"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="0dp"
-            android:onClick="pickDate"
-            android:text="指定日期" />
+            android:layout_gravity="center_horizontal"
+            android:text="@{vm.bottomText}"
+            tools:text="今天是x月x日第x周星期x" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/txtToday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="今天是x月x日第x周星期x" />
-</LinearLayout>
+</layout>

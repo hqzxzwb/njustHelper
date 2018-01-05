@@ -3,14 +3,16 @@ package com.njust.helper.course
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.DialogInterface
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
-import butterknife.BindView
+import android.widget.DatePicker
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
@@ -18,6 +20,7 @@ import com.njust.helper.course.data.CourseManager
 import com.njust.helper.course.day.CourseDayFragment
 import com.njust.helper.course.list.CourseListFragment
 import com.njust.helper.course.week.CourseWeekFragment
+import com.njust.helper.databinding.ActivityCourseBinding
 import com.njust.helper.main.MainActivity
 import com.njust.helper.model.Course
 import com.njust.helper.tools.Constants
@@ -27,38 +30,25 @@ import com.zwb.commonlibs.ui.DatePickerDialogFix
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.Listener, PickWeekFragment.Listener, CourseWeekFragment.Listener {
+class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.Listener,
+        PickWeekFragment.Listener, CourseWeekFragment.Listener, CourseActivityClickHandler {
     private var termStartTime: Long = 0
     private var currentDay: Int = 0
     private var currentWeek: Int = 0
-    private var dateFormat: SimpleDateFormat? = null
+    private lateinit var dateFormat: SimpleDateFormat
     private lateinit var dayFragment: CourseDayFragment
     private lateinit var weekFragment: CourseWeekFragment
-    @BindView(R.id.txtToday)
-    lateinit var todayTextView: TextView
-    @BindView(R.id.tvPickWeek)
-    lateinit var pickWeekButton: Button
+    private val vm: CourseActivityVm = CourseActivityVm()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         dateFormat = SimpleDateFormat(getString(R.string.date_course_today), Locale.CHINA)
 
-        val weekView = findViewById<View>(R.id.course_week_fragment)
-
-        weekView.visibility = View.GONE
-        val dayView = findViewById<View>(R.id.course_day_fragment)
-
         val group = supportActionBar!!.customView as RadioGroup
         (group.findViewById<View>(R.id.radio0) as RadioButton).isChecked = true
-        group.setOnCheckedChangeListener { group1, checkedId ->
-            if (checkedId == R.id.radio0) {
-                dayView.visibility = View.VISIBLE
-                weekView.visibility = View.GONE
-            } else {
-                dayView.visibility = View.GONE
-                weekView.visibility = View.VISIBLE
-            }
+        group.setOnCheckedChangeListener { _, checkedId ->
+            vm.dayView = checkedId == R.id.radio0
         }
 
         val manager = supportFragmentManager
@@ -103,8 +93,12 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
                 .show()
     }
 
-    override fun layoutRes(): Int {
-        return R.layout.activity_course
+    override fun layoutRes(): Int = 0
+
+    override fun layout() {
+        val binding = DataBindingUtil.setContentView<ActivityCourseBinding>(this, R.layout.activity_course)
+        vm.clickHandler = this
+        binding.vm = vm
     }
 
     override fun setupActionBar() {
@@ -161,10 +155,10 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
         val calendar = Calendar.getInstance()
         val now = calendar.timeInMillis
         val week = Math.floor(((now - termStartTime) / TimeUtil.ONE_WEEK.toFloat()).toDouble()).toInt() + 1
-        val day_of_week = calendar.get(Calendar.DAY_OF_WEEK)
-        dayFragment.setCurrentDay(if (day_of_week > 1) day_of_week - 2 else 6)
-        val string = dateFormat!!.format(Date())
-        todayTextView.text = getString(R.string.text_course_today, string, week)
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        dayFragment.setCurrentDay(if (dayOfWeek > 1) dayOfWeek - 2 else 6)
+        val string = dateFormat.format(Date())
+        vm.bottomText = getString(R.string.text_course_today, string, week)
     }
 
     private fun showIntentCourse() {
@@ -202,21 +196,21 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
         dayFragment.setPosition(currentDay)
     }
 
-    fun jump_to_today(view: View) {
+    override fun toToday() {
         showCurrentCourse()
     }
 
-    fun week_before(view: View) {
+    override fun weekBefore() {
         currentDay -= 7
         updatePosition()
     }
 
-    fun week_after(view: View) {
+    override fun weekAfter() {
         currentDay += 7
         updatePosition()
     }
 
-    fun pickDate(view: View) {
+    override fun pickDate() {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = termStartTime + currentDay * TimeUtil.ONE_DAY
         DatePickerDialogFix(this, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
@@ -235,7 +229,7 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
             weekFragment.setWeek(currentWeek)
             dayFragment.setWeek(currentWeek)
 
-            pickWeekButton.text = getString(R.string.button_course_pick_week, currentWeek)
+            vm.displayingWeek = currentWeek
         }
     }
 
@@ -271,7 +265,7 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
                 .show(supportFragmentManager, "courseList")
     }
 
-    fun pickWeek(view: View) {
+    override fun pickWeek() {
         PickWeekFragment.newInstance(currentWeek).show(supportFragmentManager, "pickWeek")
     }
 }
