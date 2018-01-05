@@ -1,4 +1,4 @@
-package com.njust.helper.course
+package com.njust.helper.course.list
 
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
