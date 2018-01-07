@@ -145,7 +145,7 @@ public abstract class WebViewActivity extends ProgressActivity implements SwipeR
         @Override
         protected void onLogFailed() {
             show_html(getString(R.string.message_wrong_password));
-            changeAccount(getAccountRequest());
+            AccountActivity.alertPasswordError(WebViewActivity.this, getAccountRequest());
         }
     }
 }

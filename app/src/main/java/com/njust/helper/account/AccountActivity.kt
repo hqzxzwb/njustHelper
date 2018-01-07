@@ -1,7 +1,10 @@
 package com.njust.helper.account
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
@@ -22,6 +25,24 @@ class AccountActivity : BaseActivity() {
         const val REQUEST_JWC = 2
         const val REQUEST_LIB = 4
         const val EXTRA_PASSWORD_TYPE = "password_type"
+
+        @JvmStatic
+        fun alertPasswordError(context: Context, accountRequest: Int) {
+            try {
+                AlertDialog.Builder(context)
+                        .setMessage(R.string.message_wrong_password)
+                        .setPositiveButton(R.string.dialog_base_modify_immediately,
+                                { _, _ ->
+                                    val intent = Intent(context, AccountActivity::class.java)
+                                    intent.putExtra(AccountActivity.EXTRA_PASSWORD_TYPE, accountRequest)
+                                    context.startActivity(intent)
+                                })
+                        .setNegativeButton(R.string.action_back, null)
+                        .show()
+            } catch (e: Exception) {
+                Log.i(TAG, "建立对话框失败")
+            }
+        }
     }
 
     @BindView(R.id.editText1)

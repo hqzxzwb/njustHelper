@@ -202,7 +202,7 @@ public abstract class MyListActivity<T, U extends ViewDataBinding> extends Progr
 
         @Override
         protected void onLogFailed() {
-            changeAccount(getAccountRequest());
+            AccountActivity.alertPasswordError(MyListActivity.this, getAccountRequest());
         }
     }
 }

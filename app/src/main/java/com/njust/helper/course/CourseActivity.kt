@@ -218,7 +218,7 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
     }
 
     fun relogin() {
-        changeAccount(AccountActivity.REQUEST_JWC)
+        AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_JWC)
     }
 
     override fun onDayChange(position: Int) {

@@ -29,9 +29,7 @@ class ClassroomActivity : BaseActivity() {
 
         val time = (System.currentTimeMillis() - Prefs.getTermStartTime(this)) % TimeUtil.ONE_DAY
         val captions = resources.getStringArray(R.array.sections)
-        for (it in checkBoxes.indices) {
-            checkBoxes[it].text = captions[it]
-        }
+        checkBoxes.indices.forEach { checkBoxes[it].text = captions[it] }
 
         var i = 0
         while (i < Constants.COURSE_SECTION_COUNT) {
@@ -66,7 +64,7 @@ class ClassroomActivity : BaseActivity() {
 
     private fun onClickQueryButton() {
         var sections = 0
-        (0 until Constants.COURSE_SECTION_COUNT)
+        checkBoxes.indices
                 .filter { checkBoxes[it].isChecked }
                 .forEach { sections = sections or (1 shl it) }
         if (sections == 0) {

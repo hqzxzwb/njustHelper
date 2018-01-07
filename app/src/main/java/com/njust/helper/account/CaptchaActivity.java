@@ -211,7 +211,8 @@ public class CaptchaActivity extends ProgressActivity {
 
         @Override
         protected void onLogFailed() {
-            changeAccount(type == 0 ? AccountActivity.REQUEST_JWC : AccountActivity.REQUEST_LIB);
+            AccountActivity.alertPasswordError(CaptchaActivity.this,
+                    type == 0 ? AccountActivity.REQUEST_JWC : AccountActivity.REQUEST_LIB);
         }
     }
 }

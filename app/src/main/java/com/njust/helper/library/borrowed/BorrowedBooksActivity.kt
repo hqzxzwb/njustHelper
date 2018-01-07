@@ -65,7 +65,7 @@ class BorrowedBooksActivity : BaseActivity() {
                     binding.loading = false
                     when (it.status) {
                         JsonData.STATUS_SUCCESS -> binding.webView1.loadUrl(it.data)
-                        JsonData.STATUS_LOG_FAIL -> changeAccount(AccountActivity.REQUEST_LIB)
+                        JsonData.STATUS_LOG_FAIL -> AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_LIB)
                     }
                 }, {
                     dialog?.dismiss()
