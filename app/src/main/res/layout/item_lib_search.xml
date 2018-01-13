@@ -3,11 +3,11 @@
 
     <data>
 
-        <import type="com.njust.helper.library.LibSearchActivity.LibSearchAdapter" />
+        <import type="com.njust.helper.library.search.LibSearchActivity.LibSearchAdapter" />
 
         <variable
             name="libSearch"
-            type="com.njust.helper.model.LibSearch" />
+            type="com.njust.helper.library.search.LibSearchBean" />
 
         <variable
             name="position"

@@ -25,7 +25,7 @@ import com.njust.helper.databinding.ActivityMainBinding
 import com.njust.helper.grade.ExamsActivity
 import com.njust.helper.grade.GradeActivity
 import com.njust.helper.grade.GradeLevelActivity
-import com.njust.helper.library.LibSearchActivity
+import com.njust.helper.library.search.LibSearchActivity
 import com.njust.helper.library.borrowed.BorrowedBooksActivity
 import com.njust.helper.library.collection.LibCollectionActivity
 import com.njust.helper.model.UpdateInfo

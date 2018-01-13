@@ -44,7 +44,7 @@
                 android:value=".main.MainActivity"/>
         </activity>
         <activity
-            android:name=".library.LibSearchActivity"
+            android:name=".library.search.LibSearchActivity"
             android:label="@string/title_activity_lib_search"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -132,7 +132,7 @@
         <service android:name=".BackgroundService"/>
 
         <provider
-            android:name=".library.SearchSuggestionProvider"
+            android:name=".library.search.SearchSuggestionProvider"
             android:authorities="com.njust.helper.library.SearchSuggestionProvider"
             android:exported="false"/>
 
