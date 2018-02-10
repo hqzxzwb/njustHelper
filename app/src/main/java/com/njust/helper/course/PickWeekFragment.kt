@@ -37,7 +37,7 @@ class PickWeekFragment : BottomSheetDialogFragment() {
         super.onAttach(context)
 
         listener = context as Listener
-        selectedWeek = arguments.getInt(ARG_SELECTED_WEEK)
+        selectedWeek = arguments!!.getInt(ARG_SELECTED_WEEK)
     }
 
     interface Listener {

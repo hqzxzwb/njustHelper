@@ -78,7 +78,7 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
             }
 
             override fun onCreateNewView(container: ViewGroup): View {
-                val recyclerView = activity.layoutInflater.inflate(
+                val recyclerView = activity!!.layoutInflater.inflate(
                         R.layout.pager_course_day, container, false) as RecyclerView
                 recyclerView.layoutManager = LinearLayoutManager(activity)
                 recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))

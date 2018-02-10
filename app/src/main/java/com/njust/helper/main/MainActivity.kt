@@ -58,6 +58,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
             updateCourse()
         }
 
+        val receiver = this.receiver
         if (receiver != null) {
             LocalBroadcastManager.getInstance(this)
                     .registerReceiver(receiver, IntentFilter(BackgroundService.ACTION_UPDATE_INFO))
@@ -69,6 +70,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
     override fun onDestroy() {
         super.onDestroy()
 
+        val receiver = this.receiver
         if (receiver != null) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
         }
@@ -169,13 +171,14 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
                 intent.putExtra("silentlyCheckUpdate", false)
                         .putExtra("action", "checkUpdate")
                 if (receiver == null) {
-                    receiver = object : BroadcastReceiver() {
+                    val receiver = object : BroadcastReceiver() {
                         override fun onReceive(context: Context, intent: Intent) {
                             onReceiveUpdateIntent(intent)
                         }
                     }
                     LocalBroadcastManager.getInstance(this)
                             .registerReceiver(receiver, IntentFilter(BackgroundService.ACTION_UPDATE_INFO))
+                    this.receiver = receiver
                 }
                 startService(intent)
                 return true

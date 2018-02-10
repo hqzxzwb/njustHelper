@@ -13,11 +13,11 @@ import java.util.*
 abstract class EfficientPagerAdapter : PagerAdapter() {
     private val convertViews: LinkedList<View> = LinkedList()
 
-    override fun isViewFromObject(view: View?, `object`: Any?): Boolean {
+    override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view === `object`;
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any?) {
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         val view: View = `object` as View
         convertViews.push(view)
         container.removeView(view)
@@ -50,7 +50,7 @@ abstract class EfficientPagerAdapter : PagerAdapter() {
      */
     protected abstract fun updateView(view: View, position: Int)
 
-    override fun getItemPosition(`object`: Any?): Int {
+    override fun getItemPosition(`object`: Any): Int {
         return POSITION_NONE
     }
 }

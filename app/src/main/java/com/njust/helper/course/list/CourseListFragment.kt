@@ -19,7 +19,7 @@ class CourseListFragment : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val args = arguments
+        val args = arguments!!
         val list = args.getParcelableArrayList<Course>("courses")
 
         adapter.setData(list!!)

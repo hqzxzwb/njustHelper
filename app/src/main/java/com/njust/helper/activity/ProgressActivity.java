@@ -2,7 +2,6 @@ package com.njust.helper.activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.os.AsyncTaskCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ViewGroup;
 
@@ -66,7 +65,8 @@ public abstract class ProgressActivity extends BaseActivity {
 
     @SafeVarargs
     public final <Params> void attachAsyncTask(AsyncTask<Params, ?, ?> task, Params... params) {
-        taskMap.put(task.getClass().getName(), AsyncTaskCompat.executeParallel(task, params));
+        taskMap.put(task.getClass().getName(),
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params));
     }
 
     @Override
