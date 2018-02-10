@@ -22,7 +22,6 @@ dependencies {
 
 android {
     compileSdkVersion compile_sdk_version
-    buildToolsVersion build_tools_version
     dataBinding {
         enabled = true
     }
@@ -39,7 +38,7 @@ android {
 
     defaultConfig {
         applicationId "com.njust.helper"
-        minSdkVersion 14
+        minSdkVersion min_sdk_version
         targetSdkVersion compile_sdk_version
         versionCode vc
         versionName vn

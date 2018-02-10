@@ -11,7 +11,6 @@ dependencies {
 
 android {
     compileSdkVersion compile_sdk_version
-    buildToolsVersion build_tools_version
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -19,7 +18,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion min_sdk_version
         consumerProguardFile('proguard-consumer.txt')
     }
 }
