@@ -83,7 +83,7 @@ class CourseQueryResultActivity : BaseActivity() {
             return data.size
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): DataBindingHolder<ItemCourseQueryBinding> {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBindingHolder<ItemCourseQueryBinding> {
             val binding = ItemCourseQueryBinding.inflate(inflater, parent, false)
             return DataBindingHolder(binding)
         }
