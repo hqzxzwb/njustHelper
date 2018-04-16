@@ -8,15 +8,10 @@ import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 
 class SettingsActivity : BaseActivity() {
-    private var fragment: HolderFragment? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            if (fragment == null) {
-                fragment = HolderFragment()
-            }
-            fragmentManager.beginTransaction().replace(R.id.holder, fragment).commit()
+            fragmentManager.beginTransaction().replace(R.id.holder, HolderFragment()).commit()
         }
     }
 

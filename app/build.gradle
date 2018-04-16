@@ -41,7 +41,7 @@ android {
         targetSdkVersion compile_sdk_version
         versionCode vc
         versionName vn
-        resConfigs "zh"
+        resConfigs 'en', 'zh', 'zh-rCN', 'zh-rHK', 'zh-rTW'
         buildConfigField "String", "BASE_URL", '"http://njusthelper.duapp.com/njust0909/"'
         buildConfigField "String", "TENCENT_BUGLY_ID", "\"${p.getProperty('tencentBuglyId')}\""
         resValue "string", "testStuid", p.getProperty('testStuid')

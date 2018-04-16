@@ -16,7 +16,7 @@ interface ClassroomApi {
     @FormUrlEncoded
     @POST("classroom.php")
     fun getClassrooms(
-            @Field("date") data: String,
+            @Field("date") date: String,
             @Field("building") building: String,
             @Field("timeofday") timeOfDay: Int
     ): Observable<JsonData<String>>

@@ -53,7 +53,7 @@ class AboutActivity : BaseActivity() {
 
     fun onClickComment() {
         try {
-            val uri = Uri.parse("market://details?id=" + packageName)
+            val uri = Uri.parse("market://details?id=$packageName")
             val intent = Intent(Intent.ACTION_VIEW, uri)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
