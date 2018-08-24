@@ -6,16 +6,16 @@ dependencies {
     implementation fileTree(include: '*.jar', dir: 'libs')
     implementation project(':lib')
     implementation 'com.tencent.bugly:crashreport:2.6.5'
-    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.jakewharton:butterknife:8.8.1'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
-    implementation "android.arch.persistence.room:runtime:1.0.0"
-    kapt "android.arch.persistence.room:compiler:1.0.0"
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
     kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 }
 
@@ -47,10 +47,6 @@ android {
         resValue "string", "testStuid", p.getProperty('testStuid')
         resValue "string", "testJwcPwd", p.getProperty('testJwcPwd')
         resValue "string", "testLibPwd", p.getProperty('testLibPwd')
-
-        ndk {
-            abiFilters "armeabi", "armeabi-v7a"
-        }
     }
 
     signingConfigs {
