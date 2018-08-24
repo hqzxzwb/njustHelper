@@ -49,7 +49,7 @@ public abstract class JsonData<T> {
     public static <T> JsonData<T> newNetErrorInstance() {
         return new JsonData<T>(STATUS_NET_ERROR) {
             @Override
-            protected T parseData(JSONObject jsonObject) throws JSONException {
+            protected T parseData(JSONObject jsonObject) {
                 return null;
             }
         };
@@ -58,7 +58,7 @@ public abstract class JsonData<T> {
     public static <T> JsonData<T> newLogFailedInstance() {
         return new JsonData<T>(STATUS_LOG_FAIL) {
             @Override
-            protected T parseData(JSONObject jsonObject) throws JSONException {
+            protected T parseData(JSONObject jsonObject) {
                 return null;
             }
         };
