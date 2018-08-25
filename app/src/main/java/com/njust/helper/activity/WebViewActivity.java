@@ -127,8 +127,6 @@ public abstract class WebViewActivity extends ProgressActivity implements SwipeR
 
         @Override
         protected void onCaptchaError(CaptchaData captchaData) {
-            //TODO
-//            CaptchaActivity.startCaptcha(WebViewActivity.this, captchaData.getContent(), captchaData.getCookie());
         }
 
         @Override

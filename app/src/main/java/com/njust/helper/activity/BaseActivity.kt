@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
-import butterknife.ButterKnife
 import com.njust.helper.tools.DisposableHelper
 import com.zwb.commonlibs.injection.InjectionHelper
 import io.reactivex.disposables.Disposable
@@ -28,7 +27,6 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
         InjectionHelper.injectActivity(this)
-        ButterKnife.bind(this)
 
         setupActionBar()
 

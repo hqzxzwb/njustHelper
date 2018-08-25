@@ -12,9 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.njust.helper.account.AccountActivity;
-import com.njust.helper.account.CaptchaActivity;
 import com.njust.helper.R;
+import com.njust.helper.account.AccountActivity;
 import com.njust.helper.model.CaptchaData;
 import com.njust.helper.tools.DataBindingHolder;
 import com.njust.helper.tools.JsonData;
@@ -99,7 +98,7 @@ public abstract class MyListActivity<T, U extends ViewDataBinding> extends Progr
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CaptchaActivity.REQUEST_CAPTCHA && resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             onRefresh();
         }
     }
@@ -181,7 +180,6 @@ public abstract class MyListActivity<T, U extends ViewDataBinding> extends Progr
 
         @Override
         protected void onCaptchaError(CaptchaData captchaData) {
-            CaptchaActivity.startCaptcha(MyListActivity.this, getAccountRequest() == AccountActivity.REQUEST_JWC ? 0 : 1);
         }
 
         @Override

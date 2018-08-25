@@ -110,10 +110,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".account.CaptchaActivity"
-            android:label="@string/title_activity_captcha"
-            android:screenOrientation="portrait" />
 
         <receiver android:name=".BootReceiver">
             <intent-filter>

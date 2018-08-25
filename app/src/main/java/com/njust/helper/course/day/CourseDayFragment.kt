@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import butterknife.ButterKnife
 import com.njust.helper.R
 import com.njust.helper.model.Course
 import com.njust.helper.tools.Constants
@@ -39,8 +38,6 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
     private lateinit var listener: Listener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        ButterKnife.bind(this, view)
-
         viewPager.addOnPageChangeListener(this)
 
         mTextViews = arrayOf(
