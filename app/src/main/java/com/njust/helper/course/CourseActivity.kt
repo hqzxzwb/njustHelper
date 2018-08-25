@@ -1,10 +1,10 @@
 package com.njust.helper.course
 
 import android.app.DatePickerDialog.OnDateSetListener
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.view.Menu
@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
@@ -23,10 +24,12 @@ import com.njust.helper.course.week.CourseWeekFragment
 import com.njust.helper.databinding.ActivityCourseBinding
 import com.njust.helper.main.MainActivity
 import com.njust.helper.model.Course
-import com.njust.helper.tools.Constants
-import com.njust.helper.tools.Prefs
-import com.njust.helper.tools.TimeUtil
+import com.njust.helper.model.CourseData
+import com.njust.helper.tools.*
+import com.tencent.bugly.crashreport.CrashReport
 import com.zwb.commonlibs.ui.DatePickerDialogFix
+import io.reactivex.rxkotlin.subscribeBy
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -136,9 +139,64 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
         }
     }
 
+    private var mProgressDialog: ProgressDialog? = null
+
+    private fun progressState(b: Boolean) {
+        if (b) {
+            mProgressDialog = ProgressDialog.show(this, "请稍候...", "正在导入课表")
+        } else {
+            mProgressDialog?.dismiss()
+            mProgressDialog = null
+        }
+    }
+
     private fun importCourses() {
         setResult(MainActivity.RESULT_COURSE_REFRESH)
-        CourseTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+        doImport()
+    }
+
+    private fun doImport() {
+        progressState(true)
+        CourseApi.get(Prefs.getId(this), Prefs.getJwcPwd(this))
+                .subscribeBy(
+                        onSuccess = {
+                            onImportSuccess(it)
+                            progressState(false)
+                        },
+                        onError = {
+                            onImportError(it)
+                            progressState(false)
+                        }
+                )
+                .addToLifecycleManagement()
+    }
+
+    private fun onImportSuccess(courseData: CourseData) {
+        Prefs.putCourseInfo(this, courseData.startdate)
+        val dao = CourseManager.getInstance(this)
+        dao.clear()
+        if (courseData.infos.size > 0) {
+            dao.add(courseData.infos, courseData.locs)
+            showSnack(R.string.message_course_import_success)
+        } else {
+            showSnack("您的课表似乎是空的，过几天再来试试吧~")
+        }
+        refresh()
+    }
+
+    private fun onImportError(throwable: Throwable) {
+        when (throwable) {
+            is ServerErrorException -> showSnack(R.string.message_server_error)
+            is LoginErrorException -> relogin()
+            is IOException -> showSnack(R.string.message_net_error)
+            else -> {
+                if (BuildConfig.DEBUG) {
+                    throwable.printStackTrace()
+                    throw throwable
+                }
+                CrashReport.postCatchedException(throwable)
+            }
+        }
     }
 
     fun refresh() {
@@ -253,7 +311,7 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                CourseTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+                doImport()
             }
         }
     }

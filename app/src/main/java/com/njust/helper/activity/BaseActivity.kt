@@ -10,9 +10,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.Window
 import butterknife.ButterKnife
+import com.njust.helper.tools.DisposableHelper
 import com.zwb.commonlibs.injection.InjectionHelper
+import io.reactivex.disposables.Disposable
 
 abstract class BaseActivity : AppCompatActivity() {
+    private val disposableHelper = DisposableHelper()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,15 +31,26 @@ abstract class BaseActivity : AppCompatActivity() {
         ButterKnife.bind(this)
 
         setupActionBar()
+
+        disposableHelper.activate()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposableHelper.deactivate()
+    }
+
+    protected fun Disposable.addToLifecycleManagement() {
+        disposableHelper.add(this)
     }
 
     @LayoutRes
     protected abstract fun layoutRes(): Int
 
-    open protected fun layout() {
+    protected open fun layout() {
     }
 
-    open protected fun setupActionBar() {
+    protected open fun setupActionBar() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -69,7 +84,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 .show()
     }
 
-    open protected fun getViewForSnackBar(): View {
+    protected open fun getViewForSnackBar(): View {
         return findViewById(Window.ID_ANDROID_CONTENT)
     }
 

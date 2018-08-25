@@ -3,18 +3,9 @@ package com.njust.helper.model;
 import java.util.List;
 
 public class CourseData {
-    private String courseall;
     private String startdate;
     private List<CourseInfo> infos;
     private List<CourseLoc> locs;
-
-    public String getCourseall() {
-        return courseall;
-    }
-
-    public void setCourseall(String courseall) {
-        this.courseall = courseall;
-    }
 
     public String getStartdate() {
         return startdate;

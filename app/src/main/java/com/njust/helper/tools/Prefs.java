@@ -120,9 +120,8 @@ public class Prefs {
         return 0;
     }
 
-    public static void putCourseInfo(Context context, String courseall, String starttime) {
+    public static void putCourseInfo(Context context, String starttime) {
         getEditor(context, "courseInfo")
-                .putString("courseHtml", courseall)
                 .putString("startTime", starttime)
                 .apply();
     }
