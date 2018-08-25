@@ -12,7 +12,7 @@
         tools:ignore="UnusedAttribute">
 
         <TextView
-            android:id="@+id/textMonth"
+            android:id="@+id/monthTextView"
             style="@style/course_day_indicator"
             android:layout_width="0dp"
             android:layout_weight="0.8"

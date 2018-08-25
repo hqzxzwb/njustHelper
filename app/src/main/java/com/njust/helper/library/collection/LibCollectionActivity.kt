@@ -3,7 +3,6 @@ package com.njust.helper.library.collection
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -13,8 +12,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import butterknife.BindView
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ItemLibCollectBinding
@@ -22,6 +19,7 @@ import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.DataBindingHolder
 import com.njust.helper.tools.Prefs
+import kotlinx.android.synthetic.main.activity_lib_collection.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,13 +28,6 @@ class LibCollectionActivity : BaseActivity() {
     private lateinit var adapter: LibCollectionAdapter
     private lateinit var mList: MutableList<LibCollectItem>
     private val itemsToRemove = HashSet<String>()
-
-    @BindView(R.id.recyclerView)
-    lateinit var recyclerView: RecyclerView
-    @BindView(R.id.coordinatorLayout)
-    lateinit var coordinatorLayout: CoordinatorLayout
-    @BindView(R.id.textView1)
-    lateinit var emptyView: TextView
 
     override fun layoutRes(): Int {
         return R.layout.activity_lib_collection
@@ -48,10 +39,12 @@ class LibCollectionActivity : BaseActivity() {
         manager = LibCollectManager.getInstance(this)
         mList = manager.listCollects()
         adapter = LibCollectionAdapter()
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        recyclerView.adapter = adapter
+        recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(this@LibCollectionActivity)
+            addItemDecoration(DividerItemDecoration(this@LibCollectionActivity, DividerItemDecoration.VERTICAL))
+            this.adapter = this@LibCollectionActivity.adapter
+        }
 
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {

@@ -7,13 +7,12 @@ import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
-import butterknife.BindView
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.main.MainActivity
 import com.njust.helper.tools.Prefs
 import com.zwb.commonlibs.injection.IntentInjection
+import kotlinx.android.synthetic.main.activity_account.*
 
 /**
  * 账户切换
@@ -31,12 +30,11 @@ class AccountActivity : BaseActivity() {
             try {
                 AlertDialog.Builder(context)
                         .setMessage(R.string.message_wrong_password)
-                        .setPositiveButton(R.string.dialog_base_modify_immediately,
-                                { _, _ ->
-                                    val intent = Intent(context, AccountActivity::class.java)
-                                    intent.putExtra(AccountActivity.EXTRA_PASSWORD_TYPE, accountRequest)
-                                    context.startActivity(intent)
-                                })
+                        .setPositiveButton(R.string.dialog_base_modify_immediately) { _, _ ->
+                            val intent = Intent(context, AccountActivity::class.java)
+                            intent.putExtra(AccountActivity.EXTRA_PASSWORD_TYPE, accountRequest)
+                            context.startActivity(intent)
+                        }
                         .setNegativeButton(R.string.action_back, null)
                         .show()
             } catch (e: Exception) {
@@ -44,13 +42,6 @@ class AccountActivity : BaseActivity() {
             }
         }
     }
-
-    @BindView(R.id.editText1)
-    lateinit var stuidText: EditText
-    @BindView(R.id.editText2)
-    lateinit var jwcPwdText: EditText
-    @BindView(R.id.editText3)
-    lateinit var libPwdText: EditText
 
     @IntentInjection(EXTRA_PASSWORD_TYPE)
     var type: Int = 0

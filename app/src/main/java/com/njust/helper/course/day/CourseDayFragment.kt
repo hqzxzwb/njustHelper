@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.view.ViewPager
 import android.support.v4.view.ViewPager.OnPageChangeListener
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -14,19 +13,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import butterknife.BindView
 import butterknife.ButterKnife
 import com.njust.helper.R
 import com.njust.helper.model.Course
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.TimeUtil
 import com.zwb.commonlibs.adapter.EfficientPagerAdapter
+import kotlinx.android.synthetic.main.fgmt_course_day.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CourseDayFragment : Fragment(), OnPageChangeListener {
-    private val mLists: Array<Array<MutableList<Course>>> = Array(7) {
-        Array<MutableList<Course>>(Constants.COURSE_SECTION_COUNT) {
+    private val mLists: Array<Array<MutableList<Course>>> = Array(7) { _ ->
+        Array<MutableList<Course>>(Constants.COURSE_SECTION_COUNT) { _ ->
             arrayListOf()
         }
     }
@@ -35,10 +34,6 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
     private lateinit var dayOfWeek: Array<String>
 
     private lateinit var mTextViews: Array<TextView>
-    @BindView(R.id.textMonth)
-    lateinit var mMonthView: TextView
-    @BindView(R.id.viewPager)
-    lateinit var mViewPager: ViewPager
 
     private var beginTimeInMillis: Long = 0
     private lateinit var listener: Listener
@@ -46,7 +41,7 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         ButterKnife.bind(this, view)
 
-        mViewPager.addOnPageChangeListener(this)
+        viewPager.addOnPageChangeListener(this)
 
         mTextViews = arrayOf(
                 view.findViewById(R.id.dayOfWeek0),
@@ -85,7 +80,7 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
                 return recyclerView
             }
         }
-        mViewPager.adapter = adapter
+        viewPager.adapter = adapter
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -108,12 +103,12 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
         for (course in courses) {
             mLists[course.day][course.sec1].add(course)
         }
-        val adapter = mViewPager.adapter!!
+        val adapter = viewPager.adapter!!
         adapter.notifyDataSetChanged()
     }
 
     fun setPosition(position: Int) {
-        mViewPager.currentItem = position
+        viewPager.currentItem = position
     }
 
     fun setCurrentDay(currentDay: Int) {
@@ -136,7 +131,7 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
     fun setWeek(week: Int) {
         var time = beginTimeInMillis + (week - 1) * TimeUtil.ONE_WEEK
         val date = Date(time)
-        mMonthView.text = dateMonthFormat.format(date)
+        monthTextView.text = dateMonthFormat.format(date)
         for (i in 0 until 7) {
             val string = dateDayFormat.format(date)
             if (i > 0 && string == "1") {

@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.provider.SearchRecentSuggestions
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
-import android.support.v7.widget.SearchView
-import android.support.v7.widget.Toolbar
 import android.view.View
-import butterknife.BindView
 import com.njust.helper.R
 import com.njust.helper.activity.MyListActivity
 import com.njust.helper.databinding.ItemLibSearchBinding
@@ -18,13 +15,9 @@ import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.AppHttpHelper
 import com.njust.helper.tools.DataBindingHolder
 import com.zwb.commonlibs.http.HttpMap
+import kotlinx.android.synthetic.main.activity_lib_search.*
 
 class LibSearchActivity : MyListActivity<LibSearchBean, ItemLibSearchBinding>() {
-    @BindView(R.id.toolbar)
-    lateinit var toolbar: Toolbar
-    @BindView(R.id.searchView)
-    lateinit var searchView: SearchView
-
     private var search: String? = null
     private var suggestions: SearchRecentSuggestions? = null
 
@@ -32,8 +25,10 @@ class LibSearchActivity : MyListActivity<LibSearchBean, ItemLibSearchBinding>() 
         super.onCreate(savedInstanceState)
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        searchView.isQueryRefinementEnabled = true
+        searchView.apply {
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            isQueryRefinementEnabled = true
+        }
     }
 
     override fun setupActionBar() {
