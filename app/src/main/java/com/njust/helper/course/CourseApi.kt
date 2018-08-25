@@ -85,33 +85,37 @@ interface CourseApi {
         }
 
         private fun mapParse(string: String): CourseData {
-            val table = Regex("""<table id="kbtable"[\s\S]*?</table>""")
-                    .find(string)!!
-                    .groupValues[0]
-            val result1 = Regex("""<tr>[\s\S]*?</tr>""")
-                    .findAll(table)
-                    .toList()
-                    .map { it.groupValues[0] }
-                    .filter { it.contains("""第[一二三四五]大节""".toRegex()) }
+            val tableRegex = Regex("""<table id="kbtable"[\s\S]*?</table>""")
+            val trRegex = Regex("""<tr>[\s\S]*?</tr>""")
+            val tdRegex = Regex("""<td[\s\S]*?</td>""")
+            val divRegex = Regex("""<div id=".*-2".*</div>""")
+            val brRegex = Regex(""">(.*?)<br/>""")
+            val teacherRegex = Regex("""'老师'>(.*?)</font>""")
+            val weekRegex = Regex("""'周次\(节次\)'>(.*?)</font>""")
+            val classroomRegex = Regex("""'教室'>(.*?)</font>""")
+
+            val table = tableRegex.find(string)!!.groupValues[0]
+            val sectionRegex = """第[一二三四五]大节""".toRegex()
+            val result1 = trRegex.findAll(table)
+                    .mapNotNullTo(arrayListOf()) { match ->
+                        match.groupValues[0].takeIf { it.contains(sectionRegex) }
+                    }
             val locList = arrayListOf<CourseLoc>()
             val courseMap = hashMapOf<String, CourseInfo>()
             for (timeOfDay in 0 until 5) {
                 val loc = CourseLoc()
                 loc.sec1 = timeOfDay
                 loc.sec2 = timeOfDay
-                val match1 = Regex("""<td[\s\S]*?</td>""")
-                        .findAll(result1[timeOfDay])
-                        .toList()
+                val match1 = tdRegex.findAll(result1[timeOfDay]).toList()
                 for (dayOfWeek in 0 until 7) {
                     loc.day = dayOfWeek
-                    val match2 = Regex("""<div id=".*-2".*</div>""")
+                    val match2 = divRegex
                             .find(match1[dayOfWeek].groupValues[0])!!
                             .groupValues[0]
                             .split("-----")
                     for (item in match2) {
                         val courseInfo: CourseInfo
-                        val find = Regex(""">(.*?)<br/>""")
-                                .find(item)
+                        val find = brRegex.find(item)
                         if (find == null) {
                             continue
                         } else {
@@ -119,26 +123,20 @@ interface CourseApi {
                             courseInfo.name = find.groupValues[1]
                         }
                         courseInfo.teacher = run {
-                            val result = Regex("""'老师'>(.*?)</font>""")
-                                    .find(item)
-                                    ?: return@run ""
+                            val result = teacherRegex.find(item) ?: return@run ""
                             result.groupValues[1]
                         }
                         courseInfo.id = md5(courseInfo.name + courseInfo.teacher)
                         courseMap[courseInfo.id] = courseInfo
                         loc.id = courseInfo.id
                         run {
-                            val result = Regex("""'周次\(节次\)'>(.*?)</font>""")
-                                    .find(item)
-                                    ?: return@run "1(周)"
+                            val result = weekRegex.find(item) ?: return@run "1(周)"
                             result.groupValues[1]
                         }
                                 .also { loc.week1 = it }
                                 .let { loc.week2 = analyseWeek(it) }
                         loc.classroom = run {
-                            val result = Regex("""'教室'>(.*?)</font>""")
-                                    .find(item)
-                                    ?: return@run ""
+                            val result = classroomRegex.find(item) ?: return@run ""
                             result.groupValues[1]
                         }
                         locList.add(loc.clone())
