@@ -1,17 +1,11 @@
 package com.njust.helper.main
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.njust.helper.BackgroundService
 import com.njust.helper.BuildConfig
 import com.njust.helper.LinksActivity
 import com.njust.helper.R
@@ -25,23 +19,19 @@ import com.njust.helper.databinding.ActivityMainBinding
 import com.njust.helper.grade.ExamsActivity
 import com.njust.helper.grade.GradeActivity
 import com.njust.helper.grade.GradeLevelActivity
-import com.njust.helper.library.search.LibSearchActivity
 import com.njust.helper.library.borrowed.BorrowedBooksActivity
 import com.njust.helper.library.collection.LibCollectionActivity
-import com.njust.helper.model.UpdateInfo
+import com.njust.helper.library.search.LibSearchActivity
 import com.njust.helper.settings.AboutActivity
 import com.njust.helper.settings.SettingsActivity
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
-import com.njust.helper.update.UpdateActivity
 import com.njust.helper.update.UpdateLogDialog
-import com.zwb.commonlibs.http.NetState
+import com.xiaomi.market.sdk.XiaomiUpdateAgent
 import java.util.*
 
 class MainActivity : BaseActivity(), MainActivityClickHandler {
-    private var receiver: BroadcastReceiver? = null
-
     private val viewModel = MainViewModel(this)
 
     override fun layout() {
@@ -58,22 +48,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
             updateCourse()
         }
 
-        val receiver = this.receiver
-        if (receiver != null) {
-            LocalBroadcastManager.getInstance(this)
-                    .registerReceiver(receiver, IntentFilter(BackgroundService.ACTION_UPDATE_INFO))
-        }
-
         checkUpdate()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        val receiver = this.receiver
-        if (receiver != null) {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
-        }
     }
 
     private fun checkUpdate() {
@@ -82,20 +57,11 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
         val lastTime = Prefs.getLastCheckUpdateTime(this)
         val time = now - lastTime
         if (time < 0 || time > 24 * 3600 * 1000L) {
-            if (NetState.getNetworkState(this)) {
-                startService(Intent(this, BackgroundService::class.java)
-                        .putExtra("action", "checkUpdate"))
-            }
+            XiaomiUpdateAgent.update(this)
         }
         // 删除更新文件并弹出更新日志
         val preVersion = Prefs.getVersion(this)
         if (BuildConfig.VERSION_CODE != preVersion) {
-            //尝试删除之前下载到缓存目录的更新文件，并不关心删除是否成功
-            externalCacheDir
-                    ?.listFiles()
-                    ?.filter { it.toString().endsWith(".apk") }
-                    ?.forEach { it.delete() }
-
             UpdateLogDialog.showUpdateDialog(this)
             Prefs.putVersion(this, BuildConfig.VERSION_CODE)
             if (preVersion == 0) {
@@ -165,43 +131,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
                 startActivity(AccountActivity::class.java)
                 return true
             }
-            R.id.item_update -> {
-                showSnack("正在检查更新……")
-                val intent = Intent(this, BackgroundService::class.java)
-                intent.putExtra("silentlyCheckUpdate", false)
-                        .putExtra("action", "checkUpdate")
-                if (receiver == null) {
-                    val receiver = object : BroadcastReceiver() {
-                        override fun onReceive(context: Context, intent: Intent) {
-                            onReceiveUpdateIntent(intent)
-                        }
-                    }
-                    LocalBroadcastManager.getInstance(this)
-                            .registerReceiver(receiver, IntentFilter(BackgroundService.ACTION_UPDATE_INFO))
-                    this.receiver = receiver
-                }
-                startService(intent)
-                return true
-            }
             else -> return super.onOptionsItemSelected(item)
-        }
-    }
-
-    internal fun onReceiveUpdateIntent(intent: Intent) {
-        val status = intent.getIntExtra("updateStatus", BackgroundService.UPDATE_STATUS_FAIL)
-        when (status) {
-            BackgroundService.UPDATE_STATUS_FAIL -> showSnack("检查更新失败，请检查网络后重试")
-            BackgroundService.UPDATE_STATUS_NO_UPDATE -> showSnack("未检测到更新")
-            else -> {
-                val updateInfo = intent.getParcelableExtra<UpdateInfo>("updateInfo")
-                val updateActivityIntent = UpdateActivity.createIntent(this, updateInfo)
-                AlertDialog.Builder(this)
-                        .setTitle("发现新版本")
-                        .setMessage(updateInfo.toString())
-                        .setPositiveButton("立即查看") { _, _ -> startActivity(updateActivityIntent) }
-                        .setNegativeButton("以后再说", null)
-                        .show()
-            }
         }
     }
 

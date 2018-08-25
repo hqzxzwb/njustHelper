@@ -16,9 +16,5 @@
         android:icon="@drawable/ic_action_about"
         android:title="@string/title_activity_about"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/item_update"
-        android:title="检查更新"
-        app:showAsAction="never" />
 
 </menu>
