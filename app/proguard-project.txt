@@ -25,6 +25,9 @@
 # Retain declared checked exceptions for use by a Proxy instance.
 -keepattributes Exceptions
 -dontwarn retrofit2.**
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
 
 -dontwarn okio.**
 -dontwarn okhttp3.**
