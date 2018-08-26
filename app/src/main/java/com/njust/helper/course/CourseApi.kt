@@ -3,6 +3,7 @@ package com.njust.helper.course
 import com.njust.helper.model.CourseData
 import com.njust.helper.model.CourseInfo
 import com.njust.helper.model.CourseLoc
+import com.njust.helper.tools.Apis
 import com.njust.helper.tools.LoginErrorException
 import com.njust.helper.tools.ServerErrorException
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
@@ -38,18 +39,9 @@ interface CourseApi {
 
     companion object {
         private val API = run {
-            val cookieManager = CookieManager()
-            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL)
-            val cookieJar = JavaNetCookieJar(cookieManager)
-            val client = OkHttpClient.Builder()
-                    .cookieJar(cookieJar)
-                    .followRedirects(false)
-                    .build()
-            Retrofit.Builder()
+            Apis.newRetrofitBuilder()
                     .baseUrl("http://202.119.81.113:9080/")
                     .addConverterFactory(ScalarsConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(client)
                     .build()
                     .create(CourseApi::class.java)!!
         }

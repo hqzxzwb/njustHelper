@@ -3,22 +3,15 @@
 
     <data>
 
-        <import type="com.njust.helper.library.search.LibSearchActivity.LibSearchAdapter" />
-
         <variable
-            name="libSearch"
-            type="com.njust.helper.library.search.LibSearchBean" />
-
-        <variable
-            name="position"
-            type="int" />
+            name="vm"
+            type="com.njust.helper.library.search.LibSearchItemVm" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:onClick="@{(v)->LibSearchAdapter.onClick(v,libSearch.id)}"
         android:orientation="vertical"
         android:paddingBottom="4dp"
         android:paddingLeft="16dp"
@@ -32,7 +25,7 @@
             android:ellipsize="end"
             android:hint="书名"
             android:singleLine="true"
-            android:text="@{(position+1)+`.`+libSearch.title}"
+            android:text="@{(vm.position+1)+`.`+vm.title}"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <TextView
@@ -41,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:hint="作者"
-            android:text="@{libSearch.author}"
+            android:text="@{vm.author}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         <TextView
@@ -50,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:hint="出版社"
-            android:text="@{libSearch.press}"
+            android:text="@{vm.press}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
     </LinearLayout>

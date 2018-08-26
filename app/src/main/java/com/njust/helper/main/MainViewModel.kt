@@ -4,13 +4,10 @@ import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.view.View
 import com.njust.helper.BR
+import com.zwb.commonlibs.binding.ObservableDelegate
 
 class MainViewModel(val clickHandler: MainActivityClickHandler) : BaseObservable() {
-    var courses: List<String>? = null
-        set (value) {
-            field = value
-            notifyPropertyChanged(BR.courses)
-        }
+    var courses: List<String>? by ObservableDelegate(BR.courses)
         @Bindable get
 }
 

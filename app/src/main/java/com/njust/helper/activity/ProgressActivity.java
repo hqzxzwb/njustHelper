@@ -10,7 +10,7 @@ import com.njust.helper.R;
 import java.util.WeakHashMap;
 
 public abstract class ProgressActivity extends BaseActivity {
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     private WeakHashMap<String, AsyncTask<?, ?, ?>> taskMap = new WeakHashMap<>();
 

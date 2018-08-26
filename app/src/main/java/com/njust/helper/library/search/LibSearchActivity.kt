@@ -3,45 +3,62 @@ package com.njust.helper.library.search
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
+import android.databinding.DataBindingUtil
 import android.provider.SearchRecentSuggestions
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
-import android.view.View
+import android.support.v7.widget.DividerItemDecoration
+import com.njust.helper.BuildConfig
 import com.njust.helper.R
-import com.njust.helper.activity.MyListActivity
-import com.njust.helper.databinding.ItemLibSearchBinding
+import com.njust.helper.activity.ProgressActivity
+import com.njust.helper.databinding.ActivityLibSearchBinding
+import com.njust.helper.library.LibraryApi
 import com.njust.helper.library.book.LibDetailActivity
-import com.njust.helper.tools.AppHttpHelper
-import com.njust.helper.tools.DataBindingHolder
-import com.zwb.commonlibs.http.HttpMap
-import kotlinx.android.synthetic.main.activity_lib_search.*
+import com.njust.helper.tools.ServerErrorException
+import com.tencent.bugly.crashreport.CrashReport
+import io.reactivex.rxkotlin.subscribeBy
 
-class LibSearchActivity : MyListActivity<LibSearchBean, ItemLibSearchBinding>() {
-    private var search: String? = null
+class LibSearchActivity : ProgressActivity() {
     private var suggestions: SearchRecentSuggestions? = null
+    private lateinit var binding: ActivityLibSearchBinding
+    private val vm = LibSearchVm(
+            onItemClick = { _, item, _ ->
+                startActivity(LibDetailActivity.buildIntent(this@LibSearchActivity, item.id))
+            }
+    )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun layout() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_lib_search)
+        binding.vm = vm
+    }
+
+    override fun prepareViews() {
+        mSwipeRefreshLayout = binding.swipeRefreshLayout
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView.apply {
+        binding.searchView.apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             isQueryRefinementEnabled = true
         }
+        binding.buttonClearHistory.setOnClickListener { clearHistory() }
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
     }
 
     override fun setupActionBar() {
-        setSupportActionBar(toolbar)
-        ViewCompat.setElevation(toolbar, 16f)
+        setSupportActionBar(binding.toolbar)
+        ViewCompat.setElevation(binding.toolbar, 16f)
         super.setupActionBar()
     }
 
     override fun layoutRes(): Int {
-        return R.layout.activity_lib_search
+        return 0
     }
 
-    fun clear_history(view: View) {
+    override fun addRefreshLayoutAutomatically(): Boolean {
+        return false
+    }
+
+    private fun clearHistory() {
         AlertDialog.Builder(this)
                 .setTitle("图书馆")
                 .setMessage("您确定清除搜索历史吗？")
@@ -55,8 +72,37 @@ class LibSearchActivity : MyListActivity<LibSearchBean, ItemLibSearchBinding>() 
         val query = intent.getStringExtra(SearchManager.QUERY)
         getSuggestions().saveRecentQuery(query, null)
 
-        search = query
-        onRefresh()
+        onRefresh(query)
+    }
+
+    private fun onRefresh(search: String) {
+        setRefreshing(true)
+        LibraryApi.search(search)
+                .subscribeBy(
+                        onSuccess = {
+                            vm.data = it.mapIndexed { index, libSearchBean ->
+                                LibSearchItemVm(libSearchBean, index)
+                            }
+                            setRefreshing(false)
+                        },
+                        onError = {
+                            onError(it)
+                            setRefreshing(false)
+                        }
+                )
+                .addToLifecycleManagement()
+    }
+
+    private fun onError(throwable: Throwable) {
+        if (throwable is ServerErrorException) {
+            showSnack(R.string.message_server_error_lib)
+        } else {
+            if (BuildConfig.DEBUG) {
+                throw throwable
+            } else {
+                CrashReport.postCatchedException(throwable)
+            }
+        }
     }
 
     private fun getSuggestions(): SearchRecentSuggestions {
@@ -65,53 +111,5 @@ class LibSearchActivity : MyListActivity<LibSearchBean, ItemLibSearchBinding>() 
                     SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE)
         }
         return suggestions!!
-    }
-
-    override fun getServerErrorText(): Int {
-        return R.string.message_server_error_lib
-    }
-
-    override fun onCreateAdapter(): MyListActivity.ListRecycleAdapter<LibSearchBean, ItemLibSearchBinding> {
-        return LibSearchAdapter(this)
-    }
-
-    override fun buildCacheName(): String? {
-        return null
-    }
-
-    @Throws(Exception::class)
-    override fun getResponse(): String {
-        val data = HttpMap()
-        data.addParam("search", search)
-        return AppHttpHelper().getPostResult("libSearch.php", data)
-    }
-
-    override fun getItemClass(): Class<LibSearchBean> {
-        return LibSearchBean::class.java
-    }
-
-    class LibSearchAdapter(private val activity: LibSearchActivity)
-        : MyListActivity.ListRecycleAdapter<LibSearchBean, ItemLibSearchBinding>() {
-        override fun getLayoutRes(): Int {
-            return R.layout.item_lib_search
-        }
-
-        override fun onBindViewHolder(holder: DataBindingHolder<ItemLibSearchBinding>, position: Int) {
-            holder.dataBinding.libSearch = getItem(position)
-            holder.dataBinding.position = position
-        }
-
-        override fun setData(data: List<LibSearchBean>) {
-            super.setData(data)
-            activity.recyclerView.scrollToPosition(0)
-        }
-
-        companion object {
-            @JvmStatic
-            fun onClick(view: View, id: String) {
-                val context = view.context
-                context.startActivity(LibDetailActivity.buildIntent(context, id))
-            }
-        }
     }
 }

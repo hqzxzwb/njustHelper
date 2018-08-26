@@ -13,6 +13,7 @@ import com.njust.helper.databinding.ActivityCourseQueryResultBinding
 import com.njust.helper.databinding.ItemCourseQueryBinding
 import com.njust.helper.model.CourseQuery
 import com.njust.helper.tools.DataBindingHolder
+import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 class CourseQueryResultActivity : BaseActivity() {
@@ -43,7 +44,7 @@ class CourseQueryResultActivity : BaseActivity() {
     private fun refresh() {
         CourseQueryApi.INSTANCE.queryCourse(section, day, name, teacher)
                 .doOnSubscribe { binding.loading = true }
-                .observeOn(AndroidSchedulers.mainThread())
+                .ioSubscribeUiObserve()
                 .subscribe({ onDataReceived(it.data) }, { onError() })
     }
 

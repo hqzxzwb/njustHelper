@@ -13,6 +13,7 @@ import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityLibBorrowBinding
 import com.njust.helper.tools.JsonData
 import com.njust.helper.tools.Prefs
+import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 class BorrowedBooksActivity : BaseActivity() {
@@ -59,7 +60,7 @@ class BorrowedBooksActivity : BaseActivity() {
         dialog = ProgressDialog.show(this@BorrowedBooksActivity, "正在加载", "请稍候……")
         BorrowedBooksApi.INSTANCE
                 .borrowedBooks(stuid, pwd)
-                .observeOn(AndroidSchedulers.mainThread())
+                .ioSubscribeUiObserve()
                 .subscribe({
                     dialog?.dismiss()
                     binding.loading = false
