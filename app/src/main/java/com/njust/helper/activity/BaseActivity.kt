@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
-import com.njust.helper.tools.DisposableHelper
+import com.zwb.commonlibs.rx.DisposableHelper
 import com.zwb.commonlibs.injection.InjectionHelper
 import io.reactivex.disposables.Disposable
 

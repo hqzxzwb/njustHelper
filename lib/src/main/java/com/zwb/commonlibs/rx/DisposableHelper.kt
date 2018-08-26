@@ -1,4 +1,4 @@
-package com.njust.helper.tools
+package com.zwb.commonlibs.rx
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

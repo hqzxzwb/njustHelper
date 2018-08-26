@@ -5,9 +5,8 @@ import com.njust.helper.model.CourseInfo
 import com.njust.helper.model.CourseLoc
 import com.njust.helper.tools.LoginErrorException
 import com.njust.helper.tools.ServerErrorException
+import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import retrofit2.HttpException
@@ -58,11 +57,10 @@ interface CourseApi {
         fun get(stuid: String, pwd: String): Single<CourseData> {
             return API
                     .requestLogin(stuid, md5(pwd).toUpperCase())
-                    .subscribeOn(Schedulers.io())
                     .mapLogin()
                     .flatMap { API.courses() }
                     .map { mapParse(it) }
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .ioSubscribeUiObserve()
         }
 
         private fun Single<String>.mapLogin(): Single<Unit> {
