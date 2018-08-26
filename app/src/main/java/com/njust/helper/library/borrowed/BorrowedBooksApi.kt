@@ -2,7 +2,7 @@ package com.njust.helper.library.borrowed
 
 import com.njust.helper.tools.Apis
 import com.njust.helper.tools.JsonData
-import io.reactivex.Observable
+import io.reactivex.Single
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Converter
@@ -18,7 +18,7 @@ interface BorrowedBooksApi {
     fun borrowedBooks(
             @Field("stuid") stuid: String,
             @Field("pwd") pwd: String
-    ): Observable<JsonData<String>>
+    ): Single<JsonData<String>>
 
     companion object {
         val INSTANCE: BorrowedBooksApi = Apis.newRetrofitBuilder()

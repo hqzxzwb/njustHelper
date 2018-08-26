@@ -4,7 +4,7 @@ import com.njust.helper.model.CourseQuery
 import com.njust.helper.tools.Apis
 import com.njust.helper.tools.JsonData
 import com.zwb.commonlibs.utils.JsonUtils
-import io.reactivex.Observable
+import io.reactivex.Single
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Converter
@@ -22,7 +22,7 @@ interface CourseQueryApi {
             @Field("day") day: Int,
             @Field("name") name: String,
             @Field("teacher") teacher: String
-    ): Observable<JsonData<List<CourseQuery>>>
+    ): Single<JsonData<List<CourseQuery>>>
 
     companion object {
         val INSTANCE: CourseQueryApi = Apis.newRetrofitBuilder()

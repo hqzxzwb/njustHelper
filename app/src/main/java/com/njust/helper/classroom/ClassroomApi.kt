@@ -2,7 +2,7 @@ package com.njust.helper.classroom
 
 import com.njust.helper.tools.Apis
 import com.njust.helper.tools.JsonData
-import io.reactivex.Observable
+import io.reactivex.Single
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Converter
@@ -19,7 +19,7 @@ interface ClassroomApi {
             @Field("date") date: String,
             @Field("building") building: String,
             @Field("timeofday") timeOfDay: Int
-    ): Observable<JsonData<String>>
+    ): Single<JsonData<String>>
 
     companion object {
         val INSTANCE: ClassroomApi = Apis.newRetrofitBuilder()
