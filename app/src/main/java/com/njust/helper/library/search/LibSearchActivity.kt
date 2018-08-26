@@ -17,6 +17,7 @@ import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.ServerErrorException
 import com.tencent.bugly.crashreport.CrashReport
 import io.reactivex.rxkotlin.subscribeBy
+import java.io.IOException
 
 class LibSearchActivity : ProgressActivity() {
     private var suggestions: SearchRecentSuggestions? = null
@@ -94,7 +95,9 @@ class LibSearchActivity : ProgressActivity() {
     }
 
     private fun onError(throwable: Throwable) {
-        if (throwable is ServerErrorException) {
+        if (throwable is IOException) {
+            showSnack(R.string.message_net_error)
+        } else if (throwable is ServerErrorException) {
             showSnack(R.string.message_server_error_lib)
         } else {
             if (BuildConfig.DEBUG) {

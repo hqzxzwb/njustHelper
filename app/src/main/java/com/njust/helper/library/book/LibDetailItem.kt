@@ -8,3 +8,8 @@ class LibDetailItem(
         val place: String,
         val state: String
 )
+
+class LibDetailData {
+    var states: List<LibDetailItem>? = null
+    var head: String? = null
+}

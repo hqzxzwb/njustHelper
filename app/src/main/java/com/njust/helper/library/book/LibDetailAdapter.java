@@ -1,6 +1,7 @@
 package com.njust.helper.library.book;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.Html;
@@ -23,7 +24,7 @@ public class LibDetailAdapter extends Adapter<LibDetailAdapter.LibDetailHolder> 
         mInflater = LayoutInflater.from(context);
     }
 
-    public void setData(LibDetailActivity.LibDetailData data) {
+    public void setData(LibDetailData data) {
         mDetailItems = data.getStates();
         head = data.getHead();
         notifyDataSetChanged();
@@ -40,7 +41,7 @@ public class LibDetailAdapter extends Adapter<LibDetailAdapter.LibDetailHolder> 
     }
 
     @Override
-    public void onBindViewHolder(LibDetailHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LibDetailHolder holder, int position) {
         switch (getItemViewType(position)) {
             case 0:
                 holder.code.setText(head);
@@ -50,8 +51,9 @@ public class LibDetailAdapter extends Adapter<LibDetailAdapter.LibDetailHolder> 
         }
     }
 
+    @NonNull
     @Override
-    public LibDetailHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
+    public LibDetailHolder onCreateViewHolder(@NonNull ViewGroup arg0, int arg1) {
         int type = getItemViewType(arg1);
         View view = mInflater.inflate(type == 1 ? R.layout.item_lib_detail
                 : R.layout.item_text, arg0, false);

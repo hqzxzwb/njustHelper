@@ -7,18 +7,18 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
+import com.njust.helper.library.LibraryApi
 import com.njust.helper.library.collection.LibCollectManager
-import com.njust.helper.tools.AppHttpHelper
 import com.njust.helper.tools.Constants
-import com.njust.helper.tools.JsonData
-import com.njust.helper.tools.JsonTask
-import com.zwb.commonlibs.http.HttpMap
-import com.zwb.commonlibs.utils.JsonUtils
+import com.njust.helper.tools.ServerErrorException
+import com.tencent.bugly.crashreport.CrashReport
 import com.zwb.commonlibs.utils.MemCacheManager
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_lib_collection.*
-import org.json.JSONObject
+import java.io.IOException
 
 class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var idString: String
@@ -112,63 +112,31 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
     }
 
     override fun onRefresh() {
-        attachAsyncTask(LibDetailTask())
+        LibraryApi.detail(idString)
+                .subscribeBy(
+                        onSuccess = {
+                            notifyData(it)
+                            setRefreshing(false)
+                        },
+                        onError = {
+                            onError(it)
+                            setRefreshing(false)
+                        }
+                )
+                .addToLifecycleManagement()
     }
 
-    class LibDetailData {
-        var states: List<LibDetailItem>? = null
-        var head: String? = null
-    }
-
-    private inner class LibDetailTask : JsonTask<Void, LibDetailData>() {
-        override fun onNetError() {
-            showSnack(getString(R.string.message_net_error))
-        }
-
-        override fun onServerError() {
-            showSnack(getString(R.string.message_server_error_lib))
-        }
-
-        override fun onSuccess(libDetailData: LibDetailData) {
-            MemCacheManager.put(cacheName, libDetailData)
-            notifyData(libDetailData)
-        }
-
-        override fun onCancelled(libDetailDataJsonData: JsonData<LibDetailData>?) {
-            if (libDetailDataJsonData != null && libDetailDataJsonData.isValid) {
-                MemCacheManager.put(cacheName, libDetailDataJsonData.data)
+    private fun onError(throwable: Throwable) {
+        if (throwable is IOException) {
+            showSnack(R.string.message_net_error)
+        } else if (throwable is ServerErrorException) {
+            showSnack(R.string.message_server_error_lib)
+        } else {
+            if (BuildConfig.DEBUG) {
+                throw throwable
+            } else {
+                CrashReport.postCatchedException(throwable)
             }
-        }
-
-        override fun onPreExecute() {
-            setRefreshing(true)
-        }
-
-        override fun doInBackground(vararg params: Void): JsonData<LibDetailData> {
-            val data = HttpMap()
-            data.addParam("id", idString)
-            try {
-                val string = AppHttpHelper().getPostResult("libDetail.php", data)
-                return object : JsonData<LibDetailData>(string) {
-                    @Throws(Exception::class)
-                    override fun parseData(jsonObject: JSONObject): LibDetailData {
-                        val libDetailData = LibDetailData()
-                        libDetailData.head = jsonObject.getString("head")
-                        libDetailData.states = JsonUtils.parseArray(
-                                jsonObject.getJSONArray("content"), LibDetailItem::class.java)
-                        return libDetailData
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            return JsonData.newNetErrorInstance()
-        }
-
-        override fun onPostExecute(libDetailDataJsonData: JsonData<LibDetailData>) {
-            super.onPostExecute(libDetailDataJsonData)
-            setRefreshing(false)
         }
     }
 
