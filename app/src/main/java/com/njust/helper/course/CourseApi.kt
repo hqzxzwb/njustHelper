@@ -33,13 +33,11 @@ object CourseApi {
         ): Single<String>
     }
 
-    private val service = run {
-        Apis.newRetrofitBuilder()
-                .baseUrl("http://202.119.81.113:9080/njlgdx/")
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .build()
-                .create(CourseApiService::class.java)!!
-    }
+    private val service = Apis.newRetrofitBuilder()
+            .baseUrl("http://202.119.81.113:9080/njlgdx/")
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .build()
+            .create(CourseApiService::class.java)!!
 
     fun get(stuid: String, pwd: String): Single<CourseData> {
         return service

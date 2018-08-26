@@ -11,10 +11,9 @@ import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityCourseQueryResultBinding
 import com.njust.helper.databinding.ItemCourseQueryBinding
-import com.njust.helper.model.CourseQuery
 import com.njust.helper.tools.DataBindingHolder
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Single
 
 class CourseQueryResultActivity : BaseActivity() {
     private var section: Int = 0
@@ -42,13 +41,18 @@ class CourseQueryResultActivity : BaseActivity() {
     }
 
     private fun refresh() {
-        CourseQueryApi.INSTANCE.queryCourse(section, day, name, teacher)
-                .doOnSubscribe { binding.loading = true }
+        Single
+                .create<List<CourseQueryItem>> { emitter ->
+                    CourseQueryDao.getInstance(this)
+                            .queryCourses(name, teacher, section, day)
+                            .let { emitter.onSuccess(it) }
+                }
                 .ioSubscribeUiObserve()
-                .subscribe({ onDataReceived(it.data) }, { onError() })
+                .subscribe({ onDataReceived(it) }, { onError() })
+                .addToLifecycleManagement()
     }
 
-    private fun onDataReceived(list: List<CourseQuery>) {
+    private fun onDataReceived(list: List<CourseQueryItem>) {
         binding.loading = false
         if (list.isEmpty()) {
             showSnack(R.string.message_no_result)
@@ -74,7 +78,7 @@ class CourseQueryResultActivity : BaseActivity() {
 
     private inner class CourseQueryAdapter : RecyclerView.Adapter<DataBindingHolder<ItemCourseQueryBinding>>() {
         val inflater = LayoutInflater.from(this@CourseQueryResultActivity)!!
-        var data: List<CourseQuery> = listOf()
+        var data: List<CourseQueryItem> = listOf()
             set(value) {
                 field = value
                 notifyDataSetChanged()

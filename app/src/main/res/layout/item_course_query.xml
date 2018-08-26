@@ -6,14 +6,14 @@
 
         <variable
             name="course"
-            type="com.njust.helper.model.CourseQuery" />
+            type="com.njust.helper.coursequery.CourseQueryItem" />
 
         <variable
             name="position"
             type="int" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,8 +27,6 @@
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@{(position+1)+`.`+course.name}"
@@ -39,7 +37,6 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textView1"
             android:text="@{@string/text_courseQuery_day_and_section(course.day+1, course.section+1)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="星期X第Y节" />
@@ -48,9 +45,6 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/textView2"
-            android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/textView2"
             android:text="@{course.teacher}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="教师" />
@@ -59,9 +53,6 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/textView3"
-            android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/textView3"
             android:text="@{course.classroom}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="教室" />
@@ -70,10 +61,8 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textView2"
             android:text="@{course.week1}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="第X周" />
-
-    </RelativeLayout>
+    </LinearLayout>
 </layout>
