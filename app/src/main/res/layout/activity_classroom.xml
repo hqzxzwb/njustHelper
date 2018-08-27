@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:enabled="false"
         app:refreshing="@{loading}"
-        tools:context=".classroom.ClassroomActivity">
+        tools:context=".coursequery.ClassroomActivity">
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayout"

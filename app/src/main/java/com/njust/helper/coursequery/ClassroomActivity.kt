@@ -1,4 +1,4 @@
-package com.njust.helper.classroom
+package com.njust.helper.coursequery
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -11,9 +11,7 @@ import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
-import io.reactivex.android.schedulers.AndroidSchedulers
-import java.text.SimpleDateFormat
-import java.util.*
+import io.reactivex.Single
 
 /**
  * 自习室查询
@@ -30,7 +28,7 @@ class ClassroomActivity : BaseActivity() {
 
         val time = (System.currentTimeMillis() - Prefs.getTermStartTime(this)) % TimeUtil.ONE_DAY
         val captions = resources.getStringArray(R.array.sections)
-        checkBoxes.indices.forEach { checkBoxes[it].text = captions[it] }
+        checkBoxes.forEachIndexed { index, checkBox -> checkBox.text = captions[index] }
 
         var i = 0
         while (i < Constants.COURSE_SECTION_COUNT) {
@@ -64,23 +62,28 @@ class ClassroomActivity : BaseActivity() {
     }
 
     private fun onClickQueryButton() {
-        var sections = 0
-        checkBoxes.indices
-                .filter { checkBoxes[it].isChecked }
-                .forEach { sections = sections or (1 shl it) }
+        val sections = checkBoxes
+                .foldIndexed(0) { index, acc, checkBox ->
+                    if (checkBox.isChecked) {
+                        acc or (1 shl index)
+                    } else {
+                        acc
+                    }
+                }
         if (sections == 0) {
             showSnack(R.string.toast_cr_choose_one_section)
             return
         }
-        val day = when (binding.dateGroup.checkedRadioButtonId) {
+        val dayId = when (binding.dateGroup.checkedRadioButtonId) {
             R.id.radio0 -> 0
             R.id.radio1 -> 1
             else -> 2
         }
-        val dateLong = System.currentTimeMillis() + TimeUtil.ONE_DAY * day
-        val format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val date = Date(dateLong)
-        val dateString = format.format(date)
+        val dateLong = System.currentTimeMillis() + TimeUtil.ONE_DAY * dayId
+        val termStart = Prefs.getTermStartTime(this)
+        val dayIndex = ((dateLong - termStart) / TimeUtil.ONE_DAY).toInt()
+        val week = dayIndex / 7 + 1
+        val day = dayIndex % 7
         val buildingIndex = when (binding.buildingGroup.checkedRadioButtonId) {
             R.id.radio3 -> 0
             R.id.radio4 -> 1
@@ -88,11 +91,20 @@ class ClassroomActivity : BaseActivity() {
         }
         val building = BUILDING_VALUE[buildingIndex]
         binding.loading = true
-        ClassroomApi.INSTANCE.getClassrooms(dateString, building, sections)
+        Single
+                .create<String> { emitter ->
+                    val dao = CourseQueryDao.getInstance(this)
+                    val allRooms = dao.queryClassroomSet(building)
+                    val ruledOutRooms = dao.queryClassroom(building, week, day, sections)
+                    (allRooms - ruledOutRooms)
+                            .fold(StringBuilder()) { acc, it ->
+                                acc.append(it.replace('-', '_')).append("  ")
+                            }
+                            .let { emitter.onSuccess(it.toString()) }
+                }
                 .ioSubscribeUiObserve()
-                .subscribe({
+                .subscribe({ s ->
                     binding.loading = false
-                    val s = it.data
                     if (s == "") {
                         binding.text = getString(R.string.text_classroom_no_info)
                     } else {

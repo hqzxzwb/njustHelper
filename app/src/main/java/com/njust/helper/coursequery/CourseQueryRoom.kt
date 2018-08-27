@@ -10,6 +10,7 @@ import com.njust.helper.R
 import com.zwb.commonlibs.utils.SingletonHolder
 import org.json.JSONObject
 import java.util.*
+import kotlin.math.roundToInt
 
 private const val DB_VERSION = 1
 private const val DB_NAME = "course_query"
@@ -39,6 +40,19 @@ interface CourseQueryDao {
             maskedSection: Int,
             maskedDay: Int
     ): List<CourseQueryItem>
+
+    @Query("select classroom from main where classroom like :building || '-%' group by classroom")
+    fun queryClassroomSet(
+            building: String
+    ): List<String>
+
+    @Query("select classroom from main where (classroom like :building || '-%') and (week2 like '% ' || :week || ' %') and (day == :day) and (maskedSection & :maskedSection) group by classroom")
+    fun queryClassroom(
+            building: String,
+            week: Int,
+            day: Int,
+            maskedSection: Int
+    ): List<String>
 
     companion object : SingletonHolder<CourseQueryDao, Context>({ newDao(it) })
 }
@@ -74,6 +88,10 @@ private fun onCreateDatabase(context: Context, db: SupportSQLiteDatabase) {
                     val value = item.get(key)
                     if (value is String) {
                         cv.put(key, value)
+                    } else if (value is Float) {
+                        cv.put(key, value.roundToInt())
+                    } else if (value is Double) {
+                        cv.put(key, value.roundToInt())
                     } else if (value is Number) {
                         cv.put(key, value.toInt())
                     }

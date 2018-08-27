@@ -80,7 +80,7 @@
             android:label="@string/title_activity_level"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".classroom.ClassroomActivity"
+            android:name=".coursequery.ClassroomActivity"
             android:label="@string/title_activity_cr"
             android:screenOrientation="portrait" />
         <activity

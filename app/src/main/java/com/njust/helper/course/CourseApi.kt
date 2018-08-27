@@ -113,16 +113,12 @@ object CourseApi {
                     courseInfo.id = md5(courseInfo.name + courseInfo.teacher)
                     courseMap[courseInfo.id] = courseInfo
                     loc.id = courseInfo.id
-                    run {
-                        val result = weekRegex.find(item) ?: return@run "1(周)"
-                        result.groupValues[1]
-                    }
+                    weekRegex.find(item)
+                            .let { if (it == null) "1(周)" else it.groupValues[1] }
                             .also { loc.week1 = it }
                             .let { loc.week2 = analyseWeek(it) }
-                    loc.classroom = run {
-                        val result = classroomRegex.find(item) ?: return@run ""
-                        result.groupValues[1]
-                    }
+                    loc.classroom = classroomRegex.find(item)
+                            .let { if (it == null) "" else it.groupValues[1] }
                     locList.add(loc.clone())
                 }
             }

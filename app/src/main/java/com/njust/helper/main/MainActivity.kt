@@ -11,7 +11,7 @@ import com.njust.helper.LinksActivity
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
-import com.njust.helper.classroom.ClassroomActivity
+import com.njust.helper.coursequery.ClassroomActivity
 import com.njust.helper.course.CourseActivity
 import com.njust.helper.course.data.CourseManager
 import com.njust.helper.coursequery.CourseQueryActivity
