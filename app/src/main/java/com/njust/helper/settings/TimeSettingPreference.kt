@@ -9,10 +9,12 @@ import android.widget.TimePicker
 import com.zwb.commonlibs.ui.TimePickerDialogFix
 import java.util.*
 
-class TimeSettingPreference(context: Context, attrs: AttributeSet)
+private const val DEFAULT_TIME = 20 * 60 + 0
+
+class TimeSettingPreference(context: Context, attrs: AttributeSet?)
     : DialogPreference(context, attrs), OnTimeSetListener {
 
-    override fun showDialog(state: Bundle) {
+    override fun showDialog(state: Bundle?) {
         val time = getPersistedInt(DEFAULT_TIME)
         val hour = time / 60
         val minute = time % 60
@@ -35,9 +37,5 @@ class TimeSettingPreference(context: Context, attrs: AttributeSet)
 
     override fun getSummary(): CharSequence {
         return getTimeString(getPersistedInt(DEFAULT_TIME))
-    }
-
-    companion object {
-        private const val DEFAULT_TIME = 20 * 60 + 0
     }
 }
