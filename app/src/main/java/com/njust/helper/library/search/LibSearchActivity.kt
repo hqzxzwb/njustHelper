@@ -76,7 +76,10 @@ class LibSearchActivity : ProgressActivity() {
         onRefresh(query)
     }
 
-    private fun onRefresh(search: String) {
+    private fun onRefresh(search: String?) {
+        if (search == null) {
+            return
+        }
         setRefreshing(true)
         LibraryApi.search(search)
                 .subscribeBy(
