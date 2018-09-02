@@ -29,6 +29,27 @@
     @retrofit2.http.* <methods>;
 }
 
+# Kotlin null checks
+-assumenosideeffects class kotlin.jvm.internal.Intrinsics {
+    public static void throwUninitializedPropertyAccessException(...);
+
+    public static void throwUninitializedProperty(...);
+
+    public static void throwUninitializedPropertyAccessException(...);
+
+    public static void checkExpressionValueIsNotNull(...);
+
+    public static void checkNotNullExpressionValue(...);
+
+    public static void checkReturnedValueIsNotNull(...);
+
+    public static void checkFieldIsNotNull(...);
+
+    public static void checkParameterIsNotNull(...);
+
+    public static void checkNotNullParameter(...);
+}
+
 -dontwarn okio.**
 -dontwarn okhttp3.**
 
@@ -37,3 +58,6 @@
 
 -obfuscationdictionary 'dict.txt'
 -classobfuscationdictionary 'dict.txt'
+
+-useuniqueclassmembernames
+-keepattributes SourceFile,LineNumberTable
