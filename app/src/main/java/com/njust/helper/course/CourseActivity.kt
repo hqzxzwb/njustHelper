@@ -13,8 +13,6 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import com.njust.helper.BuildConfig
-import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.course.data.CourseManager
@@ -212,7 +210,12 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
     private fun setTodayText() {
         val calendar = Calendar.getInstance()
         val now = calendar.timeInMillis
-        val week = Math.floor(((now - termStartTime) / TimeUtil.ONE_WEEK.toFloat()).toDouble()).toInt() + 1
+        val timeDiff = now - termStartTime
+        val week = if (timeDiff >= 0) {
+            timeDiff / TimeUtil.ONE_WEEK + 1
+        } else {
+            timeDiff / TimeUtil.ONE_WEEK
+        }
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         dayFragment.setCurrentDay(if (dayOfWeek > 1) dayOfWeek - 2 else 6)
         val string = dateFormat.format(Date())
