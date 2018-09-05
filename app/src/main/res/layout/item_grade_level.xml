@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.njust.helper.grade.GradeLevelBean" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{vm.courseName}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            tools:text="课程名" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`笔试成绩：`+vm.writtenPartScore}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="星期X第Y节" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`机试成绩：`+vm.computerPartScore}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="教师" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`总成绩：`+vm.totalScore}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="教室" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`考试时间：`+vm.time}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="第X周" />
+    </LinearLayout>
+</layout>

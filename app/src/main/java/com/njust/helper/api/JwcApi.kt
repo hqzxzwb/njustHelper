@@ -176,6 +176,8 @@ object JwcApi {
         return builder.toString()
     }
 
+    private fun convertScore(s: String) = if (s == "0") "--" else s
+
     private fun parseGradeLevel(string: String): List<GradeLevelBean> {
         return Regex("""<td align="left">(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>""")
                 .findAll(string)
@@ -183,8 +185,8 @@ object JwcApi {
                     val groupValues = it.groupValues
                     GradeLevelBean(
                             courseName = groupValues[1],
-                            writtenPartScore = groupValues[2],
-                            computerPartScore = groupValues[3],
+                            writtenPartScore = convertScore(groupValues[2]),
+                            computerPartScore = convertScore(groupValues[3]),
                             totalScore = groupValues[4],
                             time = groupValues[8]
                     )
