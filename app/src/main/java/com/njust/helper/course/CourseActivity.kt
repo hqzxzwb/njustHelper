@@ -13,8 +13,11 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import com.njust.helper.BuildConfig
+import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
+import com.njust.helper.api.JwcApi
 import com.njust.helper.course.data.CourseManager
 import com.njust.helper.course.day.CourseDayFragment
 import com.njust.helper.course.list.CourseListFragment
@@ -155,7 +158,7 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
 
     private fun doImport() {
         progressState(true)
-        CourseApi.get(Prefs.getId(this), Prefs.getJwcPwd(this))
+        JwcApi.courses(Prefs.getId(this), Prefs.getJwcPwd(this))
                 .subscribeBy(
                         onSuccess = {
                             onImportSuccess(it)

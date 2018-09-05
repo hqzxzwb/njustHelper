@@ -1,5 +1,6 @@
-package com.njust.helper.course
+package com.njust.helper.api
 
+import com.njust.helper.grade.GradeLevelBean
 import com.njust.helper.model.CourseData
 import com.njust.helper.model.CourseInfo
 import com.njust.helper.model.CourseLoc
@@ -13,7 +14,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.*
 import java.security.MessageDigest
 
-object CourseApi {
+object JwcApi {
     private interface CourseApiService {
         @GET("xk/LoginToXk")
         fun requestLogin(
@@ -31,6 +32,9 @@ object CourseApi {
                 @Field("demo") body3: String = "",
                 @Field("xnxq01id") body4: String = "2018-2019-1"
         ): Single<String>
+
+        @GET("kscj/djkscj_list")
+        fun gradeLevel(): Single<String>
     }
 
     private val service = Apis.newRetrofitBuilder()
@@ -39,17 +43,23 @@ object CourseApi {
             .build()
             .create(CourseApiService::class.java)!!
 
-    fun get(stuid: String, pwd: String): Single<CourseData> {
-        return service
-                .requestLogin(stuid, md5(pwd).toUpperCase())
-                .mapLogin()
+    fun courses(stuid: String, pwd: String): Single<CourseData> {
+        return login(stuid, pwd)
                 .flatMap { service.courses() }
-                .map { mapParse(it) }
+                .map { parseCourses(it) }
                 .ioSubscribeUiObserve()
     }
 
-    private fun Single<String>.mapLogin(): Single<Unit> {
-        return this
+    fun gradeLevel(stuid: String, pwd: String): Single<List<GradeLevelBean>> {
+        return login(stuid, pwd)
+                .flatMap { service.gradeLevel() }
+                .map { parseGradeLevel(it) }
+                .ioSubscribeUiObserve()
+    }
+
+    private fun login(stuid: String, pwd: String): Single<Unit> {
+        return service
+                .requestLogin(stuid, md5(pwd).toUpperCase())
                 .onErrorResumeNext {
                     if (it is HttpException) {
                         if (it.code() / 100 == 3) {
@@ -68,7 +78,7 @@ object CourseApi {
                 }
     }
 
-    private fun mapParse(string: String): CourseData {
+    private fun parseCourses(string: String): CourseData {
         val tableRegex = Regex("""<table id="kbtable"[\s\S]*?</table>""")
         val trRegex = Regex("""<tr>[\s\S]*?</tr>""")
         val tdRegex = Regex("""<td[\s\S]*?</td>""")
@@ -164,5 +174,20 @@ object CourseApi {
             }
         }
         return builder.toString()
+    }
+
+    private fun parseGradeLevel(string: String): List<GradeLevelBean> {
+        return Regex("""<td align="left">(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>""")
+                .findAll(string)
+                .mapTo(arrayListOf()) {
+                    val groupValues = it.groupValues
+                    GradeLevelBean(
+                            courseName = groupValues[1],
+                            writtenPartScore = groupValues[2],
+                            computerPartScore = groupValues[3],
+                            totalScore = groupValues[4],
+                            time = groupValues[8]
+                    )
+                }
     }
 }
