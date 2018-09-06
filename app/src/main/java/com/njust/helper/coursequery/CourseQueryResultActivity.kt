@@ -7,13 +7,14 @@ import android.support.v7.widget.LinearLayoutManager
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityCourseQueryResultBinding
+import com.njust.helper.tools.SimpleListVm
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
 
 class CourseQueryResultActivity : BaseActivity() {
     private var section: Int = 0
     private var day: Int = 0
-    private val vm = CourseQueryResultVm()
+    private val vm = SimpleListVm<CourseQueryItemVm>()
     private lateinit var name: String
     private lateinit var teacher: String
 
@@ -70,3 +71,5 @@ class CourseQueryResultActivity : BaseActivity() {
         binding.vm = vm
     }
 }
+
+class CourseQueryItemVm(val item: CourseQueryItem, val position: Int)

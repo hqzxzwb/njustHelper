@@ -9,9 +9,10 @@ import com.njust.helper.activity.BaseActivity
 import com.njust.helper.api.JwcApi
 import com.njust.helper.databinding.ActivityGradeLevelBinding
 import com.njust.helper.tools.Prefs
+import com.njust.helper.tools.SimpleListVm
 
 class GradeLevelActivity : BaseActivity() {
-    private val vm = GradeLevelVm()
+    private val vm = SimpleListVm<GradeLevelBean>()
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)

@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.njust.helper.grade.GradeLevelVm" />
+            type="com.njust.helper.tools.SimpleListVm&lt;com.njust.helper.grade.GradeLevelBean&gt;" />
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout

@@ -68,7 +68,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".grade.CourseQueryResultActivity"
+            android:name=".coursequery.CourseQueryResultActivity"
             android:label="@string/title_activity_cengke_result"
             android:screenOrientation="portrait" />
         <activity
