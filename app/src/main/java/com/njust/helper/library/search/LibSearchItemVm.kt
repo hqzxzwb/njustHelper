@@ -1,5 +1,7 @@
 package com.njust.helper.library.search
 
+import com.njust.helper.api.library.LibSearchBean
+
 class LibSearchItemVm(
         bean: LibSearchBean,
         val position: Int

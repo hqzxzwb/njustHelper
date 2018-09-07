@@ -10,7 +10,8 @@ import android.view.MenuItem
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
-import com.njust.helper.library.LibraryApi
+import com.njust.helper.api.library.LibDetailData
+import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.library.collection.LibCollectManager
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.ServerErrorException

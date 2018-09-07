@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.njust.helper.R;
+import com.njust.helper.api.library.LibDetailData;
+import com.njust.helper.api.library.LibDetailItem;
 
 import java.util.ArrayList;
 import java.util.List;

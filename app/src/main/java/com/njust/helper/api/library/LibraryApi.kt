@@ -1,9 +1,6 @@
-package com.njust.helper.library
+package com.njust.helper.api.library
 
 import android.text.Html
-import com.njust.helper.library.book.LibDetailData
-import com.njust.helper.library.book.LibDetailItem
-import com.njust.helper.library.search.LibSearchBean
 import com.njust.helper.tools.Apis
 import com.njust.helper.tools.ServerErrorException
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve

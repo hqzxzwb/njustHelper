@@ -1,4 +1,4 @@
-package com.njust.helper.library.book
+package com.njust.helper.api.library
 
 import android.support.annotation.Keep
 

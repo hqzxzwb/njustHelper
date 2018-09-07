@@ -12,7 +12,7 @@ import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
 import com.njust.helper.databinding.ActivityLibSearchBinding
-import com.njust.helper.library.LibraryApi
+import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.ServerErrorException
 import com.tencent.bugly.crashreport.CrashReport
