@@ -6,7 +6,7 @@
 
         <variable
             name="exam"
-            type="com.njust.helper.model.Exam" />
+            type="com.njust.helper.api.jwc.Exam" />
     </data>
 
     <LinearLayout

@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.njust.helper.model.Course;
-import com.njust.helper.model.CourseInfo;
-import com.njust.helper.model.CourseLoc;
+import com.njust.helper.api.jwc.CourseInfo;
+import com.njust.helper.api.jwc.CourseLoc;
 import com.zwb.commonlibs.utils.DatabaseUtils;
 
 import java.util.List;

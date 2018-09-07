@@ -17,7 +17,7 @@ import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
-import com.njust.helper.api.JwcApi
+import com.njust.helper.api.jwc.JwcApi
 import com.njust.helper.course.data.CourseManager
 import com.njust.helper.course.day.CourseDayFragment
 import com.njust.helper.course.list.CourseListFragment
@@ -25,7 +25,7 @@ import com.njust.helper.course.week.CourseWeekFragment
 import com.njust.helper.databinding.ActivityCourseBinding
 import com.njust.helper.main.MainActivity
 import com.njust.helper.model.Course
-import com.njust.helper.model.CourseData
+import com.njust.helper.api.jwc.CourseData
 import com.njust.helper.tools.*
 import com.tencent.bugly.crashreport.CrashReport
 import com.zwb.commonlibs.ui.DatePickerDialogFix

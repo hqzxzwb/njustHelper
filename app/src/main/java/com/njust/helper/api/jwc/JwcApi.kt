@@ -1,9 +1,5 @@
-package com.njust.helper.api
+package com.njust.helper.api.jwc
 
-import com.njust.helper.grade.GradeLevelBean
-import com.njust.helper.model.CourseData
-import com.njust.helper.model.CourseInfo
-import com.njust.helper.model.CourseLoc
 import com.njust.helper.tools.Apis
 import com.njust.helper.tools.LoginErrorException
 import com.njust.helper.tools.ServerErrorException
@@ -35,6 +31,17 @@ object JwcApi {
 
         @GET("kscj/djkscj_list")
         fun gradeLevel(): Single<String>
+
+        @GET("xsks/xsksap_query")
+        fun exams1(): Single<String>
+
+        @FormUrlEncoded
+        @POST("xsks/xsksap_list")
+        fun exams2(
+                @Field("xnxqid") xq: String,
+                @Field("xqlbmc") body1: String = "",
+                @Field("xqlb") body2: String = ""
+        ): Single<String>
     }
 
     private val service = Apis.newRetrofitBuilder()
@@ -54,6 +61,19 @@ object JwcApi {
         return login(stuid, pwd)
                 .flatMap { service.gradeLevel() }
                 .map { parseGradeLevel(it) }
+                .ioSubscribeUiObserve()
+    }
+
+    fun exams(stuid: String, pwd: String): Single<List<Exam>> {
+        return login(stuid, pwd)
+                .flatMap { service.exams1() }
+                .map {
+                    Regex("""<option selected value="(.*?)">""")
+                            .find(it)!!
+                            .groupValues[1]
+                }
+                .flatMap { service.exams2(it) }
+                .map { parseExams(it) }
                 .ioSubscribeUiObserve()
     }
 
@@ -189,6 +209,25 @@ object JwcApi {
                             computerPartScore = convertScore(groupValues[3]),
                             totalScore = groupValues[4],
                             time = groupValues[8]
+                    )
+                }
+    }
+
+    private fun parseExams(string: String): List<Exam> {
+        return Regex("""<table id="dataList"[\s\S]*?</table>""")
+                .find(string)!!
+                .groupValues[0]
+                .let {
+                    Regex("""<td.*?>(.*)</td>\s*<td>(.*?)</td>\s*<td>(.*?)</td>\s*<td>(.*?)</td>\s*</tr>""")
+                            .findAll(it)
+                }
+                .mapTo(arrayListOf()) {
+                    val groupValues = it.groupValues
+                    Exam(
+                            course = groupValues[1],
+                            time = groupValues[2],
+                            room = groupValues[3],
+                            seat = groupValues[4]
                     )
                 }
     }

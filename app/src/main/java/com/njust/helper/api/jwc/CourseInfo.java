@@ -1,4 +1,4 @@
-package com.njust.helper.model;
+package com.njust.helper.api.jwc;
 
 public class CourseInfo {
     private String id, name, teacher;

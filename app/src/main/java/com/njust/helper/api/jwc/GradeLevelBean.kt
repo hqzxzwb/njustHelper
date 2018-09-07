@@ -1,4 +1,4 @@
-package com.njust.helper.grade
+package com.njust.helper.api.jwc
 
 class GradeLevelBean(
         val courseName: String,

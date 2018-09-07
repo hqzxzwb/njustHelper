@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.njust.helper.tools.SimpleListVm&lt;com.njust.helper.api.jwc.GradeLevelBean&gt;" />
+            type="com.njust.helper.tools.SimpleListVm&lt;com.njust.helper.api.jwc.Exam&gt;" />
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -19,7 +19,7 @@
             android:id="@+id/recyclerView"
             brId="@{vm.brId}"
             items="@{vm.items}"
-            layoutId="@{@layout/item_grade_level}"
+            layoutId="@{@layout/item_exam}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />

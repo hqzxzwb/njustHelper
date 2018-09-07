@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.njust.helper.grade.GradeLevelBean" />
+            type="com.njust.helper.api.jwc.GradeLevelBean" />
     </data>
 
     <LinearLayout

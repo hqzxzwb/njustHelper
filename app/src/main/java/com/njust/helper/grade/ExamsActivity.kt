@@ -6,14 +6,14 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
-import com.njust.helper.api.jwc.GradeLevelBean
+import com.njust.helper.api.jwc.Exam
 import com.njust.helper.api.jwc.JwcApi
-import com.njust.helper.databinding.ActivityGradeLevelBinding
+import com.njust.helper.databinding.ActivityExamBinding
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.SimpleListVm
 
-class GradeLevelActivity : BaseActivity() {
-    private val vm = SimpleListVm<GradeLevelBean>()
+class ExamsActivity : BaseActivity() {
+    private val vm = SimpleListVm<Exam>()
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
@@ -22,15 +22,15 @@ class GradeLevelActivity : BaseActivity() {
     }
 
     private fun refresh() {
-        JwcApi.gradeLevel(Prefs.getId(this), Prefs.getJwcPwd(this))
+        JwcApi.exams(Prefs.getId(this), Prefs.getJwcPwd(this))
                 .subscribe({ onDataReceived(it) }, { onError() })
                 .addToLifecycleManagement()
     }
 
-    private fun onDataReceived(list: List<GradeLevelBean>) {
+    private fun onDataReceived(list: List<Exam>) {
         vm.loading = false
         if (list.isEmpty()) {
-            showSnack(R.string.message_no_result)
+            showSnack(R.string.message_no_result_exam)
         } else {
             vm.items = list
         }
@@ -44,7 +44,7 @@ class GradeLevelActivity : BaseActivity() {
     override fun layoutRes(): Int = 0
 
     override fun layout() {
-        val binding = DataBindingUtil.setContentView<ActivityGradeLevelBinding>(this, R.layout.activity_grade_level)
+        val binding = DataBindingUtil.setContentView<ActivityExamBinding>(this, R.layout.activity_exam)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         binding.swipeRefreshLayout.setOnRefreshListener(this::refresh)

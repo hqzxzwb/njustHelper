@@ -36,6 +36,7 @@
     <string name="message_server_error_lib">图书馆服务器偷懒睡着啦</string>
     <string name="message_net_error">网络不稳定，请稍后重试</string>
     <string name="message_no_result">未找到任何结果</string>
+    <string name="message_no_result_exam">暂无考试信息</string>
     <string name="message_no_result_libBorrow">您没有借阅任何图书</string>
     <string name="message_wrong_password">您输入了错误的用户名或密码</string>
     <string name="message_account_passwords"><![CDATA[新生教务系统默认密码可能为学号，也可能为身份证后六位。\n图书馆默认密码为学号。]]></string>

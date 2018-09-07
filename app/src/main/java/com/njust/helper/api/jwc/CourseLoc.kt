@@ -1,4 +1,4 @@
-package com.njust.helper.model
+package com.njust.helper.api.jwc
 
 class CourseLoc : Cloneable {
     var id: String? = null
