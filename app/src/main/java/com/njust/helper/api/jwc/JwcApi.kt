@@ -42,6 +42,15 @@ object JwcApi {
                 @Field("xqlbmc") body1: String = "",
                 @Field("xqlb") body2: String = ""
         ): Single<String>
+
+        @FormUrlEncoded
+        @POST("kscj/cjcx_list")
+        fun grade(
+                @Field("kksj") body1: String = "",
+                @Field("kcxz") body2: String = "",
+                @Field("kcmc") body3: String = "",
+                @Field("xsfs") body4: String = "max"
+        ): Single<String>
     }
 
     private val service = Apis.newRetrofitBuilder()
@@ -67,13 +76,20 @@ object JwcApi {
     fun exams(stuid: String, pwd: String): Single<List<Exam>> {
         return login(stuid, pwd)
                 .flatMap { service.exams1() }
-                .map {
-                    Regex("""<option selected value="(.*?)">""")
+                .flatMap {
+                    val xq = Regex("""<option selected value="(.*?)">""")
                             .find(it)!!
                             .groupValues[1]
+                    service.exams2(xq)
                 }
-                .flatMap { service.exams2(it) }
                 .map { parseExams(it) }
+                .ioSubscribeUiObserve()
+    }
+
+    fun grade(stuid: String, pwd: String): Single<List<GradeTerm>> {
+        return login(stuid, pwd)
+                .flatMap { service.grade() }
+                .map { parseGrade(it) }
                 .ioSubscribeUiObserve()
     }
 
@@ -145,8 +161,10 @@ object JwcApi {
                     loc.id = courseInfo.id
                     weekRegex.find(item)
                             .let { if (it == null) "1(周)" else it.groupValues[1] }
-                            .also { loc.week1 = it }
-                            .let { loc.week2 = analyseWeek(it) }
+                            .let {
+                                loc.week1 = it
+                                loc.week2 = analyseWeek(it)
+                            }
                     loc.classroom = classroomRegex.find(item)
                             .let { if (it == null) "" else it.groupValues[1] }
                     locList.add(loc.clone())
@@ -230,5 +248,46 @@ object JwcApi {
                             seat = groupValues[4]
                     )
                 }
+    }
+
+    private fun parseGrade(string: String): List<GradeTerm> {
+        val table = Regex("""<table id="dataList"[\s\S]*?</table>""")
+                .find(string)
+                ?: return emptyList()
+        val tdRegex = Regex("""<td.*?>(.*?)</td>""")
+        return Regex("""<tr>(\s*<td.*)+""")
+                .findAll(table.groupValues[0])
+                .mapTo(arrayListOf()) {
+                    val groupValues = tdRegex.findAll(it.groupValues[0]).toList()
+                    val gradeText = groupValues[4].groupValues[1]
+                    GradeItem(
+                            termName = groupValues[1].groupValues[1],
+                            courseName = groupValues[3].groupValues[1],
+                            weight = groupValues[6].groupValues[1].toDouble(),
+                            gradeText = gradeText,
+                            grade = gradeTextToDouble(gradeText),
+                            type = groupValues[9].groupValues[1]
+                    )
+                }
+                .also { it.reverse() }
+                .groupBy { it.termName }
+                .map {
+                    GradeTerm(
+                            termName = it.key,
+                            items = it.value
+                    )
+                }
+    }
+
+    private fun gradeTextToDouble(s: String): Double {
+        return when (s) {
+            "优秀" -> 90.0
+            "良好" -> 80.0
+            "中等" -> 70.0
+            "及格" -> 60.0
+            "不及格" -> 50.0
+            "免修" -> 89.0
+            else -> s.toDouble()
+        }
     }
 }

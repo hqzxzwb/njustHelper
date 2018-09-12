@@ -4,13 +4,19 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import com.njust.helper.BuildConfig
 import com.njust.helper.R
+import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.api.jwc.GradeLevelBean
 import com.njust.helper.api.jwc.JwcApi
 import com.njust.helper.databinding.ActivityGradeLevelBinding
+import com.njust.helper.tools.LoginErrorException
 import com.njust.helper.tools.Prefs
+import com.njust.helper.tools.ServerErrorException
 import com.njust.helper.tools.SimpleListVm
+import com.tencent.bugly.crashreport.CrashReport
+import java.io.IOException
 
 class GradeLevelActivity : BaseActivity() {
     private val vm = SimpleListVm<GradeLevelBean>()
@@ -23,7 +29,7 @@ class GradeLevelActivity : BaseActivity() {
 
     private fun refresh() {
         JwcApi.gradeLevel(Prefs.getId(this), Prefs.getJwcPwd(this))
-                .subscribe({ onDataReceived(it) }, { onError() })
+                .subscribe({ onDataReceived(it) }, { onError(it) })
                 .addToLifecycleManagement()
     }
 
@@ -36,9 +42,20 @@ class GradeLevelActivity : BaseActivity() {
         }
     }
 
-    private fun onError() {
+    private fun onError(throwable: Throwable) {
         vm.loading = false
-        showSnack(R.string.message_net_error)
+        when (throwable) {
+            is ServerErrorException -> showSnack(R.string.message_server_error)
+            is LoginErrorException -> AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_JWC)
+            is IOException -> showSnack(R.string.message_net_error)
+            else -> {
+                if (BuildConfig.DEBUG) {
+                    throwable.printStackTrace()
+                    throw throwable
+                }
+                CrashReport.postCatchedException(throwable)
+            }
+        }
     }
 
     override fun layoutRes(): Int = 0
