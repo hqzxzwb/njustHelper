@@ -19,7 +19,7 @@
             android:id="@+id/recyclerView"
             brId="@{vm.brId}"
             items="@{vm.items}"
-            layoutId="@{@layout/item_grade}"
+            layoutId="@{@layout/item_grade_term}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />

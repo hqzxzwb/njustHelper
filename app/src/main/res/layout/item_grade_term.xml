@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.njust.helper.api.jwc.GradeTerm" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@{`学期：`+vm.termName}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            tools:text="学期" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="12dp"
+            android:background="@android:drawable/divider_horizontal_bright" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:drawable/divider_horizontal_bright"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="课程"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:gravity="center"
+                android:text="成绩"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:gravity="center"
+                android:text="学分"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:gravity="center"
+                android:text="类型"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:gravity="center"
+                android:text="绩点"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:drawable/divider_horizontal_bright"
+            android:orientation="vertical"
+            android:showDividers="beginning|middle|end"
+            app:brId="@{vm.brId}"
+            app:items="@{vm.items}"
+            app:layoutId="@{@layout/item_grade_item}" />
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="12dp"
+            android:columnCount="4">
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="课程类型"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="总学分"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="加权平均分"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="GPA"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="所有课程"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="@{vm.totalWeight()}" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="@{vm.meanGrade()}" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="@{vm.meanPoint()}" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="必修课程"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="@{vm.mustTotalWeight()}" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="@{vm.mustMeanGrade()}" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="@{vm.mustMeanPoint()}" />
+        </GridLayout>
+    </LinearLayout>
+</layout>
