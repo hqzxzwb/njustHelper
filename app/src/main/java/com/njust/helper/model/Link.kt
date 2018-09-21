@@ -1,6 +1,6 @@
 package com.njust.helper.model
 
-data class Link(
+class Link(
         val name: String = "",
         val url: String = ""
 )
