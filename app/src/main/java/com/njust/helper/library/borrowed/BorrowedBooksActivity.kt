@@ -10,10 +10,10 @@ import android.webkit.WebViewClient
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
+import com.njust.helper.api.common.CommonApi
 import com.njust.helper.databinding.ActivityLibBorrowBinding
 import com.njust.helper.tools.JsonData
 import com.njust.helper.tools.Prefs
-import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 
 class BorrowedBooksActivity : BaseActivity() {
     private lateinit var stuid: String
@@ -57,13 +57,11 @@ class BorrowedBooksActivity : BaseActivity() {
 
     private fun onRefresh() {
         dialog = ProgressDialog.show(this@BorrowedBooksActivity, "正在加载", "请稍候……")
-        BorrowedBooksApi.INSTANCE
-                .borrowedBooks(stuid, pwd)
-                .ioSubscribeUiObserve()
+        CommonApi.borrowedBooks(stuid, pwd)
                 .subscribe({
                     dialog?.dismiss()
                     binding.loading = false
-                    when (it.status) {
+                    when (it.state) {
                         JsonData.STATUS_SUCCESS -> binding.webView1.loadUrl(it.content)
                         JsonData.STATUS_LOG_FAIL -> AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_LIB)
                     }

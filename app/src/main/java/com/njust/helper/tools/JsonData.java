@@ -2,8 +2,6 @@ package com.njust.helper.tools;
 
 import android.support.annotation.Keep;
 
-import org.json.JSONObject;
-
 @Keep
 public class JsonData<T> {
     /**
@@ -24,32 +22,20 @@ public class JsonData<T> {
     public static final int STATUS_SERVER_ERROR = 3;
 
     private T content;
-    private int status;
+    private int state;
 
     public JsonData() {
     }
 
-    public JsonData(String string) throws Exception {
-        JSONObject object = new JSONObject(string);
-        status = object.getInt("state");
-        if (isValid()) {
-            content = parseData(object);
-        }
-    }
-
     public boolean isValid() {
-        return status == STATUS_SUCCESS;
+        return state == STATUS_SUCCESS;
     }
 
     public T getContent() {
         return content;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    protected T parseData(JSONObject jsonObject) throws Exception {
-        return null;
+    public int getState() {
+        return state;
     }
 }
