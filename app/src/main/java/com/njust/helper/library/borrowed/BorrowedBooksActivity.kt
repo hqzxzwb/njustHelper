@@ -14,7 +14,6 @@ import com.njust.helper.databinding.ActivityLibBorrowBinding
 import com.njust.helper.tools.JsonData
 import com.njust.helper.tools.Prefs
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 class BorrowedBooksActivity : BaseActivity() {
     private lateinit var stuid: String
@@ -65,7 +64,7 @@ class BorrowedBooksActivity : BaseActivity() {
                     dialog?.dismiss()
                     binding.loading = false
                     when (it.status) {
-                        JsonData.STATUS_SUCCESS -> binding.webView1.loadUrl(it.data)
+                        JsonData.STATUS_SUCCESS -> binding.webView1.loadUrl(it.content)
                         JsonData.STATUS_LOG_FAIL -> AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_LIB)
                     }
                 }, {

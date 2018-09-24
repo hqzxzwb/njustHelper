@@ -1,16 +1,11 @@
 package com.njust.helper.tools;
 
-import com.njust.helper.model.CaptchaData;
-import com.zwb.commonlibs.utils.JsonUtils;
+import android.support.annotation.Keep;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-public abstract class JsonData<T> {
-    /**
-     * 验证码错误
-     */
-    public static final int STATUS_CAPTCHA_ERROR = 4;
+@Keep
+public class JsonData<T> {
     /**
      * 登录失败
      */
@@ -28,57 +23,33 @@ public abstract class JsonData<T> {
      */
     public static final int STATUS_SERVER_ERROR = 3;
 
-    private T data;
+    private T content;
     private int status;
-    private CaptchaData captchaData;
+
+    public JsonData() {
+    }
 
     public JsonData(String string) throws Exception {
         JSONObject object = new JSONObject(string);
         status = object.getInt("state");
         if (isValid()) {
-            data = parseData(object);
-        } else if (status == STATUS_CAPTCHA_ERROR) {
-            captchaData = JsonUtils.parseBean(object, CaptchaData.class);
+            content = parseData(object);
         }
-    }
-
-    private JsonData(int status) {
-        this.status = status;
-    }
-
-    public static <T> JsonData<T> newNetErrorInstance() {
-        return new JsonData<T>(STATUS_NET_ERROR) {
-            @Override
-            protected T parseData(JSONObject jsonObject) {
-                return null;
-            }
-        };
-    }
-
-    public static <T> JsonData<T> newLogFailedInstance() {
-        return new JsonData<T>(STATUS_LOG_FAIL) {
-            @Override
-            protected T parseData(JSONObject jsonObject) {
-                return null;
-            }
-        };
     }
 
     public boolean isValid() {
         return status == STATUS_SUCCESS;
     }
 
-    public T getData() {
-        return data;
+    public T getContent() {
+        return content;
     }
 
     public int getStatus() {
         return status;
     }
 
-    protected abstract T parseData(JSONObject jsonObject) throws Exception;
-
-    public CaptchaData getCaptchaData() {
-        return captchaData;
+    protected T parseData(JSONObject jsonObject) throws Exception {
+        return null;
     }
 }
