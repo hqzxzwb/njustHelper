@@ -16,7 +16,6 @@ import com.njust.helper.library.collection.LibCollectManager
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.ServerErrorException
 import com.tencent.bugly.crashreport.CrashReport
-import com.zwb.commonlibs.utils.MemCacheManager
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_lib_collection.*
 import java.io.IOException
@@ -54,12 +53,7 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
     }
 
     override fun firstRefresh() {
-        val data = MemCacheManager.get<LibDetailData>(cacheName)
-        if (data == null) {
-            onRefresh()
-        } else {
-            notifyData(data)
-        }
+        onRefresh()
     }
 
     override fun setupPullLayout(layout: SwipeRefreshLayout) {
