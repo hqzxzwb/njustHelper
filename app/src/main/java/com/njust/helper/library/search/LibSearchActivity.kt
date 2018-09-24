@@ -11,10 +11,11 @@ import android.support.v7.widget.DividerItemDecoration
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
-import com.njust.helper.databinding.ActivityLibSearchBinding
 import com.njust.helper.api.library.LibraryApi
+import com.njust.helper.databinding.ActivityLibSearchBinding
 import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.ServerErrorException
+import com.njust.helper.tools.SimpleListVm
 import com.tencent.bugly.crashreport.CrashReport
 import io.reactivex.rxkotlin.subscribeBy
 import java.io.IOException
@@ -22,11 +23,11 @@ import java.io.IOException
 class LibSearchActivity : ProgressActivity() {
     private var suggestions: SearchRecentSuggestions? = null
     private lateinit var binding: ActivityLibSearchBinding
-    private val vm = LibSearchVm(
-            onItemClick = { _, item, _ ->
-                startActivity(LibDetailActivity.buildIntent(this@LibSearchActivity, item.id))
-            }
-    )
+    private val vm = SimpleListVm<LibSearchItemVm>().apply {
+        listener = { _, item, _ ->
+            startActivity(LibDetailActivity.buildIntent(this@LibSearchActivity, item.id))
+        }
+    }
 
     override fun layout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_lib_search)
@@ -84,7 +85,7 @@ class LibSearchActivity : ProgressActivity() {
         LibraryApi.search(search)
                 .subscribeBy(
                         onSuccess = {
-                            vm.data = it.mapIndexed { index, libSearchBean ->
+                            vm.items = it.mapIndexed { index, libSearchBean ->
                                 LibSearchItemVm(libSearchBean, index)
                             }
                             setRefreshing(false)

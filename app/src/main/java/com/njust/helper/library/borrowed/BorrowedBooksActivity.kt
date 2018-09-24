@@ -70,5 +70,6 @@ class BorrowedBooksActivity : BaseActivity() {
                     binding.loading = false
                     showSnack(R.string.message_net_error)
                 })
+                .addToLifecycleManagement()
     }
 }

@@ -5,7 +5,7 @@
 
         <variable
             name="vm"
-            type="com.njust.helper.library.search.LibSearchVm" />
+            type="com.njust.helper.tools.SimpleListVm&lt;com.njust.helper.library.search.LibSearchItemVm&gt;" />
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -37,9 +37,9 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 brId="@{vm.brId}"
-                items="@{vm.data}"
+                items="@{vm.items}"
                 layoutId="@{@layout/item_lib_search}"
-                onItemClick="@{vm.onItemClick}"
+                onItemClick="@{vm.listener}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
