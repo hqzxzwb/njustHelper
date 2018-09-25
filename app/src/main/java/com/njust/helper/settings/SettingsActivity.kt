@@ -1,9 +1,9 @@
 package com.njust.helper.settings
 
 import android.os.Bundle
-import android.preference.ListPreference
-import android.preference.Preference
-import android.preference.PreferenceFragment
+import android.support.v7.preference.ListPreference
+import android.support.v7.preference.Preference
+import android.support.v7.preference.PreferenceFragmentCompat
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 
@@ -11,7 +11,7 @@ class SettingsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            fragmentManager.beginTransaction().replace(R.id.holder, HolderFragment()).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.holder, HolderFragment()).commit()
         }
     }
 
@@ -19,10 +19,8 @@ class SettingsActivity : BaseActivity() {
         return R.layout.activity_settings
     }
 
-    class HolderFragment : PreferenceFragment() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-
+    class HolderFragment : PreferenceFragmentCompat() {
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.preference)
 
             val modePreference = findPreference("mode") as ListPreference

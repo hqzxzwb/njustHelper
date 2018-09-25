@@ -2,8 +2,7 @@ package com.njust.helper.settings
 
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
-import android.os.Bundle
-import android.preference.DialogPreference
+import android.support.v7.preference.Preference
 import android.util.AttributeSet
 import android.widget.TimePicker
 import com.zwb.commonlibs.ui.TimePickerDialogFix
@@ -12,9 +11,9 @@ import java.util.*
 private const val DEFAULT_TIME = 20 * 60 + 0
 
 class TimeSettingPreference(context: Context, attrs: AttributeSet?)
-    : DialogPreference(context, attrs), OnTimeSetListener {
+    : Preference(context, attrs), OnTimeSetListener {
 
-    override fun showDialog(state: Bundle?) {
+    override fun onClick() {
         val time = getPersistedInt(DEFAULT_TIME)
         val hour = time / 60
         val minute = time % 60
@@ -25,8 +24,7 @@ class TimeSettingPreference(context: Context, attrs: AttributeSet?)
         val time = hourOfDay * 60 + minute
         persistInt(time)
         summary = getTimeString(time)
-        val listener = onPreferenceChangeListener
-        listener?.onPreferenceChange(this, time)
+        onPreferenceChangeListener?.onPreferenceChange(this, time)
     }
 
     private fun getTimeString(time: Int): String {
