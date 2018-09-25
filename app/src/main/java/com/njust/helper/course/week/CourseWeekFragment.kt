@@ -2,7 +2,7 @@ package com.njust.helper.course.week
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +13,7 @@ import com.njust.helper.tools.TimeUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CourseWeekFragment : Fragment() {
+class CourseWeekFragment : androidx.fragment.app.Fragment() {
     private var beginTimeInMillis: Long = 0
     private var dateFormat: SimpleDateFormat? = null
     private lateinit var listener: Listener

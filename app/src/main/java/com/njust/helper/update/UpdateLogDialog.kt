@@ -1,7 +1,7 @@
 package com.njust.helper.update
 
 import android.content.Context
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 
 import com.njust.helper.BuildConfig
 import com.njust.helper.R

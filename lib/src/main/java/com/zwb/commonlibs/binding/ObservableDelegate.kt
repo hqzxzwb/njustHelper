@@ -2,7 +2,7 @@
 
 package com.zwb.commonlibs.binding
 
-import android.databinding.BaseObservable
+import androidx.databinding.BaseObservable
 import kotlin.reflect.KProperty
 
 class ObservableDelegate<T>(

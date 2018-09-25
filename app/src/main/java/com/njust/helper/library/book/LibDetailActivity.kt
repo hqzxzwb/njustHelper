@@ -2,11 +2,11 @@ package com.njust.helper.library.book
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
@@ -17,7 +17,7 @@ import com.njust.helper.tools.Constants
 import com.njust.helper.tools.ServerErrorException
 import com.tencent.bugly.crashreport.CrashReport
 import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.activity_lib_collection.*
+import kotlinx.android.synthetic.main.activity_lib_detail.*
 import java.io.IOException
 
 class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListener {

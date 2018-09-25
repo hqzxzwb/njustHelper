@@ -1,6 +1,6 @@
 package com.njust.helper.course.day
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
@@ -9,7 +9,7 @@ import com.njust.helper.model.Course
 import com.njust.helper.tools.DataBindingHolder
 
 class CourseDayAdapter internal constructor(private val fragment: CourseDayFragment)
-    : RecyclerView.Adapter<DataBindingHolder<ItemCourseDayBinding>>() {
+    : androidx.recyclerview.widget.RecyclerView.Adapter<DataBindingHolder<ItemCourseDayBinding>>() {
     private var mData: Array<MutableList<Course>> = arrayOf()
     private var mWeek = 0
     private var mDay = 0

@@ -3,15 +3,15 @@ package com.njust.helper.library.collection
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ItemLibCollectBinding
@@ -189,7 +189,7 @@ class LibCollectionActivity : BaseActivity() {
     }
 
     companion object {
-        private val REQUEST_CODE_LIB_DETAIL = 0
+        private const val REQUEST_CODE_LIB_DETAIL = 0
 
         private val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
 

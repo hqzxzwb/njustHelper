@@ -2,7 +2,7 @@ package com.njust.helper.library.borrowed
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.webkit.WebView

@@ -1,11 +1,11 @@
 package com.zwb.commonlibs.binding
 
-import android.databinding.ViewDataBinding
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
-open class DataBindingHolder<T : ViewDataBinding>(val binding: T) : RecyclerView.ViewHolder(binding.root)
+open class DataBindingHolder<T : ViewDataBinding>(val binding: T) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root)
 
 class BaseDataBindingHolder(binding: ViewDataBinding) : DataBindingHolder<ViewDataBinding>(binding)
 
-class PlainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+class PlainViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView)

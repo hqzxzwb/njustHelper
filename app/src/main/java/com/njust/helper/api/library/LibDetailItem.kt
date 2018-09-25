@@ -1,6 +1,6 @@
 package com.njust.helper.api.library
 
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 
 @Keep
 class LibDetailItem(

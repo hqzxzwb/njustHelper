@@ -1,9 +1,9 @@
 package com.njust.helper.library.collection
 
-import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.db.SupportSQLiteQueryBuilder
-import android.arch.persistence.room.*
-import android.arch.persistence.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.sqlite.db.SupportSQLiteQueryBuilder
+import androidx.room.*
+import androidx.room.migration.Migration
 import android.content.Context
 import com.zwb.commonlibs.utils.SingletonHolder
 

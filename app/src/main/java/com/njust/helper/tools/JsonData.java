@@ -1,6 +1,6 @@
 package com.njust.helper.tools;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 @Keep
 public class JsonData<T> {

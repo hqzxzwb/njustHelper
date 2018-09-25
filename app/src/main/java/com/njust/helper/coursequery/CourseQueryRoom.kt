@@ -1,11 +1,11 @@
 package com.njust.helper.coursequery
 
-import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.room.*
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room.*
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import com.njust.helper.R
 import com.zwb.commonlibs.utils.SingletonHolder
 import org.json.JSONObject

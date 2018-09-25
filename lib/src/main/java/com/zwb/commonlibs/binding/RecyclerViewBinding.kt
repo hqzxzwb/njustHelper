@@ -1,11 +1,11 @@
 package com.zwb.commonlibs.binding
 
 import android.content.Context
-import android.databinding.BindingAdapter
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.BindingAdapter
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
@@ -14,7 +14,7 @@ internal class DataBindingAdapter<T>(
         private val layoutId: Int,
         private val brId: Int,
         private val onBindingItemClickListener: OnBindingItemClickListener<T>?
-) : RecyclerView.Adapter<DataBindingHolder<ViewDataBinding>>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<DataBindingHolder<ViewDataBinding>>() {
     override fun onBindViewHolder(holder: DataBindingHolder<ViewDataBinding>, position: Int) {
         holder.binding.apply {
             setVariable(brId, data[position])
@@ -54,16 +54,16 @@ internal class DataBindingAdapter<T>(
  */
 @BindingAdapter("layoutId", "brId", "items", "layoutManager", "onItemClick", requireAll = false)
 internal fun <T> bindRecyclerViewWithViewModel(
-        recyclerView: RecyclerView,
+        recyclerView: androidx.recyclerview.widget.RecyclerView,
         layoutId: Int,
         brId: Int,
         items: List<T>?,
-        tlm: RecyclerView.LayoutManager?,
+        tlm: androidx.recyclerview.widget.RecyclerView.LayoutManager?,
         onBindingItemClickListener: OnBindingItemClickListener<T>?
 ) {
     var lm = tlm
     if (lm == null && recyclerView.layoutManager == null) {
-        lm = LinearLayoutManager(recyclerView.context)
+        lm = androidx.recyclerview.widget.LinearLayoutManager(recyclerView.context)
     }
     if (lm != null) {
         recyclerView.layoutManager = lm

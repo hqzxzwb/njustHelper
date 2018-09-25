@@ -3,11 +3,11 @@ package com.njust.helper.library.search
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.provider.SearchRecentSuggestions
-import android.support.v4.view.ViewCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.DividerItemDecoration
+import androidx.core.view.ViewCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
@@ -43,7 +43,7 @@ class LibSearchActivity : ProgressActivity() {
             isQueryRefinementEnabled = true
         }
         binding.buttonClearHistory.setOnClickListener { clearHistory() }
-        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        binding.recyclerView.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(this, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
     }
 
     override fun setupActionBar() {

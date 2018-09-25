@@ -1,7 +1,7 @@
 package com.njust.helper.coursequery
 
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityCourseQueryBinding

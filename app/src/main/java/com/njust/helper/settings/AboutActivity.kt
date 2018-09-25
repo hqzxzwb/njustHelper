@@ -2,11 +2,11 @@ package com.njust.helper.settings
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.net.Uri
-import android.support.v4.view.MenuItemCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.ShareActionProvider
+import androidx.core.view.MenuItemCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.ShareActionProvider
 import android.view.Menu
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity

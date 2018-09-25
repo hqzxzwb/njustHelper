@@ -1,7 +1,7 @@
 package com.njust.helper.tools;
 
-import android.databinding.ViewDataBinding;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class DataBindingHolder<V extends ViewDataBinding> extends RecyclerView.ViewHolder {
     private V dataBinding;

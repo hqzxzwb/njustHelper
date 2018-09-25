@@ -1,7 +1,7 @@
 package com.njust.helper.tools
 
-import android.databinding.BaseObservable
-import android.databinding.Bindable
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import com.njust.helper.BR
 import com.zwb.commonlibs.binding.BooleanObservableDelegate
 import com.zwb.commonlibs.binding.ObservableDelegate

@@ -2,9 +2,9 @@ package com.njust.helper.settings
 
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
-import android.support.v7.preference.Preference
 import android.util.AttributeSet
 import android.widget.TimePicker
+import androidx.preference.Preference
 import com.zwb.commonlibs.ui.TimePickerDialogFix
 import java.util.*
 

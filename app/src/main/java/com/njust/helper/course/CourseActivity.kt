@@ -4,9 +4,9 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View

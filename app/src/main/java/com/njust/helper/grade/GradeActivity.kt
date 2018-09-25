@@ -1,9 +1,9 @@
 package com.njust.helper.grade
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
@@ -62,8 +62,8 @@ class GradeActivity : BaseActivity() {
 
     override fun layout() {
         val binding = DataBindingUtil.setContentView<ActivityGradeBinding>(this, R.layout.activity_grade)
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        binding.recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        binding.recyclerView.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(this, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
         binding.swipeRefreshLayout.setOnRefreshListener(this::refresh)
         binding.vm = vm
     }

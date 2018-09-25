@@ -3,10 +3,10 @@ package com.njust.helper.account
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.main.MainActivity

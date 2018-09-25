@@ -1,11 +1,11 @@
 package com.njust.helper
 
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.api.common.CommonApi
 import com.njust.helper.databinding.ActivityLinksBinding
@@ -59,8 +59,8 @@ class LinksActivity : BaseActivity() {
 
     override fun layout() {
         val binding = DataBindingUtil.setContentView<ActivityLinksBinding>(this, R.layout.activity_links)
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        binding.recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        binding.recyclerView.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(this, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
         binding.swipeRefreshLayout.setOnRefreshListener(this::refresh)
         binding.vm = vm
     }

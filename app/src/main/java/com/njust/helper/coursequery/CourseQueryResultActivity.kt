@@ -1,9 +1,9 @@
 package com.njust.helper.coursequery
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityCourseQueryResultBinding
@@ -65,8 +65,8 @@ class CourseQueryResultActivity : BaseActivity() {
 
     override fun layout() {
         val binding = DataBindingUtil.setContentView<ActivityCourseQueryResultBinding>(this, R.layout.activity_course_query_result)
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        binding.recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        binding.recyclerView.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(this, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
         binding.swipeRefreshLayout.setOnRefreshListener(this::refresh)
         binding.vm = vm
     }
