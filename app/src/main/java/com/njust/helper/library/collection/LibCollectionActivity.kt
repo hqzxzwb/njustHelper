@@ -118,11 +118,11 @@ class LibCollectionActivity : BaseActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CODE_LIB_DETAIL) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK && data != null) {
                 if (!data.getBooleanExtra("isCollected", true)) {
                     val id = data.getStringExtra(Constants.EXTRA_ID)
                     for (i in mList.indices) {

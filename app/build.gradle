@@ -13,6 +13,7 @@ dependencies {
     kapt "android.arch.persistence.room:compiler:1.1.1"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:3.2.0"
     debugRuntimeOnly 'com.amitshekhar.android:debug-db:1.0.3'
+    implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'mi-appstore:xiaomi-update-sdk:4.0.3'
 }
 

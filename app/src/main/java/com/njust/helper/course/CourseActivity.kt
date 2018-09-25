@@ -313,7 +313,7 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
         showCourse(calendar)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
