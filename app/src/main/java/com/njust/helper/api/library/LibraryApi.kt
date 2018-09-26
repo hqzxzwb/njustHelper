@@ -1,8 +1,9 @@
 package com.njust.helper.api.library
 
 import android.text.Html
+import com.njust.helper.api.ServerErrorException
+import com.njust.helper.api.parseReportingError
 import com.njust.helper.tools.Apis
-import com.njust.helper.tools.ServerErrorException
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -34,13 +35,13 @@ object LibraryApi {
 
     fun search(keyword: String): Single<List<LibSearchBean>> {
         return service.search(keyword)
-                .map { parseSearch(it) }
+                .map { parseReportingError(it, ::parseSearch) }
                 .ioSubscribeUiObserve()
     }
 
     fun detail(id: String): Single<LibDetailData> {
         return service.detail(id)
-                .map { parseDetail(it) }
+                .map { parseReportingError(it, ::parseDetail) }
                 .ioSubscribeUiObserve()
     }
 

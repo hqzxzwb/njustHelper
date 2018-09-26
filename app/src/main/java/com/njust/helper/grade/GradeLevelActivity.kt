@@ -2,8 +2,6 @@ package com.njust.helper.grade
 
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
@@ -11,9 +9,10 @@ import com.njust.helper.activity.BaseActivity
 import com.njust.helper.api.jwc.GradeLevelBean
 import com.njust.helper.api.jwc.JwcApi
 import com.njust.helper.databinding.ActivityGradeLevelBinding
-import com.njust.helper.tools.LoginErrorException
+import com.njust.helper.api.LoginErrorException
+import com.njust.helper.api.ParseErrorException
 import com.njust.helper.tools.Prefs
-import com.njust.helper.tools.ServerErrorException
+import com.njust.helper.api.ServerErrorException
 import com.njust.helper.tools.SimpleListVm
 import com.tencent.bugly.crashreport.CrashReport
 import java.io.IOException
@@ -48,6 +47,7 @@ class GradeLevelActivity : BaseActivity() {
             is ServerErrorException -> showSnack(R.string.message_server_error)
             is LoginErrorException -> AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_JWC)
             is IOException -> showSnack(R.string.message_net_error)
+            is ParseErrorException -> showSnack(R.string.message_parse_error)
             else -> {
                 if (BuildConfig.DEBUG) {
                     throwable.printStackTrace()

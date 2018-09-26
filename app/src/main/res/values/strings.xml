@@ -35,6 +35,7 @@
     <string name="message_server_error">学校服务器抽了，过一会儿再来吧</string>
     <string name="message_server_error_lib">图书馆服务器偷懒睡着啦</string>
     <string name="message_net_error">网络不稳定，请稍后重试</string>
+    <string name="message_parse_error">解析数据失败，将在后续版本修复</string>
     <string name="message_no_result">未找到任何结果</string>
     <string name="message_no_result_exam">暂无考试信息</string>
     <string name="message_no_result_libBorrow">您没有借阅任何图书</string>

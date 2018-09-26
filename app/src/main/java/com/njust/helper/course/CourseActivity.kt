@@ -17,6 +17,9 @@ import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
+import com.njust.helper.api.LoginErrorException
+import com.njust.helper.api.ParseErrorException
+import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.jwc.JwcApi
 import com.njust.helper.course.data.CourseManager
 import com.njust.helper.course.day.CourseDayFragment
@@ -190,6 +193,7 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
             is ServerErrorException -> showSnack(R.string.message_server_error)
             is LoginErrorException -> relogin()
             is IOException -> showSnack(R.string.message_net_error)
+            is ParseErrorException -> showSnack(R.string.message_parse_error)
             else -> {
                 if (BuildConfig.DEBUG) {
                     throwable.printStackTrace()

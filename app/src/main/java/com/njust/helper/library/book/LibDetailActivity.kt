@@ -10,11 +10,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
+import com.njust.helper.api.ParseErrorException
 import com.njust.helper.api.library.LibDetailData
 import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.library.collection.LibCollectManager
 import com.njust.helper.tools.Constants
-import com.njust.helper.tools.ServerErrorException
+import com.njust.helper.api.ServerErrorException
 import com.tencent.bugly.crashreport.CrashReport
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_lib_detail.*
@@ -122,12 +123,11 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
     }
 
     private fun onError(throwable: Throwable) {
-        if (throwable is IOException) {
-            showSnack(R.string.message_net_error)
-        } else if (throwable is ServerErrorException) {
-            showSnack(R.string.message_server_error_lib)
-        } else {
-            if (BuildConfig.DEBUG) {
+        when (throwable) {
+            is IOException -> showSnack(R.string.message_net_error)
+            is ServerErrorException -> showSnack(R.string.message_server_error_lib)
+            is ParseErrorException -> showSnack(R.string.message_parse_error)
+            else -> if (BuildConfig.DEBUG) {
                 throw throwable
             } else {
                 CrashReport.postCatchedException(throwable)

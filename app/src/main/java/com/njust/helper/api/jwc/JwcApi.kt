@@ -1,8 +1,9 @@
 package com.njust.helper.api.jwc
 
+import com.njust.helper.api.LoginErrorException
+import com.njust.helper.api.ServerErrorException
+import com.njust.helper.api.parseReportingError
 import com.njust.helper.tools.Apis
-import com.njust.helper.tools.LoginErrorException
-import com.njust.helper.tools.ServerErrorException
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
 import retrofit2.HttpException
@@ -62,34 +63,36 @@ object JwcApi {
     fun courses(stuid: String, pwd: String): Single<CourseData> {
         return login(stuid, pwd)
                 .flatMap { service.courses() }
-                .map { parseCourses(it) }
+                .map { parseReportingError(it, ::parseCourses) }
                 .ioSubscribeUiObserve()
     }
 
     fun gradeLevel(stuid: String, pwd: String): Single<List<GradeLevelBean>> {
         return login(stuid, pwd)
                 .flatMap { service.gradeLevel() }
-                .map { parseGradeLevel(it) }
+                .map { parseReportingError(it, ::parseGradeLevel) }
                 .ioSubscribeUiObserve()
     }
 
     fun exams(stuid: String, pwd: String): Single<List<Exam>> {
         return login(stuid, pwd)
                 .flatMap { service.exams1() }
-                .flatMap {
-                    val xq = Regex("""<option selected value="(.*?)">""")
-                            .find(it)!!
-                            .groupValues[1]
-                    service.exams2(xq)
+                .flatMap { s ->
+                    parseReportingError(s) {
+                        val xq = Regex("""<option selected value="(.*?)">""")
+                                .find(it)!!
+                                .groupValues[1]
+                        service.exams2(xq)
+                    }
                 }
-                .map { parseExams(it) }
+                .map { parseReportingError(it, ::parseExams) }
                 .ioSubscribeUiObserve()
     }
 
     fun grade(stuid: String, pwd: String): Single<List<GradeTerm>> {
         return login(stuid, pwd)
                 .flatMap { service.grade() }
-                .map { parseGrade(it) }
+                .map { parseReportingError(it, ::parseGrade) }
                 .ioSubscribeUiObserve()
     }
 
@@ -257,7 +260,7 @@ object JwcApi {
         val tdRegex = Regex("""<td.*?>(.*?)</td>""")
         return Regex("""<tr>(\s*<td.*)+""")
                 .findAll(table.groupValues[0])
-                .mapTo(arrayListOf()) {
+                .map {
                     val groupValues = tdRegex.findAll(it.groupValues[0]).toList()
                     val gradeText = groupValues[4].groupValues[1]
                     GradeItem(
@@ -269,7 +272,6 @@ object JwcApi {
                             type = groupValues[9].groupValues[1]
                     )
                 }
-                .also { it.reverse() }
                 .groupBy { it.termName }
                 .map {
                     GradeTerm(
@@ -277,6 +279,7 @@ object JwcApi {
                             items = it.value
                     )
                 }
+                .sortedByDescending { it.termName }
     }
 
     private fun gradeTextToDouble(s: String): Double {

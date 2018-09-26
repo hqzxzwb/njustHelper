@@ -3,18 +3,18 @@ package com.njust.helper.library.search
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
 import android.provider.SearchRecentSuggestions
-import androidx.core.view.ViewCompat
 import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.core.view.ViewCompat
+import androidx.databinding.DataBindingUtil
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
+import com.njust.helper.api.ParseErrorException
+import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.databinding.ActivityLibSearchBinding
 import com.njust.helper.library.book.LibDetailActivity
-import com.njust.helper.tools.ServerErrorException
 import com.njust.helper.tools.SimpleListVm
 import com.tencent.bugly.crashreport.CrashReport
 import io.reactivex.rxkotlin.subscribeBy
@@ -99,12 +99,11 @@ class LibSearchActivity : ProgressActivity() {
     }
 
     private fun onError(throwable: Throwable) {
-        if (throwable is IOException) {
-            showSnack(R.string.message_net_error)
-        } else if (throwable is ServerErrorException) {
-            showSnack(R.string.message_server_error_lib)
-        } else {
-            if (BuildConfig.DEBUG) {
+        when (throwable) {
+            is IOException -> showSnack(R.string.message_net_error)
+            is ServerErrorException -> showSnack(R.string.message_server_error_lib)
+            is ParseErrorException -> showSnack(R.string.message_parse_error)
+            else -> if (BuildConfig.DEBUG) {
                 throw throwable
             } else {
                 CrashReport.postCatchedException(throwable)
