@@ -3,7 +3,7 @@ package com.njust.helper.api.library
 import android.text.Html
 import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.parseReportingError
-import com.njust.helper.tools.Apis
+import com.njust.helper.api.Apis
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
 import retrofit2.converter.scalars.ScalarsConverterFactory

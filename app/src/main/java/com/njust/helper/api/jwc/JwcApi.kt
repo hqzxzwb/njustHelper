@@ -1,15 +1,15 @@
 package com.njust.helper.api.jwc
 
+import com.njust.helper.api.Apis
 import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.parseReportingError
-import com.njust.helper.tools.Apis
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
+import com.zwb.commonlibs.utils.MD5
 import io.reactivex.Single
 import retrofit2.HttpException
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.*
-import java.security.MessageDigest
 
 object JwcApi {
     private interface CourseApiService {
@@ -98,7 +98,7 @@ object JwcApi {
 
     private fun login(stuid: String, pwd: String): Single<Unit> {
         return service
-                .requestLogin(stuid, md5(pwd).toUpperCase())
+                .requestLogin(stuid, MD5.md5String(pwd, true))
                 .onErrorResumeNext {
                     if (it is HttpException) {
                         if (it.code() / 100 == 3) {
@@ -159,7 +159,7 @@ object JwcApi {
                         val result = teacherRegex.find(item) ?: return@run ""
                         result.groupValues[1]
                     }
-                    courseInfo.id = md5(courseInfo.name + courseInfo.teacher)
+                    courseInfo.id = MD5.md5String(courseInfo.name + courseInfo.teacher)
                     courseMap[courseInfo.id] = courseInfo
                     loc.id = courseInfo.id
                     weekRegex.find(item)
@@ -179,21 +179,6 @@ object JwcApi {
         courseData.locs = locList
         courseData.startdate = "2018-08-27"
         return courseData
-    }
-
-    private fun md5(s: String): String {
-        val instance = MessageDigest.getInstance("MD5")
-        val digest: ByteArray = instance.digest(s.toByteArray())
-        val sb = StringBuilder()
-        for (b in digest) {
-            val i: Int = b.toInt() and 0xff
-            var hexString = Integer.toHexString(i)
-            if (hexString.length < 2) {
-                hexString = "0$hexString"
-            }
-            sb.append(hexString)
-        }
-        return sb.toString()
     }
 
     private fun analyseWeek(string: String): String {

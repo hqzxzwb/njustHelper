@@ -1,7 +1,7 @@
 package com.njust.helper.api.common
 
 import com.njust.helper.model.Link
-import com.njust.helper.tools.Apis
+import com.njust.helper.api.Apis
 import com.njust.helper.tools.JsonData
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
