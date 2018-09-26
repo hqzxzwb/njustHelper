@@ -92,7 +92,7 @@
             app:layoutId="@{@layout/item_grade_item}" />
 
         <include
-            layout="@layout/item_grade_summary"
+            layout="@layout/piece_grade_mean"
             app:vm="@{vm.mean}" />
     </LinearLayout>
 </layout>

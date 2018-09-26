@@ -99,10 +99,9 @@ private class GradeAdapter : RecyclerView.Adapter<BaseDataBindingHolder>() {
 
     override fun onBindViewHolder(holder: BaseDataBindingHolder, position: Int) {
         val vm = vm ?: return
-        if (position < vm.terms.size) {
-            holder.binding.setVariable(BR.vm, vm.terms[position])
-        } else {
-            holder.binding.setVariable(BR.vm, vm.mean)
+        holder.binding.let {
+            it.setVariable(BR.vm, if (position < vm.terms.size) vm.terms[position] else vm.mean)
+            it.executePendingBindings()
         }
     }
 
