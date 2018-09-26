@@ -1,14 +1,13 @@
 package com.njust.helper.course.list
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-
+import androidx.recyclerview.widget.RecyclerView
 import com.njust.helper.databinding.ItemCourseListBinding
 import com.njust.helper.model.Course
 import com.njust.helper.tools.DataBindingHolder
 
-class CourseListAdapter(private var mData: List<Course>) : androidx.recyclerview.widget.RecyclerView.Adapter<DataBindingHolder<ItemCourseListBinding>>() {
+class CourseListAdapter(private var mData: List<Course>) : RecyclerView.Adapter<DataBindingHolder<ItemCourseListBinding>>() {
     fun setData(data: List<Course>) {
         mData = data
         notifyDataSetChanged()

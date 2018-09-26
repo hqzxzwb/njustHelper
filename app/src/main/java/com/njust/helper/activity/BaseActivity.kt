@@ -3,14 +3,14 @@ package com.njust.helper.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.LayoutRes
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
-import com.zwb.commonlibs.rx.DisposableHelper
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.zwb.commonlibs.injection.InjectionHelper
+import com.zwb.commonlibs.rx.DisposableHelper
 import io.reactivex.disposables.Disposable
 
 abstract class BaseActivity : AppCompatActivity() {

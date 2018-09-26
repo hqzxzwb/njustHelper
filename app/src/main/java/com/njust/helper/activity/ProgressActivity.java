@@ -2,12 +2,13 @@ package com.njust.helper.activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.ViewGroup;
 
 import com.njust.helper.R;
 
 import java.util.WeakHashMap;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public abstract class ProgressActivity extends BaseActivity {
     protected SwipeRefreshLayout mSwipeRefreshLayout;

@@ -1,9 +1,9 @@
 package com.njust.helper
 
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.njust.helper.activity.BaseActivity
@@ -59,8 +59,8 @@ class LinksActivity : BaseActivity() {
 
     override fun layout() {
         val binding = DataBindingUtil.setContentView<ActivityLinksBinding>(this, R.layout.activity_links)
-        binding.recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
-        binding.recyclerView.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(this, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         binding.swipeRefreshLayout.setOnRefreshListener(this::refresh)
         binding.vm = vm
     }
