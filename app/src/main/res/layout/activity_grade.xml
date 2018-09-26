@@ -5,21 +5,18 @@
     <data>
 
         <variable
-            name="vm"
-            type="com.njust.helper.tools.SimpleListVm&lt;com.njust.helper.api.jwc.GradeTerm&gt;" />
+            name="loading"
+            type="boolean" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:refreshing="@{vm.loading}">
+        app:refreshing="@{loading}">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            brId="@{vm.brId}"
-            items="@{vm.items}"
-            layoutId="@{@layout/item_grade_term}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />

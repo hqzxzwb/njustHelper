@@ -89,7 +89,7 @@ object JwcApi {
                 .ioSubscribeUiObserve()
     }
 
-    fun grade(stuid: String, pwd: String): Single<List<GradeTerm>> {
+    fun grade(stuid: String, pwd: String): Single<Map<String, List<GradeItem>>> {
         return login(stuid, pwd)
                 .flatMap { service.grade() }
                 .map { parseReportingError(it, ::parseGrade) }
@@ -253,10 +253,10 @@ object JwcApi {
                 }
     }
 
-    private fun parseGrade(string: String): List<GradeTerm> {
+    private fun parseGrade(string: String): Map<String, List<GradeItem>> {
         val table = Regex("""<table id="dataList"[\s\S]*?</table>""")
                 .find(string)
-                ?: return emptyList()
+                ?: return emptyMap()
         val tdRegex = Regex("""<td.*?>(.*?)</td>""")
         return Regex("""<tr>(\s*<td.*)+""")
                 .findAll(table.groupValues[0])
@@ -273,13 +273,6 @@ object JwcApi {
                     )
                 }
                 .groupBy { it.termName }
-                .map {
-                    GradeTerm(
-                            termName = it.key,
-                            items = it.value
-                    )
-                }
-                .sortedByDescending { it.termName }
     }
 
     private fun gradeTextToDouble(s: String): Double {

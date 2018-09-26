@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.njust.helper.api.jwc.GradeTerm" />
+            type="com.njust.helper.grade.GradeTermVm" />
     </data>
 
     <LinearLayout
@@ -36,8 +36,8 @@
             android:divider="@android:drawable/divider_horizontal_bright"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingBottom="4dp"
             android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:showDividers="middle">
 
             <TextView
@@ -91,78 +91,8 @@
             app:items="@{vm.items}"
             app:layoutId="@{@layout/item_grade_item}" />
 
-        <GridLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="12dp"
-            android:columnCount="4">
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="课程类型"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="总学分"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="加权平均分"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="GPA"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="所有课程"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="@{vm.totalWeight()}" />
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="@{vm.meanGrade()}" />
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="@{vm.meanPoint()}" />
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="必修课程"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="@{vm.mustTotalWeight()}" />
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="@{vm.mustMeanGrade()}" />
-
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:text="@{vm.mustMeanPoint()}" />
-        </GridLayout>
+        <include
+            layout="@layout/item_grade_summary"
+            app:vm="@{vm.mean}" />
     </LinearLayout>
 </layout>
