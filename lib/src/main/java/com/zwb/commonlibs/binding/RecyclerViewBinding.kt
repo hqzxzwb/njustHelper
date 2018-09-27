@@ -14,7 +14,7 @@ internal class DataBindingAdapter<T>(
         private val layoutId: Int,
         private val brId: Int,
         private val onBindingItemClickListener: OnBindingItemClickListener<T>?
-) : androidx.recyclerview.widget.RecyclerView.Adapter<DataBindingHolder<ViewDataBinding>>() {
+) : RecyclerView.Adapter<DataBindingHolder<ViewDataBinding>>() {
     override fun onBindViewHolder(holder: DataBindingHolder<ViewDataBinding>, position: Int) {
         holder.binding.apply {
             setVariable(brId, data[position])
@@ -54,16 +54,16 @@ internal class DataBindingAdapter<T>(
  */
 @BindingAdapter("layoutId", "brId", "items", "layoutManager", "onItemClick", requireAll = false)
 internal fun <T> bindRecyclerViewWithViewModel(
-        recyclerView: androidx.recyclerview.widget.RecyclerView,
+        recyclerView: RecyclerView,
         layoutId: Int,
         brId: Int,
         items: List<T>?,
-        tlm: androidx.recyclerview.widget.RecyclerView.LayoutManager?,
+        tlm: RecyclerView.LayoutManager?,
         onBindingItemClickListener: OnBindingItemClickListener<T>?
 ) {
     var lm = tlm
     if (lm == null && recyclerView.layoutManager == null) {
-        lm = androidx.recyclerview.widget.LinearLayoutManager(recyclerView.context)
+        lm = LinearLayoutManager(recyclerView.context)
     }
     if (lm != null) {
         recyclerView.layoutManager = lm
@@ -71,7 +71,7 @@ internal fun <T> bindRecyclerViewWithViewModel(
     if (items != null && layoutId != 0 && brId != 0) {
         var adapter = recyclerView.adapter
         if (adapter !is DataBindingAdapter<*>) {
-            adapter = DataBindingAdapter<T>(recyclerView.context, layoutId, brId, onBindingItemClickListener)
+            adapter = DataBindingAdapter(recyclerView.context, layoutId, brId, onBindingItemClickListener)
             recyclerView.adapter = adapter
         }
         (adapter as DataBindingAdapter<T>).data = items

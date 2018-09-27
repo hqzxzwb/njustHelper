@@ -9,7 +9,6 @@ import android.view.Window
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import com.zwb.commonlibs.injection.InjectionHelper
 import com.zwb.commonlibs.rx.DisposableHelper
 import io.reactivex.disposables.Disposable
 
@@ -25,8 +24,6 @@ abstract class BaseActivity : AppCompatActivity() {
         } else {
             layout()
         }
-
-        InjectionHelper.injectActivity(this)
 
         setupActionBar()
 

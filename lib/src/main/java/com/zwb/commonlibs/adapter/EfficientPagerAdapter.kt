@@ -1,8 +1,8 @@
 package com.zwb.commonlibs.adapter
 
-import androidx.viewpager.widget.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewpager.widget.PagerAdapter
 import java.util.*
 
 /**
@@ -10,7 +10,7 @@ import java.util.*
  *
  * @author zwb
  */
-abstract class EfficientPagerAdapter : androidx.viewpager.widget.PagerAdapter() {
+abstract class EfficientPagerAdapter : PagerAdapter() {
     private val convertViews: LinkedList<View> = LinkedList()
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {

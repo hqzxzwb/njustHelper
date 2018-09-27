@@ -11,7 +11,6 @@ import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.main.MainActivity
 import com.njust.helper.tools.Prefs
-import com.zwb.commonlibs.injection.IntentInjection
 import kotlinx.android.synthetic.main.activity_account.*
 
 /**
@@ -43,8 +42,14 @@ class AccountActivity : BaseActivity() {
         }
     }
 
-    @IntentInjection(EXTRA_PASSWORD_TYPE)
-    var type: Int = 0
+    private var type: Int = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val intent = intent
+        type = intent.getIntExtra(EXTRA_PASSWORD_TYPE, 0)
+    }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)

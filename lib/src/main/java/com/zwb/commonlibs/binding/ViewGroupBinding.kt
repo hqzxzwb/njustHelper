@@ -1,11 +1,11 @@
 package com.zwb.commonlibs.binding
 
-import androidx.databinding.BindingAdapter
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.BindingAdapter
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 
 object ViewGroupBinding {
     @BindingAdapter("layoutId", "brId", "items", "onItemClick", requireAll = false)
@@ -24,9 +24,7 @@ object ViewGroupBinding {
                 binding.setVariable(brId, item)
                 binding.executePendingBindings()
                 if (onBindingItemClickListener != null) {
-                    binding.root.also {
-                        it.setOnClickListener { onBindingItemClickListener(it, item, position) }
-                    }
+                    binding.root.setOnClickListener { onBindingItemClickListener(it, item, position) }
                 }
             }
         })
