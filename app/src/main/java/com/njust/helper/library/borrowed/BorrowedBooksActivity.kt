@@ -58,13 +58,13 @@ class BorrowedBooksActivity : BaseActivity() {
     private fun onRefresh() {
         dialog = ProgressDialog.show(this@BorrowedBooksActivity, "正在加载", "请稍候……")
         LibraryApi.borrowed(stuid, pwd)
-                .subscribe({
+                .doFinally {
                     dialog?.dismiss()
                     binding.loading = false
+                }
+                .subscribe({
                     binding.webView1.loadUrl(it)
                 }, {
-                    dialog?.dismiss()
-                    binding.loading = false
                     if (it is LoginErrorException) {
                         AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_LIB)
                     } else {
