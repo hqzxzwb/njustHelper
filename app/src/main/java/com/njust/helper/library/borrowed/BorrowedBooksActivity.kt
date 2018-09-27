@@ -2,17 +2,17 @@ package com.njust.helper.library.borrowed
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
-import androidx.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.databinding.DataBindingUtil
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
-import com.njust.helper.api.common.CommonApi
+import com.njust.helper.api.LoginErrorException
+import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.databinding.ActivityLibBorrowBinding
-import com.njust.helper.tools.JsonData
 import com.njust.helper.tools.Prefs
 
 class BorrowedBooksActivity : BaseActivity() {
@@ -57,18 +57,19 @@ class BorrowedBooksActivity : BaseActivity() {
 
     private fun onRefresh() {
         dialog = ProgressDialog.show(this@BorrowedBooksActivity, "正在加载", "请稍候……")
-        CommonApi.borrowedBooks(stuid, pwd)
+        LibraryApi.borrowed(stuid, pwd)
                 .subscribe({
                     dialog?.dismiss()
                     binding.loading = false
-                    when (it.state) {
-                        JsonData.STATUS_SUCCESS -> binding.webView1.loadUrl(it.content)
-                        JsonData.STATUS_LOG_FAIL -> AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_LIB)
-                    }
+                    binding.webView1.loadUrl(it)
                 }, {
                     dialog?.dismiss()
                     binding.loading = false
-                    showSnack(R.string.message_net_error)
+                    if (it is LoginErrorException) {
+                        AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_LIB)
+                    } else {
+                        showSnack(R.string.message_net_error)
+                    }
                 })
                 .addToLifecycleManagement()
     }

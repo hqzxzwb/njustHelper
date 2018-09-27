@@ -1,11 +1,13 @@
 package com.njust.helper.api.library
 
 import android.text.Html
+import com.njust.helper.api.Apis
+import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.parseReportingError
-import com.njust.helper.api.Apis
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
+import org.json.JSONObject
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -25,6 +27,19 @@ object LibraryApi {
         fun detail(
                 @Query("marc_no") id: String
         ): Single<String>
+
+        @GET("http://mc.m.5read.com/apis/user/userLogin.jspx")
+        fun borrowed1(
+                @Query("username") stuid: String,
+                @Query("password") pwd: String,
+                @Query("areaid") q1: String = "274",
+                @Query("schoolid") q2: String = "528",
+                @Query("userType") q3: String = "0",
+                @Query("encPwd") q4: String = "0"
+        ): Single<String>
+
+        @GET("http://mc.m.5read.com/api/opac/showOpacLink.jspx?newSign")
+        fun borrowed2(): Single<String>
     }
 
     private val service = Apis.newRetrofitBuilder()
@@ -42,6 +57,26 @@ object LibraryApi {
     fun detail(id: String): Single<LibDetailData> {
         return service.detail(id)
                 .map { parseReportingError(it, ::parseDetail) }
+                .ioSubscribeUiObserve()
+    }
+
+    fun borrowed(stuid: String, pwd: String): Single<String> {
+        return service.borrowed1(stuid, pwd)
+                .flatMap { s ->
+                    val o = parseReportingError(s) { JSONObject(s) }
+                    if (o.getInt("result") != 1) {
+                        throw LoginErrorException()
+                    }
+                    service.borrowed2()
+                }
+                .map { s ->
+                    parseReportingError(s) {
+                        JSONObject(it)
+                                .getJSONArray("opacUrl")
+                                .getJSONObject(0)
+                                .getString("opaclendurl")
+                    }
+                }
                 .ioSubscribeUiObserve()
     }
 
