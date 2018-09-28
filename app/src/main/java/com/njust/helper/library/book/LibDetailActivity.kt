@@ -75,7 +75,7 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
         menuInflater.inflate(R.menu.lib_detail, menu)
         val item = menu.findItem(R.id.item_collect)
         if (manager!!.checkCollect(idString)) {
-            item.setIcon(R.drawable.ic_action_important)
+            item.setIcon(R.drawable.ic_star_black_24dp)
             isCollected = true
         }
         return true
@@ -90,15 +90,15 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
                     manager!!.removeCollect(idString)
                     showSnack("已取消收藏")
                     isCollected = false
-                    item.setIcon(R.drawable.ic_action_not_important)
+                    item.setIcon(R.drawable.ic_star_border_black_24dp)
                 } else if (manager!!.addCollect(idString, title!!, code!!)) {
                     showSnack("收藏成功")
                     isCollected = true
-                    item.setIcon(R.drawable.ic_action_important)
+                    item.setIcon(R.drawable.ic_star_black_24dp)
                 } else {
                     showSnack("收藏失败,这本书已经收藏 ")
                     isCollected = true
-                    item.setIcon(R.drawable.ic_action_important)
+                    item.setIcon(R.drawable.ic_star_black_24dp)
                 }
                 resultIntent.putExtra("isCollected", isCollected)
                 return true
