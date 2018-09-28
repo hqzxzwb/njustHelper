@@ -38,7 +38,7 @@
                 android:src="@drawable/mm_qrcode"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView1" />
+                app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -49,7 +49,7 @@
                 android:layout_marginRight="16dp"
                 android:text="@string/label_about_lower"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                app:layout_constraintTop_toBottomOf="@id/imageView1" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView1" />
 
             <Button
                 android:id="@+id/buttonFeedback"
@@ -73,7 +73,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/buttonUpdateLog"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/buttonFeedback" />
+                app:layout_constraintStart_toEndOf="@+id/buttonFeedback" />
 
             <Button
                 android:id="@+id/buttonUpdateLog"
@@ -85,13 +85,13 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/buttonComment" />
+                app:layout_constraintStart_toEndOf="@+id/buttonComment" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:drawable/divider_horizontal_bright"
-                app:layout_constraintBottom_toTopOf="@id/buttonFeedback" />
+                app:layout_constraintBottom_toTopOf="@+id/buttonFeedback" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

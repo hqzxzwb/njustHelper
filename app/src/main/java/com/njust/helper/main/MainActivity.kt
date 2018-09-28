@@ -1,19 +1,19 @@
 package com.njust.helper.main
 
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.databinding.DataBindingUtil
 import com.njust.helper.BuildConfig
 import com.njust.helper.LinksActivity
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
-import com.njust.helper.coursequery.ClassroomActivity
 import com.njust.helper.course.CourseActivity
 import com.njust.helper.course.data.CourseManager
+import com.njust.helper.coursequery.ClassroomActivity
 import com.njust.helper.coursequery.CourseQueryActivity
 import com.njust.helper.databinding.ActivityMainBinding
 import com.njust.helper.grade.ExamsActivity
@@ -28,7 +28,6 @@ import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
 import com.njust.helper.update.UpdateLogDialog
-import com.xiaomi.market.sdk.XiaomiUpdateAgent
 import java.util.*
 
 class MainActivity : BaseActivity(), MainActivityClickHandler {
@@ -52,14 +51,6 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
     }
 
     private fun checkUpdate() {
-        // 如果距离上次刷新超过一天,检查更新
-        val now = System.currentTimeMillis()
-        val lastTime = Prefs.getLastCheckUpdateTime(this)
-        val time = now - lastTime
-        if (time < 0 || time > 24 * 3600 * 1000L) {
-            XiaomiUpdateAgent.update(this)
-        }
-        // 删除更新文件并弹出更新日志
         val preVersion = Prefs.getVersion(this)
         if (BuildConfig.VERSION_CODE != preVersion) {
             UpdateLogDialog.showUpdateDialog(this)
