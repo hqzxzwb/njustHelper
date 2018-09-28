@@ -1,16 +1,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="loading"
-            type="boolean"/>
+            type="boolean" />
 
         <variable
             name="text"
-            type="String"/>
+            type="String" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -51,7 +51,7 @@
 
                             <TextView
                                 style="@style/guide_text"
-                                android:text="@string/label_classroom_date"/>
+                                android:text="@string/label_classroom_date" />
 
                             <RadioGroup
                                 android:id="@+id/dateGroup"
@@ -65,25 +65,25 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:checked="true"
-                                    android:text="@string/radio_classroom_today"/>
+                                    android:text="@string/radio_classroom_today" />
 
                                 <RadioButton
                                     android:id="@+id/radio1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/radio_classroom_tomorrow"/>
+                                    android:text="@string/radio_classroom_tomorrow" />
 
                                 <RadioButton
                                     android:id="@+id/radio2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/radio_classroom_day_after"/>
+                                    android:text="@string/radio_classroom_day_after" />
                             </RadioGroup>
 
                             <TextView
                                 style="@style/guide_text"
                                 android:layout_marginTop="16dp"
-                                android:text="@string/label_classroom_buildings"/>
+                                android:text="@string/label_classroom_buildings" />
 
                             <RadioGroup
                                 android:id="@+id/buildingGroup"
@@ -97,63 +97,63 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:checked="true"
-                                    android:text="@string/radio_classroom_building_four"/>
+                                    android:text="@string/radio_classroom_building_four" />
 
                                 <RadioButton
                                     android:id="@+id/radio4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/radio_classroom_building_two"/>
+                                    android:text="@string/radio_classroom_building_two" />
 
                                 <RadioButton
                                     android:id="@+id/radio5"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/radio_classroom_building_one"/>
+                                    android:text="@string/radio_classroom_building_one" />
                             </RadioGroup>
 
                             <TextView
                                 style="@style/guide_text"
                                 android:layout_marginTop="16dp"
-                                android:text="@string/label_classroom_section"/>
+                                android:text="@string/label_classroom_section" />
 
                             <CheckBox
                                 android:id="@+id/checkBox1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="CheckBox"/>
+                                android:text="CheckBox" />
 
                             <CheckBox
                                 android:id="@+id/checkBox2"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="CheckBox"/>
+                                android:text="CheckBox" />
 
                             <CheckBox
                                 android:id="@+id/checkBox3"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="CheckBox"/>
+                                android:text="CheckBox" />
 
                             <CheckBox
                                 android:id="@+id/checkBox4"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="CheckBox"/>
+                                android:text="CheckBox" />
 
                             <CheckBox
                                 android:id="@+id/checkBox5"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="CheckBox"/>
+                                android:text="CheckBox" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="72dp"
-                        android:layout_marginTop="8dp">
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="72dp">
 
                         <TextView
                             android:id="@+id/textView1"
@@ -162,7 +162,7 @@
                             android:minLines="1"
                             android:padding="8dp"
                             android:text="@{text}"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
@@ -171,12 +171,13 @@
                 android:id="@+id/button1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|bottom"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:layout_marginRight="16dp"
                 android:enabled="@{!loading}"
-                android:src="@drawable/ic_action_accept"
-                app:borderWidth="0dp"/>
+                android:tint="@android:color/white"
+                app:borderWidth="0dp"
+                app:srcCompat="@drawable/ic_check_black_24dp" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
