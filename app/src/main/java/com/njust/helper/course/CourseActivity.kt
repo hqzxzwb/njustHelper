@@ -204,7 +204,7 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
         }
     }
 
-    fun refresh() {
+    private fun refresh() {
         termStartTime = Prefs.getTermStartTime(this)
         val mainList = CourseManager.getInstance(this).courses
         dayFragment.setList(mainList)
@@ -285,7 +285,7 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
                 calendar.get(Calendar.DAY_OF_MONTH)).show()
     }
 
-    fun relogin() {
+    private fun relogin() {
         AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_JWC)
     }
 

@@ -114,6 +114,7 @@ class ClassroomActivity : BaseActivity() {
                     binding.loading = false
                     binding.text = getString(R.string.text_classroom_fail)
                 })
+                .addToLifecycleManagement()
     }
 
     override fun getViewForSnackBar(): View {

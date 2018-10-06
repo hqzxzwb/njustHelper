@@ -2,14 +2,13 @@ package com.njust.helper.course
 
 import android.content.Context
 import android.os.Bundle
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.njust.helper.R
 import com.njust.helper.databinding.ItemPickWeekBinding
 import com.njust.helper.tools.Constants
@@ -25,10 +24,10 @@ class PickWeekFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.bottom_sheet_course_week, container, false)
-        val recyclerView = view.findViewById(R.id.recyclerView) as androidx.recyclerview.widget.RecyclerView
-        recyclerView.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 5)
-        recyclerView.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(context, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
-        recyclerView.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(context, androidx.recyclerview.widget.DividerItemDecoration.HORIZONTAL))
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager = GridLayoutManager(context, 5)
+        recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
         recyclerView.adapter = PickWeekAdapter(selectedWeek)
         return view
     }
@@ -45,7 +44,7 @@ class PickWeekFragment : BottomSheetDialogFragment() {
     }
 
     private inner class PickWeekAdapter(var selectedWeek: Int)
-        : androidx.recyclerview.widget.RecyclerView.Adapter<DataBindingHolder<ItemPickWeekBinding>>() {
+        : RecyclerView.Adapter<DataBindingHolder<ItemPickWeekBinding>>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBindingHolder<ItemPickWeekBinding> {
             val binding = ItemPickWeekBinding.inflate(LayoutInflater.from(parent.context),
                     parent, false)

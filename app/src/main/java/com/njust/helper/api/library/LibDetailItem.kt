@@ -1,8 +1,5 @@
 package com.njust.helper.api.library
 
-import androidx.annotation.Keep
-
-@Keep
 class LibDetailItem(
         val code: String,
         val place: String,

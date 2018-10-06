@@ -33,9 +33,6 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
 
     private val resultIntent = Intent()
 
-    internal val cacheName: String
-        get() = "libDetail_$idString"
-
     override fun layoutRes(): Int {
         return R.layout.activity_lib_detail
     }
