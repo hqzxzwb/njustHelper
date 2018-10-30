@@ -131,6 +131,14 @@ class MeanGradeVm(values: MeanGradeValues) {
     val requiredWeight: String = values.requiredWeight.roundToString()
     val requiredPoint: String = (values.requiredPoint / values.requiredWeight).roundToString()
     val requiredGrade: String = (values.requiredGrade / values.requiredWeight).roundToString()
+
+    private fun Double.roundToString(): String {
+        return if (this.isNaN()) {
+            toString()
+        } else {
+            DecimalFormat("#.##").format(this)
+        }
+    }
 }
 
 class GradeVm(data: Map<String, List<GradeItem>>) {
@@ -176,12 +184,4 @@ class GradeTermVm(
         val mean: MeanGradeVm
 ) {
     val brId: Int = BR.vm
-}
-
-private fun Double.roundToString(): String {
-    return if (this.isNaN()) {
-        toString()
-    } else {
-        DecimalFormat("#.##").format(this)
-    }
 }
