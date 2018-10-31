@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="exam"
+            name="vm"
             type="com.njust.helper.api.jwc.Exam" />
     </data>
 
@@ -13,37 +13,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="8dp"
         android:paddingLeft="16dp"
+        android:paddingTop="8dp"
         android:paddingRight="16dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="8dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{exam.course}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:text="@{vm.course}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             tools:text="课程名" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{`考试时间：`+exam.time}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="@{`考试时间：`+vm.time}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="考试时间" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{`考场：`+exam.room}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="@{`考场：`+vm.room}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="考场" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{`座位号：`+exam.seat}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="@{`座位号：`+vm.seat}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="座位号" />
     </LinearLayout>
 </layout>
