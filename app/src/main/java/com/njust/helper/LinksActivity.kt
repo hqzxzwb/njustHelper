@@ -6,12 +6,14 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.njust.helper.activity.BaseActivity
-import com.njust.helper.api.common.CommonApi
 import com.njust.helper.databinding.ActivityLinksBinding
 import com.njust.helper.model.Link
 import com.njust.helper.tools.SimpleListVm
 import com.tencent.bugly.crashreport.CrashReport
+import io.reactivex.Single
 import java.io.IOException
 
 
@@ -31,7 +33,11 @@ class LinksActivity : BaseActivity() {
     }
 
     private fun refresh() {
-        CommonApi.links()
+        Single
+                .fromCallable<List<Link>> {
+                    resources.openRawResource(R.raw.links).bufferedReader().use { it.readText() }
+                            .let { Gson().fromJson<List<Link>>(it, object : TypeToken<List<Link>>() {}.type) }
+                }
                 .subscribe({ onDataReceived(it) }, { onError(it) })
                 .addToLifecycleManagement()
     }

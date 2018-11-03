@@ -12,5 +12,6 @@ class App : Application() {
                 .putExtra("action", "registerReceiver"))
 
         CrashReport.initCrashReport(this, BuildConfig.TENCENT_BUGLY_ID, BuildConfig.DEBUG)
+        CrashReport.setIsDevelopmentDevice(this, BuildConfig.DEBUG)
     }
 }
