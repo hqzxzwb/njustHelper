@@ -330,7 +330,7 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
         val title = resources.getStringArray(R.array.days_of_week)[day] + resources.getStringArray(R.array.sections)[section]
         val subTitle = resources.getStringArray(R.array.section_start_end)[section]
         CourseListFragment.newInstance(courses, title, subTitle)
-                .show(supportFragmentManager, "courseList")
+                .showNow(supportFragmentManager, "courseList")
     }
 
     override fun pickWeek() {
