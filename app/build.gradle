@@ -48,10 +48,6 @@ android {
         resValue "string", "testJwcPwd", p.getProperty('testJwcPwd')
         resValue "string", "testLibPwd", p.getProperty('testLibPwd')
 
-        ndk {
-            abiFilters "armeabi-v7a", "arm64-v8a"
-        }
-
         vectorDrawables.useSupportLibrary = true
     }
 
