@@ -1,0 +1,70 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+            android:shortcutId="course"
+            android:enabled="true"
+            android:icon="@drawable/ic_course_shortcuts"
+            android:shortcutShortLabel="@string/title_activity_course"
+            android:shortcutLongLabel="@string/title_activity_course"
+            android:shortcutDisabledMessage="@string/shortcuts_failed_msg">
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetClass="com.njust.helper.main.MainActivity"
+                android:targetPackage="com.njust.helper" />
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.njust.helper"
+                android:targetClass="com.njust.helper.course.CourseActivity" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+    <shortcut
+            android:shortcutId="exam"
+            android:enabled="true"
+            android:icon="@drawable/ic_exam_shortcuts"
+            android:shortcutShortLabel="@string/title_activity_exams"
+            android:shortcutLongLabel="@string/title_activity_exams"
+            android:shortcutDisabledMessage="@string/shortcuts_failed_msg">
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetClass="com.njust.helper.main.MainActivity"
+                android:targetPackage="com.njust.helper" />
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.njust.helper"
+                android:targetClass="com.njust.helper.grade.ExamsActivity" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+    <shortcut
+            android:shortcutId="grade"
+            android:enabled="true"
+            android:icon="@drawable/ic_grade_shortcuts"
+            android:shortcutShortLabel="@string/title_activity_grade"
+            android:shortcutLongLabel="@string/title_activity_grade"
+            android:shortcutDisabledMessage="@string/shortcuts_failed_msg">
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetClass="com.njust.helper.main.MainActivity"
+                android:targetPackage="com.njust.helper" />
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.njust.helper"
+                android:targetClass="com.njust.helper.grade.GradeActivity" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+    <shortcut
+            android:shortcutId="cr"
+            android:enabled="true"
+            android:icon="@drawable/ic_cr_shortcuts"
+            android:shortcutShortLabel="@string/title_activity_cr"
+            android:shortcutLongLabel="@string/title_activity_cr"
+            android:shortcutDisabledMessage="@string/shortcuts_failed_msg">
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetClass="com.njust.helper.main.MainActivity"
+                android:targetPackage="com.njust.helper" />
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.njust.helper"
+                android:targetClass="com.njust.helper.coursequery.ClassroomActivity" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+</shortcuts>
