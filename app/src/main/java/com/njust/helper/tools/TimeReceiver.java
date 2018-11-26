@@ -64,7 +64,7 @@ public final class TimeReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CourseReminder")
                 .setTicker(context.getText(R.string.app_name))
                 .setContentTitle(context.getText(R.string.app_name))
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentText(notiString)
                 .setAutoCancel(true)
                 .setContentIntent(TaskStackBuilder.create(context)

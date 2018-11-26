@@ -68,6 +68,7 @@
     <string name="toast_input_lib_pwd">请输入图书馆密码</string>
     <string name="update_info">发现新版本：\n%1$s</string>
     <string name="update_log">更新日志</string>
+    <string name="shortcuts_failed_msg">加载失败</string>
 
     <string-array name="days_of_week">
         <item>星期一</item>
