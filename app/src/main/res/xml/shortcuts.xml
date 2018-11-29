@@ -71,8 +71,8 @@
             android:shortcutId="libsearch"
             android:enabled="true"
             android:icon="@drawable/ic_libsearch_shortcuts"
-            android:shortcutShortLabel="@string/title_activity_libsearch"
-            android:shortcutLongLabel="@string/title_activity_libsearch"
+            android:shortcutShortLabel="@string/title_activity_lib_search"
+            android:shortcutLongLabel="@string/title_activity_lib_search"
             android:shortcutDisabledMessage="@string/shortcuts_failed_msg">
         <intent
                 android:action="android.intent.action.MAIN"
