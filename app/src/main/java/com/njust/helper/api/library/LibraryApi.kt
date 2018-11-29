@@ -1,27 +1,29 @@
 package com.njust.helper.api.library
 
 import android.text.Html
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.njust.helper.api.Apis
 import com.njust.helper.api.LoginErrorException
-import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.parseReportingError
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.json.JSONObject
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 object LibraryApi {
     private interface LibraryApiService {
-        @GET("search_adv_result.php")
+        @POST("ajax_search_adv.php")
         fun search(
-                @Query("q0") keyword: String,
-                @Query("sType0") q1: String = "any",
-                @Query("pageSize") q2: String = "100",
-                @Query("sort") q3: String = "score",
-                @Query("desc") q4: String = "true"
-        ): Single<String>
+                @Body body: RequestBody
+        ): Single<JsonObject>
 
         @GET("item.php")
         fun detail(
@@ -43,13 +45,36 @@ object LibraryApi {
     }
 
     private val service = Apis.newRetrofitBuilder()
-            .baseUrl("http://202.119.83.14:8080/uopac/opac/")
+            .baseUrl("http://202.119.83.14:8080/opac/")
             .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(LibraryApiService::class.java)
 
     fun search(keyword: String): Single<List<LibSearchBean>> {
-        return service.search(keyword)
+        val fieldData = JsonObject().apply {
+            addProperty("fieldCode", "")
+            addProperty("fieldValue", keyword)
+        }
+        val keywordArray = JsonArray().apply {
+            add(JsonObject().apply {
+                add("fieldList", JsonArray().apply { add(fieldData) })
+            })
+        }
+        val json = JsonObject()
+                .apply {
+                    addProperty("sortField", "relevance")
+                    addProperty("sortType", "desc")
+                    addProperty("pageSize", 100)
+                    addProperty("pageCount", 1)
+                    addProperty("locale", "")
+                    addProperty("first", true)
+                    add("filters", JsonArray())
+                    add("limiters", JsonArray())
+                    add("searchWords", keywordArray)
+                }
+        val body = RequestBody.create(MediaType.parse("application/json"), json.toString())
+        return service.search(body)
                 .map { parseReportingError(it, ::parseSearch) }
                 .ioSubscribeUiObserve()
     }
@@ -80,21 +105,17 @@ object LibraryApi {
                 .ioSubscribeUiObserve()
     }
 
-    private fun parseSearch(string: String): List<LibSearchBean> {
-        if (!string.contains("南京理工大学图书馆")) {
-            throw ServerErrorException()
+    private fun parseSearch(json: JsonObject): List<LibSearchBean> {
+        val array = json["content"].asJsonArray
+        return array.map {
+            val obj = it.asJsonObject
+            LibSearchBean(
+                    title = obj["title"].asString,
+                    author = obj["author"].asString,
+                    press = obj["publisher"].asString,
+                    id = obj["marcRecNo"].asString
+            )
         }
-        return Regex("""href="item.php\?marc_no=(\d*)">([^<]*)<.*\s*.*>(.*)<.*\s*.*>(.*)<""")
-                .findAll(string)
-                .mapTo(arrayListOf()) {
-                    val groupValues = it.groupValues
-                    LibSearchBean(
-                            title = groupValues[2],
-                            author = groupValues[3],
-                            press = groupValues[4],
-                            id = groupValues[1]
-                    )
-                }
     }
 
     private fun parseDetail(string: String): LibDetailData {
