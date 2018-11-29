@@ -67,4 +67,21 @@
                 android:targetClass="com.njust.helper.coursequery.ClassroomActivity" />
         <categories android:name="android.shortcut.conversation"/>
     </shortcut>
+    <shortcut
+            android:shortcutId="libsearch"
+            android:enabled="true"
+            android:icon="@drawable/ic_libsearch_shortcuts"
+            android:shortcutShortLabel="@string/title_activity_libsearch"
+            android:shortcutLongLabel="@string/title_activity_libsearch"
+            android:shortcutDisabledMessage="@string/shortcuts_failed_msg">
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetClass="com.njust.helper.main.MainActivity"
+                android:targetPackage="com.njust.helper" />
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.njust.helper"
+                android:targetClass="com.njust.helper.library.search.LibSearchActivity" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
 </shortcuts>
