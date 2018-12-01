@@ -9,7 +9,8 @@ import com.njust.helper.R
 object UpdateLogDialog {
     private const val message =
             "${BuildConfig.VERSION_CODE} v${BuildConfig.VERSION_NAME}更新日志：\n" +
-                    "1.修复 Android P 访问异常的问题"
+                    "1.修复 图书检索\n" +
+                    "2.新增 桌面图标快捷方式\n"
 
     @JvmStatic
     fun showUpdateDialog(context: Context) {
