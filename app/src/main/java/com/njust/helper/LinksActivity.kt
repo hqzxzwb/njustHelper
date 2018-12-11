@@ -6,14 +6,15 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.njust.helper.activity.BaseActivity
+import com.njust.helper.api.sharedMoshi
 import com.njust.helper.databinding.ActivityLinksBinding
 import com.njust.helper.model.Link
 import com.njust.helper.tools.SimpleListVm
+import com.squareup.moshi.Types
 import com.tencent.bugly.crashreport.CrashReport
 import io.reactivex.Single
+import okio.Okio
 import java.io.IOException
 
 
@@ -35,8 +36,11 @@ class LinksActivity : BaseActivity() {
     private fun refresh() {
         Single
                 .fromCallable<List<Link>> {
-                    resources.openRawResource(R.raw.links).bufferedReader().use { it.readText() }
-                            .let { Gson().fromJson<List<Link>>(it, object : TypeToken<List<Link>>() {}.type) }
+                    resources.openRawResource(R.raw.links).use {
+                        val type = Types.newParameterizedType(List::class.java, Link::class.java)
+                        val adapter = sharedMoshi.adapter<List<Link>>(type)
+                        adapter.fromJson(Okio.buffer(Okio.source(it)))
+                    }
                 }
                 .subscribe({ onDataReceived(it) }, { onError(it) })
                 .addToLifecycleManagement()

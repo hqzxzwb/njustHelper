@@ -16,7 +16,9 @@ dependencies {
     kapt "androidx.room:room-compiler:2.0.0-rc01"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:3.11.0"
     debugRuntimeOnly 'com.amitshekhar.android:debug-db:1.0.3'
-    implementation 'com.google.code.gson:gson:2.8.2'
+
+    implementation("com.squareup.moshi:moshi:1.8.0")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.8.0")
 }
 
 android {
@@ -73,7 +75,7 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project.txt', 'moshi.pro'
             signingConfig signingConfigs.release
         }
     }

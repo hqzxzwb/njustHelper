@@ -1,8 +1,7 @@
 package com.njust.helper.api.library
 
 import android.text.Html
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
+import androidx.collection.ArrayMap
 import com.njust.helper.api.Apis
 import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.parseReportingError
@@ -11,19 +10,20 @@ import io.reactivex.Single
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.json.JSONObject
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
+import java.util.*
 
 object LibraryApi {
     private interface LibraryApiService {
         @POST("ajax_search_adv.php")
         fun search(
-                @Body body: RequestBody
-        ): Single<JsonObject>
+                @Body body: Any
+        ): Single<Map<String, Any>>
 
         @GET("item.php")
         fun detail(
@@ -47,33 +47,28 @@ object LibraryApi {
     private val service = Apis.newRetrofitBuilder()
             .baseUrl("http://202.119.83.14:8080/opac/")
             .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(LibraryApiService::class.java)
 
     fun search(keyword: String): Single<List<LibSearchBean>> {
-        val fieldData = JsonObject().apply {
-            addProperty("fieldCode", "")
-            addProperty("fieldValue", keyword)
+        val fieldData = ArrayMap<String, String>().apply {
+            put("fieldCode", "")
+            put("fieldValue", keyword)
         }
-        val keywordArray = JsonArray().apply {
-            add(JsonObject().apply {
-                add("fieldList", JsonArray().apply { add(fieldData) })
-            })
-        }
-        val json = JsonObject()
+        val keywordArray = listOf(Collections.singletonMap("fieldList", listOf(fieldData)))
+        val body = ArrayMap<String, Any>()
                 .apply {
-                    addProperty("sortField", "relevance")
-                    addProperty("sortType", "desc")
-                    addProperty("pageSize", 100)
-                    addProperty("pageCount", 1)
-                    addProperty("locale", "")
-                    addProperty("first", true)
-                    add("filters", JsonArray())
-                    add("limiters", JsonArray())
-                    add("searchWords", keywordArray)
+                    put("sortField", "relevance")
+                    put("sortType", "desc")
+                    put("pageSize", 100)
+                    put("pageCount", 1)
+                    put("locale", "")
+                    put("first", true)
+                    put("filters", listOf<Any>())
+                    put("limiters", listOf<Any>())
+                    put("searchWords", keywordArray)
                 }
-        val body = RequestBody.create(MediaType.parse("application/json"), json.toString())
         return service.search(body)
                 .map { parseReportingError(it, ::parseSearch) }
                 .ioSubscribeUiObserve()
@@ -105,15 +100,15 @@ object LibraryApi {
                 .ioSubscribeUiObserve()
     }
 
-    private fun parseSearch(json: JsonObject): List<LibSearchBean> {
-        val array = json["content"].asJsonArray
+    private fun parseSearch(json: Map<String, Any>): List<LibSearchBean> {
+        val array = json["content"] as List<*>
         return array.map {
-            val obj = it.asJsonObject
+            val obj = it as Map<*, *>
             LibSearchBean(
-                    title = obj["title"].asString,
-                    author = obj["author"].asString,
-                    press = obj["publisher"].asString,
-                    id = obj["marcRecNo"].asString
+                    title = obj["title"] as String,
+                    author = obj["author"] as String,
+                    press = obj["publisher"] as String,
+                    id = obj["marcRecNo"] as String
             )
         }
     }

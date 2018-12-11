@@ -1,8 +1,3 @@
--keep class com.njust.helper.model.* {
-    <init>();
-    <fields>;
-}
-
 -keepclassmembers class ** {
     @**.JavascriptInterface <methods>;
 }
@@ -82,8 +77,8 @@
 -repackageclasses '蛤'
 -allowaccessmodification
 
--obfuscationdictionary 'dict.txt'
--classobfuscationdictionary 'dict.txt'
+-obfuscationdictionary dict.txt
+-classobfuscationdictionary dict.txt
 
 -useuniqueclassmembernames
 -keepattributes SourceFile,LineNumberTable
