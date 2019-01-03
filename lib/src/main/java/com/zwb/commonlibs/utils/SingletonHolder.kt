@@ -1,10 +1,10 @@
 package com.zwb.commonlibs.utils
 
-open class SingletonHolder<out T, in A>(creator: (A) -> T) {
-    private var creator: ((A) -> T)? = creator
-    @Volatile private var instance: T? = null
+abstract class SingletonHolder<out Singleton, in Param>() {
+    @Volatile
+    private var instance: Singleton? = null
 
-    fun getInstance(arg: A): T {
+    fun getInstance(arg: Param): Singleton {
         val i = instance
         if (i != null) {
             return i
@@ -15,11 +15,12 @@ open class SingletonHolder<out T, in A>(creator: (A) -> T) {
             if (i2 != null) {
                 i2
             } else {
-                val created = creator!!(arg)
+                val created = createInstance(arg)
                 instance = created
-                creator = null
                 created
             }
         }
     }
+
+    protected abstract fun createInstance(param: Param): Singleton
 }

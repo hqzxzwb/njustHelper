@@ -1,11 +1,11 @@
 package com.njust.helper.coursequery
 
-import androidx.sqlite.db.SupportSQLiteDatabase
-import androidx.room.*
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import androidx.annotation.Keep
+import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.njust.helper.R
 import com.zwb.commonlibs.utils.SingletonHolder
 import org.json.JSONObject
@@ -54,7 +54,9 @@ interface CourseQueryDao {
             maskedSection: Int
     ): List<String>
 
-    companion object : SingletonHolder<CourseQueryDao, Context>({ newDao(it) })
+    companion object : SingletonHolder<CourseQueryDao, Context>() {
+        override fun createInstance(param: Context): CourseQueryDao = newDao(param)
+    }
 }
 
 @Database(entities = [CourseQueryItem::class], version = DB_VERSION)

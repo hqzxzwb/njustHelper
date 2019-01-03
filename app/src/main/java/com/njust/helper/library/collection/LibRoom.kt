@@ -1,10 +1,10 @@
 package com.njust.helper.library.collection
 
-import androidx.sqlite.db.SupportSQLiteDatabase
-import androidx.sqlite.db.SupportSQLiteQueryBuilder
+import android.content.Context
 import androidx.room.*
 import androidx.room.migration.Migration
-import android.content.Context
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.sqlite.db.SupportSQLiteQueryBuilder
 import com.zwb.commonlibs.utils.SingletonHolder
 
 private const val TABLE_NAME = "collection"
@@ -119,5 +119,7 @@ class LibCollectManager private constructor(context: Context) {
         return dao.listCollects()
     }
 
-    companion object : SingletonHolder<LibCollectManager, Context>(::LibCollectManager)
+    companion object : SingletonHolder<LibCollectManager, Context>() {
+        override fun createInstance(param: Context) = LibCollectManager(param)
+    }
 }
