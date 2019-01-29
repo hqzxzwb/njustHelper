@@ -1,13 +1,12 @@
 package com.njust.helper.settings
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import androidx.databinding.DataBindingUtil
+import android.content.*
 import android.net.Uri
-import androidx.core.view.MenuItemCompat
+import android.view.Menu
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.ShareActionProvider
-import android.view.Menu
+import androidx.core.view.MenuItemCompat
+import androidx.databinding.DataBindingUtil
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityAboutBinding
@@ -41,11 +40,14 @@ class AboutActivity : BaseActivity() {
     fun onClickFeedback() {
         AlertDialog.Builder(this)
                 .setTitle("意见反馈")
-                .setMessage("您可以加入QQ群217887769进行反馈")
+                .setMessage("您可以加入QQ群${QQ_GROUP_ID}进行反馈")
                 .setPositiveButton("点击直接加群") { _, _ ->
-                    val intent = Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://jq.qq.com/?_wv=1027&k=2HCZ1MK"))
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(QQ_GROUP_URI))
                     startActivity(intent)
+                }
+                .setNeutralButton("复制群号") { _, _ ->
+                    val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    clipboardManager.primaryClip = ClipData.newPlainText(null, QQ_GROUP_ID)
                 }
                 .setNegativeButton("返回", null)
                 .show()
@@ -67,3 +69,6 @@ class AboutActivity : BaseActivity() {
         UpdateLogDialog.showUpdateDialog(this)
     }
 }
+
+private const val QQ_GROUP_ID = "217887769"
+private const val QQ_GROUP_URI = "http://jq.qq.com/?_wv=1027&k=2HCZ1MK"
