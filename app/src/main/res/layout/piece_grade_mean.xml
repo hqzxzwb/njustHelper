@@ -80,5 +80,11 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="4dp"
             android:text="@{vm.requiredPoint}" />
+
+        <TextView
+            visibleVsGone="@{vm.hasUnrecognizedGrade}"
+            android:layout_columnSpan="4"
+            android:layout_gravity="center_horizontal"
+            android:text="未评教的科目没有参与计算" />
     </GridLayout>
 </layout>

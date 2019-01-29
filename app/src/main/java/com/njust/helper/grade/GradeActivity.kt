@@ -116,6 +116,7 @@ private class GradeAdapter : RecyclerView.Adapter<BaseDataBindingHolder>() {
 }
 
 class MeanGradeValues {
+    var hasUnrecognizedGrade = false
     var totalWeight = 0.0
     var totalPoint = 0.0
     var totalGrade = 0.0
@@ -125,6 +126,7 @@ class MeanGradeValues {
 }
 
 class MeanGradeVm(values: MeanGradeValues) {
+    val hasUnrecognizedGrade = values.hasUnrecognizedGrade
     val totalWeight: String = values.totalWeight.roundToString()
     val totalPoint: String = (values.totalPoint / values.totalWeight).roundToString()
     val totalGrade: String = (values.totalGrade / values.totalWeight).roundToString()
@@ -164,6 +166,10 @@ class GradeVm(data: Map<String, List<GradeItem>>) {
     }
 
     private fun foldToTripleDouble(acc: MeanGradeValues, gradeItem: GradeItem) {
+        if (gradeItem.grade < 0) {
+            acc.hasUnrecognizedGrade = true
+            return
+        }
         val weight = gradeItem.weight
         val grade = weight * gradeItem.grade
         val point = weight * gradeItem.point
