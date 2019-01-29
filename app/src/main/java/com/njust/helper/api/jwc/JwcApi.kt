@@ -10,6 +10,7 @@ import io.reactivex.Single
 import retrofit2.HttpException
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.*
+import java.util.*
 
 object JwcApi {
     private interface CourseApiService {
@@ -79,9 +80,20 @@ object JwcApi {
                 .flatMap { service.exams1() }
                 .flatMap { s ->
                     parseReportingError(s) {
-                        val xq = Regex("""<option selected value="(.*?)">""")
-                                .find(it)!!
-                                .groupValues[1]
+                        val xqMatch = Regex("""<option selected value="(.*?)">""")
+                                .find(it)
+                        val xq = if (xqMatch != null) {
+                            xqMatch.groupValues[0]
+                        } else {
+                            val calendar = Calendar.getInstance()
+                            val year = calendar.get(Calendar.YEAR)
+                            val month = calendar.get(Calendar.MONTH)
+                            when {
+                                month <= Calendar.MARCH -> "${year - 1}-$year-1"
+                                month >= Calendar.NOVEMBER -> "$year-${year + 1}-1"
+                                else -> "${year - 1}-$year-2"
+                            }
+                        }
                         service.exams2(xq)
                     }
                 }
