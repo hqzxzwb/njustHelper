@@ -44,8 +44,6 @@ android {
         versionCode vc
         versionName vn
         resConfigs 'en', 'zh', 'zh-rCN', 'zh-rHK', 'zh-rTW'
-        buildConfigField "String", "BASE_URL", '"http://hqzxzwb.jisxu.top/njust0909/"'
-        buildConfigField "String", "TENCENT_BUGLY_ID", "\"${p.getProperty('tencentBuglyId')}\""
         resValue "string", "testStuid", p.getProperty('testStuid')
         resValue "string", "testJwcPwd", p.getProperty('testJwcPwd')
         resValue "string", "testLibPwd", p.getProperty('testLibPwd')
@@ -71,8 +69,11 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "BASE_URL", "\"${p.getProperty('localUrl')}\""
+            buildConfigField "String", "TENCENT_BUGLY_ID", '"Mock_id"'
         }
         release {
+            buildConfigField "String", "BASE_URL", '"http://hqzxzwb.jisxu.top/njust0909/"'
+            buildConfigField "String", "TENCENT_BUGLY_ID", "\"${p.getProperty('tencentBuglyId')}\""
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project.txt', 'moshi.pro'
