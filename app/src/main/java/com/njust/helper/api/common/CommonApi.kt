@@ -10,19 +10,19 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 
+private interface CommonApiService {
+    @GET("links.php")
+    fun links(): Single<JsonData<List<Link>>>
+
+    @FormUrlEncoded
+    @POST("libBorrow.php")
+    fun borrowedBooks(
+            @Field("stuid") stuid: String,
+            @Field("pwd") pwd: String
+    ): Single<JsonData<String>>
+}
+
 object CommonApi {
-    private interface CommonApiService {
-        @GET("links.php")
-        fun links(): Single<JsonData<List<Link>>>
-
-        @FormUrlEncoded
-        @POST("libBorrow.php")
-        fun borrowedBooks(
-                @Field("stuid") stuid: String,
-                @Field("pwd") pwd: String
-        ): Single<JsonData<String>>
-    }
-
     private val SERVICE = Apis.newRetrofit()
             .create(CommonApiService::class.java)
 

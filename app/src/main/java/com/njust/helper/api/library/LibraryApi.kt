@@ -14,32 +14,32 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import java.util.*
 
+private interface LibraryApiService {
+    @POST("ajax_search_adv.php")
+    fun search(
+            @Body body: Any
+    ): Single<Map<String, Any>>
+
+    @GET("item.php")
+    fun detail(
+            @Query("marc_no") id: String
+    ): Single<String>
+
+    @GET("http://mc.m.5read.com/apis/user/userLogin.jspx")
+    fun borrowed1(
+            @Query("username") stuid: String,
+            @Query("password") pwd: String,
+            @Query("areaid") q1: String = "274",
+            @Query("schoolid") q2: String = "528",
+            @Query("userType") q3: String = "0",
+            @Query("encPwd") q4: String = "0"
+    ): Single<String>
+
+    @GET("http://mc.m.5read.com/api/opac/showOpacLink.jspx?newSign")
+    fun borrowed2(): Single<String>
+}
+
 object LibraryApi {
-    private interface LibraryApiService {
-        @POST("ajax_search_adv.php")
-        fun search(
-                @Body body: Any
-        ): Single<Map<String, Any>>
-
-        @GET("item.php")
-        fun detail(
-                @Query("marc_no") id: String
-        ): Single<String>
-
-        @GET("http://mc.m.5read.com/apis/user/userLogin.jspx")
-        fun borrowed1(
-                @Query("username") stuid: String,
-                @Query("password") pwd: String,
-                @Query("areaid") q1: String = "274",
-                @Query("schoolid") q2: String = "528",
-                @Query("userType") q3: String = "0",
-                @Query("encPwd") q4: String = "0"
-        ): Single<String>
-
-        @GET("http://mc.m.5read.com/api/opac/showOpacLink.jspx?newSign")
-        fun borrowed2(): Single<String>
-    }
-
     private val service = Apis.newRetrofit("http://202.119.83.14:8080/opac/")
             .create(LibraryApiService::class.java)
 

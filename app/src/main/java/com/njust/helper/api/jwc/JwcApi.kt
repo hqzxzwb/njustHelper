@@ -11,49 +11,49 @@ import retrofit2.HttpException
 import retrofit2.http.*
 import java.util.*
 
+private interface CourseApiService {
+    @GET("xk/LoginToXk")
+    fun requestLogin(
+            @Query("USERNAME") stuid: String,
+            @Query("PASSWORD") pwd: String,
+            @Query("method") method: String = "verify"
+    ): Single<String>
+
+    @FormUrlEncoded
+    @POST("xskb/xskb_list.do")
+    fun courses(
+            @Query("Ves632DSdyV") query1: String = "NEW_XSD_PYGL",
+            @Field("cj0701id") body1: String = "",
+            @Field("zc") body2: String = "",
+            @Field("demo") body3: String = "",
+            @Field("xnxq01id") body4: String = "2018-2019-2"
+    ): Single<String>
+
+    @GET("kscj/djkscj_list")
+    fun gradeLevel(): Single<String>
+
+    @GET("xsks/xsksap_query")
+    fun exams1(): Single<String>
+
+    @FormUrlEncoded
+    @POST("xsks/xsksap_list")
+    fun exams2(
+            @Field("xnxqid") xq: String,
+            @Field("xqlbmc") body1: String = "",
+            @Field("xqlb") body2: String = ""
+    ): Single<String>
+
+    @FormUrlEncoded
+    @POST("kscj/cjcx_list")
+    fun grade(
+            @Field("kksj") body1: String = "",
+            @Field("kcxz") body2: String = "",
+            @Field("kcmc") body3: String = "",
+            @Field("xsfs") body4: String = "max"
+    ): Single<String>
+}
+
 object JwcApi {
-    private interface CourseApiService {
-        @GET("xk/LoginToXk")
-        fun requestLogin(
-                @Query("USERNAME") stuid: String,
-                @Query("PASSWORD") pwd: String,
-                @Query("method") method: String = "verify"
-        ): Single<String>
-
-        @FormUrlEncoded
-        @POST("xskb/xskb_list.do")
-        fun courses(
-                @Query("Ves632DSdyV") query1: String = "NEW_XSD_PYGL",
-                @Field("cj0701id") body1: String = "",
-                @Field("zc") body2: String = "",
-                @Field("demo") body3: String = "",
-                @Field("xnxq01id") body4: String = "2018-2019-2"
-        ): Single<String>
-
-        @GET("kscj/djkscj_list")
-        fun gradeLevel(): Single<String>
-
-        @GET("xsks/xsksap_query")
-        fun exams1(): Single<String>
-
-        @FormUrlEncoded
-        @POST("xsks/xsksap_list")
-        fun exams2(
-                @Field("xnxqid") xq: String,
-                @Field("xqlbmc") body1: String = "",
-                @Field("xqlb") body2: String = ""
-        ): Single<String>
-
-        @FormUrlEncoded
-        @POST("kscj/cjcx_list")
-        fun grade(
-                @Field("kksj") body1: String = "",
-                @Field("kcxz") body2: String = "",
-                @Field("kcmc") body3: String = "",
-                @Field("xsfs") body4: String = "max"
-        ): Single<String>
-    }
-
     private val service = Apis.newRetrofit("http://202.119.81.113:9080/njlgdx/")
             .create(CourseApiService::class.java)
 
