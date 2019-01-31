@@ -28,7 +28,7 @@ object JwcApi {
                 @Field("cj0701id") body1: String = "",
                 @Field("zc") body2: String = "",
                 @Field("demo") body3: String = "",
-                @Field("xnxq01id") body4: String = "2018-2019-1"
+                @Field("xnxq01id") body4: String = "2018-2019-2"
         ): Single<String>
 
         @GET("kscj/djkscj_list")
@@ -189,7 +189,7 @@ object JwcApi {
         val courseData = CourseData()
         courseData.infos = courseMap.map { it.value }
         courseData.locs = locList
-        courseData.startdate = "2018-08-27"
+        courseData.startdate = "2019-02-25"
         return courseData
     }
 
