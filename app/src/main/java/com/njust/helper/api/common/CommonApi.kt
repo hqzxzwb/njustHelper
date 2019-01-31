@@ -1,11 +1,10 @@
 package com.njust.helper.api.common
 
-import com.njust.helper.model.Link
 import com.njust.helper.api.Apis
+import com.njust.helper.model.Link
 import com.njust.helper.tools.JsonData
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
-import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -24,9 +23,7 @@ object CommonApi {
         ): Single<JsonData<String>>
     }
 
-    private val SERVICE = Apis.newRetrofitBuilder()
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
+    private val SERVICE = Apis.newRetrofit()
             .create(CommonApiService::class.java)
 
     fun links(): Single<List<Link>> {

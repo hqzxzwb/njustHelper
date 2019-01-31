@@ -7,11 +7,7 @@ import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.parseReportingError
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import org.json.JSONObject
-import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -44,11 +40,7 @@ object LibraryApi {
         fun borrowed2(): Single<String>
     }
 
-    private val service = Apis.newRetrofitBuilder()
-            .baseUrl("http://202.119.83.14:8080/opac/")
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
+    private val service = Apis.newRetrofit("http://202.119.83.14:8080/opac/")
             .create(LibraryApiService::class.java)
 
     fun search(keyword: String): Single<List<LibSearchBean>> {

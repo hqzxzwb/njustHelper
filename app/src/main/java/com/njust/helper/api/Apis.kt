@@ -5,6 +5,8 @@ import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.net.CookieManager
 import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
@@ -32,10 +34,13 @@ object Apis {
                 .build()
     }
 
-    fun newRetrofitBuilder(): Retrofit.Builder {
+    fun newRetrofit(baseUrl: String = BuildConfig.BASE_URL): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
+                .baseUrl(baseUrl)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(globalOkHttpClient)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create())
+                .build()
     }
 }

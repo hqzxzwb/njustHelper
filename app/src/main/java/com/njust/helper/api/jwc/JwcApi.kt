@@ -8,7 +8,6 @@ import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import com.zwb.commonlibs.utils.MD5
 import io.reactivex.Single
 import retrofit2.HttpException
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.*
 import java.util.*
 
@@ -55,11 +54,8 @@ object JwcApi {
         ): Single<String>
     }
 
-    private val service = Apis.newRetrofitBuilder()
-            .baseUrl("http://202.119.81.113:9080/njlgdx/")
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .build()
-            .create(CourseApiService::class.java)!!
+    private val service = Apis.newRetrofit("http://202.119.81.113:9080/njlgdx/")
+            .create(CourseApiService::class.java)
 
     fun courses(stuid: String, pwd: String): Single<CourseData> {
         return login(stuid, pwd)
