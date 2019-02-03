@@ -1,6 +1,5 @@
 package com.njust.helper.course
 
-import android.app.DatePickerDialog.OnDateSetListener
 import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -8,7 +7,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.DatePicker
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
@@ -34,15 +32,19 @@ import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
 import com.tencent.bugly.crashreport.CrashReport
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
-import com.zwb.commonlibs.ui.DatePickerDialogFix
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.Listener,
-        PickWeekFragment.Listener, CourseWeekFragment.Listener, CourseActivityClickHandler {
+class CourseActivity :
+        BaseActivity(),
+        DatePickerFragment.Listener,
+        CourseDayFragment.Listener,
+        PickWeekFragment.Listener,
+        CourseWeekFragment.Listener,
+        CourseActivityClickHandler {
     private var termStartTime: Long = 0
     private var currentDay: Int = 0
     private var currentWeek: Int = 0
@@ -281,10 +283,8 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
     }
 
     override fun pickDate() {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = termStartTime + currentDay * TimeUtil.ONE_DAY
-        DatePickerDialogFix(this, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)).show()
+        DatePickerFragment.newInstance(termStartTime + currentDay * TimeUtil.ONE_DAY)
+                .showNow(supportFragmentManager, null)
     }
 
     private fun relogin() {
@@ -313,9 +313,9 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
         dayFragment.setPosition(currentDay)
     }
 
-    override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+    override fun onDateSet(year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
-        calendar.set(year, monthOfYear, dayOfMonth)
+        calendar.set(year, month, dayOfMonth)
         showCourse(calendar)
     }
 
