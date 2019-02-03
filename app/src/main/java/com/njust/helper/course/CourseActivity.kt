@@ -33,7 +33,9 @@ import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
 import com.tencent.bugly.crashreport.CrashReport
+import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import com.zwb.commonlibs.ui.DatePickerDialogFix
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -65,10 +67,10 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
         dayFragment = manager.findFragmentById(R.id.course_day_fragment) as CourseDayFragment
         weekFragment = manager.findFragmentById(R.id.course_week_fragment) as CourseWeekFragment
 
-        object : Thread() {
-            override fun run() {
-                val mainList = CourseManager.getInstance(this@CourseActivity).courses
-                runOnUiThread {
+        Single
+                .fromCallable { CourseManager.getInstance(this).courses }
+                .ioSubscribeUiObserve()
+                .subscribe { mainList ->
                     if (mainList.size == 0) {
                         //课表为空时，提示导入课表
                         promptImportMessage()
@@ -76,8 +78,7 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
                     dayFragment.setList(mainList)
                     weekFragment.setList(mainList)
                 }
-            }
-        }.start()
+                .addToLifecycleManagement()
 
         termStartTime = Prefs.getTermStartTime(this)
 
