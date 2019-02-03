@@ -4,15 +4,15 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.DatePicker
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
@@ -20,6 +20,7 @@ import com.njust.helper.activity.BaseActivity
 import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.ParseErrorException
 import com.njust.helper.api.ServerErrorException
+import com.njust.helper.api.jwc.CourseData
 import com.njust.helper.api.jwc.JwcApi
 import com.njust.helper.course.data.CourseManager
 import com.njust.helper.course.day.CourseDayFragment
@@ -28,8 +29,9 @@ import com.njust.helper.course.week.CourseWeekFragment
 import com.njust.helper.databinding.ActivityCourseBinding
 import com.njust.helper.main.MainActivity
 import com.njust.helper.model.Course
-import com.njust.helper.api.jwc.CourseData
-import com.njust.helper.tools.*
+import com.njust.helper.tools.Constants
+import com.njust.helper.tools.Prefs
+import com.njust.helper.tools.TimeUtil
 import com.tencent.bugly.crashreport.CrashReport
 import com.zwb.commonlibs.ui.DatePickerDialogFix
 import io.reactivex.rxkotlin.subscribeBy
@@ -176,7 +178,6 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
     }
 
     private fun onImportSuccess(courseData: CourseData) {
-        Prefs.putCourseInfo(this, courseData.startdate)
         val dao = CourseManager.getInstance(this)
         dao.clear()
         if (courseData.infos.size > 0) {
@@ -334,6 +335,6 @@ class CourseActivity : BaseActivity(), OnDateSetListener, CourseDayFragment.List
     }
 
     override fun pickWeek() {
-        PickWeekFragment.newInstance(currentWeek).show(supportFragmentManager, "pickWeek")
+        PickWeekFragment.newInstance(currentWeek).showNow(supportFragmentManager, "pickWeek")
     }
 }

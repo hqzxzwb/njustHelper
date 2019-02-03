@@ -66,10 +66,6 @@ public class Prefs {
         editor.apply();
     }
 
-    public static long getLastCheckUpdateTime(Context context) {
-        return getPreference(context, "refresh").getLong("lastCheckUpdateTime", 0L);
-    }
-
     public static int getVersion(Context context) {
         return getPreference(context, "refresh").getInt("version", 0);
     }
@@ -80,37 +76,13 @@ public class Prefs {
                 .apply();
     }
 
-    public static void putBookBorrow(Context context, String bookRecent, String bookPast) {
-        getEditor(context, "refresh")
-                .putString("bookRecent", bookRecent)
-                .putString("bookPast", bookPast)
-                .putLong("net_card_time", System.currentTimeMillis())
-                .apply();
-    }
-
-    public static void putLastCheckUpdateTime(Context context) {
-        getEditor(context, "refresh")
-                .putLong("lastCheckUpdateTime", System.currentTimeMillis())
-                .apply();
-    }
-
-    public static String getCourseHtml(Context context) {
-        return getPreference(context, "courseInfo").getString("courseHtml", "");
-    }
-
     private static String getTermStartString(Context context) {
-        return getPreference(context, "courseInfo").getString("startTime", Constants.DEFAULT_SEMESTER_START);
-    }
-
-    public static void putTermStartTime(Context context, String time) {
-        getPreference(context, "courseInfo").edit()
-                .putString("startTime", time)
-                .apply();
+        return Constants.DEFAULT_SEMESTER_START;
     }
 
     public static long getTermStartTime(Context context) {
         String dateString = getTermStartString(context);
-        DateFormat dd = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+        DateFormat dd = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         try {
             Date date = dd.parse(dateString);
             return date.getTime();
@@ -118,12 +90,6 @@ public class Prefs {
             e.printStackTrace();
         }
         return 0;
-    }
-
-    public static void putCourseInfo(Context context, String starttime) {
-        getEditor(context, "courseInfo")
-                .putString("startTime", starttime)
-                .apply();
     }
 
     public static int getCourseNotificationTime(Context context) {

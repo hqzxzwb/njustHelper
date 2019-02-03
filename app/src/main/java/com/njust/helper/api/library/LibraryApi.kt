@@ -77,9 +77,10 @@ object LibraryApi {
                 .flatMap { s ->
                     val o = parseReportingError(s) { JSONObject(s) }
                     if (o.getInt("result") != 1) {
-                        throw LoginErrorException()
+                        Single.error(LoginErrorException())
+                    } else {
+                        service.borrowed2()
                     }
-                    service.borrowed2()
                 }
                 .map { s ->
                     parseReportingError(s) {

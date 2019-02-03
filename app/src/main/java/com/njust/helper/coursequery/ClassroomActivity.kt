@@ -92,7 +92,7 @@ class ClassroomActivity : BaseActivity() {
         val building = BUILDING_VALUE[buildingIndex]
         binding.loading = true
         Single
-                .create<String> { emitter ->
+                .fromCallable<String> {
                     val dao = CourseQueryDao.getInstance(this)
                     val allRooms = dao.queryClassroomSet(building)
                     val ruledOutRooms = dao.queryClassroom(building, week, day, sections)
@@ -100,7 +100,7 @@ class ClassroomActivity : BaseActivity() {
                             .fold(StringBuilder()) { acc, it ->
                                 acc.append(it.replace('-', '_')).append("  ")
                             }
-                            .let { emitter.onSuccess(it.toString()) }
+                            .toString()
                 }
                 .ioSubscribeUiObserve()
                 .subscribe({ s ->

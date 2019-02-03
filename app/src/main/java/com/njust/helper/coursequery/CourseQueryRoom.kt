@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import androidx.annotation.Keep
 import androidx.room.*
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.njust.helper.R
 import com.zwb.commonlibs.utils.SingletonHolder
@@ -12,7 +13,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.roundToInt
 
-private const val DB_VERSION = 1
+private const val DB_VERSION = 2
 private const val DB_NAME = "course_query"
 private const val TABLE_NAME = "main"
 
@@ -68,14 +69,20 @@ private fun newDao(context: Context): CourseQueryDao {
     return Room.databaseBuilder(context, CourseQueryDatabase::class.java, DB_NAME)
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
-                    onCreateDatabase(context, db)
+                    initializeData(context, db)
+                }
+            })
+            .addMigrations(object : Migration(1, 2) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.delete(TABLE_NAME, null, null)
+                    initializeData(context, database)
                 }
             })
             .build()
             .getDao()
 }
 
-private fun onCreateDatabase(context: Context, db: SupportSQLiteDatabase) {
+private fun initializeData(context: Context, db: SupportSQLiteDatabase) {
     val cv = ContentValues()
     context.resources.openRawResource(R.raw.courses).use { inputStream ->
         Scanner(inputStream).use { scanner ->
