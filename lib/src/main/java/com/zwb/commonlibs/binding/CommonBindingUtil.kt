@@ -1,18 +1,14 @@
 package com.zwb.commonlibs.binding
 
-import androidx.databinding.BindingAdapter
 import android.view.View
+import androidx.databinding.BindingAdapter
 
-object CommonBindingUtil {
-    @BindingAdapter("visibleVsGone")
-    @JvmStatic
-    fun visibleVsGone(view: View, visible: Boolean) {
-        view.visibility = if (visible) View.VISIBLE else View.GONE
-    }
+@BindingAdapter("visibleVsGone")
+fun View.visibleVsGone(visible: Boolean) {
+    visibility = if (visible) View.VISIBLE else View.GONE
+}
 
-    @BindingAdapter("visibleVsInvisible")
-    @JvmStatic
-    fun visibleVsInvisible(view: View, visible: Boolean) {
-        view.visibility = if (visible) View.VISIBLE else View.INVISIBLE
-    }
+@BindingAdapter("visibleVsInvisible")
+fun View.visibleVsInvisible(visible: Boolean) {
+    visibility = if (visible) View.VISIBLE else View.INVISIBLE
 }

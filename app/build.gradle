@@ -15,7 +15,7 @@ dependencies {
     implementation "androidx.room:room-runtime:2.0.0-rc01"
     kapt "androidx.room:room-compiler:2.0.0-rc01"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:3.11.0"
-    debugRuntimeOnly 'com.amitshekhar.android:debug-db:1.0.3'
+    debugRuntimeOnly 'com.amitshekhar.android:debug-db:1.0.4'
 
     implementation("com.squareup.moshi:moshi:1.8.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.8.0")

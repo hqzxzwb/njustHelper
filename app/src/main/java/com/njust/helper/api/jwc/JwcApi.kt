@@ -6,6 +6,7 @@ import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.parseReportingError
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import com.zwb.commonlibs.utils.MD5
+import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.HttpException
 import retrofit2.http.*
@@ -59,21 +60,21 @@ object JwcApi {
 
     fun courses(stuid: String, pwd: String): Single<CourseData> {
         return login(stuid, pwd)
-                .flatMap { service.courses() }
+                .andThen(service.courses())
                 .map { parseReportingError(it, ::parseCourses) }
                 .ioSubscribeUiObserve()
     }
 
     fun gradeLevel(stuid: String, pwd: String): Single<List<GradeLevelBean>> {
         return login(stuid, pwd)
-                .flatMap { service.gradeLevel() }
+                .andThen(service.gradeLevel())
                 .map { parseReportingError(it, ::parseGradeLevel) }
                 .ioSubscribeUiObserve()
     }
 
     fun exams(stuid: String, pwd: String): Single<List<Exam>> {
         return login(stuid, pwd)
-                .flatMap { service.exams1() }
+                .andThen(service.exams1())
                 .flatMap { s ->
                     parseReportingError(s) {
                         val xqMatch = Regex("""<option selected value="(.*?)">""")
@@ -99,12 +100,12 @@ object JwcApi {
 
     fun grade(stuid: String, pwd: String): Single<Map<String, List<GradeItem>>> {
         return login(stuid, pwd)
-                .flatMap { service.grade() }
+                .andThen(service.grade())
                 .map { parseReportingError(it, ::parseGrade) }
                 .ioSubscribeUiObserve()
     }
 
-    private fun login(stuid: String, pwd: String): Single<Unit> {
+    private fun login(stuid: String, pwd: String): Completable {
         return service
                 .requestLogin(stuid, MD5.md5String(pwd, true))
                 .onErrorResumeNext {
@@ -115,12 +116,12 @@ object JwcApi {
                     }
                     Single.error(ServerErrorException())
                 }
-                .map<Unit> {
+                .flatMapCompletable {
                     when {
-                        it == "success" -> Unit
+                        it == "success" -> Completable.complete()
                         it.contains("<html xmlns=\"http://www.w3.org/1999/xhtml\">") ->
-                            throw LoginErrorException()
-                        else -> throw ServerErrorException()
+                            Completable.error(LoginErrorException())
+                        else -> Completable.error(ServerErrorException())
                     }
                 }
     }

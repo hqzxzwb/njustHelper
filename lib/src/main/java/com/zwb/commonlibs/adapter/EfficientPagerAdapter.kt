@@ -14,7 +14,7 @@ abstract class EfficientPagerAdapter : PagerAdapter() {
     private val convertViews: LinkedList<View> = LinkedList()
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view === `object`;
+        return view === `object`
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

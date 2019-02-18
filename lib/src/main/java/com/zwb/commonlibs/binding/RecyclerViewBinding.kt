@@ -74,6 +74,7 @@ internal fun <T> bindRecyclerViewWithViewModel(
             adapter = DataBindingAdapter(recyclerView.context, layoutId, brId, onBindingItemClickListener)
             recyclerView.adapter = adapter
         }
+        @Suppress("UNCHECKED_CAST")
         (adapter as DataBindingAdapter<T>).data = items
     }
 }
