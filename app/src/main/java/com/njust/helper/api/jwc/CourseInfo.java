@@ -1,5 +1,8 @@
 package com.njust.helper.api.jwc;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class CourseInfo {
     private String id, name, teacher;
 

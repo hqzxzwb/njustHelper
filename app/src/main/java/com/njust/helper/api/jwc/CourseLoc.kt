@@ -1,5 +1,8 @@
 package com.njust.helper.api.jwc
 
+import androidx.annotation.Keep
+
+@Keep
 class CourseLoc : Cloneable {
     var id: String? = null
     var classroom: String? = null
