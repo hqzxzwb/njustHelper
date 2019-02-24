@@ -12,7 +12,7 @@ import retrofit2.HttpException
 import retrofit2.http.*
 import java.util.*
 
-private interface CourseApiService {
+private interface JwcApiService {
     @GET("xk/LoginToXk")
     fun requestLogin(
             @Query("USERNAME") stuid: String,
@@ -56,7 +56,7 @@ private interface CourseApiService {
 
 object JwcApi {
     private val service = Apis.newRetrofit("http://202.119.81.113:9080/njlgdx/")
-            .create(CourseApiService::class.java)
+            .create(JwcApiService::class.java)
 
     fun courses(stuid: String, pwd: String): Single<CourseData> {
         return login(stuid, pwd)
