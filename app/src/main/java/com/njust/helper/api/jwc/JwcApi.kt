@@ -126,7 +126,7 @@ object JwcApi {
                 }
     }
 
-    private fun parseCourses(string: String): CourseData {
+    internal fun parseCourses(string: String): CourseData {
         val tableRegex = Regex("""<table id="kbtable"[\s\S]*?</table>""")
         val trRegex = Regex("""<tr>[\s\S]*?</tr>""")
         val tdRegex = Regex("""<td[\s\S]*?</td>""")
@@ -191,24 +191,29 @@ object JwcApi {
     }
 
     private fun analyseWeek(string: String): String {
-        val builder = StringBuilder(" ")
-        val strings = Regex("""(.*)\(周\)""")
+        val weeks = arrayListOf<Int>()
+        val groupValues = Regex("""([\d- ]*)\(([单双]?)周\)""")
                 .find(string)!!
-                .groupValues[1]
-                .split(",")
-        for (tstring in strings) {
-            val j = tstring.indexOf('-')
+                .groupValues
+        for (s in groupValues[1].split(',')) {
+            val trimmed = s.trim()
+            val j = trimmed.indexOf('-')
             if (j == -1) {
-                builder.append(tstring).append(' ')
+                weeks += trimmed.toInt()
             } else {
-                var k = tstring.substring(0, j).toInt()
-                while (k <= tstring.substring(j + 1).toInt()) {
-                    builder.append(k).append(' ')
+                var k = trimmed.substring(0, j).toInt()
+                while (k <= trimmed.substring(j + 1).toInt()) {
+                    weeks += k
                     k++
                 }
             }
         }
-        return builder.toString()
+        val indexFilter = groupValues[2]
+        when (indexFilter) {
+            "单" -> weeks.retainAll { it % 2 == 1 }
+            "双" -> weeks.retainAll { it % 2 == 0 }
+        }
+        return weeks.joinToString(separator = " ", prefix = " ", postfix = " ")
     }
 
     private fun convertScore(s: String) = if (s == "0") "--" else s
