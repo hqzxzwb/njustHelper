@@ -192,7 +192,7 @@ object JwcApi {
 
     private fun analyseWeek(string: String): String {
         val weeks = arrayListOf<Int>()
-        val groupValues = Regex("""([\d- ]*)\(([单双]?)周\)""")
+        val groupValues = Regex("""^([\d- ,]*)\(([单双]?)周\)$""")
                 .find(string)!!
                 .groupValues
         for (s in groupValues[1].split(',')) {
