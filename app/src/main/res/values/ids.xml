@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="pending_request_code_course_alarm" type="id" />
+    <item name="pending_request_code_course_notification" type="id" />
+</resources>

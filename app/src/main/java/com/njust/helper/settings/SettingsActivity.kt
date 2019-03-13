@@ -27,6 +27,13 @@ class SettingsActivity : BaseActivity() {
             setListModeSummary(modePreference, modePreference.value)
             modePreference.setOnPreferenceChangeListener { preference, newValue ->
                 setListModeSummary(preference, newValue as String)
+                CourseAlarms.registerCourseAlarm(context!!)
+                true
+            }
+
+            val timePreference = findPreference("course_time") as TimeSettingPreference
+            timePreference.setOnPreferenceChangeListener { _, _ ->
+                CourseAlarms.registerCourseAlarm(context!!)
                 true
             }
         }
