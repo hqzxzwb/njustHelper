@@ -20,19 +20,14 @@ object CourseAlarms {
     const val ALARM_MODE_NONE = 2
 
     fun registerCourseAlarm(context: Context) {
-        cancelCourseAlarm(context)
+        val alarmManager = context.getAlarmManager()
+        val pendingIntent = buildPendingIntent(context)
+        alarmManager.cancel(pendingIntent)
         val nextAlarmTime = getNextAlarmTime(context)
         if (nextAlarmTime < 0) {
             return
         }
-        val alarmManager = context.getAlarmManager()
-        val pendingIntent = buildPendingIntent(context)
         AlarmManagerCompat.setExact(alarmManager, AlarmManager.RTC, nextAlarmTime, pendingIntent)
-    }
-
-    private fun cancelCourseAlarm(context: Context) {
-        val alarmManager = context.getAlarmManager()
-        alarmManager.cancel(buildPendingIntent(context))
     }
 
     private fun getNextAlarmTime(context: Context): Long {

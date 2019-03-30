@@ -1,7 +1,6 @@
 package com.njust.helper.library.search
 
 import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
 import android.provider.SearchRecentSuggestions
 import androidx.appcompat.app.AlertDialog
@@ -17,6 +16,7 @@ import com.njust.helper.databinding.ActivityLibSearchBinding
 import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.SimpleListVm
 import com.tencent.bugly.crashreport.CrashReport
+import com.zwb.commonlibs.utils.getSearchManager
 import io.reactivex.rxkotlin.subscribeBy
 import java.io.IOException
 
@@ -37,7 +37,7 @@ class LibSearchActivity : ProgressActivity() {
     override fun prepareViews() {
         mSwipeRefreshLayout = binding.swipeRefreshLayout
 
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchManager = getSearchManager()
         binding.searchView.apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             isQueryRefinementEnabled = true
