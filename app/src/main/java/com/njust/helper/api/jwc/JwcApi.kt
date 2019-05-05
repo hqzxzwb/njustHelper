@@ -80,7 +80,7 @@ object JwcApi {
                         val xqMatch = Regex("""<option selected value="(.*?)">""")
                                 .find(it)
                         val xq = if (xqMatch != null) {
-                            xqMatch.groupValues[0]
+                            xqMatch.groupValues[1]
                         } else {
                             val calendar = Calendar.getInstance()
                             val year = calendar.get(Calendar.YEAR)
