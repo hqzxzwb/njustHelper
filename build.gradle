@@ -3,7 +3,7 @@ buildscript {
     ext {
         kotlin_version = '1.3.40'
         compile_sdk_version = 28
-        min_sdk_version = 17
+        min_sdk_version = 21
     }
     repositories {
         mavenCentral()

@@ -214,9 +214,9 @@ class CourseView : View {
                         StaticLayout.Builder.obtain(name, 0, name.length, paint,
                                 (unitWidth - 2 * delta).toInt()).build()
                     }
-                    mLayoutContainer.put(name, layout!!)
+                    mLayoutContainer[name] = layout
                 }
-                layout.draw(canvas)
+                layout!!.draw(canvas)
                 canvas.translate(0f, unitHeight.toFloat())
             }
             canvas.translate(unitWidth.toFloat(), (-unitHeight * mSectionCount).toFloat())
