@@ -25,7 +25,7 @@ typealias OnSelectCourseListener = (courses: List<Course>, day: Int, section: In
  */
 class CourseView : View {
     private lateinit var mData: Array<Array<MutableList<Course>>>
-    private val mLayoutContainer = HashMap<String, Layout>()
+    private val mLayoutContainer = hashMapOf<String, Layout>()
     private var mWeek: Int = 0
     private val mTextPaint = TextPaint()
     private val mDarkTextPaint = TextPaint()
@@ -209,14 +209,14 @@ class CourseView : View {
                     layout = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                         StaticLayout(name, paint, (unitWidth - 2 * delta).toInt(),
                                 Layout.Alignment.ALIGN_CENTER, 1f, 0f,
-                                false)
+                                false)!!
                     } else {
                         StaticLayout.Builder.obtain(name, 0, name.length, paint,
-                                (unitWidth - 2 * delta).toInt()).build()
+                                (unitWidth - 2 * delta).toInt()).build()!!
                     }
                     mLayoutContainer[name] = layout
                 }
-                layout!!.draw(canvas)
+                layout.draw(canvas)
                 canvas.translate(0f, unitHeight.toFloat())
             }
             canvas.translate(unitWidth.toFloat(), (-unitHeight * mSectionCount).toFloat())

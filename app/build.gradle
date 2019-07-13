@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 dependencies {
     implementation fileTree(include: '*.jar', dir: 'libs')
@@ -19,6 +21,9 @@ dependencies {
 
     implementation("com.squareup.moshi:moshi:1.8.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.8.0")
+
+    implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
