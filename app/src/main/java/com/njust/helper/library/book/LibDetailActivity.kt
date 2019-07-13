@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.crashlytics.android.Crashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
@@ -16,7 +17,6 @@ import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.library.collection.LibCollectManager
 import com.njust.helper.tools.Constants
 import com.njust.helper.api.ServerErrorException
-import com.tencent.bugly.crashreport.CrashReport
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_lib_detail.*
 import java.io.IOException
@@ -127,7 +127,7 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
             else -> if (BuildConfig.DEBUG) {
                 throw throwable
             } else {
-                CrashReport.postCatchedException(throwable)
+                Crashlytics.logException(throwable)
             }
         }
     }

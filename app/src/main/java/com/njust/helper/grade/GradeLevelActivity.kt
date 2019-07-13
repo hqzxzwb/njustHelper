@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.crashlytics.android.Crashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
@@ -16,7 +17,6 @@ import com.njust.helper.api.jwc.JwcApi
 import com.njust.helper.databinding.ActivityGradeLevelBinding
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.SimpleListVm
-import com.tencent.bugly.crashreport.CrashReport
 import java.io.IOException
 
 class GradeLevelActivity : BaseActivity() {
@@ -55,7 +55,7 @@ class GradeLevelActivity : BaseActivity() {
                     throwable.printStackTrace()
                     throw throwable
                 }
-                CrashReport.postCatchedException(throwable)
+                Crashlytics.logException(throwable)
             }
         }
     }

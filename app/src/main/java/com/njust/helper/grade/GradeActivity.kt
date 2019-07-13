@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.crashlytics.android.Crashlytics
 import com.njust.helper.BR
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
@@ -19,7 +20,6 @@ import com.njust.helper.api.jwc.GradeItem
 import com.njust.helper.api.jwc.JwcApi
 import com.njust.helper.databinding.ActivityGradeBinding
 import com.njust.helper.tools.Prefs
-import com.tencent.bugly.crashreport.CrashReport
 import com.zwb.commonlibs.binding.BaseDataBindingHolder
 import java.io.IOException
 import java.text.DecimalFormat
@@ -61,7 +61,7 @@ class GradeActivity : BaseActivity() {
                     throwable.printStackTrace()
                     throw throwable
                 }
-                CrashReport.postCatchedException(throwable)
+                Crashlytics.logException(throwable)
             }
         }
     }

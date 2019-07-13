@@ -2,6 +2,7 @@ package com.njust.helper.grade
 
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
+import com.crashlytics.android.Crashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
@@ -14,7 +15,6 @@ import com.njust.helper.api.ParseErrorException
 import com.njust.helper.tools.Prefs
 import com.njust.helper.api.ServerErrorException
 import com.njust.helper.tools.SimpleListVm
-import com.tencent.bugly.crashreport.CrashReport
 import java.io.IOException
 
 class ExamsActivity : BaseActivity() {
@@ -53,7 +53,7 @@ class ExamsActivity : BaseActivity() {
                     throwable.printStackTrace()
                     throw throwable
                 }
-                CrashReport.postCatchedException(throwable)
+                Crashlytics.logException(throwable)
             }
         }
     }

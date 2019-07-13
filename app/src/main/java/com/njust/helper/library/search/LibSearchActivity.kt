@@ -6,6 +6,7 @@ import android.provider.SearchRecentSuggestions
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
+import com.crashlytics.android.Crashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
@@ -15,7 +16,6 @@ import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.databinding.ActivityLibSearchBinding
 import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.SimpleListVm
-import com.tencent.bugly.crashreport.CrashReport
 import com.zwb.commonlibs.utils.getSearchManager
 import io.reactivex.rxkotlin.subscribeBy
 import java.io.IOException
@@ -106,7 +106,7 @@ class LibSearchActivity : ProgressActivity() {
             else -> if (BuildConfig.DEBUG) {
                 throw throwable
             } else {
-                CrashReport.postCatchedException(throwable)
+                Crashlytics.logException(throwable)
             }
         }
     }

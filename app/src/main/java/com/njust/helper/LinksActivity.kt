@@ -6,13 +6,13 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.crashlytics.android.Crashlytics
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.api.sharedMoshi
 import com.njust.helper.databinding.ActivityLinksBinding
 import com.njust.helper.model.Link
 import com.njust.helper.tools.SimpleListVm
 import com.squareup.moshi.Types
-import com.tencent.bugly.crashreport.CrashReport
 import io.reactivex.Single
 import okio.Okio
 import java.io.IOException
@@ -60,7 +60,7 @@ class LinksActivity : BaseActivity() {
                     throwable.printStackTrace()
                     throw throwable
                 }
-                CrashReport.postCatchedException(throwable)
+                Crashlytics.logException(throwable)
             }
         }
     }

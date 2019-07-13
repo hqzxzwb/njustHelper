@@ -11,6 +11,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import com.crashlytics.android.Crashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
@@ -30,7 +31,6 @@ import com.njust.helper.model.Course
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
-import com.tencent.bugly.crashreport.CrashReport
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
@@ -203,7 +203,7 @@ class CourseActivity :
                     throwable.printStackTrace()
                     throw throwable
                 }
-                CrashReport.postCatchedException(throwable)
+                Crashlytics.logException(throwable)
             }
         }
     }
