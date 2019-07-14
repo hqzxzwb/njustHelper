@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import com.crashlytics.android.Crashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
+import com.njust.helper.RemoteConfig
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.api.LoginErrorException
@@ -45,7 +46,7 @@ class CourseActivity :
         PickWeekFragment.Listener,
         CourseWeekFragment.Listener,
         CourseActivityClickHandler {
-    private var termStartTime: Long = 0
+    private val termStartTime: Long = RemoteConfig.getTermStartTime()
     private var currentDay: Int = 0
     private var currentWeek: Int = 0
     private lateinit var dateFormat: SimpleDateFormat
@@ -81,8 +82,6 @@ class CourseActivity :
                     weekFragment.setList(mainList)
                 }
                 .addToLifecycleManagement()
-
-        termStartTime = Prefs.getTermStartTime(this)
 
         dayFragment.setStartTime(termStartTime)
         weekFragment.setBeginTimeInMillis(termStartTime)
@@ -209,7 +208,6 @@ class CourseActivity :
     }
 
     private fun refresh() {
-        termStartTime = Prefs.getTermStartTime(this)
         val mainList = CourseManager.getInstance(this).courses
         dayFragment.setList(mainList)
         weekFragment.setList(mainList)
