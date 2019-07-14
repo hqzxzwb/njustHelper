@@ -1,5 +1,6 @@
 package com.njust.helper.api.jwc
 
+import com.njust.helper.RemoteConfig
 import com.njust.helper.api.Apis
 import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.ServerErrorException
@@ -10,7 +11,6 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.HttpException
 import retrofit2.http.*
-import java.util.*
 
 private interface JwcApiService {
     @GET("xk/LoginToXk")
@@ -27,14 +27,11 @@ private interface JwcApiService {
             @Field("cj0701id") body1: String = "",
             @Field("zc") body2: String = "",
             @Field("demo") body3: String = "",
-            @Field("xnxq01id") body4: String = "2018-2019-2"
+            @Field("xnxq01id") body4: String = RemoteConfig.getTermId()
     ): Single<String>
 
     @GET("kscj/djkscj_list")
     fun gradeLevel(): Single<String>
-
-    @GET("xsks/xsksap_query")
-    fun exams1(): Single<String>
 
     @FormUrlEncoded
     @POST("xsks/xsksap_list")
@@ -74,26 +71,7 @@ object JwcApi {
 
     fun exams(stuid: String, pwd: String): Single<List<Exam>> {
         return login(stuid, pwd)
-                .andThen(service.exams1())
-                .flatMap { s ->
-                    parseReportingError(s) {
-                        val xqMatch = Regex("""<option selected value="(.*?)">""")
-                                .find(it)
-                        val xq = if (xqMatch != null) {
-                            xqMatch.groupValues[1]
-                        } else {
-                            val calendar = Calendar.getInstance()
-                            val year = calendar.get(Calendar.YEAR)
-                            val month = calendar.get(Calendar.MONTH)
-                            when {
-                                month <= Calendar.MARCH -> "${year - 1}-$year-1"
-                                month >= Calendar.NOVEMBER -> "$year-${year + 1}-1"
-                                else -> "${year - 1}-$year-2"
-                            }
-                        }
-                        service.exams2(xq)
-                    }
-                }
+                .andThen(service.exams2(RemoteConfig.getTermId()))
                 .map { parseReportingError(it, ::parseExams) }
                 .ioSubscribeUiObserve()
     }

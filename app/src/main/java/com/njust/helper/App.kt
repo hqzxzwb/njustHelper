@@ -2,6 +2,7 @@ package com.njust.helper
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.njust.helper.settings.CourseAlarms
 
 class App : Application() {
@@ -11,5 +12,7 @@ class App : Application() {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
         CourseAlarms.registerCourseAlarm(this)
+
+        FirebaseRemoteConfig.getInstance().setDefaults(R.xml.remote_config_defaults)
     }
 }
