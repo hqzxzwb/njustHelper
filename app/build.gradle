@@ -27,6 +27,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:18.0.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
+    debugRuntimeOnly 'com.squareup.leakcanary:leakcanary-android:2.0-beta-2'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
