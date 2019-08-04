@@ -7,6 +7,7 @@ import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.parseReportingError
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
+import kotlinx.coroutines.Deferred
 import org.json.JSONObject
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -16,9 +17,9 @@ import java.util.*
 
 private interface LibraryApiService {
     @POST("ajax_search_adv.php")
-    fun search(
+    fun searchAsync(
             @Body body: Any
-    ): Single<Map<String, Any>>
+    ): Deferred<Map<String, Any>>
 
     @GET("item.php")
     fun detail(
@@ -43,7 +44,7 @@ object LibraryApi {
     private val service = Apis.newRetrofit("http://202.119.83.14:8080/opac/")
             .create(LibraryApiService::class.java)
 
-    fun search(keyword: String): Single<List<LibSearchBean>> {
+    suspend fun search(keyword: String): List<LibSearchBean> {
         val fieldData = ArrayMap<String, String>().apply {
             put("fieldCode", "")
             put("fieldValue", keyword)
@@ -61,9 +62,8 @@ object LibraryApi {
                     put("limiters", listOf<Any>())
                     put("searchWords", keywordArray)
                 }
-        return service.search(body)
-                .map { parseReportingError(it, ::parseSearch) }
-                .ioSubscribeUiObserve()
+        return service.searchAsync(body)
+                .let { parseReportingError(it.await(), ::parseSearch) }
     }
 
     fun detail(id: String): Single<LibDetailData> {

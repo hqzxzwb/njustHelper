@@ -1,5 +1,6 @@
 package com.njust.helper.api
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.njust.helper.BuildConfig
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
@@ -38,6 +39,7 @@ object Apis {
         return Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .client(globalOkHttpClient)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create())

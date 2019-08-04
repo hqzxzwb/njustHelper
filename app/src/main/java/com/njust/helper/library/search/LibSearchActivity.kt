@@ -6,6 +6,7 @@ import android.provider.SearchRecentSuggestions
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.crashlytics.android.Crashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
@@ -17,7 +18,7 @@ import com.njust.helper.databinding.ActivityLibSearchBinding
 import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.SimpleListVm
 import com.zwb.commonlibs.utils.getSearchManager
-import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.coroutines.launch
 import java.io.IOException
 
 class LibSearchActivity : ProgressActivity() {
@@ -82,20 +83,19 @@ class LibSearchActivity : ProgressActivity() {
             return
         }
         setRefreshing(true)
-        LibraryApi.search(search)
-                .subscribeBy(
-                        onSuccess = {
-                            vm.items = it.mapIndexed { index, libSearchBean ->
-                                LibSearchItemVm(libSearchBean, index)
-                            }
-                            setRefreshing(false)
-                        },
-                        onError = {
-                            onError(it)
-                            setRefreshing(false)
-                        }
-                )
-                .addToLifecycleManagement()
+
+        lifecycleScope.launch {
+            try {
+                val result = LibraryApi.search(search)
+                vm.items = result.mapIndexed { index, libSearchBean ->
+                    LibSearchItemVm(libSearchBean, index)
+                }
+                setRefreshing(false)
+            } catch (e: Exception) {
+                onError(e)
+                setRefreshing(false)
+            }
+        }
     }
 
     private fun onError(throwable: Throwable) {
