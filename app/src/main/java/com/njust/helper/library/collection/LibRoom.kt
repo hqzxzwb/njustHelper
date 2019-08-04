@@ -87,7 +87,7 @@ private class CollectMigration(startVersion: Int) : Migration(startVersion, DB_V
 
 class LibCollectManager private constructor(context: Context) {
     private val dao: LibCollectDao = Room
-            .databaseBuilder(context, LibCollectDatabase::class.java, DB_NAME)
+            .databaseBuilder(context.applicationContext, LibCollectDatabase::class.java, DB_NAME)
             .allowMainThreadQueries()
             .addMigrations(*((1 until DB_VERSION).map { CollectMigration(it) }.toTypedArray()))
             .build()

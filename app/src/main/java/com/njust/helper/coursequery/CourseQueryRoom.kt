@@ -66,16 +66,17 @@ abstract class CourseQueryDatabase : RoomDatabase() {
 }
 
 private fun newDao(context: Context): CourseQueryDao {
-    return Room.databaseBuilder(context, CourseQueryDatabase::class.java, DB_NAME)
+    val appContext = context.applicationContext
+    return Room.databaseBuilder(appContext, CourseQueryDatabase::class.java, DB_NAME)
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
-                    initializeData(context, db)
+                    initializeData(appContext, db)
                 }
             })
             .addMigrations(object : Migration(1, 2) {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     database.delete(TABLE_NAME, null, null)
-                    initializeData(context, database)
+                    initializeData(appContext, database)
                 }
             })
             .build()
