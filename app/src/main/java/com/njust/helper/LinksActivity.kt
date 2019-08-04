@@ -15,6 +15,8 @@ import com.njust.helper.tools.SimpleListVm
 import com.squareup.moshi.Types
 import io.reactivex.Single
 import okio.Okio
+import okio.buffer
+import okio.source
 import java.io.IOException
 
 
@@ -39,7 +41,7 @@ class LinksActivity : BaseActivity() {
                     resources.openRawResource(R.raw.links).use {
                         val type = Types.newParameterizedType(List::class.java, Link::class.java)
                         val adapter = sharedMoshi.adapter<List<Link>>(type)
-                        adapter.fromJson(Okio.buffer(Okio.source(it)))
+                        adapter.fromJson(it.source().buffer())
                     }
                 }
                 .subscribe({ onDataReceived(it) }, { onError(it) })

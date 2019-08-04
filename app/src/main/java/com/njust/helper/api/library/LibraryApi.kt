@@ -62,8 +62,7 @@ object LibraryApi {
                     put("limiters", listOf<Any>())
                     put("searchWords", keywordArray)
                 }
-        return service.searchAsync(body)
-                .let { parseReportingError(it.await(), ::parseSearch) }
+        return parseReportingError(service.searchAsync(body).await(), ::parseSearch)
     }
 
     fun detail(id: String): Single<LibDetailData> {
