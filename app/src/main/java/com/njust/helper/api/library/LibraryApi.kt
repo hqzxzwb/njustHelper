@@ -22,9 +22,9 @@ private interface LibraryApiService {
     ): Deferred<Map<String, Any>>
 
     @GET("item.php")
-    fun detail(
+    fun detailAsync(
             @Query("marc_no") id: String
-    ): Single<String>
+    ): Deferred<String>
 
     @GET("http://mc.m.5read.com/apis/user/userLogin.jspx")
     fun borrowed1(
@@ -65,10 +65,8 @@ object LibraryApi {
         return parseReportingError(service.searchAsync(body).await(), ::parseSearch)
     }
 
-    fun detail(id: String): Single<LibDetailData> {
-        return service.detail(id)
-                .map { parseReportingError(it, ::parseDetail) }
-                .ioSubscribeUiObserve()
+    suspend fun detail(id: String): LibDetailData {
+        return parseReportingError(service.detailAsync(id).await(), ::parseDetail)
     }
 
     fun borrowed(stuid: String, pwd: String): Single<String> {

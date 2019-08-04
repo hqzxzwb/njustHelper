@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -12,13 +13,13 @@ import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
 import com.njust.helper.api.ParseErrorException
+import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.library.LibDetailData
 import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.library.collection.LibCollectManager
 import com.njust.helper.tools.Constants
-import com.njust.helper.api.ServerErrorException
-import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_lib_detail.*
+import kotlinx.coroutines.launch
 import java.io.IOException
 
 class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListener {
@@ -54,17 +55,17 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
         onRefresh()
     }
 
-    override fun setupPullLayout(layout: SwipeRefreshLayout) {
-        layout.setOnRefreshListener(this)
+    override fun setupPullLayout(refreshLayout: SwipeRefreshLayout) {
+        refreshLayout.setOnRefreshListener(this)
     }
 
-    internal fun notifyData(data: LibDetailData) {
+    private fun notifyData(data: LibDetailData) {
         val strings = data.head!!.split("\n")
         if (strings.size > 1) {
             title = strings[1]
         }
-        val list = data.states
-        code = if (list!!.isEmpty()) "" else list[0].code
+        val list = data.states!!
+        code = if (list.isEmpty()) "" else list[0].code
         adapter!!.setData(data)
     }
 
@@ -105,18 +106,16 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
     }
 
     override fun onRefresh() {
-        LibraryApi.detail(idString)
-                .subscribeBy(
-                        onSuccess = {
-                            notifyData(it)
-                            setRefreshing(false)
-                        },
-                        onError = {
-                            onError(it)
-                            setRefreshing(false)
-                        }
-                )
-                .addToLifecycleManagement()
+        lifecycleScope.launch {
+            try {
+                val result = LibraryApi.detail(idString)
+                notifyData(result)
+                setRefreshing(false)
+            } catch (e: Exception) {
+                onError(e)
+                setRefreshing(false)
+            }
+        }
     }
 
     private fun onError(throwable: Throwable) {
