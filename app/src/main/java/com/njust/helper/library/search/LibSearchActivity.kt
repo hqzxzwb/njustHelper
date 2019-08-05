@@ -18,7 +18,6 @@ import com.njust.helper.databinding.ActivityLibSearchBinding
 import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.SimpleListVm
 import com.zwb.commonlibs.utils.getSearchManager
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -85,7 +84,7 @@ class LibSearchActivity : ProgressActivity() {
         }
         setRefreshing(true)
 
-        lifecycleScope.launch(context = Dispatchers.Main) {
+        lifecycleScope.launch {
             try {
                 val result = LibraryApi.search(search)
                 vm.items = result.mapIndexed { index, libSearchBean ->

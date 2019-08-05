@@ -8,6 +8,8 @@ import com.njust.helper.api.parseReportingError
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -44,7 +46,7 @@ object LibraryApi {
     private val service = Apis.newRetrofit("http://202.119.83.14:8080/opac/")
             .create(LibraryApiService::class.java)
 
-    suspend fun search(keyword: String): List<LibSearchBean> {
+    suspend fun search(keyword: String): List<LibSearchBean> = withContext(Dispatchers.IO) {
         val fieldData = ArrayMap<String, String>().apply {
             put("fieldCode", "")
             put("fieldValue", keyword)
@@ -62,11 +64,11 @@ object LibraryApi {
                     put("limiters", listOf<Any>())
                     put("searchWords", keywordArray)
                 }
-        return parseReportingError(service.searchAsync(body).await(), ::parseSearch)
+        parseReportingError(service.searchAsync(body).await(), ::parseSearch)
     }
 
-    suspend fun detail(id: String): LibDetailData {
-        return parseReportingError(service.detailAsync(id).await(), ::parseDetail)
+    suspend fun detail(id: String): LibDetailData = withContext(Dispatchers.IO) {
+        parseReportingError(service.detailAsync(id).await(), ::parseDetail)
     }
 
     fun borrowed(stuid: String, pwd: String): Single<String> {

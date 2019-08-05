@@ -19,7 +19,6 @@ import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.library.collection.LibCollectManager
 import com.njust.helper.tools.Constants
 import kotlinx.android.synthetic.main.activity_lib_detail.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -107,7 +106,7 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
     }
 
     override fun onRefresh() {
-        lifecycleScope.launch(context = Dispatchers.Main) {
+        lifecycleScope.launch {
             try {
                 val result = LibraryApi.detail(idString)
                 notifyData(result)
