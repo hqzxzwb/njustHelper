@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.crashlytics.android.Crashlytics
@@ -13,8 +14,9 @@ import com.njust.helper.databinding.ActivityLinksBinding
 import com.njust.helper.model.Link
 import com.njust.helper.tools.SimpleListVm
 import com.squareup.moshi.Types
-import io.reactivex.Single
-import okio.Okio
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okio.buffer
 import okio.source
 import java.io.IOException
@@ -36,16 +38,20 @@ class LinksActivity : BaseActivity() {
     }
 
     private fun refresh() {
-        Single
-                .fromCallable<List<Link>> {
+        lifecycleScope.launch {
+            try {
+                val data = withContext(Dispatchers.IO) {
                     resources.openRawResource(R.raw.links).use {
                         val type = Types.newParameterizedType(List::class.java, Link::class.java)
                         val adapter = sharedMoshi.adapter<List<Link>>(type)
-                        adapter.fromJson(it.source().buffer())
+                        adapter.fromJson(it.source().buffer())!!
                     }
                 }
-                .subscribe({ onDataReceived(it) }, { onError(it) })
-                .addToLifecycleManagement()
+                onDataReceived(data)
+            } catch (e: Exception) {
+                onError(e)
+            }
+        }
     }
 
     private fun onDataReceived(list: List<Link>) {
