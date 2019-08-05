@@ -9,12 +9,8 @@ import android.view.Window
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import com.zwb.commonlibs.rx.DisposableHelper
-import io.reactivex.disposables.Disposable
 
 abstract class BaseActivity : AppCompatActivity() {
-    private val disposableHelper = DisposableHelper()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,17 +22,6 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
         setupActionBar()
-
-        disposableHelper.activate()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        disposableHelper.deactivate()
-    }
-
-    protected fun Disposable.addToLifecycleManagement() {
-        disposableHelper.add(this)
     }
 
     @LayoutRes

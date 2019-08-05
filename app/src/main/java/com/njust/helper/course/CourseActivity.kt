@@ -73,7 +73,7 @@ class CourseActivity :
 
         lifecycleScope.launch {
             val mainList = withContext(Dispatchers.IO) {
-                CourseManager.getInstance(this).courses
+                CourseManager.getInstance(this@CourseActivity).courses
             }
             if (mainList.size == 0) {
                 //课表为空时，提示导入课表
