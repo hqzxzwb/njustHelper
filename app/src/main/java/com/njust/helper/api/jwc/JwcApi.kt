@@ -5,103 +5,91 @@ import com.njust.helper.api.Apis
 import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.parseReportingError
-import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import com.zwb.commonlibs.utils.MD5
-import io.reactivex.Completable
-import io.reactivex.Single
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.http.*
 
 private interface JwcApiService {
     @GET("xk/LoginToXk")
-    fun requestLogin(
+    fun requestLoginAsync(
             @Query("USERNAME") stuid: String,
             @Query("PASSWORD") pwd: String,
             @Query("method") method: String = "verify"
-    ): Single<String>
+    ): Deferred<String>
 
     @FormUrlEncoded
     @POST("xskb/xskb_list.do")
-    fun courses(
+    fun coursesAsync(
             @Query("Ves632DSdyV") query1: String = "NEW_XSD_PYGL",
             @Field("cj0701id") body1: String = "",
             @Field("zc") body2: String = "",
             @Field("demo") body3: String = "",
             @Field("xnxq01id") body4: String = RemoteConfig.getTermId()
-    ): Single<String>
+    ): Deferred<String>
 
     @GET("kscj/djkscj_list")
-    fun gradeLevel(): Single<String>
+    fun gradeLevelAsync(): Deferred<String>
 
     @FormUrlEncoded
     @POST("xsks/xsksap_list")
-    fun exams2(
+    fun examsAsync(
             @Field("xnxqid") xq: String,
             @Field("xqlbmc") body1: String = "",
             @Field("xqlb") body2: String = ""
-    ): Single<String>
+    ): Deferred<String>
 
     @FormUrlEncoded
     @POST("kscj/cjcx_list")
-    fun grade(
+    fun gradeAsync(
             @Field("kksj") body1: String = "",
             @Field("kcxz") body2: String = "",
             @Field("kcmc") body3: String = "",
             @Field("xsfs") body4: String = "max"
-    ): Single<String>
+    ): Deferred<String>
 }
 
 object JwcApi {
     private val service = Apis.newRetrofit("http://202.119.81.113:9080/njlgdx/")
             .create(JwcApiService::class.java)
 
-    fun courses(stuid: String, pwd: String): Single<CourseData> {
-        return login(stuid, pwd)
-                .andThen(service.courses())
-                .map { parseReportingError(it, ::parseCourses) }
-                .ioSubscribeUiObserve()
+    suspend fun courses(stuid: String, pwd: String): CourseData = withContext(Dispatchers.IO) {
+        login(stuid, pwd)
+        parseReportingError(service.coursesAsync().await(), ::parseCourses)
     }
 
-    fun gradeLevel(stuid: String, pwd: String): Single<List<GradeLevelBean>> {
-        return login(stuid, pwd)
-                .andThen(service.gradeLevel())
-                .map { parseReportingError(it, ::parseGradeLevel) }
-                .ioSubscribeUiObserve()
+    suspend fun gradeLevel(stuid: String, pwd: String): List<GradeLevelBean> = withContext(Dispatchers.IO) {
+        login(stuid, pwd)
+        parseReportingError(service.gradeLevelAsync().await(), ::parseGradeLevel)
     }
 
-    fun exams(stuid: String, pwd: String): Single<List<Exam>> {
-        return login(stuid, pwd)
-                .andThen(service.exams2(RemoteConfig.getTermId()))
-                .map { parseReportingError(it, ::parseExams) }
-                .ioSubscribeUiObserve()
+    suspend fun exams(stuid: String, pwd: String): List<Exam> = withContext(Dispatchers.IO) {
+        login(stuid, pwd)
+        parseReportingError(service.examsAsync(RemoteConfig.getTermId()).await(), ::parseExams)
     }
 
-    fun grade(stuid: String, pwd: String): Single<Map<String, List<GradeItem>>> {
-        return login(stuid, pwd)
-                .andThen(service.grade())
-                .map { parseReportingError(it, ::parseGrade) }
-                .ioSubscribeUiObserve()
+    suspend fun grade(stuid: String, pwd: String): Map<String, List<GradeItem>> = withContext(Dispatchers.IO) {
+        login(stuid, pwd)
+        parseReportingError(service.gradeAsync().await(), ::parseGrade)
     }
 
-    private fun login(stuid: String, pwd: String): Completable {
-        return service
-                .requestLogin(stuid, MD5.md5String(pwd, true))
-                .onErrorResumeNext {
-                    if (it is HttpException) {
-                        if (it.code() / 100 == 3) {
-                            return@onErrorResumeNext Single.just("success")
-                        }
-                    }
-                    Single.error(ServerErrorException())
-                }
-                .flatMapCompletable {
-                    when {
-                        it == "success" -> Completable.complete()
-                        it.contains("<html xmlns=\"http://www.w3.org/1999/xhtml\">") ->
-                            Completable.error(LoginErrorException())
-                        else -> Completable.error(ServerErrorException())
-                    }
-                }
+    private suspend fun login(stuid: String, pwd: String) {
+        val string = try {
+            service.requestLoginAsync(stuid, MD5.md5String(pwd, true)).await()
+        } catch (e: Exception) {
+            if (e is HttpException && e.code() / 100 == 3) {
+                "success"
+            } else {
+                throw ServerErrorException()
+            }
+        }
+        if (string.contains("<html xmlns=\"http://www.w3.org/1999/xhtml\">")) {
+            throw LoginErrorException()
+        } else if (string != "success") {
+            throw ServerErrorException()
+        }
     }
 
     internal fun parseCourses(string: String): CourseData {

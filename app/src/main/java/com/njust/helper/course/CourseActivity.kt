@@ -11,6 +11,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.crashlytics.android.Crashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
@@ -34,7 +35,7 @@ import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
 import com.zwb.commonlibs.rx.ioSubscribeUiObserve
 import io.reactivex.Single
-import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -165,18 +166,16 @@ class CourseActivity :
 
     private fun doImport() {
         progressState(true)
-        JwcApi.courses(Prefs.getId(this), Prefs.getJwcPwd(this))
-                .subscribeBy(
-                        onSuccess = {
-                            onImportSuccess(it)
-                            progressState(false)
-                        },
-                        onError = {
-                            onImportError(it)
-                            progressState(false)
-                        }
-                )
-                .addToLifecycleManagement()
+        lifecycleScope.launch {
+            try {
+                val data = JwcApi.courses(Prefs.getId(this@CourseActivity), Prefs.getJwcPwd(this@CourseActivity))
+                onImportSuccess(data)
+                progressState(false)
+            } catch (e: Exception) {
+                onImportError(e)
+                progressState(false)
+            }
+        }
     }
 
     private fun onImportSuccess(courseData: CourseData) {

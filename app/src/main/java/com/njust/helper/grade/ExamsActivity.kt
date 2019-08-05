@@ -2,6 +2,7 @@ package com.njust.helper.grade
 
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import com.crashlytics.android.Crashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
@@ -15,6 +16,7 @@ import com.njust.helper.api.ParseErrorException
 import com.njust.helper.tools.Prefs
 import com.njust.helper.api.ServerErrorException
 import com.njust.helper.tools.SimpleListVm
+import kotlinx.coroutines.launch
 import java.io.IOException
 
 class ExamsActivity : BaseActivity() {
@@ -27,9 +29,14 @@ class ExamsActivity : BaseActivity() {
     }
 
     private fun refresh() {
-        JwcApi.exams(Prefs.getId(this), Prefs.getJwcPwd(this))
-                .subscribe({ onDataReceived(it) }, { onError(it) })
-                .addToLifecycleManagement()
+        lifecycleScope.launch {
+            try {
+                val result = JwcApi.exams(Prefs.getId(this@ExamsActivity), Prefs.getJwcPwd(this@ExamsActivity))
+                onDataReceived(result)
+            } catch (e: Exception) {
+                onError(e)
+            }
+        }
     }
 
     private fun onDataReceived(list: List<Exam>) {

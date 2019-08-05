@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import com.njust.helper.api.jwc.JwcApi
 import com.njust.helper.databinding.ActivityGradeBinding
 import com.njust.helper.tools.Prefs
 import com.zwb.commonlibs.binding.BaseDataBindingHolder
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.text.DecimalFormat
 
@@ -35,9 +37,14 @@ class GradeActivity : BaseActivity() {
     }
 
     private fun refresh() {
-        JwcApi.grade(Prefs.getId(this), Prefs.getJwcPwd(this))
-                .subscribe({ onDataReceived(it) }, { onError(it) })
-                .addToLifecycleManagement()
+        lifecycleScope.launch {
+            try {
+                val result = JwcApi.grade(Prefs.getId(this@GradeActivity), Prefs.getJwcPwd(this@GradeActivity))
+                onDataReceived(result)
+            } catch (e: Exception) {
+                onError(e)
+            }
+        }
     }
 
     private fun onDataReceived(data: Map<String, List<GradeItem>>) {

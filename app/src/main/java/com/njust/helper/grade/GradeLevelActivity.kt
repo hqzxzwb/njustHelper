@@ -2,6 +2,7 @@ package com.njust.helper.grade
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.crashlytics.android.Crashlytics
@@ -17,6 +18,7 @@ import com.njust.helper.api.jwc.JwcApi
 import com.njust.helper.databinding.ActivityGradeLevelBinding
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.SimpleListVm
+import kotlinx.coroutines.launch
 import java.io.IOException
 
 class GradeLevelActivity : BaseActivity() {
@@ -29,9 +31,14 @@ class GradeLevelActivity : BaseActivity() {
     }
 
     private fun refresh() {
-        JwcApi.gradeLevel(Prefs.getId(this), Prefs.getJwcPwd(this))
-                .subscribe({ onDataReceived(it) }, { onError(it) })
-                .addToLifecycleManagement()
+        lifecycleScope.launch {
+            try {
+                val result = JwcApi.gradeLevel(Prefs.getId(this@GradeLevelActivity), Prefs.getJwcPwd(this@GradeLevelActivity))
+                onDataReceived(result)
+            } catch (e: Exception) {
+                onError(e)
+            }
+        }
     }
 
     private fun onDataReceived(list: List<GradeLevelBean>) {
