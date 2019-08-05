@@ -1,17 +1,19 @@
 package com.njust.helper.coursequery
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityClassroomBinding
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
-import com.zwb.commonlibs.rx.ioSubscribeUiObserve
-import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * 自习室查询
@@ -91,9 +93,10 @@ class ClassroomActivity : BaseActivity() {
         }
         val building = BUILDING_VALUE[buildingIndex]
         binding.loading = true
-        Single
-                .fromCallable<String> {
-                    val dao = CourseQueryDao.getInstance(this)
+        lifecycleScope.launch {
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    val dao = CourseQueryDao.getInstance(this@ClassroomActivity)
                     val allRooms = dao.queryClassroomSet(building)
                     val ruledOutRooms = dao.queryClassroom(building, week, day, sections)
                     (allRooms - ruledOutRooms)
@@ -102,19 +105,17 @@ class ClassroomActivity : BaseActivity() {
                             }
                             .toString()
                 }
-                .ioSubscribeUiObserve()
-                .subscribe({ s ->
-                    binding.loading = false
-                    if (s == "") {
-                        binding.text = getString(R.string.text_classroom_no_info)
-                    } else {
-                        binding.text = s
-                    }
-                }, {
-                    binding.loading = false
-                    binding.text = getString(R.string.text_classroom_fail)
-                })
-                .addToLifecycleManagement()
+                binding.loading = false
+                if (result == "") {
+                    binding.text = getString(R.string.text_classroom_no_info)
+                } else {
+                    binding.text = result
+                }
+            } catch (e: Exception) {
+                binding.loading = false
+                binding.text = getString(R.string.text_classroom_fail)
+            }
+        }
     }
 
     override fun getViewForSnackBar(): View {
