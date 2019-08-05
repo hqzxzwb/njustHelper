@@ -33,9 +33,9 @@ import com.njust.helper.model.Course
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
-import com.zwb.commonlibs.rx.ioSubscribeUiObserve
-import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -71,18 +71,17 @@ class CourseActivity :
         dayFragment = manager.findFragmentById(R.id.course_day_fragment) as CourseDayFragment
         weekFragment = manager.findFragmentById(R.id.course_week_fragment) as CourseWeekFragment
 
-        Single
-                .fromCallable { CourseManager.getInstance(this).courses }
-                .ioSubscribeUiObserve()
-                .subscribe { mainList ->
-                    if (mainList.size == 0) {
-                        //课表为空时，提示导入课表
-                        promptImportMessage()
-                    }
-                    dayFragment.setList(mainList)
-                    weekFragment.setList(mainList)
-                }
-                .addToLifecycleManagement()
+        lifecycleScope.launch {
+            val mainList = withContext(Dispatchers.IO) {
+                CourseManager.getInstance(this).courses
+            }
+            if (mainList.size == 0) {
+                //课表为空时，提示导入课表
+                promptImportMessage()
+            }
+            dayFragment.setList(mainList)
+            weekFragment.setList(mainList)
+        }
 
         dayFragment.setStartTime(termStartTime)
         weekFragment.setBeginTimeInMillis(termStartTime)
