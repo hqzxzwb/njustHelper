@@ -1,15 +1,15 @@
 package com.njust.helper.coursequery
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityCourseQueryResultBinding
 import com.njust.helper.tools.SimpleListVm
-import com.zwb.commonlibs.rx.ioSubscribeUiObserve
-import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CourseQueryResultActivity : BaseActivity() {
     private var section: Int = 0
@@ -36,15 +36,17 @@ class CourseQueryResultActivity : BaseActivity() {
     }
 
     private fun refresh() {
-        Single
-                .create<List<CourseQueryItem>> { emitter ->
-                    CourseQueryDao.getInstance(this)
+        lifecycleScope.launch {
+            try {
+                val data = withContext(Dispatchers.IO) {
+                    CourseQueryDao.getInstance(this@CourseQueryResultActivity)
                             .queryCourses(name, teacher, section, day)
-                            .let { emitter.onSuccess(it) }
                 }
-                .ioSubscribeUiObserve()
-                .subscribe({ onDataReceived(it) }, { onError() })
-                .addToLifecycleManagement()
+                onDataReceived(data)
+            } catch (e: Exception) {
+                onError()
+            }
+        }
     }
 
     private fun onDataReceived(list: List<CourseQueryItem>) {

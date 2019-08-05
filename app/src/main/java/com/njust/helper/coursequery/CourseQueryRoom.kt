@@ -89,7 +89,7 @@ private fun initializeData(context: Context, db: SupportSQLiteDatabase) {
         Scanner(inputStream).use { scanner ->
             while (scanner.hasNext()) {
                 val s = scanner.nextLine()
-                if (!s.isNotEmpty()) {
+                if (s.isEmpty()) {
                     continue
                 }
                 val item = JSONObject(s)
