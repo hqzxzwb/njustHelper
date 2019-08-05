@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
@@ -14,6 +15,7 @@ import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.databinding.ActivityLibBorrowBinding
 import com.njust.helper.tools.Prefs
+import kotlinx.coroutines.launch
 
 class BorrowedBooksActivity : BaseActivity() {
     private lateinit var stuid: String
@@ -57,20 +59,23 @@ class BorrowedBooksActivity : BaseActivity() {
 
     private fun onRefresh() {
         dialog = ProgressDialog.show(this@BorrowedBooksActivity, "正在加载", "请稍候……")
-        LibraryApi.borrowed(stuid, pwd)
-                .doFinally {
-                    dialog?.dismiss()
-                    binding.loading = false
+        lifecycleScope.launch {
+            try {
+                val result = LibraryApi.borrowed(stuid, pwd)
+                binding.webView1.loadUrl(result)
+            } catch (e: Exception) {
+                if (e is LoginErrorException) {
+                    AccountActivity.alertPasswordError(
+                        this@BorrowedBooksActivity,
+                        AccountActivity.REQUEST_LIB
+                    )
+                } else {
+                    showSnack(R.string.message_net_error)
                 }
-                .subscribe({
-                    binding.webView1.loadUrl(it)
-                }, {
-                    if (it is LoginErrorException) {
-                        AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_LIB)
-                    } else {
-                        showSnack(R.string.message_net_error)
-                    }
-                })
-                .addToLifecycleManagement()
+            } finally {
+                dialog?.dismiss()
+                binding.loading = false
+            }
+        }
     }
 }
