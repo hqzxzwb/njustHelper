@@ -6,10 +6,10 @@ import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.njust.helper.R
+import com.njust.helper.RemoteConfig
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityClassroomBinding
 import com.njust.helper.tools.Constants
-import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,7 +28,7 @@ class ClassroomActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val time = (System.currentTimeMillis() - Prefs.getTermStartTime(this)) % TimeUtil.ONE_DAY
+        val time = (System.currentTimeMillis() - RemoteConfig.getTermStartTime()) % TimeUtil.ONE_DAY
         val captions = resources.getStringArray(R.array.sections)
         checkBoxes.forEachIndexed { index, checkBox -> checkBox.text = captions[index] }
 
@@ -82,7 +82,7 @@ class ClassroomActivity : BaseActivity() {
             else -> 2
         }
         val dateLong = System.currentTimeMillis() + TimeUtil.ONE_DAY * dayId
-        val termStart = Prefs.getTermStartTime(this)
+        val termStart = RemoteConfig.getTermStartTime()
         val dayIndex = ((dateLong - termStart) / TimeUtil.ONE_DAY).toInt()
         val week = dayIndex / 7 + 1
         val day = dayIndex % 7

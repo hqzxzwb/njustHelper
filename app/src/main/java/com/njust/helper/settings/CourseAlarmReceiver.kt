@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import com.njust.helper.R
+import com.njust.helper.RemoteConfig
 import com.njust.helper.course.CourseActivity
 import com.njust.helper.course.data.CourseManager
 import com.njust.helper.tools.Constants
@@ -25,11 +26,11 @@ class CourseAlarmReceiver : BroadcastReceiver() {
     private fun notifyCourse(context: Context) {
         val mode = Prefs.getCourseNotificationMode(context)
         val now = System.currentTimeMillis()
-        val minus = now - Prefs.getTermStartTime(context)
+        val minus = now - RemoteConfig.getTermStartTime()
         if (minus < 0) {
             return
         }
-        var day = ((System.currentTimeMillis() - Prefs.getTermStartTime(context)) / TimeUtil.ONE_DAY).toInt()
+        var day = ((System.currentTimeMillis() - RemoteConfig.getTermStartTime()) / TimeUtil.ONE_DAY).toInt()
         val count: Int
         var notiString: String? = null
         when (mode) {

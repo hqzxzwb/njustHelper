@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import com.njust.helper.BuildConfig
 import com.njust.helper.LinksActivity
 import com.njust.helper.R
+import com.njust.helper.RemoteConfig
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.course.CourseActivity
@@ -143,7 +144,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
     }
 
     private fun updateCourse() {
-        val minus = System.currentTimeMillis() - Prefs.getTermStartTime(this)
+        val minus = System.currentTimeMillis() - RemoteConfig.getTermStartTime()
         var day = (minus / TimeUtil.ONE_DAY).toInt()
         if (minus < 0L) {
             day--
@@ -156,7 +157,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
             viewModel.courses = null
         } else {
             val timeList = resources.getStringArray(R.array.section_start)
-            val millisOfDay = ((System.currentTimeMillis() - Prefs.getTermStartTime(this)) % TimeUtil.ONE_DAY).toInt()
+            val millisOfDay = ((System.currentTimeMillis() - RemoteConfig.getTermStartTime()) % TimeUtil.ONE_DAY).toInt()
             val strings = list1
                     .filter { millisOfDay <= Constants.SECTION_END[it.sec1] }
                     .mapTo(ArrayList()) { "今天" + timeList[it.sec1] + "/" + it.classroom + "/" + it.name }

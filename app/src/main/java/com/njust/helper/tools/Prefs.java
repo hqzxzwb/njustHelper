@@ -5,11 +5,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class Prefs {
     private static SharedPreferences getPreference(Context context, String name) {
         return context.getSharedPreferences(name, Context.MODE_PRIVATE);
@@ -74,22 +69,6 @@ public class Prefs {
         getEditor(context, "refresh")
                 .putInt("version", version)
                 .apply();
-    }
-
-    private static String getTermStartString(Context context) {
-        return Constants.DEFAULT_SEMESTER_START;
-    }
-
-    public static long getTermStartTime(Context context) {
-        String dateString = getTermStartString(context);
-        DateFormat dd = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        try {
-            Date date = dd.parse(dateString);
-            return date.getTime();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
 
     public static int getCourseNotificationTime(Context context) {
