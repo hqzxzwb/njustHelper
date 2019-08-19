@@ -13,7 +13,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.roundToInt
 
-private const val DB_VERSION = 2
+private const val DB_VERSION = 3
 private const val DB_NAME = "course_query"
 private const val TABLE_NAME = "main"
 
@@ -73,14 +73,16 @@ private fun newDao(context: Context): CourseQueryDao {
                     initializeData(appContext, db)
                 }
             })
-            .addMigrations(object : Migration(1, 2) {
-                override fun migrate(database: SupportSQLiteDatabase) {
-                    database.delete(TABLE_NAME, null, null)
-                    initializeData(appContext, database)
-                }
-            })
+            .addMigrations(MyMigration(appContext, 1), MyMigration(appContext, 2))
             .build()
             .getDao()
+}
+
+private class MyMigration(val context: Context, startVersion: Int): Migration(startVersion, DB_VERSION) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.delete(TABLE_NAME, null, null)
+        initializeData(context, database)
+    }
 }
 
 private fun initializeData(context: Context, db: SupportSQLiteDatabase) {
