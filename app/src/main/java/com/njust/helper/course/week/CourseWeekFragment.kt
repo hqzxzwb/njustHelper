@@ -55,6 +55,6 @@ class CourseWeekFragment : androidx.fragment.app.Fragment() {
     }
 
     interface Listener {
-        fun showCourseList(courses: List<@JvmSuppressWildcards Course>, day: Int, section: Int)
+        fun showCourseList(courses: List<Course>, day: Int, section: Int)
     }
 }

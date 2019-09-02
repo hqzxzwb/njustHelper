@@ -23,10 +23,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CourseDayFragment : Fragment(), OnPageChangeListener {
-    private val mLists: Array<Array<MutableList<Course>>> = Array(7) { _ ->
-        Array<MutableList<Course>>(Constants.COURSE_SECTION_COUNT) { _ ->
-            arrayListOf()
-        }
+    private val mLists = Array(7) {
+        Array(Constants.COURSE_SECTION_COUNT) { mutableListOf<Course>() }
     }
     private val dateMonthFormat = SimpleDateFormat("MMM", Locale.CHINA)
     private val dateDayFormat = SimpleDateFormat("d", Locale.CHINA)
@@ -154,6 +152,6 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
 
         fun onDayPressed(day: Int)
 
-        fun showCourseList(courses: @JvmSuppressWildcards List<Course>, day: Int, section: Int)
+        fun showCourseList(courses: List<Course>, day: Int, section: Int)
     }
 }
