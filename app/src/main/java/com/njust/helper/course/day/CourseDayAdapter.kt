@@ -9,7 +9,7 @@ import com.njust.helper.model.Course
 import com.njust.helper.tools.DataBindingHolder
 
 class CourseDayAdapter internal constructor(private val fragment: CourseDayFragment)
-    : androidx.recyclerview.widget.RecyclerView.Adapter<DataBindingHolder<ItemCourseDayBinding>>() {
+    : RecyclerView.Adapter<DataBindingHolder<ItemCourseDayBinding>>() {
     private var mData: Array<MutableList<Course>> = arrayOf()
     private var mWeek = 0
     private var mDay = 0
@@ -34,14 +34,8 @@ class CourseDayAdapter internal constructor(private val fragment: CourseDayFragm
         binding.position = position
         val weekString = " $mWeek "
         if (list.isNotEmpty()) {
-            var course: Course? = null
-            for (t in list) {
-                course = t
-                if (course.week2.contains(weekString)) {
-                    break
-                }
-            }
-            binding.valid = course!!.week2.contains(weekString)
+            val course: Course = list.firstOrNull { it.week2.contains(weekString) } ?: list.last()
+            binding.valid = course.week2.contains(weekString)
             binding.course = course
             binding.root.setOnClickListener { fragment.showCourseList(list, mDay, binding.position) }
         } else {

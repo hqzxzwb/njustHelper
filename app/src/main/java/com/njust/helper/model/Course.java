@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class Course implements Parcelable {
     public static final Creator<Course> CREATOR = new Creator<Course>() {
         @Override
