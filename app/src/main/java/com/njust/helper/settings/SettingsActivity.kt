@@ -23,23 +23,23 @@ class SettingsActivity : BaseActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.preference)
 
-            val modePreference = findPreference("mode") as ListPreference
+            val modePreference = findPreference<ListPreference>("mode")!!
             setListModeSummary(modePreference, modePreference.value)
             modePreference.setOnPreferenceChangeListener { preference, newValue ->
                 setListModeSummary(preference, newValue as String)
-                CourseAlarms.registerCourseAlarm(context!!)
+                CourseAlarms.registerCourseAlarm(requireContext())
                 true
             }
 
-            val timePreference = findPreference("course_time") as TimeSettingPreference
+            val timePreference = findPreference<TimeSettingPreference>("course_time")!!
             timePreference.setOnPreferenceChangeListener { _, _ ->
-                CourseAlarms.registerCourseAlarm(context!!)
+                CourseAlarms.registerCourseAlarm(requireContext())
                 true
             }
         }
 
         private fun setListModeSummary(preference: Preference, index: String) {
-            preference.summary = resources.getStringArray(R.array.pref_mode_entry)[Integer.parseInt(index)]
+            preference.summary = resources.getStringArray(R.array.pref_mode_entry)[index.toInt()]
         }
     }
 }

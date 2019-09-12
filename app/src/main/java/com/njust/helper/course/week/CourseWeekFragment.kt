@@ -26,7 +26,7 @@ class CourseWeekFragment : androidx.fragment.app.Fragment() {
         return binding.root
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         dateFormat = SimpleDateFormat(getString(R.string.date_course_week), Locale.CHINA)
         super.onAttach(context)
         listener = context as Listener
