@@ -9,7 +9,7 @@ dependencies {
     api 'com.google.android.material:material:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    api 'com.squareup.okhttp3:okhttp:3.14.2'
+    api 'com.squareup.okhttp3:okhttp:4.2.1'
 
     def retrofitVersion = '2.5.0'
     api "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -33,5 +33,9 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
