@@ -5,8 +5,10 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 import androidx.annotation.Keep;
+import androidx.room.Entity;
 
 @Keep
+@Entity
 public class Course implements Parcelable {
     public static final Creator<Course> CREATOR = new Creator<Course>() {
         @Override
@@ -38,36 +40,72 @@ public class Course implements Parcelable {
         day = in.readInt();
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
+
     public String getTeacher() {
         return teacher;
+    }
+
+    public void setClassroom(String classroom) {
+        this.classroom = classroom;
     }
 
     public String getClassroom() {
         return TextUtils.isEmpty(classroom) ? "[教室未知]" : classroom;
     }
 
+    public void setWeek1(String week1) {
+        this.week1 = week1;
+    }
+
     public String getWeek1() {
         return week1;
+    }
+
+    public void setWeek2(String week2) {
+        this.week2 = week2;
     }
 
     public String getWeek2() {
         return week2;
     }
 
+    public void setSec1(int sec1) {
+        this.sec1 = sec1;
+    }
+
     public int getSec1() {
         return sec1;
     }
 
+    public void setSec2(int sec2) {
+        this.sec2 = sec2;
+    }
+
     public int getSec2() {
         return sec2;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 
     public int getDay() {

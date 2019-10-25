@@ -1,10 +1,13 @@
 package com.njust.helper.api.jwc
 
-import androidx.annotation.Keep
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Keep
+@Entity(tableName = "loc1")
 class CourseLoc : Cloneable {
-    var id: String? = null
+    @PrimaryKey(autoGenerate = true)
+    var rowid: Int = 0
+    var id: String = ""
     var classroom: String? = null
     var week1: String? = null
     var week2: String? = null

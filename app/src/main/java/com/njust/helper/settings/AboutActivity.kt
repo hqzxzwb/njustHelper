@@ -50,7 +50,7 @@ class AboutActivity : BaseActivity() {
                 }
                 .setNeutralButton("复制群号") { _, _ ->
                     val clipboardManager = getClipboardManager()
-                    clipboardManager.primaryClip = ClipData.newPlainText(null, QQ_GROUP_ID)
+                    clipboardManager.setPrimaryClip(ClipData.newPlainText(null, QQ_GROUP_ID))
                 }
                 .setNegativeButton("返回", null)
                 .show()

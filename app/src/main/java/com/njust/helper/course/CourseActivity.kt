@@ -23,7 +23,7 @@ import com.njust.helper.api.ParseErrorException
 import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.jwc.CourseData
 import com.njust.helper.api.jwc.JwcApi
-import com.njust.helper.course.data.CourseManager
+import com.njust.helper.course.data.CourseDatabase
 import com.njust.helper.course.day.CourseDayFragment
 import com.njust.helper.course.list.CourseListFragment
 import com.njust.helper.course.week.CourseWeekFragment
@@ -73,9 +73,9 @@ class CourseActivity :
 
         lifecycleScope.launch {
             val mainList = withContext(Dispatchers.IO) {
-                CourseManager.getInstance(this@CourseActivity).courses
+                CourseDatabase.getInstance(this@CourseActivity).getCourses()
             }
-            if (mainList.size == 0) {
+            if (mainList.isEmpty()) {
                 //课表为空时，提示导入课表
                 promptImportMessage()
             }
@@ -135,7 +135,7 @@ class CourseActivity :
                         .setTitle("清空课表")
                         .setMessage("确认删除所有课程？")
                         .setPositiveButton("确认删除") { _, _ ->
-                            CourseManager.getInstance(this@CourseActivity).clear()
+                            CourseDatabase.getInstance(this@CourseActivity).clear()
                             refresh()
                         }
                         .setNegativeButton(android.R.string.cancel, null)
@@ -178,7 +178,7 @@ class CourseActivity :
     }
 
     private fun onImportSuccess(courseData: CourseData) {
-        val dao = CourseManager.getInstance(this)
+        val dao = CourseDatabase.getInstance(this)
         dao.clear()
         if (courseData.infos.size > 0) {
             dao.add(courseData.infos, courseData.locs)
@@ -206,7 +206,7 @@ class CourseActivity :
     }
 
     private fun refresh() {
-        val mainList = CourseManager.getInstance(this).courses
+        val mainList = CourseDatabase.getInstance(this).getCourses()
         dayFragment.setList(mainList)
         weekFragment.setList(mainList)
         dayFragment.setStartTime(termStartTime)

@@ -13,7 +13,7 @@ import com.njust.helper.RemoteConfig
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.course.CourseActivity
-import com.njust.helper.course.data.CourseManager
+import com.njust.helper.course.data.CourseDatabase
 import com.njust.helper.coursequery.ClassroomActivity
 import com.njust.helper.coursequery.CourseQueryActivity
 import com.njust.helper.databinding.ActivityMainBinding
@@ -149,7 +149,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
         if (minus < 0L) {
             day--
         }
-        val manager = CourseManager.getInstance(this)
+        val manager = CourseDatabase.getInstance(this)
         val list1 = manager.getCourses(day)
         val list2 = manager.getCourses(day + 1)
         val list3 = manager.getCourses(day + 2)

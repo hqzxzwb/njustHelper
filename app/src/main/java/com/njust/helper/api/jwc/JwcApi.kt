@@ -92,7 +92,7 @@ object JwcApi {
         }
     }
 
-    internal fun parseCourses(string: String): CourseData {
+    private fun parseCourses(string: String): CourseData {
         val tableRegex = Regex("""<table id="kbtable"[\s\S]*?</table>""")
         val trRegex = Regex("""<tr>[\s\S]*?</tr>""")
         val tdRegex = Regex("""<td[\s\S]*?</td>""")

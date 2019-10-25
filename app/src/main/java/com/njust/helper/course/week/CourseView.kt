@@ -209,10 +209,10 @@ class CourseView : View {
                     layout = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                         StaticLayout(name, paint, (unitWidth - 2 * delta).toInt(),
                                 Layout.Alignment.ALIGN_CENTER, 1f, 0f,
-                                false)!!
+                                false)
                     } else {
                         StaticLayout.Builder.obtain(name, 0, name.length, paint,
-                                (unitWidth - 2 * delta).toInt()).build()!!
+                                (unitWidth - 2 * delta).toInt()).build()
                     }
                     mLayoutContainer[name] = layout
                 }
