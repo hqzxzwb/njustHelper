@@ -175,9 +175,9 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:enabled="@{!loading}"
+                android:src="@drawable/ic_check_black_24dp"
                 android:tint="@android:color/white"
-                app:borderWidth="0dp"
-                app:srcCompat="@drawable/ic_check_black_24dp" />
+                app:borderWidth="0dp" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
