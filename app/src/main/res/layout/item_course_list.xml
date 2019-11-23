@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="8dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         android:paddingTop="8dp">
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:drawableLeft="@drawable/ic_course_classroom"
+            android:drawableStart="@drawable/ic_course_classroom"
             android:text="@{course.classroom}"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
             tools:text="classroom" />
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:drawableLeft="@drawable/ic_course_teacher"
+            android:drawableStart="@drawable/ic_course_teacher"
             android:text="@{course.teacher}"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
             tools:text="teacher" />
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:drawableLeft="@drawable/ic_course_week"
+            android:drawableStart="@drawable/ic_course_week"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@{course.week1}"

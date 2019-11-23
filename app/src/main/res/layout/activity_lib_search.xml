@@ -61,9 +61,9 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:contentDescription="图书清除历史icon"
                     android:src="@drawable/ic_delete_black_24dp" />
 
@@ -71,9 +71,9 @@
                     android:id="@+id/textView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="56dp"
+                    android:layout_marginStart="56dp"
                     android:gravity="center_vertical"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
