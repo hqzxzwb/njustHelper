@@ -38,7 +38,7 @@ abstract class CourseDatabase : RoomDatabase() {
 
     companion object : SingletonHolder<CourseDatabase, Context>() {
         override fun createInstance(param: Context): CourseDatabase {
-            return Room.databaseBuilder(param, CourseDatabase::class.java, DB_NAME)
+            return Room.databaseBuilder(param.applicationContext, CourseDatabase::class.java, DB_NAME)
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigrationFrom(1, 2, 3)
                     .addMigrations(Migration_4_5())

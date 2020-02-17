@@ -13,10 +13,13 @@ dependencies {
 
     implementation 'androidx.preference:preference:1.1.0'
     implementation group: 'androidx.constraintlayout', name: 'constraintlayout', version: '1.1.3'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-beta01'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
 
-    implementation "androidx.room:room-runtime:2.2.0"
-    kapt "androidx.room:room-compiler:2.2.0"
+    implementation "androidx.room:room-runtime:2.2.3"
+    kapt "androidx.room:room-compiler:2.2.3"
+
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
     implementation "com.squareup.okhttp3:okhttp-urlconnection:4.2.1"
     debugRuntimeOnly 'com.amitshekhar.android:debug-db:1.0.4'
 
@@ -25,8 +28,8 @@ dependencies {
 
     implementation "com.squareup.okio:okio:2.2.2"
 
-    implementation 'com.google.firebase:firebase-core:17.2.0'
-    implementation 'com.google.firebase:firebase-config:19.0.3'
+    implementation 'com.google.firebase:firebase-core:17.2.2'
+    implementation 'com.google.firebase:firebase-config:19.1.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     debugRuntimeOnly 'com.squareup.leakcanary:leakcanary-android:2.0-beta-2'
