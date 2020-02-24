@@ -13,7 +13,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.roundToInt
 
-private const val DB_VERSION = 3
+private const val DB_VERSION = 4
 private const val DB_NAME = "course_query"
 private const val TABLE_NAME = "main"
 
@@ -73,12 +73,16 @@ private fun newDao(context: Context): CourseQueryDao {
                     initializeData(appContext, db)
                 }
             })
-            .addMigrations(MyMigration(appContext, 1), MyMigration(appContext, 2))
+            .addMigrations(
+                    MyMigration(appContext, 1),
+                    MyMigration(appContext, 2),
+                    MyMigration(appContext, 3)
+            )
             .build()
             .getDao()
 }
 
-private class MyMigration(val context: Context, startVersion: Int): Migration(startVersion, DB_VERSION) {
+private class MyMigration(val context: Context, startVersion: Int) : Migration(startVersion, DB_VERSION) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.delete(TABLE_NAME, null, null)
         initializeData(context, database)
@@ -97,15 +101,11 @@ private fun initializeData(context: Context, db: SupportSQLiteDatabase) {
                 val item = JSONObject(s)
                 cv.clear()
                 item.keys().forEach { key ->
-                    val value = item.get(key)
-                    if (value is String) {
-                        cv.put(key, value)
-                    } else if (value is Float) {
-                        cv.put(key, value.roundToInt())
-                    } else if (value is Double) {
-                        cv.put(key, value.roundToInt())
-                    } else if (value is Number) {
-                        cv.put(key, value.toInt())
+                    when (val value = item.get(key)) {
+                        is String -> cv.put(key, value)
+                        is Float -> cv.put(key, value.roundToInt())
+                        is Double -> cv.put(key, value.roundToInt())
+                        is Number -> cv.put(key, value.toInt())
                     }
                     db.insert(TABLE_NAME, SQLiteDatabase.CONFLICT_IGNORE, cv)
                 }
