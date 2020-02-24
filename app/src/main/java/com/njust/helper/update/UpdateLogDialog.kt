@@ -9,7 +9,7 @@ import com.njust.helper.R
 object UpdateLogDialog {
     private const val message =
             "${BuildConfig.VERSION_CODE} v${BuildConfig.VERSION_NAME}更新日志：\n" +
-                    "1.修复 Android 10 无法导入课表的问题\n"
+                    "1.修复 更新19-20学年第二学期数据\n"
 
     @JvmStatic
     fun showUpdateDialog(context: Context) {
