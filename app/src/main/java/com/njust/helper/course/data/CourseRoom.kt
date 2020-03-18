@@ -62,10 +62,10 @@ interface CourseDao {
     @Insert
     fun insertInfos(infos: List<CourseInfo>)
 
-    @Query("select a.id, a.name, a.teacher, b.classroom, b.week1, b.week2, b.sec1, b.sec2, b.day from info1 as a,loc1 as b where a.id=b.id order by b.id, b.sec1 ")
+    @Query("select a.id, a.name, a.teacher, b.classroom, b.week1, b.week2, b.sec1, b.sec2, b.day from info1 as a,loc1 as b where a.id=b.id order by b.sec1 ")
     fun getCourses(): List<Course>
 
-    @Query("select a.id, a.name, a.teacher, b.classroom, b.week1, b.week2, b.sec1, b.sec2, b.day from info1 as a,loc1 as b where a.id=b.id and b.day=:dayOfWeek and b.week2 like :weekPattern order by b.id, b.sec1 ")
+    @Query("select a.id, a.name, a.teacher, b.classroom, b.week1, b.week2, b.sec1, b.sec2, b.day from info1 as a,loc1 as b where a.id=b.id and b.day=:dayOfWeek and b.week2 like :weekPattern order by b.sec1 ")
     fun getCourses(weekPattern: String, dayOfWeek: Int): List<Course>
 }
 
