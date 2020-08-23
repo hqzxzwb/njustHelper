@@ -35,7 +35,7 @@ class CourseQueryItem(
 @Dao
 interface CourseQueryDao {
     @Query("select * from main where name like '%' || :name || '%' and teacher like '%' || :teacher || '%' and maskedSection & :maskedSection and maskedDay & :maskedDay limit 200")
-    fun queryCourses(
+    suspend fun queryCourses(
             name: String,
             teacher: String,
             maskedSection: Int,
@@ -43,12 +43,12 @@ interface CourseQueryDao {
     ): List<CourseQueryItem>
 
     @Query("select classroom from main where classroom like :building || '-%' group by classroom")
-    fun queryClassroomSet(
+    suspend fun queryClassroomSet(
             building: String
     ): List<String>
 
     @Query("select classroom from main where (classroom like :building || '-%') and (week2 like '% ' || :week || ' %') and (day == :day) and (maskedSection & :maskedSection) group by classroom")
-    fun queryClassroom(
+    suspend fun queryClassroom(
             building: String,
             week: Int,
             day: Int,
