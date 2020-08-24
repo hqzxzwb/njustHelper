@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
+import com.njust.helper.RemoteConfig;
+
+import org.jetbrains.annotations.NotNull;
+
 public class Prefs {
     private static SharedPreferences getPreference(Context context, String name) {
         return context.getSharedPreferences(name, Context.MODE_PRIVATE);
@@ -16,6 +20,14 @@ public class Prefs {
 
     public static String getId(Context context) {
         return getPreference(context, "jwc").getString("studentID", "");
+    }
+
+    public static String getStuTermId(Context context) {
+        return getPreference(context, "jwc").getString("stuTermId", "");
+    }
+
+    public static String getStuTermStartId(Context context) {
+        return getPreference(context, "jwc").getString("stuTermStartId", "");
     }
 
     public static String getJwcPwd(Context context) {
@@ -52,11 +64,22 @@ public class Prefs {
         editor.apply();
     }
 
-    public static void putIdValues(Context context, String id, String jwcPwd, String libPwd) {
+    public static void putTermValues(Context context, String termId,String termStartId) {
+//    public static void putIdValues(Context context, String id, String jwcPwd, String libPwd) {
+        Editor editor = getEditor(context, "jwc");
+        editor.putString("stuTermId", termId)
+                .putString("stuTermStartId", termStartId);
+        editor.apply();
+    }
+
+    public static void putIdValues(Context context, String id, String jwcPwd, String libPwd,String termId,String termStartId) {
+//    public static void putIdValues(Context context, String id, String jwcPwd, String libPwd) {
         Editor editor = getEditor(context, "jwc");
         editor.putString("studentID", id)
                 .putString("password", jwcPwd)
                 .putString("libPwd", libPwd)
+                .putString("stuTermId", termId)
+                .putString("stuTermStartId", termStartId)
                 .putString("cookie", "");
         editor.apply();
     }
@@ -79,4 +102,5 @@ public class Prefs {
         String string = PreferenceManager.getDefaultSharedPreferences(context).getString("mode", "0");
         return Integer.parseInt(string);
     }
+
 }

@@ -10,8 +10,11 @@ import com.njust.helper.RemoteConfig
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityClassroomBinding
 import com.njust.helper.tools.Constants
+import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * 自习室查询
@@ -25,7 +28,6 @@ class ClassroomActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val time = (System.currentTimeMillis() - RemoteConfig.getTermStartTime()) % TimeUtil.ONE_DAY
         val captions = resources.getStringArray(R.array.sections)
         checkBoxes.forEachIndexed { index, checkBox -> checkBox.text = captions[index] }
@@ -93,14 +95,16 @@ class ClassroomActivity : BaseActivity() {
         binding.loading = true
         lifecycleScope.launch {
             try {
-                val dao = CourseQueryDao.getInstance(this@ClassroomActivity)
-                val allRooms = dao.queryClassroomSet(building)
-                val ruledOutRooms = dao.queryClassroom(building, week, day, sections)
-                val result = (allRooms - ruledOutRooms)
-                        .fold(StringBuilder()) { acc, it ->
-                            acc.append(it.replace('-', '_')).append("  ")
-                        }
-                        .toString()
+                val result = withContext(Dispatchers.IO) {
+                    val dao = CourseQueryDao.getInstance(this@ClassroomActivity)
+                    val allRooms = dao.queryClassroomSet(building)
+                    val ruledOutRooms = dao.queryClassroom(building, week, day, sections)
+                    (allRooms - ruledOutRooms)
+                            .fold(StringBuilder()) { acc, it ->
+                                acc.append(it.replace('-', '_')).append("  ")
+                            }
+                            .toString()
+                }
                 binding.loading = false
                 if (result == "") {
                     binding.text = getString(R.string.text_classroom_no_info)

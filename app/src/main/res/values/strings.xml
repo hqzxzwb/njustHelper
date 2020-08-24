@@ -14,8 +14,9 @@
     <string name="label_classroom_section">节次：</string>
     <string name="label_about_upper">App中数据均来自学校相关网站系统，数据转换过程有少量出错的可能，如遇到问题欢迎反馈。</string>
     <string name="label_about_lower">如果您觉得这款app还不错，请使用上面的二维码或右上角的分享按钮将它推荐给更多需要的人吧^_^</string>
+    <string name="label_about_lower_1">自用，请支持正版的“南理工助手”，正版和修改版都可以在主页的“常用链接”处找到😁</string>
     <string name="share_about">南理工助手\n课表、图书馆、成绩查询尽在掌握\n下载地址：\nhttps://github.com/hqzxzwb/njustHelper/releases</string>
-    <string name="text_course_today">今天是%1$s 第%2$d周</string>
+    <string name="text_course_today">今天是%1$s 第%2$d周</string>😁
     <string name="text_home_no_recent_courses">最近三天没有课程</string>
     <string name="text_course_not_this_week">[非本周]%1$s</string>
     <string name="text_courseQuery_day_and_section">星期%1$d第%2$d大节</string>
@@ -27,6 +28,10 @@
     <string name="hint_account_input_id">请输入学号</string>
     <string name="hint_account_input_jwc_password">教务系统密码</string>
     <string name="hint_account_input_lib_password">图书馆密码</string>
+
+    <string name="hint_term_input_id">请输入学期（如2019-2020-2）</string>
+    <string name="hint_term_start_input_id">请输入学期起始日（如2020-02-24）</string>
+
     <string name="text_libCollection_code">索书号：%1$s</string>
     <string name="pref_mode_def_value">0</string>
     <string name="text_classroom_no_info">无教室信息</string>
@@ -39,8 +44,8 @@
     <string name="message_no_result">未找到任何结果</string>
     <string name="message_no_result_exam">暂无考试信息</string>
     <string name="message_no_result_libBorrow">您没有借阅任何图书</string>
-    <string name="message_wrong_password">您输入了错误的用户名或密码</string>
-    <string name="message_account_passwords"><![CDATA[新生教务系统默认密码可能为学号，也可能为身份证后六位。\n图书馆默认密码为学号。]]></string>
+    <string name="message_wrong_password">您输入了错误的信息（用户名、密码或学期）</string>
+    <string name="message_account_passwords"><![CDATA[新生教务系统默认密码可能为学号，也可能为身份证后六位。\n图书馆默认密码为学号。\n学期输入错误考试会查询不到。\n学期起始日输入错误则默认2020-02-24\n输入正确与否可导入课表并查看周次确认]]></string>
     <string name="message_no_exams_found">您最近没有考试信息</string>
     <string name="title_courseQuery">蹭课查询</string>
     <string name="title_activity_exception">错误反馈</string>
@@ -66,6 +71,10 @@
     <string name="toast_input_id">请输入学号</string>
     <string name="toast_input_jwc_pwd">请输入教务处密码</string>
     <string name="toast_input_lib_pwd">请输入图书馆密码</string>
+
+    <string name="toast_input_term_id">请输入学期</string>
+    <string name="toast_input_term_start_id">请输入学期起始日</string>
+
     <string name="update_info">发现新版本：\n%1$s</string>
     <string name="update_log">更新日志</string>
     <string name="shortcuts_failed_msg">加载失败</string>

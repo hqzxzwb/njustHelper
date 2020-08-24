@@ -23,11 +23,11 @@ private interface JwcApiService {
     @FormUrlEncoded
     @POST("xskb/xskb_list.do")
     fun coursesAsync(
+            @Field("xnxq01id") body4: String,
             @Query("Ves632DSdyV") query1: String = "NEW_XSD_PYGL",
             @Field("cj0701id") body1: String = "",
             @Field("zc") body2: String = "",
-            @Field("demo") body3: String = "",
-            @Field("xnxq01id") body4: String = RemoteConfig.getTermId()
+            @Field("demo") body3: String = ""
     ): Deferred<String>
 
     @GET("kscj/djkscj_list")
@@ -57,7 +57,11 @@ object JwcApi {
 
     suspend fun courses(stuid: String, pwd: String): CourseData = withContext(Dispatchers.IO) {
         login(stuid, pwd)
-        parseReportingError(service.coursesAsync().await(), ::parseCourses)
+        try{
+            parseReportingError(service.coursesAsync(RemoteConfig.getTermId()).await(), ::parseCourses)
+        }catch (e:Exception){
+            throw LoginErrorException()
+        }
     }
 
     suspend fun gradeLevel(stuid: String, pwd: String): List<GradeLevelBean> = withContext(Dispatchers.IO) {
@@ -67,7 +71,11 @@ object JwcApi {
 
     suspend fun exams(stuid: String, pwd: String): List<Exam> = withContext(Dispatchers.IO) {
         login(stuid, pwd)
-        parseReportingError(service.examsAsync(RemoteConfig.getTermId()).await(), ::parseExams)
+        try{
+            parseReportingError(service.examsAsync(RemoteConfig.getTermId()).await(), ::parseExams)
+        }catch (e:Exception){
+            throw LoginErrorException()
+        }
     }
 
     suspend fun grade(stuid: String, pwd: String): Map<String, List<GradeItem>> = withContext(Dispatchers.IO) {

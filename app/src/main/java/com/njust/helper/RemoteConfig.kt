@@ -1,34 +1,40 @@
 package com.njust.helper
 
-import android.util.Log
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-import com.njust.helper.tools.TimeUtil
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-object RemoteConfig {
-    private const val TAG = "RemoteConfig"
 
-    init {
-        val settings = FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(TimeUtil.ONE_HOUR / TimeUtil.ONE_SECOND)
-                .build()
-        FirebaseRemoteConfig.getInstance().setConfigSettingsAsync(settings)
-        FirebaseRemoteConfig.getInstance().fetchAndActivate()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "Fetch and activate succeeded.")
-                    }
-                }
+object RemoteConfig {
+    private var termId = "2019-2020-2"
+    private var termStartId = "2020-02-24"
+
+
+    fun setTerm(termId: String, termStartId: String) {
+        if (termId.isNotEmpty()) {
+            this.termId = termId
+        }
+        if (termStartId.isNotEmpty()) {
+            this.termStartId = termStartId
+        }
     }
 
-    fun getTermId(): String = FirebaseRemoteConfig.getInstance().getString("termId")
+    fun getTermId():String{
+        return termId.toString()
+    }
 
     fun getTermStartTime(): Long {
-        val dateString = FirebaseRemoteConfig.getInstance().getString("termStartDate")
-        val dd = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val date = dd.parse(dateString)
-        return date.time
+        try {
+            val dateString = termStartId.toString()
+            val dd = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            val date = dd.parse(dateString)
+            return date.time
+        } catch (e: Exception) {
+            val dateString = "2020-02-24"
+            val dd = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            val date = dd.parse(dateString)
+            return date.time
+        }
     }
+
 }

@@ -1,10 +1,12 @@
 package com.njust.helper.main
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import com.njust.helper.BuildConfig
 import com.njust.helper.LinksActivity
@@ -29,12 +31,15 @@ import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
 import com.njust.helper.update.UpdateLogDialog
+import kotlinx.android.synthetic.main.activity_account.*
 import java.util.*
+
 
 class MainActivity : BaseActivity(), MainActivityClickHandler {
     private val viewModel = MainViewModel(this)
 
     override fun layout() {
+
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.vm = viewModel
     }
@@ -42,9 +47,12 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         val id = Prefs.getId(this)
-        if (id == "") {
+        val stuTermId:String =Prefs.getStuTermId(this).toString()
+        val stuTermStartId:String =Prefs.getStuTermStartId(this).toString()
+        if (id == ""||stuTermId==""||stuTermStartId=="") {
             startActivity(AccountActivity::class.java)
         } else {
+            RemoteConfig.setTerm(stuTermId,stuTermStartId)
             updateCourse()
         }
 
@@ -61,7 +69,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
                     Prefs.putIdValues(this,
                             getString(R.string.testStuid),
                             getString(R.string.testJwcPwd),
-                            getString(R.string.testLibPwd))
+                            getString(R.string.testLibPwd),getString(R.string.testTermId),getString(R.string.testTermStart))
                 }
             }
         }

@@ -1,8 +1,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">#009688</item>
-        <item name="colorPrimaryDark">#00796b</item>
+        <item name="colorPrimary">#03A9F4</item>
+        <item name="colorPrimaryDark">#03A9F4</item>
         <item name="colorAccent">#9e9e9e</item>
     </style>
 

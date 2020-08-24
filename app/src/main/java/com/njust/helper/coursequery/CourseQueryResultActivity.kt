@@ -7,7 +7,9 @@ import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityCourseQueryResultBinding
 import com.njust.helper.tools.SimpleListVm
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CourseQueryResultActivity : BaseActivity() {
     private var section: Int = 0
@@ -36,8 +38,10 @@ class CourseQueryResultActivity : BaseActivity() {
     private fun refresh() {
         lifecycleScope.launch {
             try {
-                val data = CourseQueryDao.getInstance(this@CourseQueryResultActivity)
-                        .queryCourses(name, teacher, section, day)
+                val data = withContext(Dispatchers.IO) {
+                    CourseQueryDao.getInstance(this@CourseQueryResultActivity)
+                            .queryCourses(name, teacher, section, day)
+                }
                 onDataReceived(data)
             } catch (e: Exception) {
                 onError()

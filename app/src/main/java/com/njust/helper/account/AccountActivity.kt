@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import com.njust.helper.R
+import com.njust.helper.RemoteConfig
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.main.MainActivity
 import com.njust.helper.tools.Prefs
@@ -40,6 +41,7 @@ class AccountActivity : BaseActivity() {
                 Log.i(TAG, "建立对话框失败")
             }
         }
+
     }
 
     private var type: Int = 0
@@ -58,6 +60,11 @@ class AccountActivity : BaseActivity() {
         stuidText.setText(Prefs.getId(this))
         jwcPwdText.setText(Prefs.getJwcPwd(this))
         libPwdText.setText(Prefs.getLibPwd(this))
+
+        termIdText.setText(Prefs.getStuTermId(this))
+        termStartIdText.setText(Prefs.getStuTermStartId(this))
+
+        RemoteConfig.setTerm(Prefs.getStuTermId(this).toString(),Prefs.getStuTermStartId(this).toString())
 
         // 设置焦点
         when (type) {
@@ -82,6 +89,10 @@ class AccountActivity : BaseActivity() {
                 val stuid = stuidText.text.toString().trim()
                 val jwcPwd = jwcPwdText.text.toString()
                 val libPwd = libPwdText.text.toString()
+
+                val termId = termIdText.text.toString().trim()
+                val termStartId = termStartIdText.text.toString().trim()
+
                 if (stuid == "") {
                     showSnack(getString(R.string.toast_input_id))
                     return true
@@ -94,7 +105,19 @@ class AccountActivity : BaseActivity() {
                     showSnack(getString(R.string.toast_input_lib_pwd))
                     return true
                 }
-                Prefs.putIdValues(this, stuid, jwcPwd, libPwd)
+                if (termId == "") {
+                    showSnack(getString(R.string.toast_input_term_id))
+                    return true
+                }
+                if (termStartId == "") {
+                    showSnack(getString(R.string.toast_input_term_start_id))
+                    return true
+                }
+
+                //调用储存结构
+                RemoteConfig.setTerm(termId,termStartId)
+
+                Prefs.putIdValues(this, stuid, jwcPwd, libPwd,termId,termStartId)
                 Prefs.putCookie(this, "", null, 1)
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
