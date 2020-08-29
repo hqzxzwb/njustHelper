@@ -39,7 +39,7 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
     }
 
     override fun prepareViews() {
-        idString = intent.getStringExtra(Constants.EXTRA_ID)
+        idString = intent.getStringExtra(Constants.EXTRA_ID)!!
         manager = LibCollectManager.getInstance(this)
 
         recyclerView.layoutManager = LinearLayoutManager(this)

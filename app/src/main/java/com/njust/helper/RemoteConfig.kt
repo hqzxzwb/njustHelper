@@ -28,7 +28,7 @@ object RemoteConfig {
     fun getTermStartTime(): Long {
         val dateString = FirebaseRemoteConfig.getInstance().getString("termStartDate")
         val dd = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val date = dd.parse(dateString)
+        val date = dd.parse(dateString)!!
         return date.time
     }
 }

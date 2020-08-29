@@ -23,8 +23,8 @@ class CourseQueryResultActivity : BaseActivity() {
         section = if (timeOfDay < 0) -1 else 1 shl timeOfDay
         val dayOfWeek = intent.getIntExtra("day", 0)
         day = if (dayOfWeek < 0) -1 else 1 shl dayOfWeek
-        name = intent.getStringExtra("name")
-        teacher = intent.getStringExtra("teacher")
+        name = intent.getStringExtra("name")!!
+        teacher = intent.getStringExtra("teacher")!!
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
