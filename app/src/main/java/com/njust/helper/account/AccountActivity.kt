@@ -19,91 +19,91 @@ import kotlinx.android.synthetic.main.activity_account.*
  * @author zwb
  */
 class AccountActivity : BaseActivity() {
-    companion object {
-        const val REQUEST_JWC = 2
-        const val REQUEST_LIB = 4
-        const val EXTRA_PASSWORD_TYPE = "password_type"
+  companion object {
+    const val REQUEST_JWC = 2
+    const val REQUEST_LIB = 4
+    const val EXTRA_PASSWORD_TYPE = "password_type"
 
-        @JvmStatic
-        fun alertPasswordError(context: Context, accountRequest: Int) {
-            try {
-                AlertDialog.Builder(context)
-                        .setMessage(R.string.message_wrong_password)
-                        .setPositiveButton(R.string.dialog_base_modify_immediately) { _, _ ->
-                            val intent = Intent(context, AccountActivity::class.java)
-                            intent.putExtra(AccountActivity.EXTRA_PASSWORD_TYPE, accountRequest)
-                            context.startActivity(intent)
-                        }
-                        .setNegativeButton(R.string.action_back, null)
-                        .show()
-            } catch (e: Exception) {
-                Log.i(TAG, "建立对话框失败")
+    @JvmStatic
+    fun alertPasswordError(context: Context, accountRequest: Int) {
+      try {
+        AlertDialog.Builder(context)
+            .setMessage(R.string.message_wrong_password)
+            .setPositiveButton(R.string.dialog_base_modify_immediately) { _, _ ->
+              val intent = Intent(context, AccountActivity::class.java)
+              intent.putExtra(AccountActivity.EXTRA_PASSWORD_TYPE, accountRequest)
+              context.startActivity(intent)
             }
+            .setNegativeButton(R.string.action_back, null)
+            .show()
+      } catch (e: Exception) {
+        Log.i(TAG, "建立对话框失败")
+      }
+    }
+  }
+
+  private var type: Int = 0
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    val intent = intent
+    type = intent.getIntExtra(EXTRA_PASSWORD_TYPE, 0)
+  }
+
+  override fun onPostCreate(savedInstanceState: Bundle?) {
+    super.onPostCreate(savedInstanceState)
+
+    // 读入原账号数据
+    stuidText.setText(Prefs.getId(this))
+    jwcPwdText.setText(Prefs.getJwcPwd(this))
+    libPwdText.setText(Prefs.getLibPwd(this))
+
+    // 设置焦点
+    when (type) {
+      REQUEST_JWC -> jwcPwdText.requestFocus()
+      REQUEST_LIB -> libPwdText.requestFocus()
+      else -> stuidText.requestFocus()
+    }
+  }
+
+  override fun layoutRes(): Int {
+    return R.layout.activity_account
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.account, menu)
+    return true
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+      R.id.item_save -> {
+        val stuid = stuidText.text.toString().trim()
+        val jwcPwd = jwcPwdText.text.toString()
+        val libPwd = libPwdText.text.toString()
+        if (stuid == "") {
+          showSnack(getString(R.string.toast_input_id))
+          return true
         }
-    }
-
-    private var type: Int = 0
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val intent = intent
-        type = intent.getIntExtra(EXTRA_PASSWORD_TYPE, 0)
-    }
-
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-
-        // 读入原账号数据
-        stuidText.setText(Prefs.getId(this))
-        jwcPwdText.setText(Prefs.getJwcPwd(this))
-        libPwdText.setText(Prefs.getLibPwd(this))
-
-        // 设置焦点
-        when (type) {
-            REQUEST_JWC -> jwcPwdText.requestFocus()
-            REQUEST_LIB -> libPwdText.requestFocus()
-            else -> stuidText.requestFocus()
+        if (jwcPwd == "") {
+          showSnack(getString(R.string.toast_input_jwc_pwd))
+          return true
         }
-    }
-
-    override fun layoutRes(): Int {
-        return R.layout.activity_account
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.account, menu)
+        if (libPwd == "") {
+          showSnack(getString(R.string.toast_input_lib_pwd))
+          return true
+        }
+        Prefs.putIdValues(this, stuid, jwcPwd, libPwd)
+        Prefs.putCookie(this, "", null, 1)
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
         return true
+      }
+      else -> {
+        return super.onOptionsItemSelected(item)
+      }
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_save -> {
-                val stuid = stuidText.text.toString().trim()
-                val jwcPwd = jwcPwdText.text.toString()
-                val libPwd = libPwdText.text.toString()
-                if (stuid == "") {
-                    showSnack(getString(R.string.toast_input_id))
-                    return true
-                }
-                if (jwcPwd == "") {
-                    showSnack(getString(R.string.toast_input_jwc_pwd))
-                    return true
-                }
-                if (libPwd == "") {
-                    showSnack(getString(R.string.toast_input_lib_pwd))
-                    return true
-                }
-                Prefs.putIdValues(this, stuid, jwcPwd, libPwd)
-                Prefs.putCookie(this, "", null, 1)
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-                return true
-            }
-            else -> {
-                return super.onOptionsItemSelected(item)
-            }
-        }
-    }
+  }
 }

@@ -11,5 +11,5 @@ import android.content.Context
 class TimePickerDialogFix(context: Context, callBack: TimePickerDialog.OnTimeSetListener,
                           hourOfDay: Int, minute: Int, is24HourView: Boolean) : TimePickerDialog(context, callBack, hourOfDay, minute, is24HourView) {
 
-    override fun onStop() {}
+  override fun onStop() {}
 }

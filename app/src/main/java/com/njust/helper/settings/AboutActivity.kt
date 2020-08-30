@@ -21,56 +21,56 @@ import com.zwb.commonlibs.utils.getClipboardManager
  * @author zwb
  */
 class AboutActivity : BaseActivity() {
-    override fun layout() {
-        val binding = DataBindingUtil.setContentView<ActivityAboutBinding>(this, R.layout.activity_about)
-        binding.clickHandler = this
-    }
+  override fun layout() {
+    val binding = DataBindingUtil.setContentView<ActivityAboutBinding>(this, R.layout.activity_about)
+    binding.clickHandler = this
+  }
 
-    override fun layoutRes(): Int = 0
+  override fun layoutRes(): Int = 0
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.about, menu)
-        val item = menu.findItem(R.id.item_share)
-        val provider = ShareActionProvider(this)
-        val shareIntent = Intent(Intent.ACTION_SEND)
-                .setType("text/plain")
-                .putExtra(Intent.EXTRA_TEXT, getString(R.string.share_about))
-        provider.setShareIntent(shareIntent)
-        MenuItemCompat.setActionProvider(item, provider)
-        return true
-    }
+  override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    menuInflater.inflate(R.menu.about, menu)
+    val item = menu.findItem(R.id.item_share)
+    val provider = ShareActionProvider(this)
+    val shareIntent = Intent(Intent.ACTION_SEND)
+        .setType("text/plain")
+        .putExtra(Intent.EXTRA_TEXT, getString(R.string.share_about))
+    provider.setShareIntent(shareIntent)
+    MenuItemCompat.setActionProvider(item, provider)
+    return true
+  }
 
-    fun onClickFeedback() {
-        AlertDialog.Builder(this)
-                .setTitle("意见反馈")
-                .setMessage("您可以加入QQ群${QQ_GROUP_ID}进行反馈")
-                .setPositiveButton("点击直接加群") { _, _ ->
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(QQ_GROUP_URI))
-                    startActivity(intent)
-                }
-                .setNeutralButton("复制群号") { _, _ ->
-                    val clipboardManager = getClipboardManager()
-                    clipboardManager.setPrimaryClip(ClipData.newPlainText(null, QQ_GROUP_ID))
-                }
-                .setNegativeButton("返回", null)
-                .show()
-    }
-
-    fun onClickComment() {
-        try {
-            val uri = Uri.parse("market://details?id=$packageName")
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            showSnack("未找到应用市场")
+  fun onClickFeedback() {
+    AlertDialog.Builder(this)
+        .setTitle("意见反馈")
+        .setMessage("您可以加入QQ群${QQ_GROUP_ID}进行反馈")
+        .setPositiveButton("点击直接加群") { _, _ ->
+          val intent = Intent(Intent.ACTION_VIEW, Uri.parse(QQ_GROUP_URI))
+          startActivity(intent)
         }
+        .setNeutralButton("复制群号") { _, _ ->
+          val clipboardManager = getClipboardManager()
+          clipboardManager.setPrimaryClip(ClipData.newPlainText(null, QQ_GROUP_ID))
+        }
+        .setNegativeButton("返回", null)
+        .show()
+  }
 
+  fun onClickComment() {
+    try {
+      val uri = Uri.parse("market://details?id=$packageName")
+      val intent = Intent(Intent.ACTION_VIEW, uri)
+      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+      showSnack("未找到应用市场")
     }
 
-    fun onClickUpdateLog() {
-        UpdateLogDialog.showUpdateDialog(this)
-    }
+  }
+
+  fun onClickUpdateLog() {
+    UpdateLogDialog.showUpdateDialog(this)
+  }
 }
 
 private const val QQ_GROUP_ID = "217887769"

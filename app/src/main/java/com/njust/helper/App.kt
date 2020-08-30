@@ -6,12 +6,12 @@ import com.njust.helper.settings.CourseAlarms
 import com.umeng.commonsdk.UMConfigure
 
 class App : Application() {
-    override fun onCreate() {
-        super.onCreate()
+  override fun onCreate() {
+    super.onCreate()
 
-        CourseAlarms.registerCourseAlarm(this)
+    CourseAlarms.registerCourseAlarm(this)
 
-        UMConfigure.init(this, getString(R.string.umengAppKey), null, 0, null)
-        FirebaseRemoteConfig.getInstance().setDefaults(R.xml.remote_config_defaults)
-    }
+    UMConfigure.init(this, getString(R.string.umengAppKey), null, 0, null)
+    FirebaseRemoteConfig.getInstance().setDefaults(R.xml.remote_config_defaults)
+  }
 }

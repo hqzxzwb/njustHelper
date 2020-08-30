@@ -11,64 +11,64 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
-        val res = layoutRes()
-        if (res != 0) {
-            setContentView(res)
-        } else {
-            layout()
-        }
-
-        setupActionBar()
+    val res = layoutRes()
+    if (res != 0) {
+      setContentView(res)
+    } else {
+      layout()
     }
 
-    @LayoutRes
-    protected abstract fun layoutRes(): Int
+    setupActionBar()
+  }
 
-    protected open fun layout() {
-    }
+  @LayoutRes
+  protected abstract fun layoutRes(): Int
 
-    protected open fun setupActionBar() {
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-    }
+  protected open fun layout() {
+  }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
+  protected open fun setupActionBar() {
+    supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+  }
 
-    fun startActivity(cls: Class<out Activity>) {
-        startActivity(Intent(this, cls))
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    if (item.itemId == android.R.id.home) {
+      finish()
+      return true
     }
+    return super.onOptionsItemSelected(item)
+  }
 
-    fun startActivityForResult(cls: Class<out Activity>, requestCode: Int) {
-        startActivityForResult(Intent(this, cls), requestCode)
-    }
+  fun startActivity(cls: Class<out Activity>) {
+    startActivity(Intent(this, cls))
+  }
 
-    fun showSnack(text: CharSequence) {
-        Snackbar.make(getViewForSnackBar(), text, Snackbar.LENGTH_LONG).show()
-    }
+  fun startActivityForResult(cls: Class<out Activity>, requestCode: Int) {
+    startActivityForResult(Intent(this, cls), requestCode)
+  }
 
-    fun showSnack(resId: Int, vararg args: Any) {
-        showSnack(getString(resId, *args))
-    }
+  fun showSnack(text: CharSequence) {
+    Snackbar.make(getViewForSnackBar(), text, Snackbar.LENGTH_LONG).show()
+  }
 
-    fun showSnack(text: CharSequence, actionName: CharSequence, action: View.OnClickListener) {
-        Snackbar.make(getViewForSnackBar(), text, Snackbar.LENGTH_LONG)
-                .setAction(actionName, action)
-                .show()
-    }
+  fun showSnack(resId: Int, vararg args: Any) {
+    showSnack(getString(resId, *args))
+  }
 
-    protected open fun getViewForSnackBar(): View {
-        return findViewById(Window.ID_ANDROID_CONTENT)
-    }
+  fun showSnack(text: CharSequence, actionName: CharSequence, action: View.OnClickListener) {
+    Snackbar.make(getViewForSnackBar(), text, Snackbar.LENGTH_LONG)
+        .setAction(actionName, action)
+        .show()
+  }
 
-    companion object {
-        const val TAG = "BaseActivity"
-    }
+  protected open fun getViewForSnackBar(): View {
+    return findViewById(Window.ID_ANDROID_CONTENT)
+  }
+
+  companion object {
+    const val TAG = "BaseActivity"
+  }
 }

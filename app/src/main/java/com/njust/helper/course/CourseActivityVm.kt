@@ -8,23 +8,23 @@ import com.zwb.commonlibs.binding.IntObservableDelegate
 import com.zwb.commonlibs.binding.ObservableDelegate
 
 class CourseActivityVm : BaseObservable() {
-    var dayView by BooleanObservableDelegate(BR.dayView, true)
-        @Bindable get
-    var bottomText by ObservableDelegate(BR.bottomText, "")
-        @Bindable get
-    var displayingWeek by IntObservableDelegate(BR.displayingWeek)
-        @Bindable get
-    var clickHandler: CourseActivityClickHandler? = null
+  var dayView by BooleanObservableDelegate(BR.dayView, true)
+    @Bindable get
+  var bottomText by ObservableDelegate(BR.bottomText, "")
+    @Bindable get
+  var displayingWeek by IntObservableDelegate(BR.displayingWeek)
+    @Bindable get
+  var clickHandler: CourseActivityClickHandler? = null
 }
 
 interface CourseActivityClickHandler {
-    fun weekBefore()
+  fun weekBefore()
 
-    fun weekAfter()
+  fun weekAfter()
 
-    fun pickWeek()
+  fun pickWeek()
 
-    fun pickDate()
+  fun pickDate()
 
-    fun toToday()
+  fun toToday()
 }

@@ -8,27 +8,27 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object RemoteConfig {
-    private const val TAG = "RemoteConfig"
+  private const val TAG = "RemoteConfig"
 
-    init {
-        val settings = FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(TimeUtil.ONE_HOUR / TimeUtil.ONE_SECOND)
-                .build()
-        FirebaseRemoteConfig.getInstance().setConfigSettingsAsync(settings)
-        FirebaseRemoteConfig.getInstance().fetchAndActivate()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "Fetch and activate succeeded.")
-                    }
-                }
-    }
+  init {
+    val settings = FirebaseRemoteConfigSettings.Builder()
+        .setMinimumFetchIntervalInSeconds(TimeUtil.ONE_HOUR / TimeUtil.ONE_SECOND)
+        .build()
+    FirebaseRemoteConfig.getInstance().setConfigSettingsAsync(settings)
+    FirebaseRemoteConfig.getInstance().fetchAndActivate()
+        .addOnCompleteListener { task ->
+          if (task.isSuccessful) {
+            Log.d(TAG, "Fetch and activate succeeded.")
+          }
+        }
+  }
 
-    fun getTermId(): String = FirebaseRemoteConfig.getInstance().getString("termId")
+  fun getTermId(): String = FirebaseRemoteConfig.getInstance().getString("termId")
 
-    fun getTermStartTime(): Long {
-        val dateString = FirebaseRemoteConfig.getInstance().getString("termStartDate")
-        val dd = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val date = dd.parse(dateString)!!
-        return date.time
-    }
+  fun getTermStartTime(): Long {
+    val dateString = FirebaseRemoteConfig.getInstance().getString("termStartDate")
+    val dd = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    val date = dd.parse(dateString)!!
+    return date.time
+  }
 }

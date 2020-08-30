@@ -19,63 +19,63 @@ import com.njust.helper.tools.DataBindingHolder
  * 选择周次
  */
 class PickWeekFragment : BottomSheetDialogFragment() {
-    private lateinit var listener: Listener
-    private var selectedWeek: Int = 0
+  private lateinit var listener: Listener
+  private var selectedWeek: Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.bottom_sheet_course_week, container, false)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = GridLayoutManager(context, 5)
-        recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-        recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-        recyclerView.adapter = PickWeekAdapter(selectedWeek)
-        return view
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    val view = inflater.inflate(R.layout.bottom_sheet_course_week, container, false)
+    val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+    recyclerView.layoutManager = GridLayoutManager(context, 5)
+    recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+    recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+    recyclerView.adapter = PickWeekAdapter(selectedWeek)
+    return view
+  }
+
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+
+    listener = context as Listener
+    selectedWeek = arguments!!.getInt(ARG_SELECTED_WEEK)
+  }
+
+  interface Listener {
+    fun setWeek(week: Int)
+  }
+
+  private inner class PickWeekAdapter(var selectedWeek: Int)
+    : RecyclerView.Adapter<DataBindingHolder<ItemPickWeekBinding>>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBindingHolder<ItemPickWeekBinding> {
+      val binding = ItemPickWeekBinding.inflate(LayoutInflater.from(parent.context),
+          parent, false)
+      return DataBindingHolder(binding)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        listener = context as Listener
-        selectedWeek = arguments!!.getInt(ARG_SELECTED_WEEK)
+    override fun onBindViewHolder(holder: DataBindingHolder<ItemPickWeekBinding>, position: Int) {
+      holder.dataBinding.week = position
+      holder.dataBinding.chosen = selectedWeek == position + 1
+      val p = holder.adapterPosition
+      holder.itemView.setOnClickListener {
+        listener.setWeek(p + 1)
+        dismiss()
+      }
     }
 
-    interface Listener {
-        fun setWeek(week: Int)
+    override fun getItemCount(): Int {
+      return Constants.MAX_WEEK_COUNT
     }
+  }
 
-    private inner class PickWeekAdapter(var selectedWeek: Int)
-        : RecyclerView.Adapter<DataBindingHolder<ItemPickWeekBinding>>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBindingHolder<ItemPickWeekBinding> {
-            val binding = ItemPickWeekBinding.inflate(LayoutInflater.from(parent.context),
-                    parent, false)
-            return DataBindingHolder(binding)
-        }
+  companion object {
+    private const val ARG_SELECTED_WEEK = "selectedWeek"
 
-        override fun onBindViewHolder(holder: DataBindingHolder<ItemPickWeekBinding>, position: Int) {
-            holder.dataBinding.week = position
-            holder.dataBinding.chosen = selectedWeek == position + 1
-            val p = holder.adapterPosition
-            holder.itemView.setOnClickListener {
-                listener.setWeek(p + 1)
-                dismiss()
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return Constants.MAX_WEEK_COUNT
-        }
+    @JvmStatic
+    fun newInstance(selectedWeek: Int): PickWeekFragment {
+      val bundle = Bundle()
+      bundle.putInt(ARG_SELECTED_WEEK, selectedWeek)
+      val ret = PickWeekFragment()
+      ret.arguments = bundle
+      return ret
     }
-
-    companion object {
-        private const val ARG_SELECTED_WEEK = "selectedWeek"
-
-        @JvmStatic
-        fun newInstance(selectedWeek: Int): PickWeekFragment {
-            val bundle = Bundle()
-            bundle.putInt(ARG_SELECTED_WEEK, selectedWeek)
-            val ret = PickWeekFragment()
-            ret.arguments = bundle
-            return ret
-        }
-    }
+  }
 }

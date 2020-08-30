@@ -13,41 +13,41 @@ import com.zwb.commonlibs.utils.getAlarmManager
 import java.util.*
 
 object CourseAlarms {
-    const val ACTION_COURSE_ALARM = BuildConfig.APPLICATION_ID + ".ACTION_COURSE_ALARM"
+  const val ACTION_COURSE_ALARM = BuildConfig.APPLICATION_ID + ".ACTION_COURSE_ALARM"
 
-    const val ALARM_MODE_PREVIOUS_DAY = 0
-    const val ALARM_MODE_CURRENT_DAY = 1
-    const val ALARM_MODE_NONE = 2
+  const val ALARM_MODE_PREVIOUS_DAY = 0
+  const val ALARM_MODE_CURRENT_DAY = 1
+  const val ALARM_MODE_NONE = 2
 
-    fun registerCourseAlarm(context: Context) {
-        val alarmManager = context.getAlarmManager()
-        val pendingIntent = buildPendingIntent(context)
-        alarmManager.cancel(pendingIntent)
-        val nextAlarmTime = getNextAlarmTime(context)
-        if (nextAlarmTime < 0) {
-            return
-        }
-        AlarmManagerCompat.setExact(alarmManager, AlarmManager.RTC, nextAlarmTime, pendingIntent)
+  fun registerCourseAlarm(context: Context) {
+    val alarmManager = context.getAlarmManager()
+    val pendingIntent = buildPendingIntent(context)
+    alarmManager.cancel(pendingIntent)
+    val nextAlarmTime = getNextAlarmTime(context)
+    if (nextAlarmTime < 0) {
+      return
     }
+    AlarmManagerCompat.setExact(alarmManager, AlarmManager.RTC, nextAlarmTime, pendingIntent)
+  }
 
-    private fun getNextAlarmTime(context: Context): Long {
-        val mode = Prefs.getCourseNotificationMode(context)
-        if (mode == ALARM_MODE_NONE) {
-            return -1
-        }
-        val notificationTime = Prefs.getCourseNotificationTime(context)
-        val calendar = Calendar.getInstance()
-        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-        val currentMinute = calendar.get(Calendar.MINUTE)
-        var timeDiff = (notificationTime - (currentHour * 60 + currentMinute)) * TimeUtil.ONE_MINUTE
-        if (timeDiff <= 50) {    // 留出后续代码执行时间
-            timeDiff += TimeUtil.ONE_DAY
-        }
-        return System.currentTimeMillis() + timeDiff
+  private fun getNextAlarmTime(context: Context): Long {
+    val mode = Prefs.getCourseNotificationMode(context)
+    if (mode == ALARM_MODE_NONE) {
+      return -1
     }
+    val notificationTime = Prefs.getCourseNotificationTime(context)
+    val calendar = Calendar.getInstance()
+    val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+    val currentMinute = calendar.get(Calendar.MINUTE)
+    var timeDiff = (notificationTime - (currentHour * 60 + currentMinute)) * TimeUtil.ONE_MINUTE
+    if (timeDiff <= 50) {    // 留出后续代码执行时间
+      timeDiff += TimeUtil.ONE_DAY
+    }
+    return System.currentTimeMillis() + timeDiff
+  }
 
-    private fun buildPendingIntent(context: Context): PendingIntent {
-        val intent = Intent(ACTION_COURSE_ALARM)
-        return PendingIntent.getBroadcast(context, R.id.pending_request_code_course_alarm, intent, 0)
-    }
+  private fun buildPendingIntent(context: Context): PendingIntent {
+    val intent = Intent(ACTION_COURSE_ALARM)
+    return PendingIntent.getBroadcast(context, R.id.pending_request_code_course_alarm, intent, 0)
+  }
 }

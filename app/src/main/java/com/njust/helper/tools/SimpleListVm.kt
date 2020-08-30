@@ -8,14 +8,14 @@ import com.zwb.commonlibs.binding.ObservableDelegate
 import com.zwb.commonlibs.binding.OnBindingItemClickListener
 
 class SimpleListVm<T> : BaseObservable() {
-    val brId: Int = BR.vm
+  val brId: Int = BR.vm
 
-    var loading by BooleanObservableDelegate(BR.loading)
-        @Bindable get
+  var loading by BooleanObservableDelegate(BR.loading)
+    @Bindable get
 
-    var items by ObservableDelegate(BR.items, emptyList<T>())
-        @Bindable get
+  var items by ObservableDelegate(BR.items, emptyList<T>())
+    @Bindable get
 
-    var listener: OnBindingItemClickListener<T>? by ObservableDelegate(BR.listener)
-        @Bindable get
+  var listener: OnBindingItemClickListener<T>? by ObservableDelegate(BR.listener)
+    @Bindable get
 }

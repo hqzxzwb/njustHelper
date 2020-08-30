@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "info1")
 class CourseInfo {
-    @PrimaryKey
-    var id: String = ""
-    var name: String? = null
-    var teacher: String? = null
+  @PrimaryKey
+  var id: String = ""
+  var name: String? = null
+  var teacher: String? = null
 }
