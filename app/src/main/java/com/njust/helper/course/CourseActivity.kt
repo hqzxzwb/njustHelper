@@ -12,7 +12,7 @@ import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.RemoteConfig
@@ -200,7 +200,7 @@ class CourseActivity :
                     throwable.printStackTrace()
                     throw throwable
                 }
-                Crashlytics.logException(throwable)
+                FirebaseCrashlytics.getInstance().recordException(throwable)
             }
         }
     }

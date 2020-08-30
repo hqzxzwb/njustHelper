@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
@@ -106,7 +106,7 @@ class LibSearchActivity : ProgressActivity() {
             else -> if (BuildConfig.DEBUG) {
                 throw throwable
             } else {
-                Crashlytics.logException(throwable)
+                FirebaseCrashlytics.getInstance().recordException(throwable)
             }
         }
     }

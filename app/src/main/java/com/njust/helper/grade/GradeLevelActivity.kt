@@ -5,7 +5,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
@@ -62,7 +62,7 @@ class GradeLevelActivity : BaseActivity() {
                     throwable.printStackTrace()
                     throw throwable
                 }
-                Crashlytics.logException(throwable)
+                FirebaseCrashlytics.getInstance().recordException(throwable)
             }
         }
     }

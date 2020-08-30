@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
@@ -126,7 +126,7 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
             else -> if (BuildConfig.DEBUG) {
                 throw throwable
             } else {
-                Crashlytics.logException(throwable)
+                FirebaseCrashlytics.getInstance().recordException(throwable)
             }
         }
     }

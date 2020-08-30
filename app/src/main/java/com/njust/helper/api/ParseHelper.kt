@@ -1,6 +1,6 @@
 package com.njust.helper.api
 
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.moshi.Moshi
 
 inline fun <T, S> parseReportingError(input: T, parser: (T) -> S): S {
@@ -8,7 +8,7 @@ inline fun <T, S> parseReportingError(input: T, parser: (T) -> S): S {
         return parser(input)
     } catch (t: Throwable) {
         val s = input.toString()
-        Crashlytics.logException(Exception(s, t))
+        FirebaseCrashlytics.getInstance().recordException(Exception(s, t))
         throw ParseErrorException()
     }
 }
