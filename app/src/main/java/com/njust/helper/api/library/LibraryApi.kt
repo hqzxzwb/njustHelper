@@ -5,7 +5,6 @@ import androidx.core.text.HtmlCompat
 import com.njust.helper.api.Apis
 import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.parseReportingError
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -17,27 +16,27 @@ import java.util.*
 
 private interface LibraryApiService {
   @POST("ajax_search_adv.php")
-  fun searchAsync(
+  suspend fun searchAsync(
       @Body body: Any
-  ): Deferred<Map<String, Any>>
+  ): Map<String, Any>
 
   @GET("item.php")
-  fun detailAsync(
+  suspend fun detailAsync(
       @Query("marc_no") id: String
-  ): Deferred<String>
+  ): String
 
   @GET("http://mc.m.5read.com/apis/user/userLogin.jspx")
-  fun borrowed1Async(
+  suspend fun borrowed1Async(
       @Query("username") stuid: String,
       @Query("password") pwd: String,
       @Query("areaid") q1: String = "274",
       @Query("schoolid") q2: String = "528",
       @Query("userType") q3: String = "0",
       @Query("encPwd") q4: String = "0"
-  ): Deferred<String>
+  ): String
 
   @GET("http://mc.m.5read.com/api/opac/showOpacLink.jspx?newSign")
-  fun borrowed2Async(): Deferred<String>
+  suspend fun borrowed2Async(): String
 }
 
 object LibraryApi {
@@ -62,15 +61,15 @@ object LibraryApi {
           put("limiters", listOf<Any>())
           put("searchWords", keywordArray)
         }
-    parseReportingError(service.searchAsync(body).await(), ::parseSearch)
+    parseReportingError(service.searchAsync(body), ::parseSearch)
   }
 
   suspend fun detail(id: String): LibDetailData = withContext(Dispatchers.IO) {
-    parseReportingError(service.detailAsync(id).await(), ::parseDetail)
+    parseReportingError(service.detailAsync(id), ::parseDetail)
   }
 
   suspend fun borrowed(stuid: String, pwd: String): String = withContext(Dispatchers.IO) {
-    service.borrowed1Async(stuid, pwd).await()
+    service.borrowed1Async(stuid, pwd)
         .let { s ->
           val o = parseReportingError(s) { JSONObject(s) }
           if (o.getInt("result") != 1) {
@@ -79,7 +78,6 @@ object LibraryApi {
             service.borrowed2Async()
           }
         }
-        .await()
         .let { s ->
           parseReportingError(s) {
             JSONObject(it)

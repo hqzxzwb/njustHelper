@@ -6,7 +6,6 @@ import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.parseReportingError
 import com.zwb.commonlibs.utils.MD5
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -14,41 +13,41 @@ import retrofit2.http.*
 
 private interface JwcApiService {
   @GET("xk/LoginToXk")
-  fun requestLoginAsync(
+  suspend fun requestLoginAsync(
       @Query("USERNAME") stuid: String,
       @Query("PASSWORD") pwd: String,
       @Query("method") method: String = "verify"
-  ): Deferred<String>
+  ): String
 
   @FormUrlEncoded
   @POST("xskb/xskb_list.do")
-  fun coursesAsync(
+  suspend fun coursesAsync(
       @Query("Ves632DSdyV") query1: String = "NEW_XSD_PYGL",
       @Field("cj0701id") body1: String = "",
       @Field("zc") body2: String = "",
       @Field("demo") body3: String = "",
       @Field("xnxq01id") body4: String = RemoteConfig.getTermId()
-  ): Deferred<String>
+  ): String
 
   @GET("kscj/djkscj_list")
-  fun gradeLevelAsync(): Deferred<String>
+  suspend fun gradeLevelAsync(): String
 
   @FormUrlEncoded
   @POST("xsks/xsksap_list")
-  fun examsAsync(
+  suspend fun examsAsync(
       @Field("xnxqid") xq: String,
       @Field("xqlbmc") body1: String = "",
       @Field("xqlb") body2: String = ""
-  ): Deferred<String>
+  ): String
 
   @FormUrlEncoded
   @POST("kscj/cjcx_list")
-  fun gradeAsync(
+  suspend fun gradeAsync(
       @Field("kksj") body1: String = "",
       @Field("kcxz") body2: String = "",
       @Field("kcmc") body3: String = "",
       @Field("xsfs") body4: String = "max"
-  ): Deferred<String>
+  ): String
 }
 
 object JwcApi {
@@ -57,27 +56,27 @@ object JwcApi {
 
   suspend fun courses(stuid: String, pwd: String): CourseData = withContext(Dispatchers.IO) {
     login(stuid, pwd)
-    parseReportingError(service.coursesAsync().await(), ::parseCourses)
+    parseReportingError(service.coursesAsync(), ::parseCourses)
   }
 
   suspend fun gradeLevel(stuid: String, pwd: String): List<GradeLevelBean> = withContext(Dispatchers.IO) {
     login(stuid, pwd)
-    parseReportingError(service.gradeLevelAsync().await(), ::parseGradeLevel)
+    parseReportingError(service.gradeLevelAsync(), ::parseGradeLevel)
   }
 
   suspend fun exams(stuid: String, pwd: String): List<Exam> = withContext(Dispatchers.IO) {
     login(stuid, pwd)
-    parseReportingError(service.examsAsync(RemoteConfig.getTermId()).await(), ::parseExams)
+    parseReportingError(service.examsAsync(RemoteConfig.getTermId()), ::parseExams)
   }
 
   suspend fun grade(stuid: String, pwd: String): Map<String, List<GradeItem>> = withContext(Dispatchers.IO) {
     login(stuid, pwd)
-    parseReportingError(service.gradeAsync().await(), ::parseGrade)
+    parseReportingError(service.gradeAsync(), ::parseGrade)
   }
 
   private suspend fun login(stuid: String, pwd: String) {
     val string = try {
-      service.requestLoginAsync(stuid, MD5.md5String(pwd, true)).await()
+      service.requestLoginAsync(stuid, MD5.md5String(pwd, true))
     } catch (e: Exception) {
       if (e is HttpException && e.code() / 100 == 3) {
         "success"
