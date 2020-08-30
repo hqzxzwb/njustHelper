@@ -13,14 +13,14 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.roundToInt
 
-private const val DB_VERSION = 4
+private const val DB_VERSION = 5
 private const val DB_NAME = "course_query"
 private const val TABLE_NAME = "main"
 
 @Entity(tableName = TABLE_NAME)
 @Keep
 class CourseQueryItem(
-        @PrimaryKey val id: Int,
+        @PrimaryKey(autoGenerate = true) val id: Int,
         val classroom: String,
         val day: Int,
         val maskedDay: Int,
@@ -76,7 +76,8 @@ private fun newDao(context: Context): CourseQueryDao {
             .addMigrations(
                     MyMigration(appContext, 1),
                     MyMigration(appContext, 2),
-                    MyMigration(appContext, 3)
+                    MyMigration(appContext, 3),
+                    MyMigration(appContext, 4)
             )
             .build()
             .getDao()
@@ -84,7 +85,10 @@ private fun newDao(context: Context): CourseQueryDao {
 
 private class MyMigration(val context: Context, startVersion: Int) : Migration(startVersion, DB_VERSION) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.delete(TABLE_NAME, null, null)
+        database.execSQL("DROP TABLE IF EXISTS `main`")
+        database.execSQL("CREATE TABLE IF NOT EXISTS `main` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `classroom` TEXT NOT NULL, `day` INTEGER NOT NULL, `maskedDay` INTEGER NOT NULL, `section` INTEGER NOT NULL, `maskedSection` INTEGER NOT NULL, `name` TEXT NOT NULL, `teacher` TEXT NOT NULL, `week1` TEXT NOT NULL, `week2` TEXT NOT NULL)")
+        database.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)")
+        database.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd77c9e76ed522d3fff23947fb79f4223')")
         initializeData(context, database)
     }
 }
