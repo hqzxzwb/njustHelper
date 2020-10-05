@@ -4,9 +4,6 @@ build
 keystore.key
 .gradle
 .idea/
-gradle
-gradlew
-gradlew.bat
 app/google-services.json
 *.iml
 release
