@@ -12,17 +12,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import androidx.viewpager2.widget.ViewPager2
 import com.njust.helper.R
 import com.njust.helper.model.Course
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.TimeUtil
-import com.zwb.commonlibs.adapter.EfficientPagerAdapter
 import kotlinx.android.synthetic.main.fgmt_course_day.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CourseDayFragment : Fragment(), OnPageChangeListener {
+class CourseDayFragment : Fragment() {
   private val mLists = Array(7) {
     Array(Constants.COURSE_SECTION_COUNT) { mutableListOf<Course>() }
   }
@@ -36,7 +35,15 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
   private lateinit var listener: Listener
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    viewPager.addOnPageChangeListener(this)
+    viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+      override fun onPageSelected(position: Int) {
+        for (i in 0 until 7) {
+          mTextViews[i].setBackgroundColor(Color.TRANSPARENT)
+        }
+        mTextViews[position % 7].setBackgroundColor(Color.GRAY)
+        listener.onDayChange(position)
+      }
+    })
 
     mTextViews = arrayOf(
         view.findViewById(R.id.dayOfWeek0),
@@ -53,26 +60,26 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
     }
     mTextViews[0].setBackgroundColor(Color.GRAY)
 
-    val adapter = object : EfficientPagerAdapter() {
-      override fun getCount(): Int {
+    val adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+      override fun getItemCount(): Int {
         return Constants.MAX_WEEK_COUNT * 7
       }
 
-      override fun updateView(view: View, position: Int) {
-        val recyclerView = view as RecyclerView
+      override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val recyclerView = holder.itemView as RecyclerView
         val adapter = CourseDayAdapter(this@CourseDayFragment)
         val dayOfWeek = position % 7
         adapter.setData(mLists[dayOfWeek], position / 7 + 1, dayOfWeek)
         recyclerView.adapter = adapter
-        view.setTag(position)
+        view.tag = position
       }
 
-      override fun onCreateNewView(container: ViewGroup): View {
+      override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val recyclerView = activity!!.layoutInflater.inflate(
-            R.layout.pager_course_day, container, false) as RecyclerView
+            R.layout.pager_course_day, parent, false) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-        return recyclerView
+        return object : RecyclerView.ViewHolder(recyclerView) {}
       }
     }
     viewPager.adapter = adapter
@@ -102,24 +109,12 @@ class CourseDayFragment : Fragment(), OnPageChangeListener {
     adapter.notifyDataSetChanged()
   }
 
-  fun setPosition(position: Int) {
-    viewPager.currentItem = position
+  fun setPosition(position: Int, smoothScroll: Boolean) {
+    viewPager.setCurrentItem(position, smoothScroll)
   }
 
   fun setCurrentDay(currentDay: Int) {
     mTextViews[currentDay].setTextColor(Color.MAGENTA)
-  }
-
-  override fun onPageScrollStateChanged(arg0: Int) {}
-
-  override fun onPageScrolled(arg0: Int, arg1: Float, arg2: Int) {}
-
-  override fun onPageSelected(position: Int) {
-    for (i in 0 until 7) {
-      mTextViews[i].setBackgroundColor(Color.TRANSPARENT)
-    }
-    mTextViews[position % 7].setBackgroundColor(Color.GRAY)
-    listener.onDayChange(position)
   }
 
   @SuppressLint("SetTextI18n")

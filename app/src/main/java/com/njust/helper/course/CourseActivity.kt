@@ -256,12 +256,8 @@ class CourseActivity :
   }
 
   private fun updatePosition() {
-    if (currentDay < 0) {
-      currentDay = 0
-    } else if (currentDay >= Constants.MAX_WEEK_COUNT * 7) {
-      currentDay = Constants.MAX_WEEK_COUNT * 7 - 1
-    }
-    dayFragment.setPosition(currentDay)
+    currentDay = currentDay.coerceAtLeast(0).coerceAtMost(Constants.MAX_WEEK_COUNT * 7 - 1)
+    dayFragment.setPosition(currentDay, false)
   }
 
   override fun toToday() {
@@ -306,7 +302,7 @@ class CourseActivity :
 
   override fun onDayPressed(day: Int) {
     currentDay += day - currentDay % 7
-    dayFragment.setPosition(currentDay)
+    dayFragment.setPosition(currentDay, true)
   }
 
   override fun onDateSet(year: Int, month: Int, dayOfMonth: Int) {

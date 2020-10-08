@@ -59,7 +59,7 @@
         android:layout_height="1dp"
         android:background="@android:drawable/divider_horizontal_bright" />
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
