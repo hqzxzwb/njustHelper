@@ -41,7 +41,7 @@ abstract class CourseDatabase : RoomDatabase() {
       return Room.databaseBuilder(param.applicationContext, CourseDatabase::class.java, DB_NAME)
           .allowMainThreadQueries()
           .fallbackToDestructiveMigrationFrom(1, 2, 3)
-          .addMigrations(Migration_4_5())
+          .addMigrations(MigrationV4V5())
           .addMigrations()
           .build()
     }
@@ -69,7 +69,7 @@ interface CourseDao {
   fun getCourses(weekPattern: String, dayOfWeek: Int): List<Course>
 }
 
-private class Migration_4_5 : Migration(4, 5) {
+private class MigrationV4V5 : Migration(4, 5) {
   override fun migrate(database: SupportSQLiteDatabase) {
     database.execSQL("CREATE TABLE IF NOT EXISTS `loc1` (`rowid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT NOT NULL, `classroom` TEXT, `week1` TEXT, `week2` TEXT, `sec1` INTEGER NOT NULL, `sec2` INTEGER NOT NULL, `day` INTEGER NOT NULL)")
     database.execSQL("CREATE TABLE IF NOT EXISTS `info1` (`id` TEXT NOT NULL, `name` TEXT, `teacher` TEXT, PRIMARY KEY(`id`))")
