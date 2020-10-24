@@ -16,17 +16,17 @@ import java.util.*
 
 private interface LibraryApiService {
   @POST("ajax_search_adv.php")
-  suspend fun searchAsync(
+  suspend fun search(
       @Body body: Any
   ): Map<String, Any>
 
   @GET("item.php")
-  suspend fun detailAsync(
+  suspend fun detail(
       @Query("marc_no") id: String
   ): String
 
   @GET("http://mc.m.5read.com/apis/user/userLogin.jspx")
-  suspend fun borrowed1Async(
+  suspend fun borrowed1(
       @Query("username") stuid: String,
       @Query("password") pwd: String,
       @Query("areaid") q1: String = "274",
@@ -36,7 +36,7 @@ private interface LibraryApiService {
   ): String
 
   @GET("http://mc.m.5read.com/api/opac/showOpacLink.jspx?newSign")
-  suspend fun borrowed2Async(): String
+  suspend fun borrowed2(): String
 }
 
 object LibraryApi {
@@ -61,21 +61,21 @@ object LibraryApi {
           put("limiters", listOf<Any>())
           put("searchWords", keywordArray)
         }
-    parseReportingError(service.searchAsync(body), ::parseSearch)
+    parseReportingError(service.search(body), ::parseSearch)
   }
 
   suspend fun detail(id: String): LibDetailData = withContext(Dispatchers.IO) {
-    parseReportingError(service.detailAsync(id), ::parseDetail)
+    parseReportingError(service.detail(id), ::parseDetail)
   }
 
   suspend fun borrowed(stuid: String, pwd: String): String = withContext(Dispatchers.IO) {
-    service.borrowed1Async(stuid, pwd)
+    service.borrowed1(stuid, pwd)
         .let { s ->
           val o = parseReportingError(s) { JSONObject(s) }
           if (o.getInt("result") != 1) {
             throw LoginErrorException()
           } else {
-            service.borrowed2Async()
+            service.borrowed2()
           }
         }
         .let { s ->

@@ -14,7 +14,7 @@ import java.util.*
 
 private interface JwcApiService {
   @GET("xk/LoginToXk")
-  suspend fun requestLoginAsync(
+  suspend fun requestLogin(
       @Query("USERNAME") stuid: String,
       @Query("PASSWORD") pwd: String,
       @Query("method") method: String = "verify"
@@ -22,7 +22,7 @@ private interface JwcApiService {
 
   @FormUrlEncoded
   @POST("xskb/xskb_list.do")
-  suspend fun coursesAsync(
+  suspend fun courses(
       @Query("Ves632DSdyV") query1: String = "NEW_XSD_PYGL",
       @Field("cj0701id") body1: String = "",
       @Field("zc") body2: String = "",
@@ -31,11 +31,11 @@ private interface JwcApiService {
   ): String
 
   @GET("kscj/djkscj_list")
-  suspend fun gradeLevelAsync(): String
+  suspend fun gradeLevel(): String
 
   @FormUrlEncoded
   @POST("xsks/xsksap_list")
-  suspend fun examsAsync(
+  suspend fun exams(
       @Field("xnxqid") xq: String,
       @Field("xqlbmc") body1: String = "",
       @Field("xqlb") body2: String = ""
@@ -43,7 +43,7 @@ private interface JwcApiService {
 
   @FormUrlEncoded
   @POST("kscj/cjcx_list")
-  suspend fun gradeAsync(
+  suspend fun grade(
       @Field("kksj") body1: String = "",
       @Field("kcxz") body2: String = "",
       @Field("kcmc") body3: String = "",
@@ -57,27 +57,27 @@ object JwcApi {
 
   suspend fun courses(stuid: String, pwd: String): CourseData = withContext(Dispatchers.IO) {
     login(stuid, pwd)
-    parseReportingError(service.coursesAsync(), ::parseCourses)
+    parseReportingError(service.courses(), ::parseCourses)
   }
 
   suspend fun gradeLevel(stuid: String, pwd: String): List<GradeLevelBean> = withContext(Dispatchers.IO) {
     login(stuid, pwd)
-    parseReportingError(service.gradeLevelAsync(), ::parseGradeLevel)
+    parseReportingError(service.gradeLevel(), ::parseGradeLevel)
   }
 
   suspend fun exams(stuid: String, pwd: String): List<Exam> = withContext(Dispatchers.IO) {
     login(stuid, pwd)
-    parseReportingError(service.examsAsync(RemoteConfig.getTermId()), ::parseExams)
+    parseReportingError(service.exams(RemoteConfig.getTermId()), ::parseExams)
   }
 
   suspend fun grade(stuid: String, pwd: String): Map<String, List<GradeItem>> = withContext(Dispatchers.IO) {
     login(stuid, pwd)
-    parseReportingError(service.gradeAsync(), ::parseGrade)
+    parseReportingError(service.grade(), ::parseGrade)
   }
 
   private suspend fun login(stuid: String, pwd: String) {
     val string = try {
-      service.requestLoginAsync(stuid, pwd.encodeUtf8().md5().hex().toUpperCase(Locale.US))
+      service.requestLogin(stuid, pwd.encodeUtf8().md5().hex().toUpperCase(Locale.US))
     } catch (e: Exception) {
       if (e is HttpException && e.code() / 100 == 3) {
         "success"
