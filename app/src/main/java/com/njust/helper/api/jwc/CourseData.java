@@ -3,17 +3,8 @@ package com.njust.helper.api.jwc;
 import java.util.List;
 
 public class CourseData {
-    private String startdate;
     private List<CourseInfo> infos;
     private List<CourseLoc> locs;
-
-    public String getStartdate() {
-        return startdate;
-    }
-
-    public void setStartdate(String startdate) {
-        this.startdate = startdate;
-    }
 
     public List<CourseInfo> getInfos() {
         return infos;

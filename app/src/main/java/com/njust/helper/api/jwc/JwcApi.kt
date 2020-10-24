@@ -5,11 +5,12 @@ import com.njust.helper.api.Apis
 import com.njust.helper.api.LoginErrorException
 import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.parseReportingError
-import com.zwb.commonlibs.utils.MD5
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okio.ByteString.Companion.encodeUtf8
 import retrofit2.HttpException
 import retrofit2.http.*
+import java.util.*
 
 private interface JwcApiService {
   @GET("xk/LoginToXk")
@@ -76,7 +77,7 @@ object JwcApi {
 
   private suspend fun login(stuid: String, pwd: String) {
     val string = try {
-      service.requestLoginAsync(stuid, MD5.md5String(pwd, true))
+      service.requestLoginAsync(stuid, pwd.encodeUtf8().md5().hex().toUpperCase(Locale.US))
     } catch (e: Exception) {
       if (e is HttpException && e.code() / 100 == 3) {
         "success"
@@ -133,7 +134,7 @@ object JwcApi {
             val result = teacherRegex.find(item) ?: return@run ""
             result.groupValues[1]
           }
-          courseInfo.id = MD5.md5String(courseInfo.name + courseInfo.teacher)
+          courseInfo.id = (courseInfo.name + courseInfo.teacher).encodeUtf8().md5().hex()
           courseMap[courseInfo.id] = courseInfo
           loc.id = courseInfo.id
           weekRegex.find(item)
@@ -151,7 +152,6 @@ object JwcApi {
     val courseData = CourseData()
     courseData.infos = courseMap.map { it.value }
     courseData.locs = locList
-    courseData.startdate = "2019-02-25"
     return courseData
   }
 
@@ -175,8 +175,8 @@ object JwcApi {
     }
     val indexFilter = groupValues[2]
     when (indexFilter) {
-        "单" -> weeks.retainAll { it % 2 == 1 }
-        "双" -> weeks.retainAll { it % 2 == 0 }
+      "单" -> weeks.retainAll { it % 2 == 1 }
+      "双" -> weeks.retainAll { it % 2 == 0 }
     }
     return weeks.joinToString(separator = " ", prefix = " ", postfix = " ")
   }
@@ -241,13 +241,13 @@ object JwcApi {
 
   private fun gradeTextToDouble(s: String): Double {
     return when (s) {
-        "优秀" -> 90.0
-        "良好" -> 80.0
-        "中等" -> 70.0
-        "合格", "及格", "通过" -> 60.0
-        "不通过", "不及格", "不合格" -> 50.0
-        "免修" -> 89.0
-        "请评教" -> -1.0
+      "优秀" -> 90.0
+      "良好" -> 80.0
+      "中等" -> 70.0
+      "合格", "及格", "通过" -> 60.0
+      "不通过", "不及格", "不合格" -> 50.0
+      "免修" -> 89.0
+      "请评教" -> -1.0
       else -> s.toDouble()
     }
   }
