@@ -6,8 +6,8 @@ import java.util.*
 
 
 object RemoteConfig {
-    private var termId = "2019-2020-2"
-    private var termStartId = "2020-02-24"
+    private var termId = "2020-2021-2"
+    private var termStartId = "2021-03-08"
 
 
     fun setTerm(termId: String, termStartId: String) {
