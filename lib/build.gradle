@@ -4,9 +4,9 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
     implementation fileTree(include: '*.jar', dir: 'libs')
-    api 'androidx.recyclerview:recyclerview:1.1.0'
+    api 'androidx.recyclerview:recyclerview:1.2.1'
     api 'androidx.cardview:cardview:1.0.0'
-    api 'com.google.android.material:material:1.2.1'
+    api 'com.google.android.material:material:1.4.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     api 'com.squareup.okhttp3:okhttp:4.8.1'
