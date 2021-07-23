@@ -17,7 +17,6 @@ import com.njust.helper.R
 import com.njust.helper.model.Course
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.TimeUtil
-import kotlinx.android.synthetic.main.fgmt_course_day.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,7 +33,13 @@ class CourseDayFragment : Fragment() {
   private var beginTimeInMillis: Long = 0
   private lateinit var listener: Listener
 
+  private lateinit var viewPager: ViewPager2
+  private lateinit var monthTextView: TextView
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    viewPager = view.findViewById(R.id.viewPager)
+    monthTextView = view.findViewById(R.id.monthTextView)
+
     viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
       override fun onPageSelected(position: Int) {
         for (i in 0 until 7) {
@@ -46,13 +51,13 @@ class CourseDayFragment : Fragment() {
     })
 
     mTextViews = arrayOf(
-        view.findViewById(R.id.dayOfWeek0),
-        view.findViewById(R.id.dayOfWeek1),
-        view.findViewById(R.id.dayOfWeek2),
-        view.findViewById(R.id.dayOfWeek3),
-        view.findViewById(R.id.dayOfWeek4),
-        view.findViewById(R.id.dayOfWeek5),
-        view.findViewById(R.id.dayOfWeek6)
+      view.findViewById(R.id.dayOfWeek0),
+      view.findViewById(R.id.dayOfWeek1),
+      view.findViewById(R.id.dayOfWeek2),
+      view.findViewById(R.id.dayOfWeek3),
+      view.findViewById(R.id.dayOfWeek4),
+      view.findViewById(R.id.dayOfWeek5),
+      view.findViewById(R.id.dayOfWeek6)
     )
 
     for (i in 0 until 7) {

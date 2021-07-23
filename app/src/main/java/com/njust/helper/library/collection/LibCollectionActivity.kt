@@ -19,7 +19,6 @@ import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.DataBindingHolder
 import com.njust.helper.tools.Prefs
-import kotlinx.android.synthetic.main.activity_lib_collection.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,6 +27,9 @@ class LibCollectionActivity : BaseActivity() {
   private lateinit var adapter: LibCollectionAdapter
   private lateinit var mList: MutableList<LibCollectItem>
   private val itemsToRemove = HashSet<String>()
+  private lateinit var recyclerView: RecyclerView
+  private lateinit var emptyView: View
+  private lateinit var coordinatorLayout: View
 
   override fun layoutRes(): Int {
     return R.layout.activity_lib_collection
@@ -35,6 +37,10 @@ class LibCollectionActivity : BaseActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    recyclerView = findViewById(R.id.recyclerView)
+    emptyView = findViewById(R.id.emptyView)
+    coordinatorLayout = findViewById(R.id.coordinatorLayout)
 
     manager = LibCollectManager.getInstance(this)
     mList = manager.listCollects()

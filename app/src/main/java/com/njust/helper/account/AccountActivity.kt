@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.main.MainActivity
 import com.njust.helper.tools.Prefs
-import kotlinx.android.synthetic.main.activity_account.*
 
 /**
  * 账户切换
@@ -28,14 +28,14 @@ class AccountActivity : BaseActivity() {
     fun alertPasswordError(context: Context, accountRequest: Int) {
       try {
         AlertDialog.Builder(context)
-            .setMessage(R.string.message_wrong_password)
-            .setPositiveButton(R.string.dialog_base_modify_immediately) { _, _ ->
-              val intent = Intent(context, AccountActivity::class.java)
-              intent.putExtra(AccountActivity.EXTRA_PASSWORD_TYPE, accountRequest)
-              context.startActivity(intent)
-            }
-            .setNegativeButton(R.string.action_back, null)
-            .show()
+          .setMessage(R.string.message_wrong_password)
+          .setPositiveButton(R.string.dialog_base_modify_immediately) { _, _ ->
+            val intent = Intent(context, AccountActivity::class.java)
+            intent.putExtra(AccountActivity.EXTRA_PASSWORD_TYPE, accountRequest)
+            context.startActivity(intent)
+          }
+          .setNegativeButton(R.string.action_back, null)
+          .show()
       } catch (e: Exception) {
         Log.i(TAG, "建立对话框失败")
       }
@@ -44,11 +44,19 @@ class AccountActivity : BaseActivity() {
 
   private var type: Int = 0
 
+  private lateinit var stuidText: TextView
+  private lateinit var jwcPwdText: TextView
+  private lateinit var libPwdText: TextView
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     val intent = intent
     type = intent.getIntExtra(EXTRA_PASSWORD_TYPE, 0)
+
+    stuidText = findViewById(R.id.stuidText)
+    jwcPwdText = findViewById(R.id.jwcPwdText)
+    libPwdText = findViewById(R.id.libPwdText)
   }
 
   override fun onPostCreate(savedInstanceState: Bundle?) {

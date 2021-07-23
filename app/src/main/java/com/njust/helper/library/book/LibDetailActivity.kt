@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.njust.helper.BuildConfig
@@ -18,7 +19,6 @@ import com.njust.helper.api.library.LibDetailData
 import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.library.collection.LibCollectManager
 import com.njust.helper.tools.Constants
-import kotlinx.android.synthetic.main.activity_lib_detail.*
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -38,7 +38,11 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
     return R.layout.activity_lib_detail
   }
 
+  private lateinit var recyclerView: RecyclerView
+
   override fun prepareViews() {
+    recyclerView = findViewById(R.id.recyclerView)
+
     idString = intent.getStringExtra(Constants.EXTRA_ID)!!
     manager = LibCollectManager.getInstance(this)
 
