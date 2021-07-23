@@ -11,7 +11,7 @@ buildscript {
         maven {
             url 'https://maven.fabric.io/public'
         }
-        maven { url 'https://dl.bintray.com/umsdk/release' }
+        maven { url 'https://repo1.maven.org/maven2/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.2'
@@ -24,6 +24,6 @@ allprojects {
     repositories {
         mavenCentral()
         google()
-        maven { url 'https://dl.bintray.com/umsdk/release' }
+        maven { url 'https://repo1.maven.org/maven2/' }
     }
 }
