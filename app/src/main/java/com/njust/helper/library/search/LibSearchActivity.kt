@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
@@ -17,7 +18,7 @@ import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.databinding.ActivityLibSearchBinding
 import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.tools.SimpleListVm
-import com.zwb.commonlibs.utils.getSearchManager
+import com.zwb.commonlibs.utils.requireSystemService
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -38,13 +39,13 @@ class LibSearchActivity : ProgressActivity() {
   override fun prepareViews() {
     mSwipeRefreshLayout = binding.swipeRefreshLayout
 
-    val searchManager = getSearchManager()
+    val searchManager = requireSystemService<SearchManager>()
     binding.searchView.apply {
       setSearchableInfo(searchManager.getSearchableInfo(componentName))
       isQueryRefinementEnabled = true
     }
     binding.buttonClearHistory.setOnClickListener { clearHistory() }
-    binding.recyclerView.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(this, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
+    binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
   }
 
   override fun setupActionBar() {

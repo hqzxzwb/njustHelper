@@ -1,5 +1,6 @@
 package com.njust.helper.settings
 
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -12,7 +13,7 @@ import com.njust.helper.course.data.CourseDatabase
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
-import com.zwb.commonlibs.utils.getNotificationManager
+import com.zwb.commonlibs.utils.requireSystemService
 
 class CourseAlarmReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent?) {
@@ -64,6 +65,7 @@ class CourseAlarmReceiver : BroadcastReceiver() {
     if (context.getSharedPreferences("time", 0).getBoolean("course_vib", true)) {
       builder.setVibrate(Constants.NOTIFICATION_VIBRATION_TIME)
     }
-    context.getNotificationManager().notify(Constants.NOTIFICATION_CODE_COURSE, builder.build())
+    context.requireSystemService<NotificationManager>()
+      .notify(Constants.NOTIFICATION_CODE_COURSE, builder.build())
   }
 }

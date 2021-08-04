@@ -2,6 +2,7 @@ package com.njust.helper.settings
 
 import android.content.ActivityNotFoundException
 import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
 import android.view.Menu
@@ -13,7 +14,7 @@ import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.databinding.ActivityAboutBinding
 import com.njust.helper.update.UpdateLogDialog
-import com.zwb.commonlibs.utils.getClipboardManager
+import com.zwb.commonlibs.utils.requireSystemService
 
 /**
  * 关于
@@ -49,7 +50,7 @@ class AboutActivity : BaseActivity() {
           startActivity(intent)
         }
         .setNeutralButton("复制群号") { _, _ ->
-          val clipboardManager = getClipboardManager()
+          val clipboardManager = requireSystemService<ClipboardManager>()
           clipboardManager.setPrimaryClip(ClipData.newPlainText(null, QQ_GROUP_ID))
         }
         .setNegativeButton("返回", null)

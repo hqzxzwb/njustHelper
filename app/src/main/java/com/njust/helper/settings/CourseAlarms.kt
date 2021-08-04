@@ -9,7 +9,7 @@ import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
-import com.zwb.commonlibs.utils.getAlarmManager
+import com.zwb.commonlibs.utils.requireSystemService
 import java.util.*
 
 object CourseAlarms {
@@ -20,7 +20,7 @@ object CourseAlarms {
   const val ALARM_MODE_NONE = 2
 
   fun registerCourseAlarm(context: Context) {
-    val alarmManager = context.getAlarmManager()
+    val alarmManager = context.requireSystemService<AlarmManager>()
     val pendingIntent = buildPendingIntent(context)
     alarmManager.cancel(pendingIntent)
     val nextAlarmTime = getNextAlarmTime(context)
