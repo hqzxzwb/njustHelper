@@ -43,7 +43,7 @@ private interface LibraryApiService {
 }
 
 object LibraryApi {
-  private val service = Apis.newRetrofit("http://202.119.83.14:8080/opac/")
+  private val service = Apis.newRetrofit("http://202.119.83.14:8080/uopac/opac/")
       .create(LibraryApiService::class.java)
 
   suspend fun search(keyword: String): List<LibSearchBean> = withContext(Dispatchers.IO) {
