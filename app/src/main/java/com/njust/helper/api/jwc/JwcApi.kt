@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import okio.ByteString.Companion.encodeUtf8
 import retrofit2.HttpException
 import retrofit2.http.*
+import java.io.IOException
 import java.util.*
 
 private interface JwcApiService {
@@ -77,10 +78,12 @@ object JwcApi {
 
   private suspend fun login(stuid: String, pwd: String) {
     val string = try {
-      service.requestLogin(stuid, pwd.encodeUtf8().md5().hex().toUpperCase(Locale.US))
+      service.requestLogin(stuid, pwd.encodeUtf8().md5().hex().uppercase(Locale.US))
     } catch (e: Exception) {
       if (e is HttpException && e.code() / 100 == 3) {
         "success"
+      } else if (e is IOException) {
+        throw e
       } else {
         throw ServerErrorException()
       }
