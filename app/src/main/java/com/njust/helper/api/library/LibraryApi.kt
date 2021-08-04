@@ -4,14 +4,17 @@ import androidx.collection.ArrayMap
 import androidx.core.text.HtmlCompat
 import com.njust.helper.api.Apis
 import com.njust.helper.api.LoginErrorException
+import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.parseReportingError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import retrofit2.HttpException
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
+import java.lang.Exception
 import java.util.*
 
 private interface LibraryApiService {
@@ -61,7 +64,16 @@ object LibraryApi {
           put("limiters", listOf<Any>())
           put("searchWords", keywordArray)
         }
-    parseReportingError(service.search(body), ::parseSearch)
+    val searchResult = try {
+      service.search(body)
+    } catch (e: Exception) {
+      if (e is HttpException) {
+        throw ServerErrorException()
+      } else {
+        throw e
+      }
+    }
+    parseReportingError(searchResult, ::parseSearch)
   }
 
   suspend fun detail(id: String): LibDetailData = withContext(Dispatchers.IO) {
