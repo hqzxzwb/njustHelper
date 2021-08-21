@@ -8,7 +8,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.njust.helper.BR
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
@@ -68,7 +67,6 @@ class GradeActivity : BaseActivity() {
           throwable.printStackTrace()
           throw throwable
         }
-        FirebaseCrashlytics.getInstance().recordException(throwable)
       }
     }
   }

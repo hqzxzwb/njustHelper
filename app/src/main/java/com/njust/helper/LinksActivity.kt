@@ -7,7 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.api.sharedMoshi
 import com.njust.helper.databinding.ActivityLinksBinding
@@ -68,7 +67,6 @@ class LinksActivity : BaseActivity() {
           throwable.printStackTrace()
           throw throwable
         }
-        FirebaseCrashlytics.getInstance().recordException(throwable)
       }
     }
   }

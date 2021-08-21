@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
 
 dependencies {
     implementation fileTree(include: '*.jar', dir: 'libs')
@@ -28,9 +26,6 @@ dependencies {
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi_version")
 
     implementation "com.squareup.okio:okio:2.10.0"
-
-    implementation 'com.google.firebase:firebase-core:19.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.0'
 
     implementation 'com.umeng.umsdk:common:9.4.0'// 必选
     implementation 'com.umeng.umsdk:asms:1.2.3'// 必选

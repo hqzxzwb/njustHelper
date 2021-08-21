@@ -3,7 +3,6 @@ package com.njust.helper.grade
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
@@ -60,7 +59,6 @@ class ExamsActivity : BaseActivity() {
           throwable.printStackTrace()
           throw throwable
         }
-        FirebaseCrashlytics.getInstance().recordException(throwable)
       }
     }
   }

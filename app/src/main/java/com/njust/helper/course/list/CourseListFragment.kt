@@ -19,7 +19,7 @@ class CourseListFragment : BottomSheetDialogFragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    val args = arguments!!
+    val args = requireArguments()
     val list = args.getParcelableArrayList<Course>("courses")
 
     adapter.setData(list!!)
@@ -27,7 +27,7 @@ class CourseListFragment : BottomSheetDialogFragment() {
     subTitle = args.getString("subTitle")
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val binding = BottomSheetCourseListBinding.inflate(inflater, container, false)
     binding.title = title
     binding.subTitle = subTitle

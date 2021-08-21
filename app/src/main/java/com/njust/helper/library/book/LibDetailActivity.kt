@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
@@ -129,8 +128,6 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
       is ParseErrorException -> showSnack(R.string.message_parse_error)
       else -> if (BuildConfig.DEBUG) {
         throw throwable
-      } else {
-        FirebaseCrashlytics.getInstance().recordException(throwable)
       }
     }
   }
