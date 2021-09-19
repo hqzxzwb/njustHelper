@@ -36,7 +36,7 @@ class PickWeekFragment : BottomSheetDialogFragment() {
     super.onAttach(context)
 
     listener = context as Listener
-    selectedWeek = arguments!!.getInt(ARG_SELECTED_WEEK)
+    selectedWeek = requireArguments().getInt(ARG_SELECTED_WEEK)
   }
 
   interface Listener {
@@ -54,9 +54,8 @@ class PickWeekFragment : BottomSheetDialogFragment() {
     override fun onBindViewHolder(holder: DataBindingHolder<ItemPickWeekBinding>, position: Int) {
       holder.dataBinding.week = position
       holder.dataBinding.chosen = selectedWeek == position + 1
-      val p = holder.adapterPosition
       holder.itemView.setOnClickListener {
-        listener.setWeek(p + 1)
+        listener.setWeek(position + 1)
         dismiss()
       }
     }

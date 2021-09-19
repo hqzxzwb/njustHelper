@@ -54,7 +54,7 @@ class LibCollectionActivity : BaseActivity() {
 
     val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
       override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        return ItemTouchHelper.Callback.makeMovementFlags(0, ItemTouchHelper.START or ItemTouchHelper.END)
+        return makeMovementFlags(0, ItemTouchHelper.START or ItemTouchHelper.END)
       }
 
       override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -62,27 +62,28 @@ class LibCollectionActivity : BaseActivity() {
       }
 
       override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        deleteItem(viewHolder.adapterPosition)
+        deleteItem(viewHolder.bindingAdapterPosition)
       }
     })
     itemTouchHelper.attachToRecyclerView(recyclerView)
     onEmptyStateChange(mList.isEmpty())
 
     if (!Prefs.getLibCollectionHint(this)) {
-      showSnack("图书详情页可以收藏\n左右滑动条目以删除", "不再提示",
-          View.OnClickListener { Prefs.putLibCollectionHint(this@LibCollectionActivity, true) })
+      showSnack("图书详情页可以收藏\n左右滑动条目以删除", "不再提示") {
+        Prefs.putLibCollectionHint(this@LibCollectionActivity, true)
+      }
     }
   }
 
   internal fun deleteItem(position: Int) {
     itemsToRemove.add(adapter.delete(position)!!.id)
-    showSnack("您删除了一本图书", "撤销", View.OnClickListener {
+    showSnack("您删除了一本图书", "撤销") {
       val libCollectItem = adapter.restore()
       if (libCollectItem != null) {
         itemsToRemove.remove(libCollectItem.id)
       }
       showSnack("已撤销更改")
-    })
+    }
   }
 
   fun onEmptyStateChange(empty: Boolean) {
@@ -161,7 +162,7 @@ class LibCollectionActivity : BaseActivity() {
             .setTitle("确定删除这条收藏吗?")
             .setMessage(libCollectItem.name)
             .setPositiveButton("删除") { _, _ ->
-              deleteItem(holder.adapterPosition)
+              deleteItem(holder.bindingAdapterPosition)
             }
             .setNegativeButton("取消", null)
             .show()
