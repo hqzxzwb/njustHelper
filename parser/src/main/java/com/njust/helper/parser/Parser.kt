@@ -1,14 +1,25 @@
 package com.njust.helper.parser
 
-import com.google.gson.Gson
+import java.nio.file.Files
+import java.sql.DriverManager
 
 fun main() {
   val source = Thread.currentThread().contextClassLoader.getResourceAsStream("source.txt")!!
       .use { it.bufferedReader().readText() }
   val items = Parser().parse(source)
-  val gson = Gson()
-  items.forEach { item ->
-    println(gson.toJson(item))
+  val output = Files.createTempFile(null, ".db").toAbsolutePath()
+  println("Output file: $output")
+  val conn = DriverManager.getConnection("jdbc:sqlite:$output")
+  val stmt = conn.createStatement()
+  stmt.execute("CREATE TABLE IF NOT EXISTS `main` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `classroom` TEXT NOT NULL, `day` INTEGER NOT NULL, `maskedDay` INTEGER NOT NULL, `section` INTEGER NOT NULL, `maskedSection` INTEGER NOT NULL, `name` TEXT NOT NULL, `teacher` TEXT NOT NULL, `week1` TEXT NOT NULL, `week2` TEXT NOT NULL)")
+  val fields = Item::class.java.declaredFields.onEach { it.isAccessible = true }
+  val fieldNames = fields.map { it.name }.toTypedArray()
+  val pstmt = conn.prepareStatement("INSERT INTO main (${fieldNames.joinToString()}) VALUES (${fieldNames.joinToString { "?" }})", fieldNames)
+  items.forEachIndexed { itemIndex, item ->
+    fields.forEachIndexed { fieldIndex, field ->
+      pstmt.setObject(fieldIndex + 1, field.get(item))
+    }
+    pstmt.executeUpdate()
   }
 }
 
