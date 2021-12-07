@@ -55,8 +55,6 @@ class BorrowedBooksActivity : BaseActivity() {
     }
   }
 
-  override fun layoutRes(): Int = 0
-
   private fun onRefresh() {
     dialog = ProgressDialog.show(this@BorrowedBooksActivity, "正在加载", "请稍候……")
     lifecycleScope.launch {

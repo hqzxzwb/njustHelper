@@ -69,8 +69,6 @@ class ClassroomActivity : BaseActivity() {
     }
   }
 
-  override fun layoutRes(): Int = 0
-
   override fun layout() {
     setContent { Screen(viewModel) }
   }

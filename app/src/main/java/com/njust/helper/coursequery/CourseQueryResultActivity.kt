@@ -59,8 +59,6 @@ class CourseQueryResultActivity : BaseActivity() {
     showSnack(R.string.message_net_error)
   }
 
-  override fun layoutRes(): Int = 0
-
   override fun layout() {
     val binding = DataBindingUtil.setContentView<ActivityCourseQueryResultBinding>(this, R.layout.activity_course_query_result)
     binding.recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)

@@ -18,7 +18,7 @@ import com.njust.helper.tools.Prefs
  *
  * @author zwb
  */
-class AccountActivity : BaseActivity() {
+class AccountActivity : BaseActivity(R.layout.activity_account) {
   companion object {
     const val REQUEST_JWC = 2
     const val REQUEST_LIB = 4
@@ -73,10 +73,6 @@ class AccountActivity : BaseActivity() {
       REQUEST_LIB -> libPwdText.requestFocus()
       else -> stuidText.requestFocus()
     }
-  }
-
-  override fun layoutRes(): Int {
-    return R.layout.activity_account
   }
 
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {

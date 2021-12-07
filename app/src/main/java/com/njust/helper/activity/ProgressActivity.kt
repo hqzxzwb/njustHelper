@@ -3,12 +3,16 @@ package com.njust.helper.activity
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.njust.helper.R
 import java.util.*
 
-abstract class ProgressActivity : BaseActivity() {
+abstract class ProgressActivity : BaseActivity {
+  constructor() : super()
+  constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
+
   protected lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
   private val taskMap = WeakHashMap<String, AsyncTask<*, *, *>>()

@@ -22,7 +22,7 @@ import com.njust.helper.tools.Prefs
 import java.text.SimpleDateFormat
 import java.util.*
 
-class LibCollectionActivity : BaseActivity() {
+class LibCollectionActivity : BaseActivity(R.layout.activity_lib_collection) {
   private lateinit var manager: LibCollectManager
   private lateinit var adapter: LibCollectionAdapter
   private lateinit var mList: MutableList<LibCollectItem>
@@ -30,10 +30,6 @@ class LibCollectionActivity : BaseActivity() {
   private lateinit var recyclerView: RecyclerView
   private lateinit var emptyView: View
   private lateinit var coordinatorLayout: View
-
-  override fun layoutRes(): Int {
-    return R.layout.activity_lib_collection
-  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

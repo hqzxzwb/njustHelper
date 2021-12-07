@@ -67,10 +67,6 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
     }
   }
 
-  override fun layoutRes(): Int {
-    return 0
-  }
-
   override fun openLibBorrowActivity(view: View) {
     startActivity(BorrowedBooksActivity::class.java)
   }

@@ -10,22 +10,17 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity {
+  constructor() : super()
+  constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    val res = layoutRes()
-    if (res != 0) {
-      setContentView(res)
-    } else {
-      layout()
-    }
+    layout()
 
     setupActionBar()
   }
-
-  @LayoutRes
-  protected abstract fun layoutRes(): Int
 
   protected open fun layout() {
   }
@@ -60,8 +55,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
   fun showSnack(text: CharSequence, actionName: CharSequence, action: View.OnClickListener) {
     Snackbar.make(getViewForSnackBar(), text, Snackbar.LENGTH_LONG)
-        .setAction(actionName, action)
-        .show()
+      .setAction(actionName, action)
+      .show()
   }
 
   protected open fun getViewForSnackBar(): View {

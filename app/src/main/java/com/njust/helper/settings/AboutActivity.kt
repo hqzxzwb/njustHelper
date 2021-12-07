@@ -27,8 +27,6 @@ class AboutActivity : BaseActivity() {
     binding.clickHandler = this
   }
 
-  override fun layoutRes(): Int = 0
-
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.about, menu)
     val item = menu.findItem(R.id.item_share)

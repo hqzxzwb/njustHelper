@@ -63,8 +63,6 @@ class ExamsActivity : BaseActivity() {
     }
   }
 
-  override fun layoutRes(): Int = 0
-
   override fun layout() {
     val binding = DataBindingUtil.setContentView<ActivityExamBinding>(this, R.layout.activity_exam)
     binding.recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)

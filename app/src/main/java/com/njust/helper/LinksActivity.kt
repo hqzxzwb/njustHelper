@@ -71,8 +71,6 @@ class LinksActivity : BaseActivity() {
     }
   }
 
-  override fun layoutRes(): Int = 0
-
   override fun layout() {
     val binding = DataBindingUtil.setContentView<ActivityLinksBinding>(this, R.layout.activity_links)
     binding.recyclerView.layoutManager = LinearLayoutManager(this)

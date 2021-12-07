@@ -9,8 +9,6 @@ import com.njust.helper.databinding.ActivityCourseQueryBinding
 class CourseQueryActivity : BaseActivity() {
   private lateinit var binding: ActivityCourseQueryBinding
 
-  override fun layoutRes(): Int = 0
-
   override fun layout() {
     binding = DataBindingUtil.setContentView(this, R.layout.activity_course_query)
     binding.button1.setOnClickListener { jumpToResult() }

@@ -7,16 +7,12 @@ import androidx.preference.PreferenceFragmentCompat
 import com.njust.helper.R
 import com.njust.helper.activity.BaseActivity
 
-class SettingsActivity : BaseActivity() {
+class SettingsActivity : BaseActivity(R.layout.activity_settings) {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     if (savedInstanceState == null) {
       supportFragmentManager.beginTransaction().replace(R.id.holder, HolderFragment()).commit()
     }
-  }
-
-  override fun layoutRes(): Int {
-    return R.layout.activity_settings
   }
 
   class HolderFragment : PreferenceFragmentCompat() {

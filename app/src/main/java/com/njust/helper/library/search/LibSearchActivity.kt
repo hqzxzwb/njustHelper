@@ -53,10 +53,6 @@ class LibSearchActivity : ProgressActivity() {
     super.setupActionBar()
   }
 
-  override fun layoutRes(): Int {
-    return 0
-  }
-
   override fun addRefreshLayoutAutomatically(): Boolean {
     return false
   }

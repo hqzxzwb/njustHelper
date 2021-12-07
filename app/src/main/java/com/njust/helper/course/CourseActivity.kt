@@ -103,8 +103,6 @@ class CourseActivity :
         .show()
   }
 
-  override fun layoutRes(): Int = 0
-
   override fun layout() {
     val binding = DataBindingUtil.setContentView<ActivityCourseBinding>(this, R.layout.activity_course)
     vm.clickHandler = this

@@ -21,7 +21,7 @@ import com.njust.helper.tools.Constants
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListener {
+class LibDetailActivity : ProgressActivity(R.layout.activity_lib_detail), SwipeRefreshLayout.OnRefreshListener {
   private lateinit var idString: String
 
   private var manager: LibCollectManager? = null
@@ -32,10 +32,6 @@ class LibDetailActivity : ProgressActivity(), SwipeRefreshLayout.OnRefreshListen
   private var code: String? = null
 
   private val resultIntent = Intent()
-
-  override fun layoutRes(): Int {
-    return R.layout.activity_lib_detail
-  }
 
   private lateinit var recyclerView: RecyclerView
 

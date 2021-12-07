@@ -71,8 +71,6 @@ class GradeActivity : BaseActivity() {
     }
   }
 
-  override fun layoutRes(): Int = 0
-
   override fun layout() {
     val binding = DataBindingUtil.setContentView<ActivityGradeBinding>(this, R.layout.activity_grade)
     binding.recyclerView.layoutManager = LinearLayoutManager(this)
