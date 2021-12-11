@@ -14,14 +14,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.njust.helper.R
 import com.njust.helper.RemoteConfig
 import com.njust.helper.activity.BaseActivity
@@ -29,6 +34,7 @@ import com.njust.helper.tools.Constants
 import com.njust.helper.tools.TimeUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -77,12 +83,15 @@ class ClassroomActivity : BaseActivity() {
   private fun Screen(viewModel: ClassroomViewModel) {
     val result = viewModel.resultText
     val snackbarHostState = viewModel.snackbarHostState
+    val isRefreshing by viewModel.loading.collectAsState()
     MaterialTheme {
       Scaffold(
         floatingActionButton = {
           QueryButton {
-            lifecycleScope.launch {
-              viewModel.query(this@ClassroomActivity)
+            if (!viewModel.loading.value) {
+              lifecycleScope.launch {
+                viewModel.query(this@ClassroomActivity)
+              }
             }
           }
         },
@@ -92,21 +101,27 @@ class ClassroomActivity : BaseActivity() {
           )
         },
         content = {
-          Column(
-            modifier = Modifier
-              .scrollable(state = rememberScrollState(), orientation = Orientation.Vertical)
+          SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+            onRefresh = { },
+            swipeEnabled = false,
           ) {
-            Spacer(modifier = Modifier.height(16.dp))
-            ControlCard(
-              viewModel.selectedDay,
-              viewModel.selectedBuilding,
-              viewModel.selectedSections,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            ResultCard(
-              result
-            )
-            Spacer(modifier = Modifier.height(88.dp))
+            Column(
+              modifier = Modifier
+                .scrollable(state = rememberScrollState(), orientation = Orientation.Vertical)
+            ) {
+              Spacer(modifier = Modifier.height(16.dp))
+              ControlCard(
+                viewModel.selectedDay,
+                viewModel.selectedBuilding,
+                viewModel.selectedSections,
+              )
+              Spacer(modifier = Modifier.height(8.dp))
+              ResultCard(
+                result
+              )
+              Spacer(modifier = Modifier.height(88.dp))
+            }
           }
         }
       )
@@ -120,13 +135,14 @@ class ClassroomActivity : BaseActivity() {
     selectedSectionsState: MutableState<Int>,
   ) {
     Card(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp),
       elevation = 2.dp,
     ) {
-      Column {
-        Text(text = stringResource(R.string.label_classroom_date))
+      Column(
+        modifier = Modifier
+          .padding(8.dp)
+          .fillMaxWidth()
+      ) {
+        Label(text = stringResource(R.string.label_classroom_date))
         Row(verticalAlignment = Alignment.CenterVertically) {
           DayRadioButton(
             selectedDayState = selectedDayState,
@@ -144,7 +160,7 @@ class ClassroomActivity : BaseActivity() {
             text = stringResource(R.string.radio_classroom_day_after)
           )
         }
-        Text(text = stringResource(R.string.label_classroom_buildings))
+        Label(text = stringResource(R.string.label_classroom_buildings))
         Row(verticalAlignment = Alignment.CenterVertically) {
           BuildingRadioButton(
             selectedBuildingState = selectedBuildingState,
@@ -162,7 +178,7 @@ class ClassroomActivity : BaseActivity() {
             text = stringResource(R.string.radio_classroom_building_one)
           )
         }
-        Text(text = stringResource(R.string.label_classroom_section))
+        Label(text = stringResource(R.string.label_classroom_section))
         stringArrayResource(id = R.array.sections)
           .forEachIndexed { index, s ->
             SectionCheckBox(
@@ -173,6 +189,15 @@ class ClassroomActivity : BaseActivity() {
           }
       }
     }
+  }
+
+  @Composable
+  private fun Label(text: String) {
+    Text(
+      modifier = Modifier.padding(start = 8.dp),
+      text = text,
+      style = MaterialTheme.typography.caption,
+    )
   }
 
   @Composable
@@ -231,7 +256,11 @@ class ClassroomActivity : BaseActivity() {
   @Composable
   private fun QueryButton(onClick: () -> Unit) {
     FloatingActionButton(onClick = onClick) {
-
+      Icon(
+        imageVector = Icons.Filled.Check,
+        contentDescription = null,
+        tint = colorResource(id = android.R.color.white)
+      )
     }
   }
 }
@@ -246,6 +275,7 @@ class ClassroomViewModel : ViewModel() {
   val noSectionChosenPublisher: Flow<Unit>
     get() = noSectionChosenFlow
   val snackbarHostState by mutableStateOf(SnackbarHostState())
+  var loading = MutableStateFlow(false)
 
   private val BUILDING_VALUE = arrayOf("Ⅳ", "II", "I")
 
@@ -261,6 +291,7 @@ class ClassroomViewModel : ViewModel() {
     val dayIndex = ((dateLong - termStart) / TimeUtil.ONE_DAY).toInt()
     val week = dayIndex / 7 + 1
     val day = dayIndex % 7
+    loading.emit(true)
     resultText = try {
       val dao = CourseQueryDao.getInstance(context)
       val building = BUILDING_VALUE[selectedBuilding.value]
@@ -276,5 +307,6 @@ class ClassroomViewModel : ViewModel() {
     } catch (e: Exception) {
       context.getString(R.string.text_classroom_fail)
     }
+    loading.emit(false)
   }
 }

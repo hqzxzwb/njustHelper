@@ -75,7 +75,7 @@ class AccountActivity : BaseActivity(R.layout.activity_account) {
     }
   }
 
-  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+  override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.account, menu)
     return true
   }
