@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,7 +31,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.njust.helper.R
 import com.njust.helper.RemoteConfig
-import com.njust.helper.activity.BaseActivity
+import com.njust.helper.compose.DarkActionBarAppCompatTheme
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.TimeUtil
 import kotlinx.coroutines.flow.Flow
@@ -43,11 +45,13 @@ import kotlinx.coroutines.launch
  *
  * @author zwb
  */
-class ClassroomActivity : BaseActivity() {
+class ClassroomActivity : AppCompatActivity() {
   private val viewModel by viewModels<ClassroomViewModel>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    setContent { Screen(viewModel, onClickHome = { finish() }) }
 
     val time = (System.currentTimeMillis() - RemoteConfig.getTermStartTime()) % TimeUtil.ONE_DAY
 
@@ -75,17 +79,23 @@ class ClassroomActivity : BaseActivity() {
     }
   }
 
-  override fun layout() {
-    setContent { Screen(viewModel) }
-  }
-
   @Composable
-  private fun Screen(viewModel: ClassroomViewModel) {
+  private fun Screen(viewModel: ClassroomViewModel, onClickHome: () -> Unit) {
     val result = viewModel.resultText
     val snackbarHostState = viewModel.snackbarHostState
     val isRefreshing by viewModel.loading.collectAsState()
-    MaterialTheme {
+    DarkActionBarAppCompatTheme {
       Scaffold(
+        topBar = {
+          TopAppBar(
+            title = { Text(text = stringResource(id = R.string.title_activity_cr)) },
+            navigationIcon = {
+              IconButton(onClick = onClickHome) {
+                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
+              }
+            }
+          )
+        },
         floatingActionButton = {
           QueryButton {
             if (!viewModel.loading.value) {

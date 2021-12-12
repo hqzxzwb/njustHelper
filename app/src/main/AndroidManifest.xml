@@ -86,6 +86,7 @@
         <activity
             android:name=".coursequery.ClassroomActivity"
             android:label="@string/title_activity_cr"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".account.AccountActivity"
