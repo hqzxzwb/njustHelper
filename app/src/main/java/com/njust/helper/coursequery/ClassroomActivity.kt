@@ -295,7 +295,7 @@ class ClassroomViewModel : ViewModel() {
   val noSectionChosenPublisher: Flow<Unit>
     get() = noSectionChosenFlow
   val snackbarHostState by mutableStateOf(SnackbarHostState())
-  var loading = MutableStateFlow(false)
+  val loading = MutableStateFlow(false)
 
   private val BUILDING_VALUE = arrayOf("Ⅳ", "II", "I")
 
