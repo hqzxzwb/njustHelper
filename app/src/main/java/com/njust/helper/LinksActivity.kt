@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
@@ -84,6 +86,7 @@ class LinksActivity : AppCompatActivity() {
   ) {
     DarkActionBarAppCompatTheme {
       Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = {
           TopAppBar(
             title = { Text(text = stringResource(R.string.title_activity_links)) },
@@ -99,10 +102,13 @@ class LinksActivity : AppCompatActivity() {
         },
       ) {
         SwipeRefresh(
+          modifier = Modifier.fillMaxSize(),
           state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
           onRefresh = onRefresh,
         ) {
-          LazyColumn {
+          LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+          ) {
             items(items, null) { link ->
               LinkItem(link = link, onClickLink = onClickLink)
             }
@@ -122,6 +128,19 @@ class LinksActivity : AppCompatActivity() {
     ) {
       Text(text = link.name)
     }
+  }
+
+  @Composable
+  @Preview
+  fun Preview() {
+    Screen(
+      isRefreshing = false,
+      items = listOf(Link("Link A", "")),
+      snackbarHostState = SnackbarHostState(),
+      onRefresh = {},
+      onClickLink = {},
+      onClickHome = {},
+    )
   }
 }
 
