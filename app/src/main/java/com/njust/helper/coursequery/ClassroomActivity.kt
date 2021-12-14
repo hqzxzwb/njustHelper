@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
@@ -213,8 +214,10 @@ class ClassroomActivity : AppCompatActivity() {
   @Composable
   private fun DayRadioButton(selectedDayState: MutableState<Int>, index: Int, text: String) {
     var selectedDay by remember { selectedDayState }
-    RadioButton(selected = selectedDay == index, onClick = { selectedDay = index })
-    Text(text = text)
+    Row(modifier = Modifier.clickable { selectedDay = index }) {
+      RadioButton(selected = selectedDay == index, onClick = null)
+      Text(text = text)
+    }
   }
 
   @Composable
@@ -226,8 +229,10 @@ class ClassroomActivity : AppCompatActivity() {
     var selectedBuilding by remember {
       selectedBuildingState
     }
-    RadioButton(selected = selectedBuilding == index, onClick = { selectedBuilding = index })
-    Text(text = text)
+    Row(modifier = Modifier.clickable { selectedBuilding = index }) {
+      RadioButton(selected = selectedBuilding == index, onClick = null)
+      Text(text = text)
+    }
   }
 
   @Composable
@@ -236,14 +241,19 @@ class ClassroomActivity : AppCompatActivity() {
       selectedSectionsState
     }
     val maskedIndex = 1 shl index
-    Row {
-      Checkbox(checked = (selectedSections and maskedIndex) != 0, onCheckedChange = {
-        selectedSections = if (it) {
-          selectedSections or maskedIndex
-        } else {
-          selectedSections and maskedIndex.inv()
+    val checked = (selectedSections and maskedIndex) != 0
+    Row(
+      modifier = Modifier
+        .fillMaxWidth()
+        .clickable {
+          selectedSections = if (!checked) {
+            selectedSections or maskedIndex
+          } else {
+            selectedSections and maskedIndex.inv()
+          }
         }
-      })
+    ) {
+      Checkbox(checked = checked, onCheckedChange = null)
       Text(text = text)
     }
   }
