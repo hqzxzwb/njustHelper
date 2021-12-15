@@ -74,74 +74,6 @@ class LinksActivity : AppCompatActivity() {
       viewModel.load(this@LinksActivity)
     }
   }
-
-  @Composable
-  fun Screen(
-    isRefreshing: Boolean,
-    items: List<Link>,
-    snackbarHostState: SnackbarHostState,
-    onRefresh: () -> Unit,
-    onClickLink: (link: Link) -> Unit,
-    onClickHome: () -> Unit,
-  ) {
-    DarkActionBarAppCompatTheme {
-      Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-          TopAppBar(
-            title = { Text(text = stringResource(R.string.title_activity_links)) },
-            navigationIcon = {
-              IconButton(onClick = onClickHome) {
-                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
-              }
-            },
-          )
-        },
-        snackbarHost = {
-          SnackbarHost(hostState = snackbarHostState)
-        },
-      ) {
-        SwipeRefresh(
-          modifier = Modifier.fillMaxSize(),
-          state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
-          onRefresh = onRefresh,
-        ) {
-          LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-          ) {
-            items(items, null) { link ->
-              LinkItem(link = link, onClickLink = onClickLink)
-            }
-          }
-        }
-      }
-    }
-  }
-
-  @Composable
-  fun LinkItem(link: Link, onClickLink: (link: Link) -> Unit) {
-    Button(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 8.dp, vertical = 2.dp),
-      onClick = { onClickLink(link) },
-    ) {
-      Text(text = link.name)
-    }
-  }
-
-  @Composable
-  @Preview
-  fun Preview() {
-    Screen(
-      isRefreshing = false,
-      items = listOf(Link("Link A", "")),
-      snackbarHostState = SnackbarHostState(),
-      onRefresh = {},
-      onClickLink = {},
-      onClickHome = {},
-    )
-  }
 }
 
 class LinksViewModel : ViewModel() {
@@ -167,4 +99,72 @@ class LinksViewModel : ViewModel() {
       adapter.fromJson(it.source().buffer())!!
     }
   }
+}
+
+@Composable
+private fun Screen(
+  isRefreshing: Boolean,
+  items: List<Link>,
+  snackbarHostState: SnackbarHostState,
+  onRefresh: () -> Unit,
+  onClickLink: (link: Link) -> Unit,
+  onClickHome: () -> Unit,
+) {
+  DarkActionBarAppCompatTheme {
+    Scaffold(
+      modifier = Modifier.fillMaxSize(),
+      topBar = {
+        TopAppBar(
+          title = { Text(text = stringResource(R.string.title_activity_links)) },
+          navigationIcon = {
+            IconButton(onClick = onClickHome) {
+              Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
+            }
+          },
+        )
+      },
+      snackbarHost = {
+        SnackbarHost(hostState = snackbarHostState)
+      },
+    ) {
+      SwipeRefresh(
+        modifier = Modifier.fillMaxSize(),
+        state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+        onRefresh = onRefresh,
+      ) {
+        LazyColumn(
+          modifier = Modifier.fillMaxSize(),
+        ) {
+          items(items, null) { link ->
+            LinkItem(link = link, onClickLink = onClickLink)
+          }
+        }
+      }
+    }
+  }
+}
+
+@Composable
+private fun LinkItem(link: Link, onClickLink: (link: Link) -> Unit) {
+  Button(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(horizontal = 8.dp, vertical = 2.dp),
+    onClick = { onClickLink(link) },
+  ) {
+    Text(text = link.name)
+  }
+}
+
+@Composable
+@Preview
+private fun Preview() {
+  Screen(
+    isRefreshing = false,
+    items = listOf(Link("Link A", "")),
+    snackbarHostState = SnackbarHostState(),
+    onRefresh = {},
+    onClickLink = {},
+    onClickHome = {},
+  )
 }
