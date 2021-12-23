@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.njust.helper.BuildConfig
-import com.njust.helper.LinksActivity
+import com.njust.helper.links.LinksActivity
 import com.njust.helper.R
 import com.njust.helper.RemoteConfig
 import com.njust.helper.account.AccountActivity

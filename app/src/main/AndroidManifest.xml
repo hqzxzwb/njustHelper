@@ -98,7 +98,7 @@
             android:label="@string/title_activity_exam_detail"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LinksActivity"
+            android:name=".links.LinksActivity"
             android:label="@string/title_activity_links"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />

@@ -1,11 +1,5 @@
-package com.njust.helper
+package com.njust.helper.links
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,87 +16,18 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.njust.helper.api.sharedMoshi
+import com.njust.helper.R
 import com.njust.helper.compose.DarkActionBarAppCompatTheme
 import com.njust.helper.model.Link
-import com.squareup.moshi.Types
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okio.buffer
-import okio.source
-
-class LinksActivity : AppCompatActivity() {
-  private val viewModel by viewModels<LinksViewModel>()
-
-  override fun onPostCreate(savedInstanceState: Bundle?) {
-    super.onPostCreate(savedInstanceState)
-
-    setContent {
-      val isRefreshing by viewModel.loading.collectAsState()
-      val items by viewModel.items.collectAsState()
-      Screen(
-        isRefreshing = isRefreshing,
-        items = items,
-        snackbarHostState = viewModel.snackbarHostState,
-        onRefresh = { load() },
-        onClickLink = { link ->
-          val intent = Intent(Intent.ACTION_VIEW)
-          intent.data = link.url.toUri()
-          startActivity(intent)
-        },
-        onClickHome = { finish() },
-      )
-    }
-    load()
-  }
-
-  private fun load() {
-    lifecycleScope.launch {
-      viewModel.load(this@LinksActivity)
-    }
-  }
-}
-
-class LinksViewModel : ViewModel() {
-  val items = MutableStateFlow(listOf<Link>())
-  val loading = MutableStateFlow(false)
-  val snackbarHostState = SnackbarHostState()
-
-  suspend fun load(context: Context) {
-    try {
-      loading.emit(true)
-      val data = parseLinks(context)
-      items.emit(data)
-    } catch (e: Exception) {
-      snackbarHostState.showSnackbar(context.getString(R.string.message_net_error))
-    }
-    loading.emit(false)
-  }
-
-  private suspend fun parseLinks(context: Context): List<Link> = withContext(Dispatchers.IO) {
-    context.resources.openRawResource(R.raw.links).use {
-      val type = Types.newParameterizedType(List::class.java, Link::class.java)
-      val adapter = sharedMoshi.adapter<List<Link>>(type)
-      adapter.fromJson(it.source().buffer())!!
-    }
-  }
-}
 
 @Composable
-private fun Screen(
+fun LinksScreen(
   isRefreshing: Boolean,
   items: List<Link>,
   snackbarHostState: SnackbarHostState,
@@ -159,7 +84,7 @@ private fun LinkItem(link: Link, onClickLink: (link: Link) -> Unit) {
 @Composable
 @Preview
 private fun Preview() {
-  Screen(
+  LinksScreen(
     isRefreshing = false,
     items = listOf(Link("Link A", "")),
     snackbarHostState = SnackbarHostState(),
