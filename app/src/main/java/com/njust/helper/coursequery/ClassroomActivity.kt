@@ -38,7 +38,7 @@ import com.njust.helper.tools.TimeUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 /**
@@ -72,7 +72,7 @@ class ClassroomActivity : AppCompatActivity() {
     }
     viewModel.selectedSections.setValue(viewModel, viewModel::selectedSections, selectedSections)
     lifecycleScope.launchWhenCreated {
-      viewModel.noSectionChosenPublisher.collect {
+      viewModel.noSectionChosenPublisher.collectLatest {
         viewModel.snackbarHostState.showSnackbar(
           getString(R.string.toast_cr_choose_one_section)
         )
