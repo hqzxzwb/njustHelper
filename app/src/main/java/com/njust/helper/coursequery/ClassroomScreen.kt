@@ -43,6 +43,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.njust.helper.R
 import com.njust.helper.compose.DarkActionBarAppCompatTheme
+import com.zwb.commonlibs.utils.NoOpFunction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
@@ -88,7 +89,7 @@ fun ClassroomScreen(
       content = {
         SwipeRefresh(
           state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
-          onRefresh = { },
+          onRefresh = NoOpFunction,
           swipeEnabled = false,
         ) {
           Column(
@@ -266,7 +267,7 @@ private fun Preview() {
     resultText = "Result",
     isRefreshing = true,
     noSectionChosenPublisher = flow { },
-    onClickQuery = { },
-    onClickHome = { },
+    onClickQuery = NoOpFunction,
+    onClickHome = NoOpFunction,
   )
 }

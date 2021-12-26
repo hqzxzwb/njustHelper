@@ -60,14 +60,14 @@ class ClassroomActivity : AppCompatActivity() {
         selectedSections = selectedSections or (1 shl (i + 1))
       }
     }
-    viewModel.selectedSections.setValue(viewModel, viewModel::selectedSections, selectedSections)
+    viewModel.selectedSections.value = selectedSections
   }
 }
 
 class ClassroomViewModel : ViewModel() {
-  var selectedDay = mutableStateOf(0)
-  var selectedBuilding = mutableStateOf(0)
-  var selectedSections = mutableStateOf(0)
+  val selectedDay = mutableStateOf(0)
+  val selectedBuilding = mutableStateOf(0)
+  val selectedSections = mutableStateOf(0)
   var resultText by mutableStateOf("")
     private set
   private val noSectionChosenFlow = MutableSharedFlow<Unit>()

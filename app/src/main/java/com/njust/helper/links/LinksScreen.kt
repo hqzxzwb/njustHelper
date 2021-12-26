@@ -25,6 +25,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.njust.helper.R
 import com.njust.helper.compose.DarkActionBarAppCompatTheme
 import com.njust.helper.model.Link
+import com.zwb.commonlibs.utils.NoOpFunction
 
 @Composable
 fun LinksScreen(
@@ -88,8 +89,8 @@ private fun Preview() {
     isRefreshing = false,
     items = listOf(Link("Link A", "")),
     snackbarHostState = SnackbarHostState(),
-    onRefresh = {},
-    onClickLink = {},
-    onClickHome = {},
+    onRefresh = NoOpFunction,
+    onClickLink = NoOpFunction,
+    onClickHome = NoOpFunction,
   )
 }
