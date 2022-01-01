@@ -14,7 +14,7 @@ import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.course.CourseActivity
 import com.njust.helper.course.data.CourseDatabase
-import com.njust.helper.coursequery.ClassroomActivity
+import com.njust.helper.classroom.ClassroomActivity
 import com.njust.helper.coursequery.CourseQueryActivity
 import com.njust.helper.databinding.ActivityMainBinding
 import com.njust.helper.grade.ExamsActivity

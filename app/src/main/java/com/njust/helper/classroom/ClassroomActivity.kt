@@ -1,4 +1,4 @@
-package com.njust.helper.coursequery
+package com.njust.helper.classroom
 
 import android.content.Context
 import android.os.Bundle
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import com.njust.helper.R
 import com.njust.helper.RemoteConfig
+import com.njust.helper.coursequery.CourseQueryDao
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.TimeUtil
 import kotlinx.coroutines.flow.Flow

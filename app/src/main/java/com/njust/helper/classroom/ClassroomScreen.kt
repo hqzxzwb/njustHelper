@@ -1,4 +1,4 @@
-package com.njust.helper.coursequery
+package com.njust.helper.classroom
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
