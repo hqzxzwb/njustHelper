@@ -73,8 +73,9 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".coursequery.CourseQueryResultActivity"
-            android:label="@string/title_activity_cengke_result"
-            android:screenOrientation="portrait" />
+            android:label="@string/title_activity_courseQuery_result"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".grade.GradeActivity"
             android:label="@string/title_activity_grade"
@@ -86,8 +87,8 @@
         <activity
             android:name=".classroom.ClassroomActivity"
             android:label="@string/title_activity_cr"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".account.AccountActivity"
             android:label="@string/title_activity_account"
@@ -100,8 +101,8 @@
         <activity
             android:name=".links.LinksActivity"
             android:label="@string/title_activity_links"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".library.collection.LibCollectionActivity"
             android:label="@string/title_activity_lib_collection"
@@ -121,7 +122,8 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <receiver android:name=".BootReceiver"
+        <receiver
+            android:name=".BootReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

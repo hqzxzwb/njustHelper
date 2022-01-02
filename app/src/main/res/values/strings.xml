@@ -47,7 +47,7 @@
     <string name="title_activity_reserve">预约查询</string>
     <string name="title_activity_about">关于</string>
     <string name="title_activity_account">账号</string>
-    <string name="title_activity_cengke_result">蹭课查询结果</string>
+    <string name="title_activity_courseQuery_result">蹭课查询结果</string>
     <string name="title_activity_course">课程表</string>
     <string name="title_activity_course_all">全部课表</string>
     <string name="title_activity_cr">自习室查询</string>
