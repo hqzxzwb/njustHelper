@@ -2,3 +2,4 @@ include ':parser'
 include ':lib'
 include ':app'
 
+include ':shared'
