@@ -1,28 +1,16 @@
 package com.njust.helper.api.library
 
-import androidx.collection.ArrayMap
 import androidx.core.text.HtmlCompat
 import com.njust.helper.api.Apis
 import com.njust.helper.api.LoginErrorException
-import com.njust.helper.api.ServerErrorException
 import com.njust.helper.api.parseReportingError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import retrofit2.HttpException
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Query
-import java.lang.Exception
-import java.util.*
 
 private interface LibraryApiService {
-  @POST("ajax_search_adv.php")
-  suspend fun search(
-      @Body body: Any
-  ): Map<String, Any>
-
   @GET("item.php")
   suspend fun detail(
       @Query("marc_no") id: String
@@ -46,36 +34,6 @@ object LibraryApi {
   private val service = Apis.newRetrofit("http://202.119.83.14:8080/uopac/opac/")
       .create(LibraryApiService::class.java)
 
-  suspend fun search(keyword: String): List<LibSearchBean> = withContext(Dispatchers.IO) {
-    val fieldData = ArrayMap<String, String>().apply {
-      put("fieldCode", "")
-      put("fieldValue", keyword)
-    }
-    val keywordArray = listOf(Collections.singletonMap("fieldList", listOf(fieldData)))
-    val body = ArrayMap<String, Any>()
-        .apply {
-          put("sortField", "relevance")
-          put("sortType", "desc")
-          put("pageSize", 100)
-          put("pageCount", 1)
-          put("locale", "")
-          put("first", true)
-          put("filters", listOf<Any>())
-          put("limiters", listOf<Any>())
-          put("searchWords", keywordArray)
-        }
-    val searchResult = try {
-      service.search(body)
-    } catch (e: Exception) {
-      if (e is HttpException) {
-        throw ServerErrorException()
-      } else {
-        throw e
-      }
-    }
-    parseReportingError(searchResult, ::parseSearch)
-  }
-
   suspend fun detail(id: String): LibDetailData = withContext(Dispatchers.IO) {
     parseReportingError(service.detail(id), ::parseDetail)
   }
@@ -98,19 +56,6 @@ object LibraryApi {
                 .getString("opaclendurl")
           }
         }
-  }
-
-  private fun parseSearch(json: Map<String, Any>): List<LibSearchBean> {
-    val array = json["content"] as List<*>
-    return array.map {
-      val obj = it as Map<*, *>
-      LibSearchBean(
-          title = obj["title"] as String,
-          author = obj["author"] as String,
-          press = obj["publisher"] as String,
-          id = obj["marcRecNo"] as String
-      )
-    }
   }
 
   private fun parseDetail(string: String): LibDetailData {

@@ -1,6 +1,6 @@
 package com.njust.helper.library.search
 
-import com.njust.helper.api.library.LibSearchBean
+import com.njust.helper.shared.api.LibSearchBean
 
 class LibSearchItemVm(
     bean: LibSearchBean,

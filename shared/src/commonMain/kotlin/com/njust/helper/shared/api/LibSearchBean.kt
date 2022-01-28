@@ -1,4 +1,4 @@
-package com.njust.helper.api.library
+package com.njust.helper.shared.api
 
 class LibSearchBean(
     val title: String = "",

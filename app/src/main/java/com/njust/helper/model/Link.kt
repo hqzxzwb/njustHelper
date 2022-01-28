@@ -1,8 +1,8 @@
 package com.njust.helper.model
 
-import com.squareup.moshi.JsonClass
+import androidx.annotation.Keep
 
-@JsonClass(generateAdapter = true)
+@Keep
 class Link(
     val name: String,
     val url: String
