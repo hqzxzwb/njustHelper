@@ -153,11 +153,11 @@ object LibraryApi {
     val tdRegex = Regex("""<td.*?>[\s ]*([\s\S]*?)[\s ]*</td>""")
     matches1.forEach {
       val matches2 = tdRegex.findAll(it.groupValues[0]).toList()
-      stateList += if (matches2.size >= 7) {
+      stateList += if (matches2.size >= 5) {
         LibDetailItem(
             code = trimHtmlString(matches2[0].groupValues[1]),
             place = trimHtmlString(matches2[3].groupValues[1]),
-            state = matches2[6].groupValues[1].replace("应还日期", "应还")
+            state = matches2[4].groupValues[1].replace("应还日期", "应还")
         )
       } else {
         LibDetailItem(
