@@ -76,8 +76,6 @@ object LibraryApi {
   }
 
   private fun parseDetail(string: String): LibDetailData {
-    val result = LibDetailData()
-
     val headerBuilder = StringBuilder()
     Regex("""<dt>题名/责任者:</dt>\s*<dd>(.*?)</dd>""")
       .find(string)
@@ -107,7 +105,6 @@ object LibraryApi {
           .append(trimHtmlString(it.groupValues[1]))
           .append("\n\n")
       }
-    result.head = headerBuilder.toString()
 
     val stateList = arrayListOf<LibDetailItem>()
     val matches1 = Regex("""<tr align="left" class="whitetext"[\s\S]*?</tr>""")
@@ -115,11 +112,11 @@ object LibraryApi {
     val tdRegex = Regex("""<td.*?>[\s ]*([\s\S]*?)[\s ]*</td>""")
     matches1.forEach {
       val matches2 = tdRegex.findAll(it.groupValues[0]).toList()
-      stateList += if (matches2.size >= 7) {
+      stateList += if (matches2.size >= 5) {
         LibDetailItem(
           code = trimHtmlString(matches2[0].groupValues[1]),
           place = trimHtmlString(matches2[3].groupValues[1]),
-          state = matches2[6].groupValues[1].replace("应还日期", "应还")
+          state = matches2[4].groupValues[1].replace("应还日期", "应还")
         )
       } else {
         LibDetailItem(
@@ -129,9 +126,8 @@ object LibraryApi {
         )
       }
     }
-    result.states = stateList
 
-    return result
+    return LibDetailData(stateList, headerBuilder.toString())
   }
 
   private fun trimHtmlString(input: String): String {
@@ -139,6 +135,8 @@ object LibraryApi {
       .replace(Regex("&#x([0-9a-fA-F]*);")) {
         it.groupValues[1].toInt(16).toChar().toString()
       }
+      .replace("&nbsp;", " ")
       .replace(Regex("</?a[^<>]*>"), "")
+      .trim()
   }
 }

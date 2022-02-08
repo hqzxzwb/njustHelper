@@ -6,7 +6,7 @@ class LibDetailItem(
     val state: String
 )
 
-class LibDetailData {
-  var states: List<LibDetailItem>? = null
-  var head: String? = null
-}
+class LibDetailData(
+  val states: List<LibDetailItem>?,
+  val head: String?,
+)
