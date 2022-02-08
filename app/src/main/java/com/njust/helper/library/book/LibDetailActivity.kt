@@ -12,11 +12,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.activity.ProgressActivity
-import com.njust.helper.api.ParseErrorException
-import com.njust.helper.api.ServerErrorException
-import com.njust.helper.api.library.LibDetailData
-import com.njust.helper.api.library.LibraryApi
+import com.njust.helper.shared.api.ParseErrorException
+import com.njust.helper.shared.api.ServerErrorException
+import com.njust.helper.shared.api.LibDetailData
 import com.njust.helper.library.collection.LibCollectManager
+import com.njust.helper.shared.api.LibraryApi
 import com.njust.helper.tools.Constants
 import kotlinx.coroutines.launch
 import java.io.IOException

@@ -17,9 +17,9 @@ import com.njust.helper.R
 import com.njust.helper.RemoteConfig
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
-import com.njust.helper.api.LoginErrorException
-import com.njust.helper.api.ParseErrorException
-import com.njust.helper.api.ServerErrorException
+import com.njust.helper.shared.api.LoginErrorException
+import com.njust.helper.shared.api.ParseErrorException
+import com.njust.helper.shared.api.ServerErrorException
 import com.njust.helper.api.jwc.CourseData
 import com.njust.helper.api.jwc.JwcApi
 import com.njust.helper.course.data.CourseDatabase

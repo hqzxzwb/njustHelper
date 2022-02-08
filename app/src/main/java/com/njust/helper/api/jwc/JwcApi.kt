@@ -2,9 +2,9 @@ package com.njust.helper.api.jwc
 
 import com.njust.helper.RemoteConfig
 import com.njust.helper.api.Apis
-import com.njust.helper.api.LoginErrorException
-import com.njust.helper.api.ServerErrorException
-import com.njust.helper.api.parseReportingError
+import com.njust.helper.shared.api.LoginErrorException
+import com.njust.helper.shared.api.ServerErrorException
+import com.njust.helper.shared.api.parseReportingError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okio.ByteString.Companion.encodeUtf8

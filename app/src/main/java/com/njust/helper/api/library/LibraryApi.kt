@@ -1,9 +1,8 @@
 package com.njust.helper.api.library
 
-import androidx.core.text.HtmlCompat
 import com.njust.helper.api.Apis
-import com.njust.helper.api.LoginErrorException
-import com.njust.helper.api.parseReportingError
+import com.njust.helper.shared.api.LoginErrorException
+import com.njust.helper.shared.api.parseReportingError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -11,11 +10,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 private interface LibraryApiService {
-  @GET("item.php")
-  suspend fun detail(
-      @Query("marc_no") id: String
-  ): String
-
   @GET("http://mc.m.5read.com/apis/user/userLogin.jspx")
   suspend fun borrowed1(
       @Query("username") stuid: String,
@@ -33,10 +27,6 @@ private interface LibraryApiService {
 object LibraryApi {
   private val service = Apis.newRetrofit("http://202.119.83.14:8080/uopac/opac/")
       .create(LibraryApiService::class.java)
-
-  suspend fun detail(id: String): LibDetailData = withContext(Dispatchers.IO) {
-    parseReportingError(service.detail(id), ::parseDetail)
-  }
 
   suspend fun borrowed(stuid: String, pwd: String): String = withContext(Dispatchers.IO) {
     service.borrowed1(stuid, pwd)
@@ -56,68 +46,5 @@ object LibraryApi {
                 .getString("opaclendurl")
           }
         }
-  }
-
-  private fun parseDetail(string: String): LibDetailData {
-    val result = LibDetailData()
-
-    val headerBuilder = StringBuilder()
-    Regex("""<dt>题名/责任者:</dt>\s*<dd>(.*?)</dd>""")
-        .find(string)
-        ?.let {
-          headerBuilder.append("题名/责任者:\n")
-              .append(trimHtmlString(it.groupValues[1]))
-              .append("\n\n")
-        }
-    Regex("""<dt>出版发行项:</dt>\s*<dd>(.*?)</dd>""")
-        .find(string)
-        ?.let {
-          headerBuilder.append("出版发行项:\n")
-              .append(trimHtmlString(it.groupValues[1]))
-              .append("\n\n")
-        }
-    Regex("""<dt>ISBN及定价:</dt>\s*<dd>(.*?)</dd>""")
-        .find(string)
-        ?.let {
-          headerBuilder.append("ISBN及定价:\n")
-              .append(trimHtmlString(it.groupValues[1]))
-              .append("\n\n")
-        }
-    Regex("""<dt>提要文摘附注:</dt>\s*<dd>(.*?)</dd>""")
-        .find(string)
-        ?.let {
-          headerBuilder.append("提要文摘附注:\n")
-              .append(trimHtmlString(it.groupValues[1]))
-              .append("\n\n")
-        }
-    result.head = headerBuilder.toString()
-
-    val stateList = arrayListOf<LibDetailItem>()
-    val matches1 = Regex("""<tr align="left" class="whitetext"[\s\S]*?</tr>""")
-        .findAll(string)
-    val tdRegex = Regex("""<td.*?>[\s ]*([\s\S]*?)[\s ]*</td>""")
-    matches1.forEach {
-      val matches2 = tdRegex.findAll(it.groupValues[0]).toList()
-      stateList += if (matches2.size >= 7) {
-        LibDetailItem(
-            code = trimHtmlString(matches2[0].groupValues[1]),
-            place = trimHtmlString(matches2[3].groupValues[1]),
-            state = matches2[6].groupValues[1].replace("应还日期", "应还")
-        )
-      } else {
-        LibDetailItem(
-            code = matches2[0].groupValues[1],
-            place = "",
-            state = ""
-        )
-      }
-    }
-    result.states = stateList
-
-    return result
-  }
-
-  private fun trimHtmlString(input: String): String {
-    return HtmlCompat.fromHtml(input, 0).toString().trim()
   }
 }

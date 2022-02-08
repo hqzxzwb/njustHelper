@@ -23,7 +23,7 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 func callApi() {
-    LibraryApi.shared.search(keyword: "abc", completionHandler: {
+    LibraryApi.shared.search(keyword: "abc") {
         items,_ in print(items![0].description())
-    })
+    }
 }

@@ -16,6 +16,10 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 
 object LibraryApi {
+  private const val BASE_URL_1 = "http://202.119.83.14:8080/uopac/opac/"
+  private val client = HttpClient(CIO) {
+    install(JsonFeature)
+  }
   private val parser = Json {
     ignoreUnknownKeys = true
   }
@@ -46,22 +50,95 @@ object LibraryApi {
       })
     }
 
-    val client = HttpClient(CIO) {
-      install(JsonFeature)
-    }
-    val json: String = client.post("http://202.119.83.14:8080/uopac/opac/ajax_search_adv.php") {
+    val json: String = client.post("${BASE_URL_1}ajax_search_adv.php") {
       contentType(ContentType.Application.Json)
       this.body = body
     }
-    val jsonTree = parser.decodeFromString<JsonObject>(json)
-    return jsonTree["content"]!!.jsonArray.map {
-      val obj = it.jsonObject
-      LibSearchBean(
-        title = obj["title"]?.jsonPrimitive?.content.orEmpty(),
-        author = obj["author"]?.jsonPrimitive?.content.orEmpty(),
-        press = obj["publisher"]?.jsonPrimitive?.content.orEmpty(),
-        id = obj["marcRecNo"]?.jsonPrimitive?.content.orEmpty(),
-      )
+    parseReportingError(json) {
+      val jsonTree = parser.decodeFromString<JsonObject>(json)
+      return jsonTree["content"]!!.jsonArray.map {
+        val obj = it.jsonObject
+        LibSearchBean(
+          title = obj["title"]?.jsonPrimitive?.content.orEmpty(),
+          author = obj["author"]?.jsonPrimitive?.content.orEmpty(),
+          press = obj["publisher"]?.jsonPrimitive?.content.orEmpty(),
+          id = obj["marcRecNo"]?.jsonPrimitive?.content.orEmpty(),
+        )
+      }
     }
+  }
+
+  suspend fun detail(id: String): LibDetailData {
+    val text = client.get<String>("${BASE_URL_1}item.php") {
+      parameter("marc_no", id)
+    }
+    return parseReportingError(text, ::parseDetail)
+  }
+
+  private fun parseDetail(string: String): LibDetailData {
+    val result = LibDetailData()
+
+    val headerBuilder = StringBuilder()
+    Regex("""<dt>题名/责任者:</dt>\s*<dd>(.*?)</dd>""")
+      .find(string)
+      ?.let {
+        headerBuilder.append("题名/责任者:\n")
+          .append(trimHtmlString(it.groupValues[1]))
+          .append("\n\n")
+      }
+    Regex("""<dt>出版发行项:</dt>\s*<dd>(.*?)</dd>""")
+      .find(string)
+      ?.let {
+        headerBuilder.append("出版发行项:\n")
+          .append(trimHtmlString(it.groupValues[1]))
+          .append("\n\n")
+      }
+    Regex("""<dt>ISBN及定价:</dt>\s*<dd>(.*?)</dd>""")
+      .find(string)
+      ?.let {
+        headerBuilder.append("ISBN及定价:\n")
+          .append(trimHtmlString(it.groupValues[1]))
+          .append("\n\n")
+      }
+    Regex("""<dt>提要文摘附注:</dt>\s*<dd>(.*?)</dd>""")
+      .find(string)
+      ?.let {
+        headerBuilder.append("提要文摘附注:\n")
+          .append(trimHtmlString(it.groupValues[1]))
+          .append("\n\n")
+      }
+    result.head = headerBuilder.toString()
+
+    val stateList = arrayListOf<LibDetailItem>()
+    val matches1 = Regex("""<tr align="left" class="whitetext"[\s\S]*?</tr>""")
+      .findAll(string)
+    val tdRegex = Regex("""<td.*?>[\s ]*([\s\S]*?)[\s ]*</td>""")
+    matches1.forEach {
+      val matches2 = tdRegex.findAll(it.groupValues[0]).toList()
+      stateList += if (matches2.size >= 7) {
+        LibDetailItem(
+          code = trimHtmlString(matches2[0].groupValues[1]),
+          place = trimHtmlString(matches2[3].groupValues[1]),
+          state = matches2[6].groupValues[1].replace("应还日期", "应还")
+        )
+      } else {
+        LibDetailItem(
+          code = matches2[0].groupValues[1],
+          place = "",
+          state = ""
+        )
+      }
+    }
+    result.states = stateList
+
+    return result
+  }
+
+  private fun trimHtmlString(input: String): String {
+    return input
+      .replace(Regex("&#x([0-9a-fA-F]*);")) {
+        it.groupValues[1].toInt(16).toChar().toString()
+      }
+      .replace(Regex("</?a[^<>]*>"), "")
   }
 }

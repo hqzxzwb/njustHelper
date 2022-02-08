@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.njust.helper.R;
-import com.njust.helper.api.library.LibDetailData;
-import com.njust.helper.api.library.LibDetailItem;
+import com.njust.helper.shared.api.LibDetailData;
+import com.njust.helper.shared.api.LibDetailItem;
 
 import java.util.ArrayList;
 import java.util.List;

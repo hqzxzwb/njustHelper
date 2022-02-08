@@ -68,3 +68,6 @@ android {
         targetSdk = 31
     }
 }
+dependencies {
+  implementation("androidx.core:core:1.6.0")
+}

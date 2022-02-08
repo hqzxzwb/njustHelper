@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
-import com.njust.helper.api.LoginErrorException
+import com.njust.helper.shared.api.LoginErrorException
 import com.njust.helper.api.library.LibraryApi
 import com.njust.helper.databinding.ActivityLibBorrowBinding
 import com.njust.helper.tools.Prefs
