@@ -61,6 +61,24 @@ public class Prefs {
         editor.apply();
     }
 
+    public static void putJwcPwd(Context context, String jwcPwd) {
+        Editor editor = getEditor(context, "jwc");
+        editor
+                .putString("password", jwcPwd)
+                .putString("cookie", "");
+        editor.apply();
+    }
+
+    public static boolean neverShowJwcPasswordWarning(Context context) {
+        return getPreference(context, "jwc").getBoolean("neverShowJwcPassword", false);
+    }
+
+    public static void putNeverShowJwcPasswordWarning(Context context) {
+        getEditor(context, "jwc")
+                .putBoolean("neverShowJwcPassword", true)
+                .apply();
+    }
+
     public static int getVersion(Context context) {
         return getPreference(context, "refresh").getInt("version", 0);
     }
