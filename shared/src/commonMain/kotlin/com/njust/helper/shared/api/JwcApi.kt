@@ -3,6 +3,8 @@ package com.njust.helper.shared.api
 import com.njust.helper.shared.internal.HttpClientHolder.httpClient
 import io.ktor.client.features.*
 import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
 import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.CancellationException
 import okio.ByteString.Companion.encodeUtf8
@@ -65,5 +67,55 @@ object JwcApi {
           time = groupValues[8]
         )
       }
+  }
+
+  @Throws(ApiRelatedException::class, CancellationException::class)
+  suspend fun grade(stuid: String, pwd: String): Map<String, List<GradeItem>> {
+    login(stuid, pwd)
+    val html: String = httpClient.submitForm(
+      url = "${BASE_URL}kscj/cjcx_list",
+      formParameters = Parameters.build {
+        append("kksj", "")
+        append("kcxz", "")
+        append("kcmc", "")
+        append("xsfs", "max")
+      },
+    )
+    return parseReportingError(html, ::parseGrade)
+  }
+
+  private fun parseGrade(string: String): Map<String, List<GradeItem>> {
+    val table = Regex("""<table id="dataList"[\s\S]*?</table>""")
+      .find(string)
+      ?: return emptyMap()
+    val tdRegex = Regex("""<td.*?>(.*?)</td>""")
+    return Regex("""<tr>(\s*<td.*)+""")
+      .findAll(table.groupValues[0])
+      .map {
+        val groupValues = tdRegex.findAll(it.groupValues[0]).toList()
+        val gradeText = groupValues[4].groupValues[1]
+        GradeItem(
+          termName = groupValues[1].groupValues[1],
+          courseName = groupValues[3].groupValues[1],
+          weight = groupValues[6].groupValues[1].toDouble(),
+          gradeText = gradeText,
+          grade = gradeTextToDouble(gradeText),
+          type = groupValues[9].groupValues[1]
+        )
+      }
+      .groupBy { it.termName }
+  }
+
+  private fun gradeTextToDouble(s: String): Double {
+    return when (s) {
+      "优秀" -> 90.0
+      "良好" -> 80.0
+      "中等" -> 70.0
+      "合格", "及格", "通过" -> 60.0
+      "不通过", "不及格", "不合格" -> 50.0
+      "免修" -> 89.0
+      "请评教" -> -1.0
+      else -> s.toDouble()
+    }
   }
 }

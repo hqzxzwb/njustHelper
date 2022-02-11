@@ -23,7 +23,7 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 func callApi() {
-    JwcApi.shared.gradeLevel(stuid: "", pwd: "") { result, error in
+    JwcApi.shared.grade(stuid: "", pwd: "") { result, error in
         print(result)
         print(error)
     }

@@ -42,15 +42,6 @@ private interface JwcApiService {
       @Field("xqlbmc") body1: String = "",
       @Field("xqlb") body2: String = ""
   ): String
-
-  @FormUrlEncoded
-  @POST("kscj/cjcx_list")
-  suspend fun grade(
-      @Field("kksj") body1: String = "",
-      @Field("kcxz") body2: String = "",
-      @Field("kcmc") body3: String = "",
-      @Field("xsfs") body4: String = "max"
-  ): String
 }
 
 object JwcApi {
@@ -65,11 +56,6 @@ object JwcApi {
   suspend fun exams(stuid: String, pwd: String): List<Exam> = withContext(Dispatchers.IO) {
     login(stuid, pwd)
     parseReportingError(service.exams(RemoteConfig.getTermId()), ::parseExams)
-  }
-
-  suspend fun grade(stuid: String, pwd: String): Map<String, List<GradeItem>> = withContext(Dispatchers.IO) {
-    login(stuid, pwd)
-    parseReportingError(service.grade(), ::parseGrade)
   }
 
   private suspend fun login(stuid: String, pwd: String) {
@@ -180,8 +166,6 @@ object JwcApi {
     return weeks.joinToString(separator = " ", prefix = " ", postfix = " ")
   }
 
-  private fun convertScore(s: String) = if (s == "0") "--" else s
-
   private fun parseExams(string: String): List<Exam> {
     return Regex("""<table id="dataList"[\s\S]*?</table>""")
         .find(string)!!
@@ -199,40 +183,5 @@ object JwcApi {
               seat = groupValues[4]
           )
         }
-  }
-
-  private fun parseGrade(string: String): Map<String, List<GradeItem>> {
-    val table = Regex("""<table id="dataList"[\s\S]*?</table>""")
-        .find(string)
-        ?: return emptyMap()
-    val tdRegex = Regex("""<td.*?>(.*?)</td>""")
-    return Regex("""<tr>(\s*<td.*)+""")
-        .findAll(table.groupValues[0])
-        .map {
-          val groupValues = tdRegex.findAll(it.groupValues[0]).toList()
-          val gradeText = groupValues[4].groupValues[1]
-          GradeItem(
-              termName = groupValues[1].groupValues[1],
-              courseName = groupValues[3].groupValues[1],
-              weight = groupValues[6].groupValues[1].toDouble(),
-              gradeText = gradeText,
-              grade = gradeTextToDouble(gradeText),
-              type = groupValues[9].groupValues[1]
-          )
-        }
-        .groupBy { it.termName }
-  }
-
-  private fun gradeTextToDouble(s: String): Double {
-    return when (s) {
-      "优秀" -> 90.0
-      "良好" -> 80.0
-      "中等" -> 70.0
-      "合格", "及格", "通过" -> 60.0
-      "不通过", "不及格", "不合格" -> 50.0
-      "免修" -> 89.0
-      "请评教" -> -1.0
-      else -> s.toDouble()
-    }
   }
 }

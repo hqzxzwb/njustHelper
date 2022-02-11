@@ -1,4 +1,4 @@
-package com.njust.helper.api.jwc
+package com.njust.helper.shared.api
 
 data class GradeItem(
     val termName: String,

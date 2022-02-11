@@ -16,9 +16,9 @@ import com.njust.helper.activity.BaseActivity
 import com.njust.helper.shared.api.LoginErrorException
 import com.njust.helper.shared.api.ParseErrorException
 import com.njust.helper.shared.api.ServerErrorException
-import com.njust.helper.api.jwc.GradeItem
-import com.njust.helper.api.jwc.JwcApi
+import com.njust.helper.shared.api.GradeItem
 import com.njust.helper.databinding.ActivityGradeBinding
+import com.njust.helper.shared.api.JwcApi
 import com.njust.helper.tools.Prefs
 import com.zwb.commonlibs.binding.BaseDataBindingHolder
 import kotlinx.coroutines.launch
@@ -188,9 +188,9 @@ class GradeVm(data: Map<String, List<GradeItem>>) {
 }
 
 class GradeTermVm(
-    val items: List<GradeItem>,
-    val termName: String,
-    val mean: MeanGradeVm
+  val items: List<GradeItem>,
+  val termName: String,
+  val mean: MeanGradeVm
 ) {
   val brId: Int = BR.vm
 }
