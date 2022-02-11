@@ -12,9 +12,9 @@ import com.njust.helper.activity.BaseActivity
 import com.njust.helper.shared.api.LoginErrorException
 import com.njust.helper.shared.api.ParseErrorException
 import com.njust.helper.shared.api.ServerErrorException
-import com.njust.helper.api.jwc.GradeLevelBean
-import com.njust.helper.api.jwc.JwcApi
+import com.njust.helper.shared.api.GradeLevelBean
 import com.njust.helper.databinding.ActivityGradeLevelBinding
+import com.njust.helper.shared.api.JwcApi
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.SimpleListVm
 import kotlinx.coroutines.launch

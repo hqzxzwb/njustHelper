@@ -9,7 +9,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okio.ByteString.Companion.encodeUtf8
 import retrofit2.HttpException
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 import java.io.IOException
 import java.util.*
 
@@ -30,9 +34,6 @@ private interface JwcApiService {
       @Field("demo") body3: String = "",
       @Field("xnxq01id") body4: String = RemoteConfig.getTermId()
   ): String
-
-  @GET("kscj/djkscj_list")
-  suspend fun gradeLevel(): String
 
   @FormUrlEncoded
   @POST("xsks/xsksap_list")
@@ -59,11 +60,6 @@ object JwcApi {
   suspend fun courses(stuid: String, pwd: String): CourseData = withContext(Dispatchers.IO) {
     login(stuid, pwd)
     parseReportingError(service.courses(), ::parseCourses)
-  }
-
-  suspend fun gradeLevel(stuid: String, pwd: String): List<GradeLevelBean> = withContext(Dispatchers.IO) {
-    login(stuid, pwd)
-    parseReportingError(service.gradeLevel(), ::parseGradeLevel)
   }
 
   suspend fun exams(stuid: String, pwd: String): List<Exam> = withContext(Dispatchers.IO) {
@@ -185,21 +181,6 @@ object JwcApi {
   }
 
   private fun convertScore(s: String) = if (s == "0") "--" else s
-
-  private fun parseGradeLevel(string: String): List<GradeLevelBean> {
-    return Regex("""<td align="left">(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>""")
-        .findAll(string)
-        .mapTo(arrayListOf()) {
-          val groupValues = it.groupValues
-          GradeLevelBean(
-              courseName = groupValues[1],
-              writtenPartScore = convertScore(groupValues[2]),
-              computerPartScore = convertScore(groupValues[3]),
-              totalScore = groupValues[4],
-              time = groupValues[8]
-          )
-        }
-  }
 
   private fun parseExams(string: String): List<Exam> {
     return Regex("""<table id="dataList"[\s\S]*?</table>""")

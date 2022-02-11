@@ -17,6 +17,8 @@ kotlin {
         }
     }
 
+    val okioVersion = "3.0.0"
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -24,12 +26,14 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-cio:$ktorVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                implementation("com.squareup.okio:okio:$okioVersion")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation("com.squareup.okio:okio-fakefilesystem:$okioVersion")
             }
         }
         val androidMain by getting

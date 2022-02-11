@@ -6,6 +6,7 @@ import io.ktor.client.features.cookies.*
 import io.ktor.client.features.json.*
 
 internal val httpClient = HttpClient(CIO) {
+  followRedirects = false
   install(JsonFeature)
   install(HttpCookies) {
     storage = AcceptAllCookiesStorage()
