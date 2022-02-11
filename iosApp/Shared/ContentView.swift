@@ -23,7 +23,7 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 func callApi() {
-    LibraryApi.shared.borrowed(stuid: "", pwd: "") { result, error in
+    JwcApi.shared.gradeLevel(stuid: "", pwd: "") { result, error in
         print(result)
         print(error)
     }

@@ -1,6 +1,6 @@
 package com.njust.helper.shared.api
 
-class GradeLevelBean(
+data class GradeLevelBean(
     val courseName: String,
     val writtenPartScore: String,
     val computerPartScore: String,

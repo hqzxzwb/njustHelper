@@ -1,9 +1,10 @@
 package com.njust.helper.shared.api
 
-import com.njust.helper.shared.internal.httpClient
+import com.njust.helper.shared.internal.HttpClientHolder.httpClient
 import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.utils.io.errors.*
+import kotlinx.coroutines.CancellationException
 import okio.ByteString.Companion.encodeUtf8
 
 object JwcApi {
@@ -43,6 +44,7 @@ object JwcApi {
     return httpClient.get("${BASE_URL}kscj/djkscj_list")
   }
 
+  @Throws(ApiRelatedException::class, CancellationException::class)
   suspend fun gradeLevel(stuid: String, pwd: String): List<GradeLevelBean> {
     login(stuid, pwd)
     return parseReportingError(gradeLevel(), ::parseGradeLevel)
