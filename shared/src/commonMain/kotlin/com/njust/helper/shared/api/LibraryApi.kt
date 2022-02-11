@@ -1,13 +1,11 @@
 package com.njust.helper.shared.api
 
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.features.json.*
+import com.njust.helper.shared.internal.httpClient
+import com.njust.helper.shared.internal.jsonParser
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonArray
@@ -20,12 +18,6 @@ import kotlinx.serialization.json.put
 object LibraryApi {
   private const val BASE_URL_1 = "http://202.119.83.14:8080/uopac/opac/"
   private const val BASE_URL_2 = "http://mc.m.5read.com/"
-  private val client = HttpClient(CIO) {
-    install(JsonFeature)
-  }
-  private val parser = Json {
-    ignoreUnknownKeys = true
-  }
 
   @Throws(ApiRelatedException::class, CancellationException::class)
   suspend fun search(keyword: String): List<LibSearchBean> {
@@ -54,12 +46,12 @@ object LibraryApi {
       })
     }
 
-    val json: String = client.post("${BASE_URL_1}ajax_search_adv.php") {
+    val json: String = httpClient.post("${BASE_URL_1}ajax_search_adv.php") {
       contentType(ContentType.Application.Json)
       this.body = body
     }
     parseReportingError(json) {
-      val jsonTree = parser.decodeFromString<JsonObject>(json)
+      val jsonTree = jsonParser.decodeFromString<JsonObject>(json)
       return jsonTree["content"]!!.jsonArray.map {
         val obj = it.jsonObject
         LibSearchBean(
@@ -74,7 +66,7 @@ object LibraryApi {
 
   @Throws(ApiRelatedException::class, CancellationException::class)
   suspend fun detail(id: String): LibDetailData {
-    val text = client.get<String>("${BASE_URL_1}item.php") {
+    val text = httpClient.get<String>("${BASE_URL_1}item.php") {
       parameter("marc_no", id)
     }
     return parseReportingError(text, ::parseDetail)
@@ -149,7 +141,7 @@ object LibraryApi {
     stuid: String,
     pwd: String,
   ): String {
-    return client.get("${BASE_URL_2}apis/user/userLogin.jspx") {
+    return httpClient.get("${BASE_URL_2}apis/user/userLogin.jspx") {
       parameter("username", stuid)
       parameter("password", pwd)
       parameter("areaid", "274")
@@ -160,14 +152,14 @@ object LibraryApi {
   }
 
   private suspend fun borrowed2(): String {
-    return client.get("${BASE_URL_2}api/opac/showOpacLink.jspx?newSign")
+    return httpClient.get("${BASE_URL_2}api/opac/showOpacLink.jspx?newSign")
   }
 
   @Throws(ApiRelatedException::class, CancellationException::class)
   suspend fun borrowed(stuid: String, pwd: String): String {
     return borrowed1(stuid, pwd)
       .let { s ->
-        val o = parseReportingError(s) { parser.decodeFromString<JsonObject>(s) }
+        val o = parseReportingError(s) { jsonParser.decodeFromString<JsonObject>(s) }
         if (o["result"] != JsonPrimitive(1)) {
           throw LoginErrorException()
         } else {
@@ -176,7 +168,7 @@ object LibraryApi {
       }
       .let { s ->
         parseReportingError(s) {
-          parser.decodeFromString<JsonObject>(it)["opacUrl"]!!.jsonArray[0].jsonObject["opaclendurl"]!!.jsonPrimitive.content
+          jsonParser.decodeFromString<JsonObject>(it)["opacUrl"]!!.jsonArray[0].jsonObject["opaclendurl"]!!.jsonPrimitive.content
         }
       }
   }
