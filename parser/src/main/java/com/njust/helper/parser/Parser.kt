@@ -27,7 +27,7 @@ class Parser {
   private val trRegex = """<tr>[\s\S]+?</tr>""".toRegex()
   private val tdRegex = """<td.*>[\s\S]+?</td>""".toRegex()
   private val classroomRegex = """<nobr>([^<>]*)</nobr>""".toRegex()
-  private val contentRegex = """<div[^<>]*>([^<>]*)<br>([^<>()]*)\(([\d,-]+周)\).*</div>""".toRegex()
+  private val contentRegex = """<div[^<>]*>([^<>]*)<br>([^<>()]*)\(([\d,-]+周)\).*?</div>""".toRegex()
   private val sectionCount = 6
 
   fun parse(s: String): List<Item> {

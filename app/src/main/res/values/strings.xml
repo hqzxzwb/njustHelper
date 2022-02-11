@@ -40,7 +40,7 @@
     <string name="message_no_result_exam">暂无考试信息</string>
     <string name="message_no_result_libBorrow">您没有借阅任何图书</string>
     <string name="message_wrong_password">您输入了错误的用户名或密码</string>
-    <string name="message_account_passwords"><![CDATA[新生教务系统默认密码可能为学号，也可能为身份证后六位。\n图书馆默认密码为学号。]]></string>
+    <string name="message_account_passwords"><![CDATA[新生教务系统默认密码可能为学号或者"学号+njust"。\n图书馆默认密码为学号。]]></string>
     <string name="message_no_exams_found">您最近没有考试信息</string>
     <string name="title_courseQuery">蹭课查询</string>
     <string name="title_activity_exception">错误反馈</string>

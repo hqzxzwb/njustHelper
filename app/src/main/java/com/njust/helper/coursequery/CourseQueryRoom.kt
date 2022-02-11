@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 import androidx.room.*
 import com.zwb.commonlibs.utils.SingletonHolder
 
-private const val DB_VERSION = 6
+private const val DB_VERSION = 7
 private const val DB_NAME = "course_query"
 private const val TABLE_NAME = "main"
 
