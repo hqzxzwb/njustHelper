@@ -1,8 +1,11 @@
 package com.njust.helper.shared.api
 
-class ServerErrorException : Exception()
+open class ApiRelatedException(message: String? = null, cause: Throwable? = null) :
+  Exception(message, cause)
 
-class LoginErrorException : Exception()
+class ServerErrorException : ApiRelatedException()
+
+class LoginErrorException : ApiRelatedException()
 
 class ParseErrorException(message: String? = null, cause: Throwable? = null) :
-  Exception(message, cause)
+  ApiRelatedException(message, cause)
