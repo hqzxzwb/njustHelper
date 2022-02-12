@@ -5,14 +5,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
+import com.njust.helper.RemoteConfig
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.shared.api.LoginErrorException
 import com.njust.helper.shared.api.ParseErrorException
 import com.njust.helper.shared.api.ServerErrorException
-import com.njust.helper.api.jwc.Exam
-import com.njust.helper.api.jwc.JwcApi
+import com.njust.helper.shared.api.Exam
 import com.njust.helper.databinding.ActivityExamBinding
+import com.njust.helper.shared.api.JwcApi
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.SimpleListVm
 import kotlinx.coroutines.launch
@@ -30,7 +31,11 @@ class ExamsActivity : BaseActivity() {
   private fun refresh() {
     lifecycleScope.launch {
       try {
-        val result = JwcApi.exams(Prefs.getId(this@ExamsActivity), Prefs.getJwcPwd(this@ExamsActivity))
+        val result = JwcApi.exams(
+          Prefs.getId(this@ExamsActivity),
+          Prefs.getJwcPwd(this@ExamsActivity),
+          RemoteConfig.getTermId(),
+        )
         onDataReceived(result)
       } catch (e: Exception) {
         onError(e)

@@ -34,14 +34,6 @@ private interface JwcApiService {
       @Field("demo") body3: String = "",
       @Field("xnxq01id") body4: String = RemoteConfig.getTermId()
   ): String
-
-  @FormUrlEncoded
-  @POST("xsks/xsksap_list")
-  suspend fun exams(
-      @Field("xnxqid") xq: String,
-      @Field("xqlbmc") body1: String = "",
-      @Field("xqlb") body2: String = ""
-  ): String
 }
 
 object JwcApi {
@@ -51,11 +43,6 @@ object JwcApi {
   suspend fun courses(stuid: String, pwd: String): CourseData = withContext(Dispatchers.IO) {
     login(stuid, pwd)
     parseReportingError(service.courses(), ::parseCourses)
-  }
-
-  suspend fun exams(stuid: String, pwd: String): List<Exam> = withContext(Dispatchers.IO) {
-    login(stuid, pwd)
-    parseReportingError(service.exams(RemoteConfig.getTermId()), ::parseExams)
   }
 
   private suspend fun login(stuid: String, pwd: String) {
@@ -164,24 +151,5 @@ object JwcApi {
       "双" -> weeks.retainAll { it % 2 == 0 }
     }
     return weeks.joinToString(separator = " ", prefix = " ", postfix = " ")
-  }
-
-  private fun parseExams(string: String): List<Exam> {
-    return Regex("""<table id="dataList"[\s\S]*?</table>""")
-        .find(string)!!
-        .groupValues[0]
-        .let {
-          Regex("""<td.*?>(.*)</td>\s*<td>(.*?)</td>\s*<td>(.*?)</td>\s*<td>(.*?)</td>\s*</tr>""")
-              .findAll(it)
-        }
-        .mapTo(arrayListOf()) {
-          val groupValues = it.groupValues
-          Exam(
-              course = groupValues[1],
-              time = groupValues[2],
-              room = groupValues[3],
-              seat = groupValues[4]
-          )
-        }
   }
 }

@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.njust.helper.tools.SimpleListVm&lt;com.njust.helper.api.jwc.Exam&gt;" />
+            type="com.njust.helper.tools.SimpleListVm&lt;com.njust.helper.shared.api.Exam&gt;" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
