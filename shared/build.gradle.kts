@@ -36,7 +36,11 @@ kotlin {
                 implementation("com.squareup.okio:okio-fakefilesystem:$okioVersion")
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation("androidx.core:core:1.6.0")
+            }
+        }
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
@@ -71,7 +75,4 @@ android {
         minSdk = 21
         targetSdk = 31
     }
-}
-dependencies {
-  implementation("androidx.core:core:1.6.0")
 }
