@@ -83,12 +83,8 @@ object JwcApi {
     val locList = arrayListOf<CourseLoc>()
     val courseMap = hashMapOf<String, CourseInfo>()
     for (timeOfDay in 0 until 5) {
-      val loc = CourseLoc()
-      loc.sec1 = timeOfDay
-      loc.sec2 = timeOfDay
       val match1 = tdRegex.findAll(result1[timeOfDay]).toList()
       for (dayOfWeek in 0 until 7) {
-        loc.day = dayOfWeek
         val match2 = divRegex
             .find(match1[dayOfWeek].groupValues[0])!!
             .groupValues[0]
@@ -108,16 +104,26 @@ object JwcApi {
           }
           courseInfo.id = (courseInfo.name + courseInfo.teacher).encodeUtf8().md5().hex()
           courseMap[courseInfo.id] = courseInfo
-          loc.id = courseInfo.id
+          val week1: String
+          val week2: String
           weekRegex.find(item)
               .let { if (it == null) "1(周)" else it.groupValues[1] }
               .let {
-                loc.week1 = it
-                loc.week2 = analyseWeek(it)
+                week1 = it
+                week2 = analyseWeek(it)
               }
-          loc.classroom = classroomRegex.find(item)
+          val classroom = classroomRegex.find(item)
               .let { if (it == null) "" else it.groupValues[1] }
-          locList.add(loc.clone())
+          locList.add(CourseLoc(
+            rowid = 0,
+            id = courseInfo.id,
+            classroom = classroom,
+            week1 = week1,
+            week2 = week2,
+            sec1 = timeOfDay,
+            sec2 = timeOfDay,
+            day = dayOfWeek,
+          ))
         }
       }
     }
