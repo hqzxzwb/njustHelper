@@ -24,7 +24,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.njust.helper.R
 import com.njust.helper.compose.DarkActionBarAppCompatTheme
-import com.njust.helper.model.Link
+import com.njust.helper.shared.api.Link
 import com.zwb.commonlibs.utils.NoOpFunction
 
 @Composable

@@ -13,15 +13,10 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import com.njust.helper.R
-import com.njust.helper.api.sharedMoshi
-import com.njust.helper.model.Link
-import com.squareup.moshi.Types
-import kotlinx.coroutines.Dispatchers
+import com.njust.helper.shared.api.Link
+import com.njust.helper.shared.api.LinksApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okio.buffer
-import okio.source
 
 class LinksActivity : AppCompatActivity() {
   private val viewModel by viewModels<LinksViewModel>()
@@ -66,16 +61,12 @@ class LinksViewModel : ViewModel() {
       val data = parseLinks(context)
       items.emit(data)
     } catch (e: Exception) {
+      e.printStackTrace()
       snackbarHostState.showSnackbar(context.getString(R.string.message_net_error))
     }
     loading.emit(false)
   }
 
-  private suspend fun parseLinks(context: Context): List<Link> = withContext(Dispatchers.IO) {
-    context.resources.openRawResource(R.raw.links).use {
-      val type = Types.newParameterizedType(List::class.java, Link::class.java)
-      val adapter = sharedMoshi.adapter<List<Link>>(type)
-      adapter.fromJson(it.source().buffer())!!
-    }
-  }
+  private suspend fun parseLinks(context: Context): List<Link> =
+    LinksApi.links()
 }

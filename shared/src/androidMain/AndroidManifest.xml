@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.njust.helper.shared" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.njust.helper.shared">
+
+    <application>
+        <provider
+            android:name=".KMMBootProvider"
+            android:authorities="${applicationId}.shared.boot"
+            android:exported="false"
+            android:multiprocess="true" />
+    </application>
+</manifest>
