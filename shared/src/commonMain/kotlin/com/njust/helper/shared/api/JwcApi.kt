@@ -75,12 +75,14 @@ object JwcApi {
   }
 
   private fun parseGrade(string: String): Map<String, List<GradeItem>> {
-    val table = Regex("""<table id="dataList"[\s\S]*?</table>""")
-      .find(string)
-      ?: return emptyMap()
+    val tableStartIndex = string.indexOf("""<table id="dataList"""")
+    if (tableStartIndex < 0) return emptyMap()
+    val tableEndIndex = string.indexOf("</table>", tableStartIndex + 1)
+    if (tableEndIndex < 0) return emptyMap()
+    val table = string.substring(tableStartIndex, tableEndIndex)
     val tdRegex = Regex("""<td.*?>(.*?)</td>""")
     return Regex("""<tr>(\s*<td.*)+""")
-      .findAll(table.groupValues[0])
+      .findAll(table)
       .map {
         val groupValues = tdRegex.findAll(it.groupValues[0]).toList()
         val gradeText = groupValues[4].groupValues[1]
@@ -123,9 +125,11 @@ object JwcApi {
   }
 
   private fun parseExams(string: String): List<Exam> {
-    return Regex("""<table id="dataList"[\s\S]*?</table>""")
-      .find(string)!!
-      .groupValues[0]
+    val tableStartIndex = string.indexOf("""<table id="dataList"""")
+    if (tableStartIndex < 0) return emptyList()
+    val tableEndIndex = string.indexOf("</table>", tableStartIndex + 1)
+    if (tableEndIndex < 0) return emptyList()
+    return string.substring(tableStartIndex, tableEndIndex)
       .let {
         Regex("""<td.*?>(.*)</td>\s*<td>(.*?)</td>\s*<td>(.*?)</td>\s*<td>(.*?)</td>\s*</tr>""")
           .findAll(it)
