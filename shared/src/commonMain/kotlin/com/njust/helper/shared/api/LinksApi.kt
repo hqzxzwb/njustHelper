@@ -9,7 +9,7 @@ import okio.use
 
 object LinksApi {
   suspend fun links(): List<Link> {
-    return withContext(Dispatchers.Unconfined) {
+    return withContext(Dispatchers.Default) {
       val platform = Platform()
       platform.openAsset("links.json").use {
         jsonParser.decodeFromString(it.readUtf8())

@@ -1,9 +1,10 @@
 package com.njust.helper.shared.api
 
 import com.njust.helper.shared.internal.HttpClientHolder.httpClient
-import io.ktor.client.features.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.CancellationException
@@ -18,7 +19,7 @@ object JwcApi {
         parameter("USERNAME", stuid)
         parameter("PASSWORD", pwd.encodeUtf8().md5().hex().uppercase())
         parameter("method", "verify")
-      }
+      }.bodyAsText()
     } catch (e: Exception) {
       if (e is RedirectResponseException) {
         "success"
@@ -38,7 +39,7 @@ object JwcApi {
   @Throws(ApiRelatedException::class, CancellationException::class)
   suspend fun gradeLevel(stuid: String, pwd: String): List<GradeLevelBean> {
     login(stuid, pwd)
-    val html: String = httpClient.get("${BASE_URL}kscj/djkscj_list")
+    val html: String = httpClient.get("${BASE_URL}kscj/djkscj_list").bodyAsText()
     return parseReportingError(html, ::parseGradeLevel)
   }
 
@@ -70,7 +71,7 @@ object JwcApi {
         append("kcmc", "")
         append("xsfs", "max")
       },
-    )
+    ).bodyAsText()
     return parseReportingError(html, ::parseGrade)
   }
 
@@ -120,7 +121,7 @@ object JwcApi {
         append("xqlbmc", "")
         append("xqlb", "")
       }
-    )
+    ).bodyAsText()
     return parseReportingError(html, ::parseExams)
   }
 

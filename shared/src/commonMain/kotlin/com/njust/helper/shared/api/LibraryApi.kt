@@ -3,6 +3,7 @@ package com.njust.helper.shared.api
 import com.njust.helper.shared.internal.HttpClientHolder.httpClient
 import com.njust.helper.shared.internal.JsonParserHolder.jsonParser
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.decodeFromString
@@ -48,8 +49,8 @@ object LibraryApi {
 
     val json: String = httpClient.post("${BASE_URL_1}ajax_search_adv.php") {
       contentType(ContentType.Application.Json)
-      this.body = body
-    }
+      setBody(body)
+    }.bodyAsText()
     parseReportingError(json) {
       val jsonTree = jsonParser.decodeFromString<JsonObject>(json)
       return jsonTree["content"]!!.jsonArray.map {
@@ -66,9 +67,9 @@ object LibraryApi {
 
   @Throws(ApiRelatedException::class, CancellationException::class)
   suspend fun detail(id: String): LibDetailData {
-    val text = httpClient.get<String>("${BASE_URL_1}item.php") {
+    val text = httpClient.get("${BASE_URL_1}item.php") {
       parameter("marc_no", id)
-    }
+    }.bodyAsText()
     return parseReportingError(text, ::parseDetail)
   }
 
@@ -148,11 +149,11 @@ object LibraryApi {
       parameter("schoolid", "528")
       parameter("userType", "0")
       parameter("encPwd", "0")
-    }
+    }.bodyAsText()
   }
 
   private suspend fun borrowed2(): String {
-    return httpClient.get("${BASE_URL_2}api/opac/showOpacLink.jspx?newSign")
+    return httpClient.get("${BASE_URL_2}api/opac/showOpacLink.jspx?newSign").bodyAsText()
   }
 
   @Throws(ApiRelatedException::class, CancellationException::class)

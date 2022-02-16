@@ -18,14 +18,15 @@ kotlin {
     }
 
     val okioVersion = "3.0.0"
+    val ktorVersion = "2.0.0-beta-1"
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                val ktorVersion = "1.6.5"
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-cio:$ktorVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("com.squareup.okio:okio:$okioVersion")
             }
         }
@@ -39,6 +40,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("androidx.core:core:1.6.0")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
             }
         }
         val androidTest by getting {
@@ -54,6 +56,9 @@ kotlin {
             dependsOn(commonMain)
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
+            dependencies {
+                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+            }
             //iosSimulatorArm64Main.dependsOn(this)
         }
         val iosX64Test by getting
