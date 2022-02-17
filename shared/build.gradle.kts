@@ -2,6 +2,11 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("kotlinx-serialization")
+    id("dev.icerock.mobile.multiplatform-resources")
+}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "org.example.library"
 }
 
 kotlin {
@@ -29,6 +34,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("com.squareup.okio:okio:$okioVersion")
+                implementation("dev.icerock.moko:resources:0.18.0")
             }
         }
         val commonTest by getting {

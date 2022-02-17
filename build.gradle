@@ -9,11 +9,13 @@ buildscript {
         mavenCentral()
         google()
         maven { url 'https://repo1.maven.org/maven2/' }
+        gradlePluginPortal()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        classpath "dev.icerock.moko:resources-generator:0.18.0"
     }
 }
 allprojects {
