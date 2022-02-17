@@ -7,8 +7,8 @@ import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.errors.*
-import kotlinx.coroutines.CancellationException
 import okio.ByteString.Companion.encodeUtf8
+import kotlin.coroutines.cancellation.CancellationException
 
 object JwcApi {
   private const val BASE_URL = "http://202.119.81.113:9080/njlgdx/"
