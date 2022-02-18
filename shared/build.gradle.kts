@@ -6,7 +6,7 @@ plugins {
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "org.example.library"
+    multiplatformResourcesPackage = "com.njust.helper.shared"
 }
 
 kotlin {
