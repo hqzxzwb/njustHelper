@@ -31,7 +31,7 @@ dependencies {
     implementation 'com.umeng.umsdk:asms:1.2.3'// 必选
     implementation 'com.umeng.umsdk:apm:1.4.0' // 错误分析升级为独立SDK，看crash数据请一定集成，可选
 
-    debugRuntimeOnly 'com.squareup.leakcanary:leakcanary-android:2.0-beta-2'
+    debugRuntimeOnly 'com.squareup.leakcanary:leakcanary-android:2.8.1'
 
     // Integration with activities
     implementation 'androidx.activity:activity-compose:1.4.0'

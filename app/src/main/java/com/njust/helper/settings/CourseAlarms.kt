@@ -48,6 +48,6 @@ object CourseAlarms {
 
   private fun buildPendingIntent(context: Context): PendingIntent {
     val intent = Intent(ACTION_COURSE_ALARM)
-    return PendingIntent.getBroadcast(context, R.id.pending_request_code_course_alarm, intent, 0)
+    return PendingIntent.getBroadcast(context, R.id.pending_request_code_course_alarm, intent, PendingIntent.FLAG_IMMUTABLE)
   }
 }
