@@ -124,7 +124,7 @@ private fun Bottom(
   onClickUpdateLog: () -> Unit,
 ) {
   Divider(
-    color = MaterialTheme.colors.onSecondary.copy(alpha = 0.3F),
+    color = MaterialTheme.colors.onSecondary.copy(alpha = 0.2F),
     thickness = 1.dp,
   )
   Row(

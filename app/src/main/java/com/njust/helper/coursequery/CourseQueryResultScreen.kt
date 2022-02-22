@@ -29,7 +29,7 @@ import com.njust.helper.compose.DarkActionBarAppCompatTheme
 import com.zwb.commonlibs.utils.NoOpFunction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun CourseQueryResultScreen(
@@ -118,7 +118,7 @@ private fun Preview() {
         "week2",
       )
     ),
-    snackbarMessageFlow = flow { },
+    snackbarMessageFlow = flowOf(),
     onRefresh = NoOpFunction,
     onClickHome = NoOpFunction,
   )
