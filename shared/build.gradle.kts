@@ -24,15 +24,14 @@ kotlin {
     }
 
     val okioVersion = "3.0.0"
-    val ktorVersion = "2.0.0-beta-1"
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation(libs.ktor.core)
+                implementation(libs.ktor.serialization)
+                implementation(libs.ktor.content.negotiation)
+                implementation(libs.ktor.json)
                 implementation("com.squareup.okio:okio:$okioVersion")
                 implementation("dev.icerock.moko:resources:0.18.0")
                 implementation(libs.koin.core)
@@ -48,7 +47,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("androidx.core:core:1.6.0")
-                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                implementation(libs.ktor.okhttp)
                 implementation(libs.koin.android)
             }
         }
@@ -60,7 +59,7 @@ kotlin {
         }
         val iosMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+                implementation(libs.ktor.darwin)
             }
         }
         val iosTest by getting
