@@ -76,7 +76,7 @@ class ClassroomViewModel : ViewModel() {
     get() = noSectionChosenFlow
   var loading by mutableStateOf(false)
 
-  private val BUILDING_VALUE = arrayOf("Ⅳ", "II", "I")
+  private val BUILDING_VALUE = arrayOf("Ⅳ-", "II-", "I-", "江阴")
 
   suspend fun query(context: Context) {
     val sections = selectedSections.value
@@ -98,11 +98,7 @@ class ClassroomViewModel : ViewModel() {
       val ruledOutRooms = dao.queryClassroom(building, week, day, sections).toSet()
       val result = (allRooms - ruledOutRooms)
         .joinToString(separator = "  ") { it.replace('-', '_') }
-      if (result.isBlank()) {
-        context.getString(R.string.text_classroom_no_info)
-      } else {
-        result
-      }
+      result.ifBlank { context.getString(R.string.text_classroom_no_info) }
     } catch (e: Exception) {
       context.getString(R.string.text_classroom_fail)
     }
