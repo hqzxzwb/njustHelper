@@ -3,3 +3,5 @@ include ':lib'
 include ':app'
 
 include ':shared'
+
+enableFeaturePreview("VERSION_CATALOGS")

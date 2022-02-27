@@ -3,10 +3,5 @@
     package="com.njust.helper.shared">
 
     <application>
-        <provider
-            android:name=".KMMBootProvider"
-            android:authorities="${applicationId}.shared.boot"
-            android:exported="false"
-            android:multiprocess="true" />
     </application>
 </manifest>

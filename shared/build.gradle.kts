@@ -35,6 +35,7 @@ kotlin {
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("com.squareup.okio:okio:$okioVersion")
                 implementation("dev.icerock.moko:resources:0.18.0")
+                implementation(libs.koin.core)
             }
         }
         val commonTest by getting {
@@ -48,6 +49,7 @@ kotlin {
             dependencies {
                 implementation("androidx.core:core:1.6.0")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                implementation(libs.koin.android)
             }
         }
         val androidTest by getting {

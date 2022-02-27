@@ -46,6 +46,8 @@ dependencies {
     implementation "com.google.accompanist:accompanist-appcompat-theme:$accompanist_version"
     implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
 
+    implementation libs.koin.android
+
     // UI Tests
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.0'
     androidTestImplementation 'androidx.test:core:1.4.0'
