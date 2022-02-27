@@ -23,10 +23,9 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 func callApi() {
-    let cancellable = JwcApi.shared.gradeLevelIos(stuid: "", pwd: "") { result, error in
+    LinksApi.shared.links() { result, error in
         print(result)
         print(error)
     }
-    cancellable.cancel()
     print("cancelled")
 }

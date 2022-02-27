@@ -5,3 +5,7 @@ actual class Platform actual constructor() {
 }
 
 actual typealias Keep = androidx.annotation.Keep
+
+actual fun currentThreadName(): String {
+  return Thread.currentThread().name
+}

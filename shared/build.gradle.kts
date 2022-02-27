@@ -35,6 +35,7 @@ kotlin {
                 implementation("com.squareup.okio:okio:$okioVersion")
                 implementation("dev.icerock.moko:resources:0.18.0")
                 implementation(libs.koin.core)
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
             }
         }
         val commonTest by getting {

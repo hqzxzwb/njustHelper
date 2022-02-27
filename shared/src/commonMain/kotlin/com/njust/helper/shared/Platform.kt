@@ -5,3 +5,5 @@ expect class Platform() {
 }
 
 expect annotation class Keep()
+
+expect fun currentThreadName(): String
