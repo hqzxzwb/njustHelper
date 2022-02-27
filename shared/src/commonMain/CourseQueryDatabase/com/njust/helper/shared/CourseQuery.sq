@@ -1,0 +1,31 @@
+CREATE TABLE IF NOT EXISTS `CourseQueryItem` (
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  `classroom` TEXT NOT NULL,
+  `day` INTEGER AS Int NOT NULL,
+  `maskedDay` INTEGER AS Int NOT NULL,
+  `section` INTEGER AS Int NOT NULL,
+  `maskedSection` INTEGER AS Int NOT NULL,
+  `name` TEXT NOT NULL,
+  `teacher` TEXT NOT NULL,
+  `week1` TEXT NOT NULL,
+  `week2` TEXT NOT NULL
+);
+
+queryCourses:
+SELECT * FROM CourseQueryItem WHERE
+  name LIKE '%' || :name || '%' AND
+  teacher LIKE '%' || :teacher || '%' AND
+  maskedSection & :maskedSection AND
+  maskedDay & :maskedDay
+  LIMIT 200;
+
+queryClassroomSet:
+SELECT classroom FROM CourseQueryItem WHERE classroom LIKE :building || '%' GROUP BY classroom;
+
+queryClassroom:
+SELECT classroom FROM CourseQueryItem WHERE
+  (classroom LIKE :building || '%') AND
+  (week2 LIKE '% ' || :week || ' %') AND
+  (day == :day) AND
+  (maskedSection & :maskedSection)
+  GROUP BY classroom;

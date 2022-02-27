@@ -3,10 +3,18 @@ plugins {
     id("com.android.library")
     id("kotlinx-serialization")
     id("dev.icerock.mobile.multiplatform-resources")
+    id("com.squareup.sqldelight")
 }
 
 multiplatformResources {
     multiplatformResourcesPackage = "com.njust.helper.shared"
+}
+
+sqldelight {
+    database("CourseQueryDatabaseInternal") {
+        packageName = "com.njust.helper.shared.database.coursequery"
+        sourceFolders = listOf("CourseQueryDatabase")
+    }
 }
 
 kotlin {
@@ -35,6 +43,7 @@ kotlin {
                 implementation("com.squareup.okio:okio:$okioVersion")
                 implementation("dev.icerock.moko:resources:0.18.0")
                 implementation(libs.koin.core)
+                implementation(libs.sqldelight.coroutine)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
             }
         }
@@ -50,6 +59,7 @@ kotlin {
                 implementation("androidx.core:core:1.6.0")
                 implementation(libs.ktor.okhttp)
                 implementation(libs.koin.android)
+                implementation(libs.sqldelight.android)
             }
         }
         val androidTest by getting {
@@ -61,6 +71,7 @@ kotlin {
         val iosMain by getting {
             dependencies {
                 implementation(libs.ktor.darwin)
+                implementation(libs.sqldelight.native)
             }
         }
         val iosTest by getting

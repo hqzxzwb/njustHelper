@@ -1,6 +1,7 @@
 [versions]
 koin = "3.1.5"
 ktor = "2.0.0-beta-1"
+sqldelight = "1.5.3"
 
 [libraries]
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
@@ -11,5 +12,10 @@ ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
 ktor-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktor-okhttp = { module =  "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
-ktor-darwin = { module =  "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+
+sqldelight-p = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqldelight" }
+sqldelight-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight" }
+sqldelight-native = { module = "com.squareup.sqldelight:native-driver", version.ref = "sqldelight" }
+sqldelight-coroutine = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
