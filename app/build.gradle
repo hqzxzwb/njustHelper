@@ -106,7 +106,7 @@ android {
             buildConfigField "String", "BASE_URL", '"http://hqzxzwb.jisxu.top/njust0909/"'
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project.txt', 'kotlinx-serialization.pro'
             signingConfig signingConfigs.release
         }
     }
