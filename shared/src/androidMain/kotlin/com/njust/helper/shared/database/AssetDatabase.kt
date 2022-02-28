@@ -6,11 +6,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.FileOutputStream
 
-actual suspend fun prepareAssetDatabase(asset: AssetResource): Unit = withContext(Dispatchers.IO) {
+actual suspend fun prepareAssetDatabase(
+  asset: AssetResource,
+  forceRewrite: Boolean
+): Unit = withContext(Dispatchers.IO) {
   val path = asset.path
   val context = AppContext.appContext
   val destination = context.getDatabasePath(path)
-  if (destination.isFile) {
+  if (destination.isFile && !forceRewrite) {
     return@withContext
   }
   context.assets.open(path).use { inputStream ->

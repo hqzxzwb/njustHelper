@@ -8,7 +8,10 @@ import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 import platform.Foundation.URLByAppendingPathComponent
 
-actual suspend fun prepareAssetDatabase(asset: AssetResource): Unit = withContext(ioDispatcher) {
+actual suspend fun prepareAssetDatabase(
+  asset: AssetResource,
+  forceRewrite: Boolean,
+): Unit = withContext(ioDispatcher) {
   val assetUrl = asset.url
   val name = asset.fileName
   val documentsDirectory = NSFileManager.defaultManager.URLForDirectory(
@@ -19,7 +22,7 @@ actual suspend fun prepareAssetDatabase(asset: AssetResource): Unit = withContex
     error = null,
   )!!
   val destination = documentsDirectory.URLByAppendingPathComponent(name)!!
-  if (destination.isFileURL()) {
+  if (destination.isFileURL() && !forceRewrite) {
     return@withContext
   }
   NSFileManager.defaultManager.copyItemAtURL(assetUrl, destination, null)

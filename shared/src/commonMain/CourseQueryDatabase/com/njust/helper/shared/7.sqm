@@ -1,0 +1,2 @@
+ALTER TABLE `main`
+RENAME TO `CourseQueryItem`;
