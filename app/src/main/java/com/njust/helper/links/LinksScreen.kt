@@ -16,6 +16,8 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,16 +28,23 @@ import com.njust.helper.R
 import com.njust.helper.compose.DarkActionBarAppCompatTheme
 import com.njust.helper.shared.api.Link
 import com.zwb.commonlibs.utils.NoOpFunction
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun LinksScreen(
   isRefreshing: Boolean,
   items: List<Link>,
-  snackbarHostState: SnackbarHostState,
+  snackbarMessageFlow: Flow<String>,
   onRefresh: () -> Unit,
   onClickLink: (link: Link) -> Unit,
   onClickHome: () -> Unit,
 ) {
+  val snackbarHostState = remember { SnackbarHostState() }
+  LaunchedEffect(key1 = snackbarHostState, block = {
+    snackbarMessageFlow.collectLatest { snackbarHostState.showSnackbar(it) }
+  })
   DarkActionBarAppCompatTheme {
     Scaffold(
       modifier = Modifier.fillMaxSize(),
@@ -88,7 +97,7 @@ private fun Preview() {
   LinksScreen(
     isRefreshing = false,
     items = listOf(Link("Link A", "")),
-    snackbarHostState = SnackbarHostState(),
+    snackbarMessageFlow = flowOf(),
     onRefresh = NoOpFunction,
     onClickLink = NoOpFunction,
     onClickHome = NoOpFunction,

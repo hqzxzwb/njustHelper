@@ -41,7 +41,7 @@ kotlin {
                 implementation(libs.ktor.content.negotiation)
                 implementation(libs.ktor.json)
                 implementation("com.squareup.okio:okio:$okioVersion")
-                implementation("dev.icerock.moko:resources:0.18.0")
+                implementation(libs.moko.resources)
                 implementation(libs.koin.core)
                 implementation(libs.sqldelight.coroutine)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")

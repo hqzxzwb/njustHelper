@@ -2,6 +2,7 @@
 koin = "3.1.5"
 ktor = "2.0.0-beta-1"
 sqldelight = "1.5.3"
+moko-resources = "0.18.0"
 
 [libraries]
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
@@ -19,3 +20,5 @@ sqldelight-p = { module = "com.squareup.sqldelight:gradle-plugin", version.ref =
 sqldelight-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-native = { module = "com.squareup.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-coroutine = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+
+moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
