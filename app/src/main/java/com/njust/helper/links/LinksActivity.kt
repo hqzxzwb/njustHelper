@@ -7,8 +7,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
+import com.njust.helper.moko.resources.mapToString
 import com.njust.helper.shared.links.LinksModel
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class LinksActivity : AppCompatActivity() {
@@ -17,8 +17,7 @@ class LinksActivity : AppCompatActivity() {
   override fun onPostCreate(savedInstanceState: Bundle?) {
     super.onPostCreate(savedInstanceState)
 
-    val snackbarMessageFlow = model.vm.snackbarMessageFlow
-      .map { it.toString(this@LinksActivity) }
+    val snackbarMessageFlow = model.vm.snackbarMessageFlow.mapToString(this)
     setContent {
       LinksScreen(
         isRefreshing = model.vm.loading,
