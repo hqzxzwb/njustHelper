@@ -9,6 +9,7 @@ buildscript {
         mavenCentral()
         google()
         maven { url 'https://repo1.maven.org/maven2/' }
+        maven { url 'https://raw.githubusercontent.com/hqzxzwb/koru-ksp-publish/master/' }
         gradlePluginPortal()
     }
     dependencies {
@@ -24,5 +25,6 @@ allprojects {
         mavenCentral()
         google()
         maven { url 'https://repo1.maven.org/maven2/' }
+        maven { url 'https://raw.githubusercontent.com/hqzxzwb/koru-ksp-publish/master/' }
     }
 }

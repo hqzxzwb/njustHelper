@@ -4,6 +4,7 @@ plugins {
     id("kotlinx-serialization")
     id("dev.icerock.mobile.multiplatform-resources")
     id("com.squareup.sqldelight")
+    id("com.google.devtools.ksp") version "1.6.10-1.0.2"
 }
 
 multiplatformResources {
@@ -45,6 +46,7 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.sqldelight.coroutine)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+                implementation("com.github.hqzxzwb:koruksp:0.12.1")
             }
         }
         val commonTest by getting {
@@ -91,4 +93,11 @@ android {
         minSdk = 21
         targetSdk = 31
     }
+}
+
+dependencies {
+    val korukspProcessor = "com.github.hqzxzwb:koruksp-processor:0.12.1"
+    add("kspIosArm64", korukspProcessor)
+    add("kspIosX64", korukspProcessor)
+    add("kspIosSimulatorArm64", korukspProcessor)
 }

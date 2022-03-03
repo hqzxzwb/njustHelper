@@ -23,9 +23,12 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 func callApi() {
-    LinksApi.shared.links() { result, error in
-        print(result)
-        print(error)
-    }
+    let job = LinksApi.shared.linksNative()
+        .subscribe { result in
+            print(result)
+        } onThrow: { error in
+            print(error)
+        }
+    job.cancel(cause: nil)
     print("cancelled")
 }
