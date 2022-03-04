@@ -31,4 +31,6 @@ func callApi() {
         }
     job.cancel(cause: nil)
     print("cancelled")
+    let a = LibSearchBean(title: "String", author: "String", press: "String", id: "String")
+    print(a.description())
 }
