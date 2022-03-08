@@ -2,6 +2,7 @@ package com.njust.helper
 
 import android.app.Application
 import com.njust.helper.compose.composeObservablePropertyDelegateModule
+import com.njust.helper.course.data.courseDatabaseModule
 import com.njust.helper.settings.CourseAlarms
 import com.umeng.commonsdk.UMConfigure
 import org.koin.android.ext.koin.androidContext
@@ -13,7 +14,10 @@ class App : Application() {
 
     startKoin {
       androidContext(this@App)
-      modules(composeObservablePropertyDelegateModule)
+      modules(
+        composeObservablePropertyDelegateModule,
+        courseDatabaseModule,
+      )
     }
 
     CourseAlarms.registerCourseAlarm(this)

@@ -17,9 +17,6 @@ import com.njust.helper.R
 import com.njust.helper.RemoteConfig
 import com.njust.helper.account.AccountActivity
 import com.njust.helper.activity.BaseActivity
-import com.njust.helper.shared.api.LoginErrorException
-import com.njust.helper.shared.api.ParseErrorException
-import com.njust.helper.shared.api.ServerErrorException
 import com.njust.helper.api.jwc.CourseData
 import com.njust.helper.api.jwc.JwcApi
 import com.njust.helper.course.data.CourseDatabase
@@ -29,23 +26,29 @@ import com.njust.helper.course.week.CourseWeekFragment
 import com.njust.helper.databinding.ActivityCourseBinding
 import com.njust.helper.main.MainActivity
 import com.njust.helper.model.Course
+import com.njust.helper.shared.api.LoginErrorException
+import com.njust.helper.shared.api.ParseErrorException
+import com.njust.helper.shared.api.ServerErrorException
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.get
+import org.koin.core.component.KoinComponent
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CourseActivity :
-    BaseActivity(),
-    DatePickerFragment.Listener,
-    CourseDayFragment.Listener,
-    PickWeekFragment.Listener,
-    CourseWeekFragment.Listener,
-    CourseActivityClickHandler {
+  BaseActivity(),
+  DatePickerFragment.Listener,
+  CourseDayFragment.Listener,
+  PickWeekFragment.Listener,
+  CourseWeekFragment.Listener,
+  CourseActivityClickHandler,
+  KoinComponent {
   private val termStartTime: Long = RemoteConfig.getTermStartTime()
   private var currentDay: Int = 0
   private var currentWeek: Int = 0
@@ -72,7 +75,7 @@ class CourseActivity :
 
     lifecycleScope.launch {
       val mainList = withContext(Dispatchers.IO) {
-        CourseDatabase.getInstance(this@CourseActivity).getCourses()
+        get<CourseDatabase>().getCourses()
       }
       if (mainList.isEmpty()) {
         //课表为空时，提示导入课表
@@ -132,7 +135,7 @@ class CourseActivity :
             .setTitle("清空课表")
             .setMessage("确认删除所有课程？")
             .setPositiveButton("确认删除") { _, _ ->
-              CourseDatabase.getInstance(this@CourseActivity).clear()
+              get<CourseDatabase>().clear()
               refresh()
             }
             .setNegativeButton(android.R.string.cancel, null)
@@ -175,7 +178,7 @@ class CourseActivity :
   }
 
   private fun onImportSuccess(courseData: CourseData) {
-    val dao = CourseDatabase.getInstance(this)
+    val dao = get<CourseDatabase>()
     dao.clear()
     if (courseData.infos.size > 0) {
       dao.add(courseData.infos, courseData.locs)
@@ -202,7 +205,7 @@ class CourseActivity :
   }
 
   private fun refresh() {
-    val mainList = CourseDatabase.getInstance(this).getCourses()
+    val mainList = get<CourseDatabase>().getCourses()
     dayFragment.setList(mainList)
     weekFragment.setList(mainList)
     dayFragment.setStartTime(termStartTime)

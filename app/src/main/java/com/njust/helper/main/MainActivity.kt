@@ -30,9 +30,11 @@ import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
 import com.njust.helper.update.UpdateLogDialog
+import org.koin.android.ext.android.get
+import org.koin.core.component.KoinComponent
 import java.util.*
 
-class MainActivity : BaseActivity(), MainActivityClickHandler {
+class MainActivity : BaseActivity(), MainActivityClickHandler, KoinComponent {
   private val viewModel = MainViewModel(this)
 
   override fun layout() {
@@ -154,7 +156,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler {
     if (minus < 0L) {
       day--
     }
-    val manager = CourseDatabase.getInstance(this)
+    val manager = get<CourseDatabase>()
     val list1 = manager.getCourses(day)
     val list2 = manager.getCourses(day + 1)
     val list3 = manager.getCourses(day + 2)

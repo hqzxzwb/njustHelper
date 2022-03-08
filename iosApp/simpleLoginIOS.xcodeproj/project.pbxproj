@@ -148,7 +148,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C82D9ADA27A17EEC00B6AFA1 /* Build configuration list for PBXNativeTarget "simpleLoginIOS (iOS)" */;
 			buildPhases = (
-				C82D9AE627A17FC300B6AFA1 /* ShellScript */,
+				C82D9AE627A17FC300B6AFA1 /* Run Script */,
 				C82D9AAD27A17EEC00B6AFA1 /* Sources */,
 				C82D9AAE27A17EEC00B6AFA1 /* Frameworks */,
 				C82D9AAF27A17EEC00B6AFA1 /* Resources */,
@@ -296,7 +296,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C82D9AE627A17FC300B6AFA1 /* ShellScript */ = {
+		C82D9AE627A17FC300B6AFA1 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -305,6 +305,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
