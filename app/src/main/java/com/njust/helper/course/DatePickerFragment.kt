@@ -14,7 +14,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    time = arguments!!.getLong(DATE_PICKER_ARG_TIME)
+    time = requireArguments().getLong(DATE_PICKER_ARG_TIME)
   }
 
   override fun onAttach(context: Context) {
@@ -31,7 +31,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
     val calendar = Calendar.getInstance()
     calendar.timeInMillis = time
     return DatePickerDialog(
-        context!!,
+        requireContext(),
         this,
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),

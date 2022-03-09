@@ -5,14 +5,15 @@ apply plugin: 'kotlin-kapt'
 dependencies {
     implementation fileTree(include: '*.jar', dir: 'libs')
     implementation project(':lib')
+    implementation project(':shared')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
 
-    implementation 'androidx.preference:preference-ktx:1.1.1'
-    implementation group: 'androidx.constraintlayout', name: 'constraintlayout', version: '2.1.2'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation group: 'androidx.constraintlayout', name: 'constraintlayout', version: '2.1.3'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
 
-    def room_version = '2.3.0'
+    def room_version = '2.4.1'
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -21,11 +22,7 @@ dependencies {
 
     implementation "com.squareup.okhttp3:okhttp-urlconnection:4.2.1"
 
-    def moshi_version = '1.12.0'
-    implementation("com.squareup.moshi:moshi:$moshi_version")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi_version")
-
-    implementation "com.squareup.okio:okio:2.10.0"
+    implementation "com.squareup.okio:okio:3.0.0"
 
     implementation 'com.umeng.umsdk:common:9.4.0'// 必选
     implementation 'com.umeng.umsdk:asms:1.2.3'// 必选
@@ -36,20 +33,24 @@ dependencies {
     // Integration with activities
     implementation 'androidx.activity:activity-compose:1.4.0'
     // Compose Material Design
-    implementation 'androidx.compose.material:material:1.0.5'
+    implementation 'androidx.compose.material:material:1.1.0'
     // Animations
-    implementation 'androidx.compose.animation:animation:1.0.5'
+    implementation 'androidx.compose.animation:animation:1.1.0'
     // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.0.5'
+    implementation 'androidx.compose.ui:ui-tooling:1.1.0'
     // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
 
     // When using a AppCompat theme
-    implementation "com.google.accompanist:accompanist-appcompat-theme:0.16.0"
-    implementation "com.google.accompanist:accompanist-swiperefresh:0.16.0"
+    def accompanist_version = "0.23.0"
+    implementation "com.google.accompanist:accompanist-appcompat-theme:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
+
+    implementation libs.koin.android
+    implementation libs.moko.resources
 
     // UI Tests
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.5'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.0'
     androidTestImplementation 'androidx.test:core:1.4.0'
 
     testImplementation 'junit:junit:4.13.2'
@@ -106,7 +107,7 @@ android {
             buildConfigField "String", "BASE_URL", '"http://hqzxzwb.jisxu.top/njust0909/"'
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project.txt', 'moshi.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project.txt', 'kotlinx-serialization.pro'
             signingConfig signingConfigs.release
         }
     }
@@ -126,6 +127,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.0.5'
+        kotlinCompilerExtensionVersion '1.1.0'
     }
 }

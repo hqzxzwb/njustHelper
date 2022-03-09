@@ -14,8 +14,10 @@ import com.njust.helper.tools.Constants
 import com.njust.helper.tools.Prefs
 import com.njust.helper.tools.TimeUtil
 import com.zwb.commonlibs.utils.requireSystemService
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-class CourseAlarmReceiver : BroadcastReceiver() {
+class CourseAlarmReceiver : BroadcastReceiver(), KoinComponent {
   override fun onReceive(context: Context, intent: Intent?) {
     if (intent?.action != CourseAlarms.ACTION_COURSE_ALARM) {
       return
@@ -36,13 +38,13 @@ class CourseAlarmReceiver : BroadcastReceiver() {
     var notiString: String? = null
     when (mode) {
       CourseAlarms.ALARM_MODE_PREVIOUS_DAY -> {
-        count = CourseDatabase.getInstance(context).countCourses(++day)
+        count = get<CourseDatabase>().countCourses(++day)
         if (count > 0) {
           notiString = "明天有" + count + "节课，点击查看"
         }
       }
       CourseAlarms.ALARM_MODE_CURRENT_DAY -> {
-        count = CourseDatabase.getInstance(context).countCourses(day)
+        count = get<CourseDatabase>().countCourses(day)
         if (count > 0) {
           notiString = "今天有" + count + "节课，点击查看"
         }

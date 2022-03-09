@@ -1,8 +1,6 @@
 package com.njust.helper.classroom
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Checkbox
 import androidx.compose.material.FloatingActionButton
@@ -94,7 +93,7 @@ fun ClassroomScreen(
         ) {
           Column(
             modifier = Modifier
-              .scrollable(state = rememberScrollState(), orientation = Orientation.Vertical)
+              .verticalScroll(state = rememberScrollState())
           ) {
             Spacer(modifier = Modifier.height(16.dp))
             ControlCard(
@@ -160,6 +159,11 @@ private fun ControlCard(
           selectedBuildingState = selectedBuildingState,
           index = 2,
           text = stringResource(R.string.radio_classroom_building_one)
+        )
+        BuildingRadioButton(
+          selectedBuildingState = selectedBuildingState,
+          index = 3,
+          text = stringResource(R.string.radio_classroom_building_jiangyin)
         )
       }
       Label(text = stringResource(R.string.label_classroom_section))

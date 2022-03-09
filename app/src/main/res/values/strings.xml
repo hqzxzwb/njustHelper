@@ -8,6 +8,7 @@
     <string name="button_course_pick_week">第%1$d周</string>
     <string name="label_classroom_buildings">教学楼：</string>
     <string name="radio_classroom_building_four">四工</string>
+    <string name="radio_classroom_building_jiangyin">江阴</string>
     <string name="radio_classroom_building_one">一工</string>
     <string name="radio_classroom_building_two">二工</string>
     <string name="label_classroom_date">日期：</string>

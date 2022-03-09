@@ -2,14 +2,18 @@ package com.njust.helper.api.jwc
 
 import com.njust.helper.RemoteConfig
 import com.njust.helper.api.Apis
-import com.njust.helper.api.LoginErrorException
-import com.njust.helper.api.ServerErrorException
-import com.njust.helper.api.parseReportingError
+import com.njust.helper.shared.api.LoginErrorException
+import com.njust.helper.shared.api.ServerErrorException
+import com.njust.helper.shared.api.parseReportingError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okio.ByteString.Companion.encodeUtf8
 import retrofit2.HttpException
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 import java.io.IOException
 import java.util.*
 
@@ -30,26 +34,6 @@ private interface JwcApiService {
       @Field("demo") body3: String = "",
       @Field("xnxq01id") body4: String = RemoteConfig.getTermId()
   ): String
-
-  @GET("kscj/djkscj_list")
-  suspend fun gradeLevel(): String
-
-  @FormUrlEncoded
-  @POST("xsks/xsksap_list")
-  suspend fun exams(
-      @Field("xnxqid") xq: String,
-      @Field("xqlbmc") body1: String = "",
-      @Field("xqlb") body2: String = ""
-  ): String
-
-  @FormUrlEncoded
-  @POST("kscj/cjcx_list")
-  suspend fun grade(
-      @Field("kksj") body1: String = "",
-      @Field("kcxz") body2: String = "",
-      @Field("kcmc") body3: String = "",
-      @Field("xsfs") body4: String = "max"
-  ): String
 }
 
 object JwcApi {
@@ -59,21 +43,6 @@ object JwcApi {
   suspend fun courses(stuid: String, pwd: String): CourseData = withContext(Dispatchers.IO) {
     login(stuid, pwd)
     parseReportingError(service.courses(), ::parseCourses)
-  }
-
-  suspend fun gradeLevel(stuid: String, pwd: String): List<GradeLevelBean> = withContext(Dispatchers.IO) {
-    login(stuid, pwd)
-    parseReportingError(service.gradeLevel(), ::parseGradeLevel)
-  }
-
-  suspend fun exams(stuid: String, pwd: String): List<Exam> = withContext(Dispatchers.IO) {
-    login(stuid, pwd)
-    parseReportingError(service.exams(RemoteConfig.getTermId()), ::parseExams)
-  }
-
-  suspend fun grade(stuid: String, pwd: String): Map<String, List<GradeItem>> = withContext(Dispatchers.IO) {
-    login(stuid, pwd)
-    parseReportingError(service.grade(), ::parseGrade)
   }
 
   private suspend fun login(stuid: String, pwd: String) {
@@ -114,12 +83,8 @@ object JwcApi {
     val locList = arrayListOf<CourseLoc>()
     val courseMap = hashMapOf<String, CourseInfo>()
     for (timeOfDay in 0 until 5) {
-      val loc = CourseLoc()
-      loc.sec1 = timeOfDay
-      loc.sec2 = timeOfDay
       val match1 = tdRegex.findAll(result1[timeOfDay]).toList()
       for (dayOfWeek in 0 until 7) {
-        loc.day = dayOfWeek
         val match2 = divRegex
             .find(match1[dayOfWeek].groupValues[0])!!
             .groupValues[0]
@@ -139,16 +104,26 @@ object JwcApi {
           }
           courseInfo.id = (courseInfo.name + courseInfo.teacher).encodeUtf8().md5().hex()
           courseMap[courseInfo.id] = courseInfo
-          loc.id = courseInfo.id
+          val week1: String
+          val week2: String
           weekRegex.find(item)
               .let { if (it == null) "1(周)" else it.groupValues[1] }
               .let {
-                loc.week1 = it
-                loc.week2 = analyseWeek(it)
+                week1 = it
+                week2 = analyseWeek(it)
               }
-          loc.classroom = classroomRegex.find(item)
+          val classroom = classroomRegex.find(item)
               .let { if (it == null) "" else it.groupValues[1] }
-          locList.add(loc.clone())
+          locList.add(CourseLoc(
+            rowid = 0,
+            id = courseInfo.id,
+            classroom = classroom,
+            week1 = week1,
+            week2 = week2,
+            sec1 = timeOfDay,
+            sec2 = timeOfDay,
+            day = dayOfWeek,
+          ))
         }
       }
     }
@@ -182,76 +157,5 @@ object JwcApi {
       "双" -> weeks.retainAll { it % 2 == 0 }
     }
     return weeks.joinToString(separator = " ", prefix = " ", postfix = " ")
-  }
-
-  private fun convertScore(s: String) = if (s == "0") "--" else s
-
-  private fun parseGradeLevel(string: String): List<GradeLevelBean> {
-    return Regex("""<td align="left">(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>\s*<td>(.*)</td>""")
-        .findAll(string)
-        .mapTo(arrayListOf()) {
-          val groupValues = it.groupValues
-          GradeLevelBean(
-              courseName = groupValues[1],
-              writtenPartScore = convertScore(groupValues[2]),
-              computerPartScore = convertScore(groupValues[3]),
-              totalScore = groupValues[4],
-              time = groupValues[8]
-          )
-        }
-  }
-
-  private fun parseExams(string: String): List<Exam> {
-    return Regex("""<table id="dataList"[\s\S]*?</table>""")
-        .find(string)!!
-        .groupValues[0]
-        .let {
-          Regex("""<td.*?>(.*)</td>\s*<td>(.*?)</td>\s*<td>(.*?)</td>\s*<td>(.*?)</td>\s*</tr>""")
-              .findAll(it)
-        }
-        .mapTo(arrayListOf()) {
-          val groupValues = it.groupValues
-          Exam(
-              course = groupValues[1],
-              time = groupValues[2],
-              room = groupValues[3],
-              seat = groupValues[4]
-          )
-        }
-  }
-
-  private fun parseGrade(string: String): Map<String, List<GradeItem>> {
-    val table = Regex("""<table id="dataList"[\s\S]*?</table>""")
-        .find(string)
-        ?: return emptyMap()
-    val tdRegex = Regex("""<td.*?>(.*?)</td>""")
-    return Regex("""<tr>(\s*<td.*)+""")
-        .findAll(table.groupValues[0])
-        .map {
-          val groupValues = tdRegex.findAll(it.groupValues[0]).toList()
-          val gradeText = groupValues[4].groupValues[1]
-          GradeItem(
-              termName = groupValues[1].groupValues[1],
-              courseName = groupValues[3].groupValues[1],
-              weight = groupValues[6].groupValues[1].toDouble(),
-              gradeText = gradeText,
-              grade = gradeTextToDouble(gradeText),
-              type = groupValues[9].groupValues[1]
-          )
-        }
-        .groupBy { it.termName }
-  }
-
-  private fun gradeTextToDouble(s: String): Double {
-    return when (s) {
-      "优秀" -> 90.0
-      "良好" -> 80.0
-      "中等" -> 70.0
-      "合格", "及格", "通过" -> 60.0
-      "不通过", "不及格", "不合格" -> 50.0
-      "免修" -> 89.0
-      "请评教" -> -1.0
-      else -> s.toDouble()
-    }
   }
 }

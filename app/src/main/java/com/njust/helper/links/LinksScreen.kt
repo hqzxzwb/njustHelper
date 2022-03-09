@@ -16,7 +16,10 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,18 +27,25 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.njust.helper.R
 import com.njust.helper.compose.DarkActionBarAppCompatTheme
-import com.njust.helper.model.Link
+import com.njust.helper.shared.api.Link
+import com.njust.helper.shared.links.LinksViewModel
 import com.zwb.commonlibs.utils.NoOpFunction
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LinksScreen(
-  isRefreshing: Boolean,
-  items: List<Link>,
-  snackbarHostState: SnackbarHostState,
+  vm: LinksViewModel,
   onRefresh: () -> Unit,
   onClickLink: (link: Link) -> Unit,
   onClickHome: () -> Unit,
 ) {
+  val snackbarHostState = remember { SnackbarHostState() }
+  val context = LocalContext.current
+  LaunchedEffect(key1 = snackbarHostState, block = {
+    vm.snackbarMessageFlow.collectLatest {
+      snackbarHostState.showSnackbar(it.toString(context))
+    }
+  })
   DarkActionBarAppCompatTheme {
     Scaffold(
       modifier = Modifier.fillMaxSize(),
@@ -55,13 +65,13 @@ fun LinksScreen(
     ) {
       SwipeRefresh(
         modifier = Modifier.fillMaxSize(),
-        state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+        state = rememberSwipeRefreshState(isRefreshing = vm.loading),
         onRefresh = onRefresh,
       ) {
         LazyColumn(
           modifier = Modifier.fillMaxSize(),
         ) {
-          items(items, null) { link ->
+          items(vm.items, null) { link ->
             LinkItem(link = link, onClickLink = onClickLink)
           }
         }
@@ -86,9 +96,9 @@ private fun LinkItem(link: Link, onClickLink: (link: Link) -> Unit) {
 @Preview
 private fun Preview() {
   LinksScreen(
-    isRefreshing = false,
-    items = listOf(Link("Link A", "")),
-    snackbarHostState = SnackbarHostState(),
+    LinksViewModel().apply {
+      items = listOf(Link("Link A", ""))
+    },
     onRefresh = NoOpFunction,
     onClickLink = NoOpFunction,
     onClickHome = NoOpFunction,

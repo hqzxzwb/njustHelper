@@ -1,14 +1,30 @@
 package com.njust.helper.course.data
 
-import android.content.Context
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Database
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.njust.helper.api.jwc.CourseInfo
 import com.njust.helper.api.jwc.CourseLoc
 import com.njust.helper.model.Course
-import com.zwb.commonlibs.utils.SingletonHolder
+import org.koin.android.ext.koin.androidApplication
+import org.koin.dsl.module
 
 private const val DB_NAME = "course.db"
 private const val DB_VERSION = 5
+
+val courseDatabaseModule = module {
+  single {
+    val context = androidApplication()
+    Room.databaseBuilder(context, CourseDatabase::class.java, DB_NAME)
+      .allowMainThreadQueries()
+      .fallbackToDestructiveMigrationFrom(1, 2, 3, 4)
+      .addMigrations()
+      .build()
+  }
+}
 
 @Database(entities = [CourseLoc::class, CourseInfo::class], version = DB_VERSION)
 abstract class CourseDatabase : RoomDatabase() {
@@ -33,16 +49,6 @@ abstract class CourseDatabase : RoomDatabase() {
   }
 
   fun countCourses(dayOfSemester: Int): Int = getCourses(dayOfSemester).size
-
-  companion object : SingletonHolder<CourseDatabase, Context>() {
-    override fun createInstance(param: Context): CourseDatabase {
-      return Room.databaseBuilder(param.applicationContext, CourseDatabase::class.java, DB_NAME)
-          .allowMainThreadQueries()
-          .fallbackToDestructiveMigrationFrom(1, 2, 3, 4)
-          .addMigrations()
-          .build()
-    }
-  }
 }
 
 @Dao

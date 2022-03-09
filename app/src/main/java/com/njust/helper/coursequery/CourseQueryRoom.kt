@@ -34,12 +34,12 @@ interface CourseQueryDao {
     maskedDay: Int
   ): List<CourseQueryItem>
 
-  @Query("select classroom from main where classroom like :building || '-%' group by classroom")
+  @Query("select classroom from main where classroom like :building || '%' group by classroom")
   suspend fun queryClassroomSet(
     building: String
   ): List<String>
 
-  @Query("select classroom from main where (classroom like :building || '-%') and (week2 like '% ' || :week || ' %') and (day == :day) and (maskedSection & :maskedSection) group by classroom")
+  @Query("select classroom from main where (classroom like :building || '%') and (week2 like '% ' || :week || ' %') and (day == :day) and (maskedSection & :maskedSection) group by classroom")
   suspend fun queryClassroom(
     building: String,
     week: Int,
