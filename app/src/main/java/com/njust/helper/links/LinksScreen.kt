@@ -30,9 +30,10 @@ import com.njust.helper.compose.DarkActionBarAppCompatTheme
 import com.njust.helper.compose.emitOnAction
 import com.njust.helper.shared.api.CommonLink
 import com.njust.helper.shared.links.LinksViewModel
-import com.njust.helper.shared.links.newLinksViewModel
 import com.zwb.commonlibs.utils.NoOpFunction
 import kotlinx.coroutines.flow.collectLatest
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
 @Composable
 fun LinksScreen(
@@ -96,10 +97,12 @@ private fun LinkItem(link: CommonLink, onClickLink: (link: CommonLink) -> Unit) 
 @Composable
 @Preview
 private fun Preview() {
-  LinksScreen(
-    newLinksViewModel().apply {
+  val vm = object : KoinComponent {}.get<LinksViewModel>()
+    .apply {
       items = listOf(CommonLink("Link A", ""))
-    },
+    }
+  LinksScreen(
+    vm,
     onClickLink = NoOpFunction,
     onClickHome = NoOpFunction,
   )

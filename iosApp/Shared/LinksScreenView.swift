@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  Shared
-//
-//  Created by zhuwenbo on 2022/1/26.
-//
-
 import SwiftUI
 import shared
 
@@ -26,6 +19,11 @@ struct LinksScreenView: View {
             .navigationTitle("常用链接")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .refreshable {
+            Task {
+                try await vm.onRefreshAction.emit(value: KotlinUnit.shared)
+            }
+        }
         .onAppear(perform: {
             model.collectEventsNative()
                 .subscribe(onSuccess: {_ in}, onThrow: {_ in})
@@ -35,7 +33,7 @@ struct LinksScreenView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct LinksScreenView_Previews: PreviewProvider {
     static var previews: some View {
         LinksScreenView()
     }
