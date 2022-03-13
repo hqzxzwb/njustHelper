@@ -19,7 +19,6 @@ class LinksActivity : AppCompatActivity() {
     setContent {
       LinksScreen(
         vm = model.vm,
-        onRefresh = { load() },
         onClickLink = { link ->
           val intent = Intent(Intent.ACTION_VIEW)
           intent.data = link.url.toUri()
@@ -27,6 +26,9 @@ class LinksActivity : AppCompatActivity() {
         },
         onClickHome = { finish() },
       )
+    }
+    lifecycleScope.launch {
+      model.collectEvents()
     }
     load()
   }

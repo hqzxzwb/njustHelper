@@ -23,12 +23,14 @@ kotlin {
     ios {
         binaries.framework {
             baseName = "shared"
+            export(libs.koin.core)
         }
     }
     // Note: iosSimulatorArm64 target requires that all dependencies have M1 support
     iosSimulatorArm64 {
         binaries.framework {
             baseName = "shared"
+            export(libs.koin.core)
         }
     }
 
@@ -43,7 +45,7 @@ kotlin {
                 implementation(libs.ktor.json)
                 implementation("com.squareup.okio:okio:$okioVersion")
                 implementation(libs.moko.resources)
-                implementation(libs.koin.core)
+                api(libs.koin.core)
                 implementation(libs.sqldelight.coroutine)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
                 implementation("com.github.hqzxzwb:koruksp:0.12.1")

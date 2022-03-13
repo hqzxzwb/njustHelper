@@ -27,16 +27,17 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.njust.helper.R
 import com.njust.helper.compose.DarkActionBarAppCompatTheme
-import com.njust.helper.shared.api.Link
+import com.njust.helper.compose.emitOnAction
+import com.njust.helper.shared.api.CommonLink
 import com.njust.helper.shared.links.LinksViewModel
+import com.njust.helper.shared.links.newLinksViewModel
 import com.zwb.commonlibs.utils.NoOpFunction
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LinksScreen(
   vm: LinksViewModel,
-  onRefresh: () -> Unit,
-  onClickLink: (link: Link) -> Unit,
+  onClickLink: (link: CommonLink) -> Unit,
   onClickHome: () -> Unit,
 ) {
   val snackbarHostState = remember { SnackbarHostState() }
@@ -66,7 +67,7 @@ fun LinksScreen(
       SwipeRefresh(
         modifier = Modifier.fillMaxSize(),
         state = rememberSwipeRefreshState(isRefreshing = vm.loading),
-        onRefresh = onRefresh,
+        onRefresh = vm.onRefreshAction.emitOnAction(),
       ) {
         LazyColumn(
           modifier = Modifier.fillMaxSize(),
@@ -81,7 +82,7 @@ fun LinksScreen(
 }
 
 @Composable
-private fun LinkItem(link: Link, onClickLink: (link: Link) -> Unit) {
+private fun LinkItem(link: CommonLink, onClickLink: (link: CommonLink) -> Unit) {
   Button(
     modifier = Modifier
       .fillMaxWidth()
@@ -96,10 +97,9 @@ private fun LinkItem(link: Link, onClickLink: (link: Link) -> Unit) {
 @Preview
 private fun Preview() {
   LinksScreen(
-    LinksViewModel().apply {
-      items = listOf(Link("Link A", ""))
+    newLinksViewModel().apply {
+      items = listOf(CommonLink("Link A", ""))
     },
-    onRefresh = NoOpFunction,
     onClickLink = NoOpFunction,
     onClickHome = NoOpFunction,
   )

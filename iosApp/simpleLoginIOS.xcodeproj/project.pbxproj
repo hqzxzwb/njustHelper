@@ -13,8 +13,8 @@
 		C82D9AD127A17EEC00B6AFA1 /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82D9AD027A17EEC00B6AFA1 /* Tests_macOSLaunchTests.swift */; };
 		C82D9AD227A17EEC00B6AFA1 /* simpleLoginIOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82D9AAA27A17EEB00B6AFA1 /* simpleLoginIOSApp.swift */; };
 		C82D9AD327A17EEC00B6AFA1 /* simpleLoginIOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82D9AAA27A17EEB00B6AFA1 /* simpleLoginIOSApp.swift */; };
-		C82D9AD427A17EEC00B6AFA1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82D9AAB27A17EEB00B6AFA1 /* ContentView.swift */; };
-		C82D9AD527A17EEC00B6AFA1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82D9AAB27A17EEB00B6AFA1 /* ContentView.swift */; };
+		C82D9AD427A17EEC00B6AFA1 /* LinksScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82D9AAB27A17EEB00B6AFA1 /* LinksScreenView.swift */; };
+		C82D9AD527A17EEC00B6AFA1 /* LinksScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82D9AAB27A17EEB00B6AFA1 /* LinksScreenView.swift */; };
 		C82D9AD627A17EEC00B6AFA1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C82D9AAC27A17EEC00B6AFA1 /* Assets.xcassets */; };
 		C82D9AD727A17EEC00B6AFA1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C82D9AAC27A17EEC00B6AFA1 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -38,7 +38,7 @@
 
 /* Begin PBXFileReference section */
 		C82D9AAA27A17EEB00B6AFA1 /* simpleLoginIOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = simpleLoginIOSApp.swift; sourceTree = "<group>"; };
-		C82D9AAB27A17EEB00B6AFA1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C82D9AAB27A17EEB00B6AFA1 /* LinksScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksScreenView.swift; sourceTree = "<group>"; };
 		C82D9AAC27A17EEC00B6AFA1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C82D9AB127A17EEC00B6AFA1 /* simpleLoginIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = simpleLoginIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C82D9AB727A17EEC00B6AFA1 /* simpleLoginIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = simpleLoginIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,7 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				C82D9AAA27A17EEB00B6AFA1 /* simpleLoginIOSApp.swift */,
-				C82D9AAB27A17EEB00B6AFA1 /* ContentView.swift */,
+				C82D9AAB27A17EEB00B6AFA1 /* LinksScreenView.swift */,
 				C82D9AAC27A17EEC00B6AFA1 /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -321,7 +321,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C82D9AD427A17EEC00B6AFA1 /* ContentView.swift in Sources */,
+				C82D9AD427A17EEC00B6AFA1 /* LinksScreenView.swift in Sources */,
 				C82D9AD227A17EEC00B6AFA1 /* simpleLoginIOSApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -330,7 +330,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C82D9AD527A17EEC00B6AFA1 /* ContentView.swift in Sources */,
+				C82D9AD527A17EEC00B6AFA1 /* LinksScreenView.swift in Sources */,
 				C82D9AD327A17EEC00B6AFA1 /* simpleLoginIOSApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

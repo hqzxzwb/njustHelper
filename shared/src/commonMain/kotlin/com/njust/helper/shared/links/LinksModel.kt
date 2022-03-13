@@ -1,16 +1,29 @@
 package com.njust.helper.shared.links
 
+import com.futuremind.koruksp.ToNativeClass
 import com.njust.helper.shared.MR
-import com.njust.helper.shared.api.Link
+import com.njust.helper.shared.api.CommonLink
 import com.njust.helper.shared.api.LinksApi
+import com.njust.helper.shared.async.MainScopeProvider
 import com.njust.helper.shared.bizmodel.BizModel
-import com.njust.helper.shared.bizmodel.observableProperty
+import com.njust.helper.shared.internal.ModuleComponent
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import org.koin.core.component.get
 
-class LinksModel : BizModel() {
-  val vm: LinksViewModel = LinksViewModel()
+@ToNativeClass(launchOnScope = MainScopeProvider::class)
+class LinksModel(val vm: LinksViewModel = ModuleComponent.get()) : BizModel() {
+  suspend fun collectEvents() = coroutineScope {
+    launch {
+      vm.onRefreshAction.collectLatest {
+        load()
+      }
+    }
+  }
 
   suspend fun load() {
     try {
@@ -25,8 +38,9 @@ class LinksModel : BizModel() {
   }
 }
 
-class LinksViewModel {
-  var items by observableProperty(listOf<Link>())
-  var loading by observableProperty(false)
+abstract class LinksViewModel {
+  abstract var items: List<CommonLink>
+  abstract var loading: Boolean
   val snackbarMessageFlow = MutableSharedFlow<StringDesc>()
+  val onRefreshAction = MutableSharedFlow<Unit>()
 }

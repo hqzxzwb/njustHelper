@@ -14,7 +14,7 @@ import kotlin.coroutines.cancellation.CancellationException
 @ToNativeClass(launchOnScope = MainScopeProvider::class)
 object LinksApi {
   @Throws(IOException::class, CancellationException::class)
-  suspend fun links(): List<Link> {
+  suspend fun links(): List<CommonLink> {
     return withContext(ioDispatcher) {
       jsonParser.decodeFromString(MR.assets.links.readText())
     }

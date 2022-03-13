@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import shared
 
 @main
 struct simpleLoginIOSApp: App {
+    init() {
+        let configuration = IosConfiguration()
+        PlatformKt.startIos(configuration: configuration)
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LinksScreenView()
         }
     }
 }
