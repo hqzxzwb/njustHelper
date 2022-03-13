@@ -2,7 +2,7 @@ package com.njust.helper.shared.api
 
 import com.futuremind.koruksp.ToNativeClass
 import com.njust.helper.shared.async.MainScopeProvider
-import com.njust.helper.shared.internal.HttpClientHolder.httpClient
+import com.njust.helper.shared.internal.httpClient
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*

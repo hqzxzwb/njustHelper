@@ -4,7 +4,7 @@ import com.futuremind.koruksp.ToNativeClass
 import com.njust.helper.shared.MR
 import com.njust.helper.shared.async.MainScopeProvider
 import com.njust.helper.shared.async.ioDispatcher
-import com.njust.helper.shared.internal.JsonParserHolder.jsonParser
+import com.njust.helper.shared.internal.jsonParser
 import com.njust.helper.shared.readText
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString

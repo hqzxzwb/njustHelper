@@ -9,7 +9,7 @@ import SwiftUI
 import shared
 
 struct LinksScreenView: View {
-    @ObservedObject var vm: LinksViewModelImpl = LinksViewModelImpl()
+    @ObservedObject var vm: LinksViewModelImpl
     let model: LinksModel
 
     init() {
