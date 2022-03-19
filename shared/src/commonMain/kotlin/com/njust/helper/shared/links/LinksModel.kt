@@ -38,9 +38,15 @@ class LinksModel(val vm: LinksViewModel = ModuleComponent.get()) : BizModel() {
   }
 }
 
-abstract class LinksViewModel {
+abstract class LinksViewModel protected constructor() {
   abstract var items: List<CommonLink>
   abstract var loading: Boolean
   val snackbarMessageFlow = MutableSharedFlow<StringDesc>()
   val onRefreshAction = MutableSharedFlow<Unit>()
+
+  companion object {
+    fun new(): LinksViewModel {
+      return ModuleComponent.get()
+    }
+  }
 }

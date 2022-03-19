@@ -5,7 +5,7 @@ import com.njust.helper.compose.composeObservablePropertyDelegateModule
 import com.njust.helper.course.data.courseDatabaseModule
 import com.njust.helper.okhttp.okHttpModule
 import com.njust.helper.settings.CourseAlarms
-import com.njust.helper.shared.links.linksViewModelModule
+import com.njust.helper.shared.koin.initSharedModule
 import com.umeng.commonsdk.UMConfigure
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -16,10 +16,10 @@ class App : Application() {
 
     startKoin {
       androidContext(this@App)
+      initSharedModule()
       modules(
         composeObservablePropertyDelegateModule,
         courseDatabaseModule,
-        linksViewModelModule,
         okHttpModule,
       )
     }

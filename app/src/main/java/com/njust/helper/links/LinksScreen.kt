@@ -32,8 +32,6 @@ import com.njust.helper.shared.api.CommonLink
 import com.njust.helper.shared.links.LinksViewModel
 import com.zwb.commonlibs.utils.NoOpFunction
 import kotlinx.coroutines.flow.collectLatest
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
 
 @Composable
 fun LinksScreen(
@@ -97,7 +95,7 @@ private fun LinkItem(link: CommonLink, onClickLink: (link: CommonLink) -> Unit) 
 @Composable
 @Preview
 private fun Preview() {
-  val vm = object : KoinComponent {}.get<LinksViewModel>()
+  val vm = LinksViewModel.new()
     .apply {
       items = listOf(CommonLink("Link A", ""))
     }
