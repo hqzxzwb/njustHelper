@@ -34,8 +34,6 @@ kotlin {
         }
     }
 
-    val okioVersion = "3.0.0"
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -43,7 +41,7 @@ kotlin {
                 implementation(libs.ktor.serialization)
                 implementation(libs.ktor.content.negotiation)
                 implementation(libs.ktor.json)
-                implementation("com.squareup.okio:okio:$okioVersion")
+                implementation(libs.okio)
                 implementation(libs.moko.resources)
                 api(libs.koin.core)
                 implementation(libs.sqldelight.coroutine)
@@ -55,12 +53,11 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation("com.squareup.okio:okio-fakefilesystem:$okioVersion")
             }
         }
         val androidMain by getting {
             dependencies {
-                implementation("androidx.core:core:1.6.0")
+                implementation(libs.androidx.core)
                 implementation(libs.ktor.okhttp)
                 implementation(libs.koin.android)
                 implementation(libs.sqldelight.android)

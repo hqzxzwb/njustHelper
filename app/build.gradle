@@ -20,9 +20,8 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-    implementation "com.squareup.okhttp3:okhttp-urlconnection:4.2.1"
-
-    implementation "com.squareup.okio:okio:3.0.0"
+    implementation libs.okio
+    implementation libs.okhttp
 
     implementation 'com.umeng.umsdk:common:9.4.0'// 必选
     implementation 'com.umeng.umsdk:asms:1.2.3'// 必选
@@ -115,10 +114,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 
     buildFeatures {
