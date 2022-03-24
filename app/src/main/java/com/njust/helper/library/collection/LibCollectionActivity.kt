@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class LibCollectionActivity : BaseActivity(R.layout.activity_lib_collection) {
-  private lateinit var manager: LibCollectManager
+  private val manager = LibCollectManager
   private lateinit var adapter: LibCollectionAdapter
   private lateinit var mList: MutableList<LibCollectItem>
   private val itemsToRemove = HashSet<String>()
@@ -38,7 +38,6 @@ class LibCollectionActivity : BaseActivity(R.layout.activity_lib_collection) {
     emptyView = findViewById(R.id.emptyView)
     coordinatorLayout = findViewById(R.id.coordinatorLayout)
 
-    manager = LibCollectManager.getInstance(this)
     mList = manager.listCollects()
     adapter = LibCollectionAdapter()
     recyclerView.apply {

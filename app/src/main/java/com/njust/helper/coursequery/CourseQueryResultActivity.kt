@@ -13,6 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import com.njust.helper.R
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class CourseQueryResultActivity : AppCompatActivity() {
   private var section: Int = 0
@@ -55,15 +57,16 @@ class CourseQueryResultActivity : AppCompatActivity() {
   }
 }
 
-class CourseQueryResultViewModel : ViewModel() {
+class CourseQueryResultViewModel : ViewModel(), KoinComponent {
   var isRefreshing by mutableStateOf(false)
   var items: List<CourseQueryItem> by mutableStateOf(listOf())
   var snackbarMessageFlow = MutableSharedFlow<String>()
+  private val courseQueryDatabase: CourseQueryDatabase by inject()
 
   suspend fun query(context: Context, name: String, teacher: String, section: Int, day: Int) {
     isRefreshing = true
     try {
-      val data = CourseQueryDao.getInstance(context)
+      val data = courseQueryDatabase.getDao()
         .queryCourses(name, teacher, section, day)
       if (data.isEmpty()) {
         snackbarMessageFlow.emit(context.getString(R.string.message_no_result))

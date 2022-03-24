@@ -1,11 +1,13 @@
 package com.njust.helper.library.collection
 
-import android.content.Context
 import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteQueryBuilder
-import com.zwb.commonlibs.utils.SingletonHolder
+import org.koin.android.ext.koin.androidApplication
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.module.Module
 
 private const val TABLE_NAME = "collection"
 private const val DB_NAME = "library.db"
@@ -85,12 +87,8 @@ private class CollectMigration(startVersion: Int) : Migration(startVersion, DB_V
   }
 }
 
-class LibCollectManager private constructor(context: Context) {
-  private val dao: LibCollectDao = Room
-      .databaseBuilder(context.applicationContext, LibCollectDatabase::class.java, DB_NAME)
-      .allowMainThreadQueries()
-      .addMigrations(*((1 until DB_VERSION).map { CollectMigration(it) }.toTypedArray()))
-      .build()
+object LibCollectManager: KoinComponent {
+  private val dao: LibCollectDao = get<LibCollectDatabase>()
       .getLibCollectDao()
 
   fun addCollect(id: String, name: String, code: String): Boolean {
@@ -118,8 +116,14 @@ class LibCollectManager private constructor(context: Context) {
   fun listCollects(): MutableList<LibCollectItem> {
     return dao.listCollects()
   }
+}
 
-  companion object : SingletonHolder<LibCollectManager, Context>() {
-    override fun createInstance(param: Context) = LibCollectManager(param)
+fun Module.injectLibCollectDatabase() {
+  single {
+    Room
+      .databaseBuilder(androidApplication(), LibCollectDatabase::class.java, DB_NAME)
+      .allowMainThreadQueries()
+      .addMigrations(*((1 until DB_VERSION).map { CollectMigration(it) }.toTypedArray()))
+      .build()
   }
 }

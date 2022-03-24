@@ -24,7 +24,7 @@ import java.io.IOException
 class LibDetailActivity : ProgressActivity(R.layout.activity_lib_detail), SwipeRefreshLayout.OnRefreshListener {
   private lateinit var idString: String
 
-  private var manager: LibCollectManager? = null
+  private var manager: LibCollectManager = LibCollectManager
   private var title: String? = null
   private var isCollected = false
   private var adapter: LibDetailAdapter? = null
@@ -39,7 +39,6 @@ class LibDetailActivity : ProgressActivity(R.layout.activity_lib_detail), SwipeR
     recyclerView = findViewById(R.id.recyclerView)
 
     idString = intent.getStringExtra(Constants.EXTRA_ID)!!
-    manager = LibCollectManager.getInstance(this)
 
     recyclerView.layoutManager = LinearLayoutManager(this)
     recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
@@ -71,7 +70,7 @@ class LibDetailActivity : ProgressActivity(R.layout.activity_lib_detail), SwipeR
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.lib_detail, menu)
     val item = menu.findItem(R.id.item_collect)
-    if (manager!!.checkCollect(idString)) {
+    if (manager.checkCollect(idString)) {
       item.setIcon(R.drawable.ic_star_black_24dp)
       isCollected = true
     }

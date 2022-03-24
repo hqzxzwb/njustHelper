@@ -5,17 +5,20 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import com.njust.helper.R
 import com.njust.helper.RemoteConfig
-import com.njust.helper.coursequery.CourseQueryDao
+import com.njust.helper.coursequery.CourseQueryDatabase
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.TimeUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * 自习室查询
@@ -65,7 +68,7 @@ class ClassroomActivity : AppCompatActivity() {
   }
 }
 
-class ClassroomViewModel : ViewModel() {
+class ClassroomViewModel : ViewModel(), KoinComponent {
   val selectedDay = mutableStateOf(0)
   val selectedBuilding = mutableStateOf(0)
   val selectedSections = mutableStateOf(0)
@@ -75,6 +78,7 @@ class ClassroomViewModel : ViewModel() {
   val noSectionChosenPublisher: Flow<Unit>
     get() = noSectionChosenFlow
   var loading by mutableStateOf(false)
+  private val courseQueryDatabase: CourseQueryDatabase by inject()
 
   private val BUILDING_VALUE = arrayOf("Ⅳ-", "II-", "I-", "江阴")
 
@@ -92,7 +96,7 @@ class ClassroomViewModel : ViewModel() {
     val day = dayIndex % 7
     loading = true
     resultText = try {
-      val dao = CourseQueryDao.getInstance(context)
+      val dao = courseQueryDatabase.getDao()
       val building = BUILDING_VALUE[selectedBuilding.value]
       val allRooms = dao.queryClassroomSet(building)
       val ruledOutRooms = dao.queryClassroom(building, week, day, sections).toSet()

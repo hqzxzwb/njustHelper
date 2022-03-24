@@ -1,9 +1,15 @@
 package com.njust.helper.coursequery
 
-import android.content.Context
 import androidx.annotation.Keep
-import androidx.room.*
-import com.zwb.commonlibs.utils.SingletonHolder
+import androidx.room.Dao
+import androidx.room.Database
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.Query
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.Module
 
 private const val DB_VERSION = 7
 private const val DB_NAME = "course_query"
@@ -46,10 +52,6 @@ interface CourseQueryDao {
     day: Int,
     maskedSection: Int
   ): List<String>
-
-  companion object : SingletonHolder<CourseQueryDao, Context>() {
-    override fun createInstance(param: Context): CourseQueryDao = newDao(param)
-  }
 }
 
 @Database(entities = [CourseQueryItem::class], version = DB_VERSION)
@@ -57,11 +59,11 @@ abstract class CourseQueryDatabase : RoomDatabase() {
   abstract fun getDao(): CourseQueryDao
 }
 
-private fun newDao(context: Context): CourseQueryDao {
-  val appContext = context.applicationContext
-  return Room.databaseBuilder(appContext, CourseQueryDatabase::class.java, DB_NAME)
-    .createFromAsset("classes.db")
-    .fallbackToDestructiveMigration()
-    .build()
-    .getDao()
+fun Module.injectCourseQueryDatabase() {
+  single {
+    Room.databaseBuilder(androidApplication(), CourseQueryDatabase::class.java, DB_NAME)
+      .createFromAsset("classes.db")
+      .fallbackToDestructiveMigration()
+      .build()
+  }
 }

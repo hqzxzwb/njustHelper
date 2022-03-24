@@ -10,12 +10,12 @@ import com.njust.helper.api.jwc.CourseInfo
 import com.njust.helper.api.jwc.CourseLoc
 import com.njust.helper.model.Course
 import org.koin.android.ext.koin.androidApplication
-import org.koin.dsl.module
+import org.koin.core.module.Module
 
 private const val DB_NAME = "course.db"
 private const val DB_VERSION = 5
 
-val courseDatabaseModule = module {
+fun Module.injectCourseDatabase() {
   single {
     val context = androidApplication()
     Room.databaseBuilder(context, CourseDatabase::class.java, DB_NAME)
