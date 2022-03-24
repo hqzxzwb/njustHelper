@@ -1,10 +1,10 @@
 [versions]
-koin = "3.1.5"
+koin = "3.2.0-beta-1"
 ktor = "2.0.0-beta-1"
 sqldelight = "1.5.3"
 moko-resources = "0.18.0"
 androidx-core = "1.7.0"
-okhttp = "4.8.1"
+okhttp = "4.9.3"
 okio = "3.0.0"
 
 [libraries]
@@ -29,5 +29,6 @@ moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-re
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp-urlconnection = { module = "com.squareup.okhttp3:okhttp-urlconnection", version.ref = "okhttp" }
 
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }

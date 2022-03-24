@@ -22,6 +22,7 @@ dependencies {
 
     implementation libs.okio
     implementation libs.okhttp
+    implementation libs.okhttp.urlconnection
 
     implementation 'com.umeng.umsdk:common:9.4.0'// 必选
     implementation 'com.umeng.umsdk:asms:1.2.3'// 必选
