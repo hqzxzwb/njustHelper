@@ -4,43 +4,39 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.compose.ui.platform.ComposeView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.njust.helper.databinding.BottomSheetCourseListBinding
 import com.njust.helper.model.Course
-import java.util.*
 
 class CourseListFragment : BottomSheetDialogFragment() {
-  private val adapter = CourseListAdapter(ArrayList())
-  private var title: String? = null
-  private var subTitle: String? = null
+  private lateinit var vm: CourseListViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     val args = requireArguments()
-    val list = args.getParcelableArrayList<Course>("courses")
-
-    adapter.setData(list!!)
-    title = args.getString("title")
-    subTitle = args.getString("subTitle")
+    vm = CourseListViewModel(
+      title = args.getString("title").orEmpty(),
+      subtitle = args.getString("subtitle").orEmpty(),
+      courses = args.getParcelableArrayList<Course>("courses")!!,
+    )
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val binding = BottomSheetCourseListBinding.inflate(inflater, container, false)
-    binding.title = title
-    binding.subTitle = subTitle
-    val recyclerView = binding.recyclerView
-    recyclerView.layoutManager = LinearLayoutManager(context)
-    recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-    recyclerView.adapter = adapter
-    return binding.root
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    val view = ComposeView(requireContext())
+    view.setContent {
+      CourseListScreen(vm = this.vm)
+    }
+    return view
   }
 
   companion object {
     @JvmStatic
-    fun newInstance(list: List<Course>, title: String, subTitle: String): CourseListFragment {
+    fun newInstance(list: List<Course>, title: String, subtitle: String): CourseListFragment {
       val arrayList = if (list is ArrayList<*>) {
         list as ArrayList<Course>
       } else {
@@ -49,7 +45,7 @@ class CourseListFragment : BottomSheetDialogFragment() {
       val bundle = Bundle()
       bundle.putParcelableArrayList("courses", arrayList)
       bundle.putString("title", title)
-      bundle.putString("subTitle", subTitle)
+      bundle.putString("subtitle", subtitle)
       val clf = CourseListFragment()
       clf.arguments = bundle
       return clf

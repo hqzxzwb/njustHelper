@@ -321,8 +321,8 @@ class CourseActivity :
 
   override fun showCourseList(courses: List<Course>, day: Int, section: Int) {
     val title = resources.getStringArray(R.array.days_of_week)[day] + resources.getStringArray(R.array.sections)[section]
-    val subTitle = resources.getStringArray(R.array.section_start_end)[section]
-    CourseListFragment.newInstance(courses, title, subTitle)
+    val subtitle = resources.getStringArray(R.array.section_start_end)[section]
+    CourseListFragment.newInstance(courses, title, subtitle)
         .showNow(supportFragmentManager, "courseList")
   }
 
