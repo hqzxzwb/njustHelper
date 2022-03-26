@@ -5,14 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.compose.ui.platform.ComposeView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.njust.helper.R
-import com.njust.helper.databinding.ItemPickWeekBinding
-import com.njust.helper.tools.Constants
-import com.njust.helper.tools.DataBindingHolder
 
 /**
  * Created by zwb on 2017/12/31.
@@ -22,13 +16,21 @@ class PickWeekFragment : BottomSheetDialogFragment() {
   private lateinit var listener: Listener
   private var selectedWeek: Int = 0
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    val view = inflater.inflate(R.layout.bottom_sheet_course_week, container, false)
-    val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-    recyclerView.layoutManager = GridLayoutManager(context, 5)
-    recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-    recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-    recyclerView.adapter = PickWeekAdapter(selectedWeek)
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    val view = ComposeView(requireContext())
+    view.setContent {
+      PickWeekScreen(
+        selectedWeekIndex = selectedWeek,
+        onSelectWeek = {
+          dismiss()
+          listener.setWeek(it)
+        },
+      )
+    }
     return view
   }
 
@@ -41,28 +43,6 @@ class PickWeekFragment : BottomSheetDialogFragment() {
 
   interface Listener {
     fun setWeek(week: Int)
-  }
-
-  private inner class PickWeekAdapter(var selectedWeek: Int)
-    : RecyclerView.Adapter<DataBindingHolder<ItemPickWeekBinding>>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBindingHolder<ItemPickWeekBinding> {
-      val binding = ItemPickWeekBinding.inflate(LayoutInflater.from(parent.context),
-          parent, false)
-      return DataBindingHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: DataBindingHolder<ItemPickWeekBinding>, position: Int) {
-      holder.dataBinding.week = position
-      holder.dataBinding.chosen = selectedWeek == position + 1
-      holder.itemView.setOnClickListener {
-        listener.setWeek(position + 1)
-        dismiss()
-      }
-    }
-
-    override fun getItemCount(): Int {
-      return Constants.MAX_WEEK_COUNT
-    }
   }
 
   companion object {
