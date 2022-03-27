@@ -1,6 +1,12 @@
 package com.njust.helper.course
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -33,6 +39,7 @@ fun PickWeekScreen(selectedWeekIndex: Int, onSelectWeek: (Int) -> Unit) {
           ) {
             chunkedWeekIndexes.forEach { weekIndex ->
               PickWeekItem(
+                modifier = Modifier.weight(1F),
                 weekIndex = weekIndex,
                 enabled = selectedWeekIndex != weekIndex,
               ) {
@@ -46,16 +53,16 @@ fun PickWeekScreen(selectedWeekIndex: Int, onSelectWeek: (Int) -> Unit) {
 }
 
 @Composable
-private fun RowScope.PickWeekItem(
+private fun PickWeekItem(
+  modifier: Modifier,
   weekIndex: Int,
   enabled: Boolean,
   onClick: () -> Unit
 ) {
   TextButton(
-    modifier = Modifier
-      .height(40.dp)
-      .weight(1F),
+    modifier = modifier.height(40.dp),
     enabled = enabled,
+    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.onSurface),
     onClick = onClick,
   ) {
     Text(
