@@ -12,5 +12,6 @@
     <declare-styleable name="AppCompatThemeAdapterThemeTextColors">
         <attr name="android:textColorPrimary" format="color" />
         <attr name="android:textColorSecondary" format="color" />
+        <attr name="android:textColorTertiary" format="color" />
     </declare-styleable>
 </resources>

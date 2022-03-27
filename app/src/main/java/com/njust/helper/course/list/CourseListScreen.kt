@@ -81,7 +81,7 @@ private fun IconTextRow(iconResId: Int, text: String) {
     Text(
       text = text,
       style = MaterialTheme.typography.caption,
-      color = MaterialTheme.textColors.secondaryTextColor,
+      color = MaterialTheme.textColors.secondary,
     )
   }
 }

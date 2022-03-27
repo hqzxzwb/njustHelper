@@ -5,6 +5,7 @@ import android.content.res.TypedArray
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.res.getColorOrThrow
@@ -13,8 +14,9 @@ import com.njust.helper.R
 
 @Immutable
 class TextColors(
-  val primaryTextColor: Color,
-  val secondaryTextColor: Color,
+  val primary: Color,
+  val secondary: Color,
+  val tertiary: Color,
 )
 
 val LocalTextColors = compositionLocalOf<TextColors> {
@@ -26,9 +28,11 @@ private fun noLocalProvidedFor(name: String): Nothing {
 }
 
 fun Context.readTextColors(): TextColors = obtainStyledAttributes(R.styleable.AppCompatThemeAdapterThemeTextColors).use { ta ->
-  val primaryTextColor = ta.getComposeColor(R.styleable.AppCompatThemeAdapterThemeTextColors_android_textColorPrimary)
-  val secondaryTextColor = ta.getComposeColor(R.styleable.AppCompatThemeAdapterThemeTextColors_android_textColorSecondary)
-  TextColors(primaryTextColor, secondaryTextColor)
+  TextColors(
+    ta.getComposeColor(R.styleable.AppCompatThemeAdapterThemeTextColors_android_textColorPrimary),
+    ta.getComposeColor(R.styleable.AppCompatThemeAdapterThemeTextColors_android_textColorSecondary),
+    ta.getComposeColor(R.styleable.AppCompatThemeAdapterThemeTextColors_android_textColorTertiary),
+  )
 }
 
 internal fun TypedArray.getComposeColor(
@@ -37,4 +41,4 @@ internal fun TypedArray.getComposeColor(
 ): Color = if (hasValue(index)) Color(getColorOrThrow(index)) else fallbackColor
 
 val MaterialTheme.textColors: TextColors
-  @Composable get() = LocalTextColors.current
+  @Composable @ReadOnlyComposable get() = LocalTextColors.current

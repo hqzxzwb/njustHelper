@@ -1,14 +1,12 @@
 package com.njust.helper.course.day
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.RecyclerView
-import com.njust.helper.databinding.ItemCourseDayBinding
 import com.njust.helper.model.Course
-import com.njust.helper.tools.DataBindingHolder
 
 class CourseDayAdapter internal constructor(private val fragment: CourseDayFragment)
-  : RecyclerView.Adapter<DataBindingHolder<ItemCourseDayBinding>>() {
+  : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private var mData: Array<MutableList<Course>> = arrayOf()
   private var mWeek = 0
   private var mDay = 0
@@ -20,25 +18,29 @@ class CourseDayAdapter internal constructor(private val fragment: CourseDayFragm
     notifyDataSetChanged()
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBindingHolder<ItemCourseDayBinding> {
-    val binding = ItemCourseDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    return DataBindingHolder(binding)
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    val view = ComposeView(parent.context)
+    return object : RecyclerView.ViewHolder(view) {
+    }
   }
 
-  override fun onBindViewHolder(holder: DataBindingHolder<ItemCourseDayBinding>, position: Int) {
+  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val list = mData[position]
-    val binding = holder.dataBinding
-    binding.empty = list.isEmpty()
-    binding.multiple = list.size > 1
-    binding.position = position
     val weekString = " $mWeek "
-    if (list.isNotEmpty()) {
-      val course: Course = list.firstOrNull { it.week2.contains(weekString) } ?: list.last()
-      binding.valid = course.week2.contains(weekString)
-      binding.course = course
-      binding.root.setOnClickListener { fragment.showCourseList(list, mDay, binding.position) }
-    } else {
-      binding.root.setOnClickListener(null)
+    val course = list.firstOrNull { it.week2.contains(weekString) } ?: list.lastOrNull()
+    val vm = CourseDayItemViewModel(
+      course = course,
+      multiple = list.size > 1,
+      valid = course != null && course.week2.contains(weekString),
+      position = position,
+      onClick = {
+        if (list.isNotEmpty()) {
+          fragment.showCourseList(list, mDay, position)
+        }
+      }
+    )
+    (holder.itemView as ComposeView).setContent {
+      CourseDayItem(vm = vm)
     }
   }
 
