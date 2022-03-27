@@ -8,4 +8,9 @@
         <attr name="maxHeight" format="dimension" />
         <attr name="emptyText" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="AppCompatThemeAdapterThemeTextColors">
+        <attr name="android:textColorPrimary" format="color" />
+        <attr name="android:textColorSecondary" format="color" />
+    </declare-styleable>
 </resources>

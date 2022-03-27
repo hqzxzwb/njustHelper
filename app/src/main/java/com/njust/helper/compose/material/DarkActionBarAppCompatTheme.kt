@@ -1,4 +1,4 @@
-package com.njust.helper.compose
+package com.njust.helper.compose.material
 
 import android.content.Context
 import androidx.compose.material.LocalContentColor
@@ -28,6 +28,7 @@ fun DarkActionBarAppCompatTheme(
 
   val colors = (themeParams.colors ?: MaterialTheme.colors)
     .copy(onPrimary = Color.White)
+  val textColors = context.readTextColors()
 
   MaterialTheme(
     colors = colors,
@@ -38,6 +39,7 @@ fun DarkActionBarAppCompatTheme(
     // content color to be more appropriate to the theme background
     CompositionLocalProvider(
       LocalContentColor provides MaterialTheme.colors.onBackground,
+      LocalTextColors provides textColors,
       content = content
     )
   }

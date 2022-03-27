@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.njust.helper.R
-import com.njust.helper.compose.DarkActionBarAppCompatTheme
+import com.njust.helper.compose.material.DarkActionBarAppCompatTheme
 import com.njust.helper.tools.Constants
 import com.zwb.commonlibs.utils.NoOpFunction
 

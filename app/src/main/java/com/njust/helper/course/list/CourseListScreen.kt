@@ -15,7 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.njust.helper.R
-import com.njust.helper.compose.DarkActionBarAppCompatTheme
+import com.njust.helper.compose.material.DarkActionBarAppCompatTheme
+import com.njust.helper.compose.material.textColors
 import com.njust.helper.compose.rememberDrawableResourcePainter
 import com.njust.helper.model.Course
 
@@ -80,7 +81,7 @@ private fun IconTextRow(iconResId: Int, text: String) {
     Text(
       text = text,
       style = MaterialTheme.typography.caption,
-      color = MaterialTheme.colors.secondary,
+      color = MaterialTheme.textColors.secondaryTextColor,
     )
   }
 }

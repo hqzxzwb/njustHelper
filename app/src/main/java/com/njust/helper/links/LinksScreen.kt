@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.njust.helper.R
-import com.njust.helper.compose.DarkActionBarAppCompatTheme
+import com.njust.helper.compose.material.DarkActionBarAppCompatTheme
 import com.njust.helper.compose.emitOnAction
 import com.njust.helper.shared.api.CommonLink
 import com.njust.helper.shared.links.LinksViewModel
