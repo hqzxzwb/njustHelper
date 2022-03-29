@@ -26,7 +26,7 @@
                 android:layout_height="match_parent"
                 android:visibility="@{vm.dayView?View.VISIBLE:View.GONE}">
 
-                <fragment
+                <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/course_day_fragment"
                     android:name="com.njust.helper.course.day.CourseDayFragment"
                     android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:visibility="@{vm.dayView?View.GONE:View.VISIBLE}">
 
-                <fragment
+                <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/course_week_fragment"
                     android:name="com.njust.helper.course.week.CourseWeekFragment"
                     android:layout_width="match_parent"

@@ -35,8 +35,8 @@ import com.njust.helper.tools.TimeUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.android.ext.android.get
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -56,6 +56,7 @@ class CourseActivity :
   private lateinit var dayFragment: CourseDayFragment
   private lateinit var weekFragment: CourseWeekFragment
   private val vm: CourseActivityVm = CourseActivityVm()
+  private val courseDatabase: CourseDatabase by inject()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -75,7 +76,7 @@ class CourseActivity :
 
     lifecycleScope.launch {
       val mainList = withContext(Dispatchers.IO) {
-        get<CourseDatabase>().getCourses()
+        courseDatabase.getCourses()
       }
       if (mainList.isEmpty()) {
         //课表为空时，提示导入课表
@@ -135,7 +136,7 @@ class CourseActivity :
             .setTitle("清空课表")
             .setMessage("确认删除所有课程？")
             .setPositiveButton("确认删除") { _, _ ->
-              get<CourseDatabase>().clear()
+              courseDatabase.clear()
               refresh()
             }
             .setNegativeButton(android.R.string.cancel, null)
@@ -178,10 +179,10 @@ class CourseActivity :
   }
 
   private fun onImportSuccess(courseData: CourseData) {
-    val dao = get<CourseDatabase>()
-    dao.clear()
+    val database = courseDatabase
+    database.clear()
     if (courseData.infos.size > 0) {
-      dao.add(courseData.infos, courseData.locs)
+      database.add(courseData.infos, courseData.locs)
       showSnack(R.string.message_course_import_success)
     } else {
       showSnack("您的课表似乎是空的，过几天再来试试吧~")
@@ -205,7 +206,7 @@ class CourseActivity :
   }
 
   private fun refresh() {
-    val mainList = get<CourseDatabase>().getCourses()
+    val mainList = courseDatabase.getCourses()
     dayFragment.setList(mainList)
     weekFragment.setList(mainList)
     dayFragment.setStartTime(termStartTime)
@@ -222,8 +223,6 @@ class CourseActivity :
     } else {
       timeDiff / TimeUtil.ONE_WEEK
     }
-    val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-    dayFragment.setCurrentDay(if (dayOfWeek > 1) dayOfWeek - 2 else 6)
     val string = dateFormat.format(Date())
     vm.bottomText = getString(R.string.text_course_today, string, week)
   }
@@ -288,7 +287,6 @@ class CourseActivity :
     if (week != currentWeek) {
       currentWeek = week
       weekFragment.setWeek(currentWeek)
-      dayFragment.setWeek(currentWeek)
 
       vm.displayingWeek = currentWeek
     }
