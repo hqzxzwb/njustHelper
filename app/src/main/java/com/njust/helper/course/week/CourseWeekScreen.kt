@@ -76,9 +76,12 @@ fun CourseWeekScreen(vm: CourseDayScreenViewModel) = DarkActionBarAppCompatTheme
   val verticalScrollState = rememberScrollState()
   Column {
     val time = vm.termStartTime + (week - 1) * TimeUtil.ONE_WEEK
+    val dateText = remember(key1 = week) {
+      dateFormat.format(Date(time)) + "~" + dateFormat.format(Date(time + 6 * TimeUtil.ONE_DAY))
+    }
     Text(
       modifier = Modifier.fillMaxWidth(),
-      text = dateFormat.format(Date(time)) + "~" + dateFormat.format(Date(time + 6 * TimeUtil.ONE_DAY)),
+      text = dateText,
       style = indicatorTextStyle,
     )
     Row {
