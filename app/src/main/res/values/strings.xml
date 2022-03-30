@@ -89,6 +89,15 @@
         <item>六</item>
         <item>日</item>
     </string-array>
+    <string-array name="days_of_week_medium">
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+        <item>周日</item>
+    </string-array>
     <string-array name="spinner_cengke_timeofday">
         <item>不限</item>
         <item>第一大节</item>

@@ -42,8 +42,7 @@
                     android:id="@+id/course_week_fragment"
                     android:name="com.njust.helper.course.week.CourseWeekFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:layout="@layout/fgmt_course_week" />
+                    android:layout_height="match_parent" />
             </FrameLayout>
         </FrameLayout>
 

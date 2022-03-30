@@ -284,9 +284,9 @@ class CourseActivity :
   override fun onDayChange(position: Int) {
     this.currentDay = position
     val week = (Math.floor(position / 7.0) + 1).toInt()
+    weekFragment.setPosition(position)
     if (week != currentWeek) {
       currentWeek = week
-      weekFragment.setWeek(currentWeek)
 
       vm.displayingWeek = currentWeek
     }

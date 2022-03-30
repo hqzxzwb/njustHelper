@@ -91,7 +91,6 @@ fun CourseDayScreen(vm: CourseDayScreenViewModel) = DarkActionBarAppCompatTheme 
       }
     }
   }
-  val dayOfTerm by vm.dayOfTermFlow.collectAsState()
   Column(
     modifier = Modifier.fillMaxWidth(),
   ) {
