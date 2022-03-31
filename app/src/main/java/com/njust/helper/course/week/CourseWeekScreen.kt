@@ -1,6 +1,5 @@
 package com.njust.helper.course.week
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -157,47 +156,46 @@ private fun CourseArea(
   horizontalScrollState: ScrollState,
   verticalScrollState: ScrollState,
 ) {
-  Box(
+  val crossIndicatorColor = crossIndicatorColor
+  Column(
     modifier = Modifier
       .verticalScroll(verticalScrollState)
-      .horizontalScroll(horizontalScrollState),
-  ) {
-    Column {
-      repeat(Constants.COURSE_SECTION_COUNT) { section ->
-        Row {
-          repeat(7) { dayOfWeek ->
-            val courses = vm.courses[dayOfWeek][section]
-            CourseItem(
-              week = week,
-              dayOfWeek = dayOfWeek,
-              section = section,
-              courses = courses,
-              onClickCourse = vm.onClickCourse,
+      .horizontalScroll(horizontalScrollState)
+      .drawWithContent {
+        drawContent()
+        for (i in 1 until Constants.COURSE_SECTION_COUNT) {
+          for (j in 1 until 7) {
+            val x = (courseItemWidth + dividerSize) * j - dividerSize / 2
+            val y = (courseItemHeight + dividerSize) * i - dividerSize / 2
+            drawLine(
+              color = crossIndicatorColor,
+              start = Offset((x - crossIndicatorHalfSize).toPx(), y.toPx()),
+              end = Offset((x + crossIndicatorHalfSize).toPx(), y.toPx()),
             )
-            Spacer(modifier = Modifier.width(dividerSize))
+            drawLine(
+              color = crossIndicatorColor,
+              start = Offset(x.toPx(), (y - crossIndicatorHalfSize).toPx()),
+              end = Offset(x.toPx(), (y + crossIndicatorHalfSize).toPx()),
+            )
           }
         }
-        Spacer(modifier = Modifier.height(dividerSize))
-      }
-    }
-    val color = crossIndicatorColor
-    Canvas(modifier = Modifier.fillMaxSize()) {
-      for (i in 1 until Constants.COURSE_SECTION_COUNT) {
-        for (j in 1 until 7) {
-          val x = (courseItemWidth + dividerSize) * j - dividerSize / 2
-          val y = (courseItemHeight + dividerSize) * i - dividerSize / 2
-          drawLine(
-            color = color,
-            start = Offset((x - crossIndicatorHalfSize).toPx(), y.toPx()),
-            end = Offset((x + crossIndicatorHalfSize).toPx(), y.toPx()),
+      },
+  ) {
+    repeat(Constants.COURSE_SECTION_COUNT) { section ->
+      Row {
+        repeat(7) { dayOfWeek ->
+          val courses = vm.courses[dayOfWeek][section]
+          CourseItem(
+            week = week,
+            dayOfWeek = dayOfWeek,
+            section = section,
+            courses = courses,
+            onClickCourse = vm.onClickCourse,
           )
-          drawLine(
-            color = color,
-            start = Offset(x.toPx(), (y - crossIndicatorHalfSize).toPx()),
-            end = Offset(x.toPx(), (y + crossIndicatorHalfSize).toPx()),
-          )
+          Spacer(modifier = Modifier.width(dividerSize))
         }
       }
+      Spacer(modifier = Modifier.height(dividerSize))
     }
   }
 }
@@ -245,40 +243,34 @@ private fun CourseItem(
   } else {
     MaterialTheme.textColors.tertiary
   }
-  Box(
+  Text(
     modifier = Modifier
       .background(color)
       .width(courseItemWidth)
-      .height(courseItemHeight),
-  ) {
-    Text(
-      modifier = Modifier
-        .fillMaxSize()
-        .let {
-          if (course != null) {
-            it.clickable {
-              onClickCourse(courses, dayOfWeek, section)
-            }
-          } else {
-            it
+      .height(courseItemHeight)
+      .let {
+        if (course != null) {
+          it.clickable {
+            onClickCourse(courses, dayOfWeek, section)
           }
+        } else {
+          it
         }
-        .padding(2.dp),
-      text = text,
-      style = MaterialTheme.typography.body2,
-      color = textColor,
-    )
-    if (courses.size > 1) {
-      Canvas(
-        modifier = Modifier.fillMaxSize(),
-      ) {
-        drawPath(
-          path = multipleIndicatorPath,
-          color = multipleIndicatorColor,
-        )
       }
-    }
-  }
+      .drawWithContent {
+        drawContent()
+        if (courses.size > 1) {
+          drawPath(
+            path = multipleIndicatorPath,
+            color = multipleIndicatorColor,
+          )
+        }
+      }
+      .padding(2.dp),
+    text = text,
+    style = MaterialTheme.typography.body2,
+    color = textColor,
+  )
 }
 
 private fun Dp.px(density: Float): Float {
