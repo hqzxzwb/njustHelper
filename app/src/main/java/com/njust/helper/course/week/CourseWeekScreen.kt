@@ -33,9 +33,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.njust.helper.R
-import com.njust.helper.compose.material.DarkActionBarAppCompatTheme
 import com.njust.helper.compose.material.textColors
-import com.njust.helper.course.day.CourseDayScreenViewModel
+import com.njust.helper.course.CourseScreenViewModel
 import com.njust.helper.model.Course
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.TimeUtil
@@ -62,7 +61,10 @@ private val crossIndicatorColor
 private const val MAX_COURSE_NAME_CHARS = 12
 
 @Composable
-fun CourseWeekScreen(vm: CourseDayScreenViewModel) = DarkActionBarAppCompatTheme {
+fun CourseWeekScreen(
+  modifier: Modifier,
+  vm: CourseScreenViewModel,
+) {
   val context = LocalContext.current
   val dateFormat by remember<ThreadLocalDelegate<SimpleDateFormat>> {
     ThreadLocalDelegate {
@@ -73,7 +75,9 @@ fun CourseWeekScreen(vm: CourseDayScreenViewModel) = DarkActionBarAppCompatTheme
   val week = dayOfTerm / 7 + 1
   val horizontalScrollState = rememberScrollState()
   val verticalScrollState = rememberScrollState()
-  Column {
+  Column(
+    modifier = modifier,
+  ) {
     val time = vm.termStartTime + (week - 1) * TimeUtil.ONE_WEEK
     val dateText = remember(key1 = week) {
       dateFormat.format(Date(time)) + "~" + dateFormat.format(Date(time + 6 * TimeUtil.ONE_DAY))
@@ -151,7 +155,7 @@ private fun SectionIndicators(scrollState: ScrollState) {
 
 @Composable
 private fun CourseArea(
-  vm: CourseDayScreenViewModel,
+  vm: CourseScreenViewModel,
   week: Int,
   horizontalScrollState: ScrollState,
   verticalScrollState: ScrollState,

@@ -14,12 +14,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,15 +26,12 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.njust.helper.R
-import com.njust.helper.compose.material.DarkActionBarAppCompatTheme
 import com.njust.helper.compose.material.VerticalDivider
 import com.njust.helper.compose.material.textColors
-import com.njust.helper.model.Course
+import com.njust.helper.course.CourseScreenViewModel
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.TimeUtil
 import com.zwb.commonlibs.utils.ThreadLocalDelegate
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -50,28 +44,12 @@ private val dateDayFormat by ThreadLocalDelegate {
   SimpleDateFormat("d", Locale.CHINA)
 }
 
-@Stable
-class CourseDayScreenViewModel(
-  val onClickCourse: (courses: List<Course>, day: Int, section: Int) -> Unit,
-) {
-  val switchingDayOfTermFlow = MutableSharedFlow<Pair<Int, Boolean>>(replay = 1)
-
-  suspend fun scrollTo(position: Int, animate: Boolean) {
-    switchingDayOfTermFlow.emit(position to animate)
-  }
-
-  var termStartTime: Long by mutableStateOf(0)
-  var courses: Array<out Array<out List<Course>>> by mutableStateOf(
-    Array(7) {
-      Array(Constants.COURSE_SECTION_COUNT) { listOf() }
-    }
-  )
-  var dayOfTermFlow = MutableStateFlow(0)
-}
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun CourseDayScreen(vm: CourseDayScreenViewModel) = DarkActionBarAppCompatTheme {
+fun CourseDayScreen(
+  modifier: Modifier,
+  vm: CourseScreenViewModel,
+) {
   val pagerState = rememberPagerState()
   LaunchedEffect(key1 = pagerState) {
     launch {
@@ -92,7 +70,7 @@ fun CourseDayScreen(vm: CourseDayScreenViewModel) = DarkActionBarAppCompatTheme 
     }
   }
   Column(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = modifier,
   ) {
     DayIndicators(vm)
     Divider()
@@ -125,7 +103,7 @@ fun CourseDayScreen(vm: CourseDayScreenViewModel) = DarkActionBarAppCompatTheme 
 
 @Composable
 private fun DayIndicators(
-  vm: CourseDayScreenViewModel,
+  vm: CourseScreenViewModel,
 ) {
   val dayOfTerm by vm.dayOfTermFlow.collectAsState()
   Row(

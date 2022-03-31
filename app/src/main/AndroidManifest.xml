@@ -30,7 +30,8 @@
         <activity
             android:name=".course.CourseActivity"
             android:label="@string/title_activity_course"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".main.MainActivity" />
