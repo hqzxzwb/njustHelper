@@ -1,13 +1,13 @@
 package com.njust.helper.settings
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.njust.helper.R
-import com.njust.helper.activity.BaseActivity
 
-class SettingsActivity : BaseActivity(R.layout.activity_settings) {
+class SettingsActivity : AppCompatActivity(R.layout.activity_settings) {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     if (savedInstanceState == null) {

@@ -62,7 +62,7 @@ abstract class CourseQueryDatabase : RoomDatabase() {
 fun Module.injectCourseQueryDatabase() {
   single {
     Room.databaseBuilder(androidApplication(), CourseQueryDatabase::class.java, DB_NAME)
-      .createFromAsset("classes.db")
+      .createFromAsset("course_query.db")
       .fallbackToDestructiveMigration()
       .build()
   }
