@@ -50,7 +50,7 @@ fun CourseDayScreen(
   modifier: Modifier,
   vm: CourseScreenViewModel,
 ) {
-  val pagerState = rememberPagerState()
+  val pagerState = rememberPagerState(initialPage = vm.dayOfTerm)
   LaunchedEffect(key1 = pagerState) {
     launch {
       vm.switchingDayOfTermFlow.collectLatest { (position, animate) ->
@@ -65,7 +65,7 @@ fun CourseDayScreen(
     }
     launch {
       snapshotFlow { pagerState.targetPage }.collectLatest {
-        vm.dayOfTermFlow.emit(it)
+        vm.dayOfTerm = it
       }
     }
   }
@@ -105,7 +105,7 @@ fun CourseDayScreen(
 private fun DayIndicators(
   vm: CourseScreenViewModel,
 ) {
-  val dayOfTerm by vm.dayOfTermFlow.collectAsState()
+  val dayOfTerm = vm.dayOfTerm
   Row(
     modifier = Modifier
       .fillMaxWidth()

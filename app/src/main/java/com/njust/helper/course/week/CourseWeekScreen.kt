@@ -17,8 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -71,7 +69,7 @@ fun CourseWeekScreen(
       SimpleDateFormat(context.getString(R.string.date_course_week), Locale.getDefault())
     }
   }
-  val dayOfTerm by vm.dayOfTermFlow.collectAsState()
+  val dayOfTerm = vm.dayOfTerm
   val week = dayOfTerm / 7 + 1
   val horizontalScrollState = rememberScrollState()
   val verticalScrollState = rememberScrollState()

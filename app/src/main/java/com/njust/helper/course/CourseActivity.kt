@@ -184,7 +184,7 @@ class CourseActivity :
   }
 
   private fun pickDate() {
-    val currentDay = vm.dayOfTermFlow.value
+    val currentDay = vm.dayOfTerm
     DatePickerFragment.newInstance(termStartTime + currentDay * TimeUtil.ONE_DAY)
       .showNow(supportFragmentManager, null)
   }
@@ -194,7 +194,7 @@ class CourseActivity :
   }
 
   override fun setWeek(week: Int) {
-    val currentDay = (week - 1) * 7 + vm.dayOfTermFlow.value % 7
+    val currentDay = (week - 1) * 7 + vm.dayOfTerm % 7
     lifecycleScope.launch {
       vm.scrollTo(currentDay, false)
     }
@@ -223,7 +223,7 @@ class CourseActivity :
   }
 
   private fun pickWeek() {
-    val currentWeek = vm.dayOfTermFlow.value / 7 + 1
+    val currentWeek = vm.dayOfTerm / 7 + 1
     PickWeekFragment.newInstance(currentWeek).showNow(supportFragmentManager, "pickWeek")
   }
 }

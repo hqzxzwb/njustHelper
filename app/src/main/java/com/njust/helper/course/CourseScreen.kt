@@ -24,7 +24,6 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,7 +45,6 @@ import com.njust.helper.tools.TimeUtil
 import com.zwb.commonlibs.utils.ThreadLocalDelegate
 import com.zwb.commonlibs.utils.plus
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -61,11 +59,11 @@ class CourseScreenViewModel(
   val onClickImporting: () -> Unit,
   val onClickClearing: () -> Unit,
 ) {
-  val switchingDayOfTermFlow = MutableSharedFlow<Pair<Int, Boolean>>(replay = 1)
+  val switchingDayOfTermFlow = MutableSharedFlow<Pair<Int, Boolean>>()
 
   suspend fun scrollTo(position: Int, animate: Boolean) {
     switchingDayOfTermFlow.emit(position to animate)
-    dayOfTermFlow.emit(position)
+    dayOfTerm = position
   }
 
   suspend fun scrollToToday() {
@@ -80,7 +78,7 @@ class CourseScreenViewModel(
       Array(Constants.COURSE_SECTION_COUNT) { listOf() }
     }
   )
-  var dayOfTermFlow = MutableStateFlow(0)
+  var dayOfTerm by mutableStateOf(0)
   var dayModeOrWeekMode by mutableStateOf(true)
   var menuExpanded by mutableStateOf(false)
 
@@ -161,7 +159,7 @@ private fun ControllerRow(
   modifier: Modifier,
   vm: CourseScreenViewModel,
 ) {
-  val dayOfTerm by vm.dayOfTermFlow.collectAsState()
+  val dayOfTerm = vm.dayOfTerm
   val week = dayOfTerm / 7 + 1
   val coroutineScope = rememberCoroutineScope()
   Row(
