@@ -1,9 +1,18 @@
 package com.njust.helper.library.collection
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Database
+import androidx.room.Entity
+import androidx.room.Insert
+import androidx.room.PrimaryKey
+import androidx.room.Query
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteQueryBuilder
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -31,10 +40,10 @@ interface LibCollectDao {
   fun listCollects(): MutableList<LibCollectItem>
 
   @Query("select * from $TABLE_NAME where id = :id")
-  fun checkCollect(id: String): List<LibCollectItem>
+  fun checkCollect(id: String): Flow<List<LibCollectItem>>
 
   @Insert
-  fun addCollect(item: LibCollectItem)
+  suspend fun addCollect(item: LibCollectItem)
 }
 
 @Database(entities = [LibCollectItem::class], version = DB_VERSION)
@@ -91,7 +100,7 @@ object LibCollectManager: KoinComponent {
   private val dao: LibCollectDao = get<LibCollectDatabase>()
       .getLibCollectDao()
 
-  fun addCollect(id: String, name: String, code: String): Boolean {
+  suspend fun addCollect(id: String, name: String, code: String): Boolean {
     val item = LibCollectItem()
     item.id = id
     item.name = name
@@ -101,8 +110,8 @@ object LibCollectManager: KoinComponent {
     return true
   }
 
-  fun checkCollect(id: String): Boolean {
-    return dao.checkCollect(id).isNotEmpty()
+  fun collectedStateFlow(id: String): Flow<Boolean> {
+    return dao.checkCollect(id).map { it.isNotEmpty() }
   }
 
   fun removeCollect(id: String) {

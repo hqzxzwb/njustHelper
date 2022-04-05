@@ -104,24 +104,20 @@ object LibraryApi {
           .append("\n\n")
       }
 
-    val stateList = arrayListOf<LibDetailItem>()
+    val stateList = arrayListOf<BookState>()
     val matches1 = Regex("""<tr align="left" class="whitetext"[\s\S]*?</tr>""")
       .findAll(string)
     val tdRegex = Regex("""<td.*?>[\s ]*([\s\S]*?)[\s ]*</td>""")
-    matches1.forEach {
+    matches1.mapTo(stateList) {
       val matches2 = tdRegex.findAll(it.groupValues[0]).toList()
-      stateList += if (matches2.size >= 5) {
+      if (matches2.size >= 5) {
         LibDetailItem(
           code = trimHtmlString(matches2[0].groupValues[1]),
-          place = trimHtmlString(matches2[3].groupValues[1]),
+          location = trimHtmlString(matches2[3].groupValues[1]),
           state = matches2[4].groupValues[1].replace("应还日期", "应还")
         )
       } else {
-        LibDetailItem(
-          code = matches2[0].groupValues[1],
-          place = "",
-          state = ""
-        )
+        UnavailableItem(matches2[0].groupValues[1].replace(Regex("""</?font[^>]*>"""), ""))
       }
     }
 

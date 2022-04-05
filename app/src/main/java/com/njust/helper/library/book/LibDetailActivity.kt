@@ -2,121 +2,85 @@ package com.njust.helper.library.book
 
 import android.content.Context
 import android.content.Intent
-import android.view.Menu
-import android.view.MenuItem
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
-import com.njust.helper.activity.ProgressActivity
+import com.njust.helper.library.collection.LibCollectManager
+import com.njust.helper.shared.api.LibDetailItem
+import com.njust.helper.shared.api.LibraryApi
 import com.njust.helper.shared.api.ParseErrorException
 import com.njust.helper.shared.api.ServerErrorException
-import com.njust.helper.shared.api.LibDetailData
-import com.njust.helper.library.collection.LibCollectManager
-import com.njust.helper.shared.api.LibraryApi
 import com.njust.helper.tools.Constants
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class LibDetailActivity : ProgressActivity(R.layout.activity_lib_detail), SwipeRefreshLayout.OnRefreshListener {
+class LibDetailActivity : AppCompatActivity() {
   private lateinit var idString: String
 
-  private var manager: LibCollectManager = LibCollectManager
-  private var title: String? = null
-  private var isCollected = false
-  private var adapter: LibDetailAdapter? = null
+  private val manager: LibCollectManager = LibCollectManager
 
-  private var code: String? = null
+  private val vm = LibDetailViewModel(
+    onClickHome = this::finish,
+    onClickCollection = this::onClickCollection,
+    onRefresh = this::refresh,
+  )
 
-  private val resultIntent = Intent()
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
-  private lateinit var recyclerView: RecyclerView
-
-  override fun prepareViews() {
-    recyclerView = findViewById(R.id.recyclerView)
+    setContent {
+      LibDetailScreen(vm = this.vm)
+    }
 
     idString = intent.getStringExtra(Constants.EXTRA_ID)!!
 
-    recyclerView.layoutManager = LinearLayoutManager(this)
-    recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-    adapter = LibDetailAdapter(this)
-    recyclerView.adapter = adapter
-
-    resultIntent.putExtra(Constants.EXTRA_ID, idString)
-    setResult(RESULT_OK, resultIntent)
-  }
-
-  override fun firstRefresh() {
-    onRefresh()
-  }
-
-  override fun setupPullLayout(refreshLayout: SwipeRefreshLayout) {
-    refreshLayout.setOnRefreshListener(this)
-  }
-
-  private fun notifyData(data: LibDetailData) {
-    val strings = data.head!!.split("\n")
-    if (strings.size > 1) {
-      title = strings[1]
-    }
-    val list = data.states!!
-    code = if (list.isEmpty()) "" else list[0].code
-    adapter!!.setData(data)
-  }
-
-  override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.lib_detail, menu)
-    val item = menu.findItem(R.id.item_collect)
-    if (manager.checkCollect(idString)) {
-      item.setIcon(R.drawable.ic_star_black_24dp)
-      isCollected = true
-    }
-    return true
-  }
-
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    when (item.itemId) {
-      R.id.item_collect -> {
-        if (title == null) {
-          showSnack("收藏失败，请刷新后重试")
-        } else if (isCollected) {
-          manager!!.removeCollect(idString)
-          showSnack("已取消收藏")
-          isCollected = false
-          item.setIcon(R.drawable.ic_star_border_black_24dp)
-        } else if (manager!!.addCollect(idString, title!!, code!!)) {
-          showSnack("收藏成功")
-          isCollected = true
-          item.setIcon(R.drawable.ic_star_black_24dp)
-        } else {
-          showSnack("收藏失败,这本书已经收藏 ")
-          isCollected = true
-          item.setIcon(R.drawable.ic_star_black_24dp)
-        }
-        resultIntent.putExtra("isCollected", isCollected)
-        return true
-      }
-      else -> return super.onOptionsItemSelected(item)
-    }
-  }
-
-  override fun onRefresh() {
     lifecycleScope.launch {
+      manager.collectedStateFlow(idString)
+        .collectLatest {
+          vm.collected = it
+        }
+    }
+    refresh()
+  }
+
+  private fun onClickCollection() {
+    lifecycleScope.launch {
+      val detail = vm.detail
+      when {
+        detail == null -> showSnack("收藏失败，请刷新后重试")
+        vm.collected -> {
+          manager.removeCollect(idString)
+          showSnack("已取消收藏")
+        }
+        else -> {
+          val title = detail.head?.split("\n")?.getOrNull(1).orEmpty()
+          val code = (detail.states.firstOrNull() as? LibDetailItem)?.code.orEmpty()
+          if (manager.addCollect(idString, title, code)) {
+            showSnack("收藏成功")
+          }
+        }
+      }
+    }
+  }
+
+  private fun refresh() {
+    lifecycleScope.launch {
+      vm.loading = true
       try {
         val result = LibraryApi.detail(idString)
-        notifyData(result)
-        setRefreshing(false)
+        vm.detail = result
       } catch (e: Exception) {
         onError(e)
-        setRefreshing(false)
       }
+      vm.loading = false
     }
   }
 
-  private fun onError(throwable: Throwable) {
+  private suspend fun onError(throwable: Throwable) {
     when (throwable) {
       is IOException -> showSnack(R.string.message_net_error)
       is ServerErrorException -> showSnack(R.string.message_server_error_lib)
@@ -125,6 +89,14 @@ class LibDetailActivity : ProgressActivity(R.layout.activity_lib_detail), SwipeR
         throw throwable
       }
     }
+  }
+
+  private suspend fun showSnack(id: Int) {
+    vm.snackbarMessageFlow.emit(getString(id))
+  }
+
+  private suspend fun showSnack(text: String) {
+    vm.snackbarMessageFlow.emit(text)
   }
 
   companion object {

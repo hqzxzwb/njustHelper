@@ -1,12 +1,18 @@
 package com.njust.helper.shared.api
 
+sealed class BookState
+
 class LibDetailItem(
-    val code: String,
-    val place: String,
-    val state: String
-)
+  val code: String,
+  val location: String,
+  val state: String,
+): BookState()
+
+class UnavailableItem(
+  val message: String,
+): BookState()
 
 class LibDetailData(
-  val states: List<LibDetailItem>?,
+  val states: List<BookState>,
   val head: String?,
 )
