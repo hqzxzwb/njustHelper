@@ -26,7 +26,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,26 +43,34 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.njust.helper.R
 import com.njust.helper.compose.material.DarkActionBarAppCompatTheme
 import com.zwb.commonlibs.utils.NoOpFunction
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
+import kotlin.reflect.KMutableProperty0
+
+@Stable
+class ClassroomViewModel(
+  val onClickQuery: () -> Unit,
+  val onClickHome: () -> Unit,
+) {
+  var selectedDay by mutableStateOf(0)
+  var selectedBuilding by mutableStateOf(0)
+  var selectedSections by mutableStateOf(0)
+  var resultText by mutableStateOf("")
+  var isRefreshing by mutableStateOf(false)
+  val noSectionChosenFlow = MutableSharedFlow<Unit?>()
+}
 
 @Composable
 fun ClassroomScreen(
-  selectedDayState: MutableState<Int>,
-  selectedBuildingState: MutableState<Int>,
-  selectedSectionsState: MutableState<Int>,
-  resultText: String,
-  isRefreshing: Boolean,
-  noSectionChosenPublisher: Flow<Unit>,
-  onClickQuery: () -> Unit,
-  onClickHome: () -> Unit,
+  vm: ClassroomViewModel,
 ) {
   val snackbarHostState = remember { SnackbarHostState() }
   val textNoSectionChosen = stringResource(id = R.string.toast_cr_choose_one_section)
   LaunchedEffect(key1 = snackbarHostState, block = {
-    noSectionChosenPublisher.collectLatest {
-      snackbarHostState.showSnackbar(textNoSectionChosen)
+    vm.noSectionChosenFlow.collectLatest {
+      if (it != null) {
+        snackbarHostState.showSnackbar(textNoSectionChosen)
+      }
     }
   })
   DarkActionBarAppCompatTheme {
@@ -71,14 +79,14 @@ fun ClassroomScreen(
         TopAppBar(
           title = { Text(text = stringResource(id = R.string.title_activity_cr)) },
           navigationIcon = {
-            IconButton(onClick = onClickHome) {
+            IconButton(onClick = vm.onClickHome) {
               Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
             }
           }
         )
       },
       floatingActionButton = {
-        QueryButton(onClickQuery)
+        QueryButton(vm.onClickQuery)
       },
       snackbarHost = {
         SnackbarHost(
@@ -87,7 +95,7 @@ fun ClassroomScreen(
       },
       content = {
         SwipeRefresh(
-          state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+          state = rememberSwipeRefreshState(isRefreshing = vm.isRefreshing),
           onRefresh = NoOpFunction,
           swipeEnabled = false,
         ) {
@@ -96,13 +104,9 @@ fun ClassroomScreen(
               .verticalScroll(state = rememberScrollState())
           ) {
             Spacer(modifier = Modifier.height(16.dp))
-            ControlCard(
-              selectedDayState,
-              selectedBuildingState,
-              selectedSectionsState,
-            )
+            ControlCard(vm)
             Spacer(modifier = Modifier.height(8.dp))
-            ResultCard(resultText)
+            ResultCard(vm.resultText)
             Spacer(modifier = Modifier.height(88.dp))
           }
         }
@@ -113,9 +117,7 @@ fun ClassroomScreen(
 
 @Composable
 private fun ControlCard(
-  selectedDayState: MutableState<Int>,
-  selectedBuildingState: MutableState<Int>,
-  selectedSectionsState: MutableState<Int>,
+  vm: ClassroomViewModel,
 ) {
   Card(
     elevation = 2.dp,
@@ -127,50 +129,40 @@ private fun ControlCard(
     ) {
       Label(text = stringResource(R.string.label_classroom_date))
       Row(verticalAlignment = Alignment.CenterVertically) {
-        DayRadioButton(
-          selectedDayState = selectedDayState,
-          index = 0,
-          text = stringResource(R.string.radio_classroom_today)
+        val dayNames = listOf(
+          stringResource(R.string.radio_classroom_today),
+          stringResource(R.string.radio_classroom_tomorrow),
+          stringResource(R.string.radio_classroom_day_after),
         )
-        DayRadioButton(
-          selectedDayState = selectedDayState,
-          index = 1,
-          text = stringResource(R.string.radio_classroom_tomorrow)
-        )
-        DayRadioButton(
-          selectedDayState = selectedDayState,
-          index = 2,
-          text = stringResource(R.string.radio_classroom_day_after)
-        )
+        dayNames.forEachIndexed { index, dayName ->
+          DayRadioButton(
+            vm = vm,
+            index = index,
+            text = dayName,
+          )
+        }
       }
       Label(text = stringResource(R.string.label_classroom_buildings))
       Row(verticalAlignment = Alignment.CenterVertically) {
-        BuildingRadioButton(
-          selectedBuildingState = selectedBuildingState,
-          index = 0,
-          text = stringResource(R.string.radio_classroom_building_four)
+        val buildingNames = listOf(
+          stringResource(R.string.radio_classroom_building_four),
+          stringResource(R.string.radio_classroom_building_two),
+          stringResource(R.string.radio_classroom_building_one),
+          stringResource(R.string.radio_classroom_building_jiangyin),
         )
-        BuildingRadioButton(
-          selectedBuildingState = selectedBuildingState,
-          index = 1,
-          text = stringResource(R.string.radio_classroom_building_two)
-        )
-        BuildingRadioButton(
-          selectedBuildingState = selectedBuildingState,
-          index = 2,
-          text = stringResource(R.string.radio_classroom_building_one)
-        )
-        BuildingRadioButton(
-          selectedBuildingState = selectedBuildingState,
-          index = 3,
-          text = stringResource(R.string.radio_classroom_building_jiangyin)
-        )
+        buildingNames.forEachIndexed { index, buildingName ->
+          BuildingRadioButton(
+            vm = vm,
+            index = index,
+            text = buildingName,
+          )
+        }
       }
       Label(text = stringResource(R.string.label_classroom_section))
       stringArrayResource(id = R.array.sections)
         .forEachIndexed { index, s ->
           SectionCheckBox(
-            selectedSectionsState = selectedSectionsState,
+            vm = vm,
             index = index,
             text = s,
           )
@@ -189,44 +181,41 @@ private fun Label(text: String) {
 }
 
 @Composable
-private fun DayRadioButton(selectedDayState: MutableState<Int>, index: Int, text: String) {
-  var selectedDay by remember { selectedDayState }
-  Row(modifier = Modifier.clickable { selectedDay = index }) {
-    RadioButton(selected = selectedDay == index, onClick = null)
+private fun DayRadioButton(vm: ClassroomViewModel, index: Int, text: String) {
+  Row(modifier = Modifier.clickable { vm.selectedDay = index }) {
+    RadioButton(selected = vm.selectedDay == index, onClick = null)
     Text(text = text)
   }
 }
 
 @Composable
 private fun BuildingRadioButton(
-  selectedBuildingState: MutableState<Int>,
+  vm: ClassroomViewModel,
   index: Int,
-  text: String
+  text: String,
 ) {
-  var selectedBuilding by remember {
-    selectedBuildingState
-  }
-  Row(modifier = Modifier.clickable { selectedBuilding = index }) {
-    RadioButton(selected = selectedBuilding == index, onClick = null)
+  Row(modifier = Modifier.clickable { vm.selectedBuilding = index }) {
+    RadioButton(selected = vm.selectedBuilding == index, onClick = null)
     Text(text = text)
   }
 }
 
 @Composable
-private fun SectionCheckBox(selectedSectionsState: MutableState<Int>, index: Int, text: String) {
-  var selectedSections by remember {
-    selectedSectionsState
-  }
+private fun SectionCheckBox(
+  vm: ClassroomViewModel,
+  index: Int,
+  text: String,
+) {
   val maskedIndex = 1 shl index
-  val checked = (selectedSections and maskedIndex) != 0
+  val checked = (vm.selectedSections and maskedIndex) != 0
   Row(
     modifier = Modifier
       .fillMaxWidth()
       .clickable {
-        selectedSections = if (!checked) {
-          selectedSections or maskedIndex
+        vm.selectedSections = if (!checked) {
+          vm.selectedSections or maskedIndex
         } else {
-          selectedSections and maskedIndex.inv()
+          vm.selectedSections and maskedIndex.inv()
         }
       }
   ) {
@@ -265,13 +254,13 @@ private fun QueryButton(onClick: () -> Unit) {
 @Composable
 private fun Preview() {
   ClassroomScreen(
-    selectedDayState = remember { mutableStateOf(0) },
-    selectedBuildingState = remember { mutableStateOf(0) },
-    selectedSectionsState = remember { mutableStateOf(5) },
-    resultText = "Result",
-    isRefreshing = true,
-    noSectionChosenPublisher = flow { },
-    onClickQuery = NoOpFunction,
-    onClickHome = NoOpFunction,
+    ClassroomViewModel(
+      onClickHome = NoOpFunction,
+      onClickQuery = NoOpFunction,
+    ).apply {
+      selectedSections = 5
+      resultText = "Result"
+      isRefreshing = true
+    }
   )
 }

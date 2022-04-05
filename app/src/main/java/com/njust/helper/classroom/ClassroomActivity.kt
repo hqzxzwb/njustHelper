@@ -1,22 +1,15 @@
 package com.njust.helper.classroom
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import com.njust.helper.R
 import com.njust.helper.RemoteConfig
 import com.njust.helper.coursequery.CourseQueryDatabase
 import com.njust.helper.tools.Constants
 import com.njust.helper.tools.TimeUtil
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -25,27 +18,23 @@ import org.koin.core.component.inject
  *
  * @author zwb
  */
-class ClassroomActivity : AppCompatActivity() {
-  private val viewModel by viewModels<ClassroomViewModel>()
+class ClassroomActivity : AppCompatActivity(), KoinComponent {
+  private val courseQueryDatabase: CourseQueryDatabase by inject()
+  private val BUILDING_VALUE = arrayOf("Ⅳ-", "II-", "I-", "江阴")
+  private val vm = ClassroomViewModel(
+    onClickQuery = {
+      lifecycleScope.launch {
+        query()
+      }
+    },
+    onClickHome = this::finish,
+  )
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     setContent {
-      ClassroomScreen(
-        selectedDayState = viewModel.selectedDay,
-        selectedBuildingState = viewModel.selectedBuilding,
-        selectedSectionsState = viewModel.selectedSections,
-        resultText = viewModel.resultText,
-        isRefreshing = viewModel.loading,
-        noSectionChosenPublisher = viewModel.noSectionChosenPublisher,
-        onClickQuery = {
-          lifecycleScope.launchWhenCreated {
-            viewModel.query(this@ClassroomActivity)
-          }
-        },
-        onClickHome = { finish() },
-      )
+      ClassroomScreen(vm = this.vm)
     }
 
     val time = (System.currentTimeMillis() - RemoteConfig.getTermStartTime()) % TimeUtil.ONE_DAY
@@ -64,48 +53,34 @@ class ClassroomActivity : AppCompatActivity() {
         selectedSections = selectedSections or (1 shl (i + 1))
       }
     }
-    viewModel.selectedSections.value = selectedSections
+    vm.selectedSections = selectedSections
   }
-}
 
-class ClassroomViewModel : ViewModel(), KoinComponent {
-  val selectedDay = mutableStateOf(0)
-  val selectedBuilding = mutableStateOf(0)
-  val selectedSections = mutableStateOf(0)
-  var resultText by mutableStateOf("")
-    private set
-  private val noSectionChosenFlow = MutableSharedFlow<Unit>()
-  val noSectionChosenPublisher: Flow<Unit>
-    get() = noSectionChosenFlow
-  var loading by mutableStateOf(false)
-  private val courseQueryDatabase: CourseQueryDatabase by inject()
-
-  private val BUILDING_VALUE = arrayOf("Ⅳ-", "II-", "I-", "江阴")
-
-  suspend fun query(context: Context) {
-    val sections = selectedSections.value
+  suspend fun query() {
+    val sections = vm.selectedSections
     if (sections == 0) {
-      noSectionChosenFlow.emit(Unit)
+      vm.noSectionChosenFlow.emit(Unit)
       return
     }
-    val dayId = selectedDay.value
+    vm.noSectionChosenFlow.emit(null)
+    val dayId = vm.selectedDay
     val dateLong = System.currentTimeMillis() + TimeUtil.ONE_DAY * dayId
     val termStart = RemoteConfig.getTermStartTime()
     val dayIndex = ((dateLong - termStart) / TimeUtil.ONE_DAY).toInt()
     val week = dayIndex / 7 + 1
     val day = dayIndex % 7
-    loading = true
-    resultText = try {
+    vm.isRefreshing = true
+    vm.resultText = try {
       val dao = courseQueryDatabase.getDao()
-      val building = BUILDING_VALUE[selectedBuilding.value]
+      val building = BUILDING_VALUE[vm.selectedBuilding]
       val allRooms = dao.queryClassroomSet(building)
       val ruledOutRooms = dao.queryClassroom(building, week, day, sections).toSet()
       val result = (allRooms - ruledOutRooms)
         .joinToString(separator = "  ") { it.replace('-', '_') }
-      result.ifBlank { context.getString(R.string.text_classroom_no_info) }
+      result.ifBlank { getString(R.string.text_classroom_no_info) }
     } catch (e: Exception) {
-      context.getString(R.string.text_classroom_fail)
+      getString(R.string.text_classroom_fail)
     }
-    loading = false
+    vm.isRefreshing = false
   }
 }
