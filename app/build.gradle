@@ -40,6 +40,7 @@ dependencies {
     implementation libs.compose.swiperefresh
     implementation libs.compose.pager
     implementation libs.compose.constraintlayout
+    implementation libs.compose.flowlayout
 
     implementation libs.koin.android
     implementation libs.moko.resources

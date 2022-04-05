@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.njust.helper.R
@@ -45,7 +46,6 @@ import com.njust.helper.compose.material.DarkActionBarAppCompatTheme
 import com.zwb.commonlibs.utils.NoOpFunction
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlin.reflect.KMutableProperty0
 
 @Stable
 class ClassroomViewModel(
@@ -55,7 +55,7 @@ class ClassroomViewModel(
   var selectedDay by mutableStateOf(0)
   var selectedBuilding by mutableStateOf(0)
   var selectedSections by mutableStateOf(0)
-  var resultText by mutableStateOf("")
+  var result: List<String> by mutableStateOf(listOf())
   var isRefreshing by mutableStateOf(false)
   val noSectionChosenFlow = MutableSharedFlow<Unit?>()
 }
@@ -106,7 +106,7 @@ fun ClassroomScreen(
             Spacer(modifier = Modifier.height(16.dp))
             ControlCard(vm)
             Spacer(modifier = Modifier.height(8.dp))
-            ResultCard(vm.resultText)
+            ResultCard(vm.result)
             Spacer(modifier = Modifier.height(88.dp))
           }
         }
@@ -226,16 +226,20 @@ private fun SectionCheckBox(
 
 @Composable
 private fun ResultCard(
-  resultText: String,
+  result: List<String>,
 ) {
   Card(
     modifier = Modifier.fillMaxWidth(),
     elevation = 2.dp,
   ) {
-    Text(
+    FlowRow(
       modifier = Modifier.padding(8.dp),
-      text = resultText,
-    )
+      mainAxisSpacing = 4.dp,
+    ) {
+      result.forEach {
+        Text(text = it)
+      }
+    }
   }
 }
 
@@ -259,7 +263,7 @@ private fun Preview() {
       onClickQuery = NoOpFunction,
     ).apply {
       selectedSections = 5
-      resultText = "Result"
+      result = (1..20).map { "Result$it" }
       isRefreshing = true
     }
   )

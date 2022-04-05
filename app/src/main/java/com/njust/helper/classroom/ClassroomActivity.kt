@@ -70,16 +70,16 @@ class ClassroomActivity : AppCompatActivity(), KoinComponent {
     val week = dayIndex / 7 + 1
     val day = dayIndex % 7
     vm.isRefreshing = true
-    vm.resultText = try {
+    vm.result = try {
       val dao = courseQueryDatabase.getDao()
       val building = BUILDING_VALUE[vm.selectedBuilding]
       val allRooms = dao.queryClassroomSet(building)
       val ruledOutRooms = dao.queryClassroom(building, week, day, sections).toSet()
-      val result = (allRooms - ruledOutRooms)
-        .joinToString(separator = "  ") { it.replace('-', '_') }
-      result.ifBlank { getString(R.string.text_classroom_no_info) }
+      (allRooms - ruledOutRooms).ifEmpty {
+        listOf(getString(R.string.text_classroom_no_info))
+      }
     } catch (e: Exception) {
-      getString(R.string.text_classroom_fail)
+      listOf(getString(R.string.text_classroom_fail))
     }
     vm.isRefreshing = false
   }

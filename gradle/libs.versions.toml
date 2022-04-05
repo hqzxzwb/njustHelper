@@ -39,6 +39,7 @@ okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 
 compose-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraintlayout" }
 compose-appcompat-theme = { module = "com.google.accompanist:accompanist-appcompat-theme", version.ref = "compose-accompanist" }
+compose-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "compose-accompanist" }
 compose-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
 compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose-accompanist" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "compose" }
