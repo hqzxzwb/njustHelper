@@ -13,34 +13,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="guide_text">
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="EditText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:selectAllOnFocus">true</item>
-        <item name="android:singleLine">true</item>
-    </style>
-
-    <style name="course_day_indicator">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="RadioButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginRight">16dp</item>
-    </style>
-
     <style name="TextViewHome">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

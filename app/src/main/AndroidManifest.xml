@@ -73,6 +73,7 @@
             android:name=".coursequery.CourseQueryActivity"
             android:label="@string/title_courseQuery"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".coursequery.CourseQueryResultActivity"
