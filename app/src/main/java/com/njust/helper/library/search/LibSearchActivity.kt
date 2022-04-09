@@ -2,67 +2,49 @@ package com.njust.helper.library.search
 
 import android.app.SearchManager
 import android.content.Intent
+import android.os.Bundle
 import android.provider.SearchRecentSuggestions
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.ViewCompat
-import androidx.databinding.DataBindingUtil
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
-import com.njust.helper.activity.ProgressActivity
-import com.njust.helper.shared.api.ParseErrorException
-import com.njust.helper.shared.api.ServerErrorException
-import com.njust.helper.databinding.ActivityLibSearchBinding
 import com.njust.helper.library.book.LibDetailActivity
 import com.njust.helper.shared.api.LibraryApi
-import com.njust.helper.tools.SimpleListVm
+import com.njust.helper.shared.api.ParseErrorException
+import com.njust.helper.shared.api.ServerErrorException
 import com.zwb.commonlibs.utils.requireSystemService
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class LibSearchActivity : ProgressActivity() {
+class LibSearchActivity : AppCompatActivity() {
   private var suggestions: SearchRecentSuggestions? = null
-  private lateinit var binding: ActivityLibSearchBinding
-  private val vm = SimpleListVm<LibSearchItemVm>().apply {
-    listener = { _, item, _ ->
-      startActivity(LibDetailActivity.buildIntent(this@LibSearchActivity, item.id))
-    }
-  }
-
-  override fun layout() {
-    binding = DataBindingUtil.setContentView(this, R.layout.activity_lib_search)
-    binding.vm = vm
-  }
-
-  override fun prepareViews() {
-    mSwipeRefreshLayout = binding.swipeRefreshLayout
-
+  private val vm = LibSearchViewModel(
+    onClickHome = this::finish,
+    onClickResultItem = {
+      startActivity(LibDetailActivity.buildIntent(this@LibSearchActivity, it.id))
+    },
+    onClickClearHistory = { clearHistory() },
+  ) { searchView ->
     val searchManager = requireSystemService<SearchManager>()
-    binding.searchView.apply {
-      setSearchableInfo(searchManager.getSearchableInfo(componentName))
-      isQueryRefinementEnabled = true
+    searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    setContent {
+      LibSearchScreen(vm = this.vm)
     }
-    binding.buttonClearHistory.setOnClickListener { clearHistory() }
-    binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-  }
-
-  override fun setupActionBar() {
-    setSupportActionBar(binding.toolbar)
-    ViewCompat.setElevation(binding.toolbar, 16f)
-    super.setupActionBar()
-  }
-
-  override fun addRefreshLayoutAutomatically(): Boolean {
-    return false
   }
 
   private fun clearHistory() {
     AlertDialog.Builder(this)
-        .setTitle("图书馆")
-        .setMessage("您确定清除搜索历史吗？")
-        .setPositiveButton("清除") { _, _ -> getSuggestions().clearHistory() }
-        .setNegativeButton(R.string.action_back, null).show()
+      .setTitle("图书馆")
+      .setMessage("您确定清除搜索历史吗？")
+      .setPositiveButton("清除") { _, _ -> getSuggestions().clearHistory() }
+      .setNegativeButton(R.string.action_back, null).show()
   }
 
   override fun onNewIntent(intent: Intent) {
@@ -78,23 +60,20 @@ class LibSearchActivity : ProgressActivity() {
     if (search == null) {
       return
     }
-    setRefreshing(true)
+    vm.isRefreshing = true
 
     lifecycleScope.launch {
       try {
         val result = LibraryApi.search(search)
-        vm.items = result.mapIndexed { index, libSearchBean ->
-          LibSearchItemVm(libSearchBean, index)
-        }
-        setRefreshing(false)
+        vm.result = result
       } catch (e: Exception) {
         onError(e)
-        setRefreshing(false)
       }
+      vm.isRefreshing = false
     }
   }
 
-  private fun onError(throwable: Throwable) {
+  private suspend fun onError(throwable: Throwable) {
     when (throwable) {
       is IOException -> showSnack(R.string.message_net_error)
       is ServerErrorException -> showSnack(R.string.message_server_error_lib)
@@ -105,10 +84,14 @@ class LibSearchActivity : ProgressActivity() {
     }
   }
 
+  private suspend fun showSnack(resId: Int) {
+    vm.snackbarMessageFlow.emit(getString(resId))
+  }
+
   private fun getSuggestions(): SearchRecentSuggestions {
     if (suggestions == null) {
       suggestions = SearchRecentSuggestions(this@LibSearchActivity,
-          SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE)
+        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE)
     }
     return suggestions!!
   }
