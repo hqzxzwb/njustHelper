@@ -8,5 +8,12 @@ inline fun <reified T> Context.getSystemService(): T? {
 }
 
 inline fun <reified T> Context.requireSystemService(): T {
-  return requireNotNull(getSystemService()) { "Required ${T::class.java} is not found." }
+  return requireSystemService(T::class.java)
+}
+
+@PublishedApi
+internal fun <T> Context.requireSystemService(clazz: Class<T>): T {
+  return requireNotNull(ContextCompat.getSystemService(this, clazz)) {
+    "Required $clazz is not found."
+  }
 }
