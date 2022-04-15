@@ -28,7 +28,7 @@
     <string name="hint_account_input_id">请输入学号</string>
     <string name="hint_account_input_jwc_password">教务系统密码</string>
     <string name="hint_account_input_lib_password">图书馆密码</string>
-    <string name="text_libCollection_code">索书号：%1$s</string>
+    <string name="text_libFavorites_code">索书号：%1$s</string>
     <string name="pref_mode_def_value">0</string>
     <string name="text_classroom_no_info">无教室信息</string>
     <string name="text_classroom_fail">查询失败</string>
@@ -56,7 +56,7 @@
     <string name="title_activity_exam_detail">考试查询结果</string>
     <string name="title_activity_pj">一键评教</string>
     <string name="title_activity_grade">成绩查询</string>
-    <string name="title_activity_lib_collection">图书收藏</string>
+    <string name="title_activity_lib_favorites">图书收藏</string>
     <string name="title_activity_lib_detail">图书详情</string>
     <string name="title_activity_lib_search">图书检索</string>
     <string name="title_activity_my_lib">借书查询</string>
@@ -130,7 +130,7 @@
         <item>19:00~21:25</item>
     </string-array>
     <string name="button_comment">评分</string>
-    <string name="content_collection_no_result">没有收藏任何图书\n图书详情页点击右上角五角星即可收藏</string>
+    <string name="content_favorites_no_result">没有收藏任何图书\n图书详情页点击右上角图标即可收藏</string>
     <string name="button_cr_query">开始查询</string>
     <string name="button_cr_querying">正在查询……</string>
     <string name="message_update">建议您升级到最新的%1$s版本\n大小：%2$s\n更新日志：\n%3$s</string>

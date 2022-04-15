@@ -110,9 +110,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".library.collection.LibCollectionActivity"
-            android:label="@string/title_activity_lib_collection"
-            android:screenOrientation="portrait" />
+            android:name=".library.favorites.LibFavoritesActivity"
+            android:label="@string/title_activity_lib_favorites"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".main.MainActivity"
             android:exported="true"

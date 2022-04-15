@@ -22,7 +22,7 @@ import com.njust.helper.grade.ExamsActivity
 import com.njust.helper.grade.GradeActivity
 import com.njust.helper.grade.GradeLevelActivity
 import com.njust.helper.library.borrowed.BorrowedBooksActivity
-import com.njust.helper.library.collection.LibCollectionActivity
+import com.njust.helper.library.favorites.LibFavoritesActivity
 import com.njust.helper.library.search.LibSearchActivity
 import com.njust.helper.settings.AboutActivity
 import com.njust.helper.settings.SettingsActivity
@@ -75,7 +75,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler, KoinComponent {
   }
 
   override fun openLibCollectionActivity(view: View) {
-    startActivity(LibCollectionActivity::class.java)
+    startActivity(LibFavoritesActivity::class.java)
   }
 
   override fun openLibSearchActivity(view: View) {

@@ -3,7 +3,7 @@ package com.njust.helper
 import android.app.Application
 import com.njust.helper.course.data.injectCourseDatabase
 import com.njust.helper.coursequery.injectCourseQueryDatabase
-import com.njust.helper.library.collection.injectLibCollectDatabase
+import com.njust.helper.library.favorites.injectLibFavoritesDatabase
 import com.njust.helper.links.LinksViewModelImpl
 import com.njust.helper.okhttp.injectOkHttp
 import com.njust.helper.settings.CourseAlarms
@@ -26,7 +26,7 @@ class App : Application() {
         module {
           injectCourseDatabase()
           injectCourseQueryDatabase()
-          injectLibCollectDatabase()
+          injectLibFavoritesDatabase()
           injectOkHttp()
           factoryOf<LinksViewModel>(::LinksViewModelImpl)
         }

@@ -19,7 +19,6 @@ import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.rememberScaffoldState
@@ -42,6 +41,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.njust.helper.R
 import com.njust.helper.compose.material.DarkActionBarAppCompatTheme
+import com.njust.helper.compose.material.NavigationHome
 import com.njust.helper.compose.material.VerticalDivider
 import com.njust.helper.compose.material.textColors
 import com.njust.helper.shared.api.LibDetailData
@@ -57,7 +57,7 @@ class LibDetailViewModel(
   val onClickCollection: () -> Unit,
   val onRefresh: () -> Unit,
 ) {
-  var collected by mutableStateOf(false)
+  var inFavorites by mutableStateOf(false)
   var detail: LibDetailData? by mutableStateOf(null)
   var loading by mutableStateOf(false)
   val snackbarMessageFlow = MutableSharedFlow<String>()
@@ -82,14 +82,10 @@ fun LibDetailScreen(
     topBar = {
       TopAppBar(
         title = { Text(stringResource(id = R.string.title_activity_lib_detail)) },
-        navigationIcon = {
-          IconButton(onClick = vm.onClickHome) {
-            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
-          }
-        },
+        navigationIcon = { NavigationHome(vm.onClickHome) },
         actions = {
           IconButton(onClick = vm.onClickCollection) {
-            val icon = if (vm.collected) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+            val icon = if (vm.inFavorites) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
             Icon(imageVector = icon, contentDescription = null)
           }
         },

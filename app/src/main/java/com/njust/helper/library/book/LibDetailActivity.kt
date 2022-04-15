@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
-import com.njust.helper.library.collection.LibCollectManager
+import com.njust.helper.library.favorites.LibFavoritesManager
 import com.njust.helper.shared.api.LibDetailItem
 import com.njust.helper.shared.api.LibraryApi
 import com.njust.helper.shared.api.ParseErrorException
@@ -21,7 +21,7 @@ import java.io.IOException
 class LibDetailActivity : AppCompatActivity() {
   private lateinit var idString: String
 
-  private val manager: LibCollectManager = LibCollectManager
+  private val manager: LibFavoritesManager = LibFavoritesManager
 
   private val vm = LibDetailViewModel(
     onClickHome = this::finish,
@@ -39,9 +39,9 @@ class LibDetailActivity : AppCompatActivity() {
     idString = intent.getStringExtra(Constants.EXTRA_ID)!!
 
     lifecycleScope.launch {
-      manager.collectedStateFlow(idString)
+      manager.inFavorites(idString)
         .collectLatest {
-          vm.collected = it
+          vm.inFavorites = it
         }
     }
     refresh()
@@ -52,14 +52,14 @@ class LibDetailActivity : AppCompatActivity() {
       val detail = vm.detail
       when {
         detail == null -> showSnack("收藏失败，请刷新后重试")
-        vm.collected -> {
-          manager.removeCollect(idString)
+        vm.inFavorites -> {
+          manager.remove(idString)
           showSnack("已取消收藏")
         }
         else -> {
           val title = detail.head?.split("\n")?.getOrNull(1).orEmpty()
           val code = (detail.states.firstOrNull() as? LibDetailItem)?.code.orEmpty()
-          if (manager.addCollect(idString, title, code)) {
+          if (manager.add(idString, title, code)) {
             showSnack("收藏成功")
           }
         }

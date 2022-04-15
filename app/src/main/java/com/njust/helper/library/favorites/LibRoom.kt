@@ -1,4 +1,4 @@
-package com.njust.helper.library.collection
+package com.njust.helper.library.favorites
 
 import androidx.room.Dao
 import androidx.room.Database
@@ -23,7 +23,7 @@ private const val DB_NAME = "library.db"
 private const val DB_VERSION = 9
 
 @Entity(tableName = TABLE_NAME)
-class LibCollectItem {
+class LibFavoritesItem {
   @PrimaryKey
   var id: String = ""
   var name: String = ""
@@ -32,26 +32,26 @@ class LibCollectItem {
 }
 
 @Dao
-interface LibCollectDao {
+interface LibFavoritesDao {
   @Query("delete from $TABLE_NAME where id in (:ids)")
-  fun deleteCollects(ids: List<String>)
+  suspend fun delete(ids: List<String>)
 
   @Query("select * from $TABLE_NAME order by time desc")
-  fun listCollects(): MutableList<LibCollectItem>
+  fun all(): Flow<List<LibFavoritesItem>>
 
   @Query("select * from $TABLE_NAME where id = :id")
-  fun checkCollect(id: String): Flow<List<LibCollectItem>>
+  fun query(id: String): Flow<List<LibFavoritesItem>>
 
   @Insert
-  suspend fun addCollect(item: LibCollectItem)
+  suspend fun add(item: LibFavoritesItem)
 }
 
-@Database(entities = [LibCollectItem::class], version = DB_VERSION)
-abstract class LibCollectDatabase : RoomDatabase() {
-  abstract fun getLibCollectDao(): LibCollectDao
+@Database(entities = [LibFavoritesItem::class], version = DB_VERSION)
+abstract class LibFavoritesDatabase : RoomDatabase() {
+  abstract fun dao(): LibFavoritesDao
 }
 
-private class CollectMigration(startVersion: Int) : Migration(startVersion, DB_VERSION) {
+private class FavoritesMigration(startVersion: Int) : Migration(startVersion, DB_VERSION) {
   override fun migrate(database: SupportSQLiteDatabase) {
     if (startVersion < 4) {
       database.execSQL("drop table if exists mylib")
@@ -96,43 +96,43 @@ private class CollectMigration(startVersion: Int) : Migration(startVersion, DB_V
   }
 }
 
-object LibCollectManager: KoinComponent {
-  private val dao: LibCollectDao = get<LibCollectDatabase>()
-      .getLibCollectDao()
+object LibFavoritesManager: KoinComponent {
+  private val dao: LibFavoritesDao = get<LibFavoritesDatabase>()
+    .dao()
 
-  suspend fun addCollect(id: String, name: String, code: String): Boolean {
-    val item = LibCollectItem()
+  suspend fun add(id: String, name: String, code: String): Boolean {
+    val item = LibFavoritesItem()
     item.id = id
     item.name = name
     item.code = code
     item.time = System.currentTimeMillis()
-    dao.addCollect(item)
+    dao.add(item)
     return true
   }
 
-  fun collectedStateFlow(id: String): Flow<Boolean> {
-    return dao.checkCollect(id).map { it.isNotEmpty() }
+  fun inFavorites(id: String): Flow<Boolean> {
+    return dao.query(id).map { it.isNotEmpty() }
   }
 
-  fun removeCollect(id: String) {
-    dao.deleteCollects(listOf(id))
+  suspend fun remove(id: String) {
+    dao.delete(listOf(id))
   }
 
-  fun removeCollects(ids: Collection<String>) {
-    dao.deleteCollects(ArrayList(ids))
+  suspend fun remove(ids: Collection<String>) {
+    dao.delete(ArrayList(ids))
   }
 
-  fun listCollects(): MutableList<LibCollectItem> {
-    return dao.listCollects()
+  fun all(): Flow<List<LibFavoritesItem>> {
+    return dao.all()
   }
 }
 
-fun Module.injectLibCollectDatabase() {
+fun Module.injectLibFavoritesDatabase() {
   single {
     Room
-      .databaseBuilder(androidApplication(), LibCollectDatabase::class.java, DB_NAME)
+      .databaseBuilder(androidApplication(), LibFavoritesDatabase::class.java, DB_NAME)
       .allowMainThreadQueries()
-      .addMigrations(*((1 until DB_VERSION).map { CollectMigration(it) }.toTypedArray()))
+      .addMigrations(*((1 until DB_VERSION).map { FavoritesMigration(it) }.toTypedArray()))
       .build()
   }
 }
