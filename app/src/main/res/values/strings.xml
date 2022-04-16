@@ -131,8 +131,6 @@
     </string-array>
     <string name="button_comment">评分</string>
     <string name="content_favorites_no_result">没有收藏任何图书\n图书详情页点击右上角图标即可收藏</string>
-    <string name="button_cr_query">开始查询</string>
-    <string name="button_cr_querying">正在查询……</string>
     <string name="message_update">建议您升级到最新的%1$s版本\n大小：%2$s\n更新日志：\n%3$s</string>
     <string name="title_activity_captcha">请输入验证码</string>
     <string name="title_activity_card">一卡通明细</string>
@@ -141,9 +139,7 @@
     <string name="dialog_account_help">帮助</string>
     <string name="notification_app_new_version">南理工助手-发现新版本</string>
     <string name="dialog_base_modify_immediately">立即修改</string>
-    <string name="text_home_card">一卡通</string>
     <string name="text_home_courses">课程表</string>
     <string name="text_home_all_courses">全部课表</string>
     <string name="text_home_library">图书馆</string>
-    <string name="text_home_card_balance">一卡通余额:%s</string>
 </resources>
