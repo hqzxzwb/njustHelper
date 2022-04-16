@@ -11,7 +11,6 @@ import com.njust.helper.links.LinksActivity
 import com.njust.helper.R
 import com.njust.helper.RemoteConfig
 import com.njust.helper.account.AccountActivity
-import com.njust.helper.account.JwcPasswordWarning
 import com.njust.helper.activity.BaseActivity
 import com.njust.helper.course.CourseActivity
 import com.njust.helper.course.data.CourseDatabase
@@ -87,9 +86,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler, KoinComponent {
   }
 
   override fun openGradeLevelActivity(v: View) {
-    JwcPasswordWarning.warnIfDefaultPassword(this) {
-      startActivity(GradeLevelActivity::class.java)
-    }
+    startActivity(GradeLevelActivity::class.java)
   }
 
   override fun openLinksActivity(view: View) {
@@ -129,9 +126,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler, KoinComponent {
   }
 
   override fun openCourseActivity(view: View) {
-    JwcPasswordWarning.warnIfDefaultPassword(this) {
-      startActivityForResult(CourseActivity::class.java, REQUEST_COURSE_REFRESH)
-    }
+    startActivityForResult(CourseActivity::class.java, REQUEST_COURSE_REFRESH)
   }
 
   override fun openClassroomActivity(view: View) {
@@ -139,15 +134,11 @@ class MainActivity : BaseActivity(), MainActivityClickHandler, KoinComponent {
   }
 
   override fun openExamsActivity(view: View) {
-    JwcPasswordWarning.warnIfDefaultPassword(this) {
-      startActivity(ExamsActivity::class.java)
-    }
+    startActivity(ExamsActivity::class.java)
   }
 
   override fun openGradeActivity(v: View) {
-    JwcPasswordWarning.warnIfDefaultPassword(this) {
-      startActivity(GradeActivity::class.java)
-    }
+    startActivity(GradeActivity::class.java)
   }
 
   private fun updateCourse() {

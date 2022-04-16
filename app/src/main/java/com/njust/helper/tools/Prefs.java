@@ -26,30 +26,8 @@ public class Prefs {
         return getPreference(context, "jwc").getString("libPwd", "");
     }
 
-    public static String getCookie(Context context, int type) {
-        return getPreference(context, "jwc").getString(type == 0 ? "jwcCookie" : "libCookie", "");
-    }
-
     public static String getUrl(Context context) {
         return getPreference(context, "jwc").getString("url", "");
-    }
-
-    public static boolean getLibCollectionHint(Context context) {
-        return getPreference(context, "refresh").getBoolean("libCollectionHint", false);
-    }
-
-    public static void putLibCollectionHint(Context context, boolean hint) {
-        getEditor(context, "refresh").putBoolean("libCollectionHint", hint).apply();
-    }
-
-    public static void putCookie(Context context, String cookie, String url, int type) {
-        Editor editor = getEditor(context, "jwc");
-        if (type == 0) {
-            editor.putString("jwcCookie", cookie).putString("url", url);
-        } else {
-            editor.putString("libCookie", cookie);
-        }
-        editor.apply();
     }
 
     public static void putIdValues(Context context, String id, String jwcPwd, String libPwd) {
@@ -67,16 +45,6 @@ public class Prefs {
                 .putString("password", jwcPwd)
                 .putString("cookie", "");
         editor.apply();
-    }
-
-    public static boolean neverShowJwcPasswordWarning(Context context) {
-        return getPreference(context, "jwc").getBoolean("neverShowJwcPassword", false);
-    }
-
-    public static void putNeverShowJwcPasswordWarning(Context context) {
-        getEditor(context, "jwc")
-                .putBoolean("neverShowJwcPassword", true)
-                .apply();
     }
 
     public static int getVersion(Context context) {
