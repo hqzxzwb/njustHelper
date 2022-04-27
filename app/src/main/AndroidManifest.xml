@@ -99,7 +99,8 @@
             android:name=".account.AccountActivity"
             android:label="@string/title_activity_account"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".grade.ExamsActivity"
             android:label="@string/title_activity_exam_detail"

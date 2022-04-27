@@ -80,10 +80,7 @@ class GradeLevelViewModel : ViewModel() {
     loading = false
     when (throwable) {
       is ServerErrorException -> messageFlow.emit(context.getString(R.string.message_server_error))
-      is LoginErrorException -> AccountActivity.alertPasswordError(
-        context,
-        AccountActivity.REQUEST_JWC
-      )
+      is LoginErrorException -> AccountActivity.alertPasswordError(context)
       is IOException -> messageFlow.emit(context.getString(R.string.message_net_error))
       is ParseErrorException -> messageFlow.emit(context.getString(R.string.message_parse_error))
       else -> {

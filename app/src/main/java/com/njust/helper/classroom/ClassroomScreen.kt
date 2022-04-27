@@ -24,6 +24,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
@@ -88,11 +89,7 @@ fun ClassroomScreen(
       floatingActionButton = {
         QueryButton(vm.onClickQuery)
       },
-      snackbarHost = {
-        SnackbarHost(
-          hostState = snackbarHostState
-        )
-      },
+      scaffoldState = rememberScaffoldState(snackbarHostState = snackbarHostState),
       content = {
         SwipeRefresh(
           state = rememberSwipeRefreshState(isRefreshing = vm.isRefreshing),

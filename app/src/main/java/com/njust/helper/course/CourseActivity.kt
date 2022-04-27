@@ -190,7 +190,7 @@ class CourseActivity :
   }
 
   private fun relogin() {
-    AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_JWC)
+    AccountActivity.alertPasswordError(this)
   }
 
   override fun setWeek(week: Int) {

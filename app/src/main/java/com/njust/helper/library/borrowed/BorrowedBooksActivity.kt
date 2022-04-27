@@ -63,10 +63,7 @@ class BorrowedBooksActivity : BaseActivity() {
         binding.webView1.loadUrl(result)
       } catch (e: Exception) {
         if (e is LoginErrorException) {
-          AccountActivity.alertPasswordError(
-              this@BorrowedBooksActivity,
-              AccountActivity.REQUEST_LIB
-          )
+          AccountActivity.alertPasswordError(this@BorrowedBooksActivity)
         } else {
           showSnack(R.string.message_net_error)
         }

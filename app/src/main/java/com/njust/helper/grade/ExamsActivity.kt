@@ -56,7 +56,7 @@ class ExamsActivity : BaseActivity() {
     vm.loading = false
     when (throwable) {
       is ServerErrorException -> showSnack(R.string.message_server_error)
-      is LoginErrorException -> AccountActivity.alertPasswordError(this, AccountActivity.REQUEST_JWC)
+      is LoginErrorException -> AccountActivity.alertPasswordError(this)
       is IOException -> showSnack(R.string.message_net_error)
       is ParseErrorException -> showSnack(R.string.message_parse_error)
       else -> {

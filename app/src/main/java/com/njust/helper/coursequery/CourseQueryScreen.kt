@@ -1,12 +1,10 @@
 package com.njust.helper.coursequery
 
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -23,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -31,20 +30,19 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.widget.doAfterTextChanged
 import com.google.accompanist.flowlayout.FlowRow
-import com.google.android.material.textfield.TextInputLayout
 import com.njust.helper.R
+import com.njust.helper.compose.material.AndroidTextInputLayout
 import com.njust.helper.compose.material.DarkActionBarAppCompatTheme
 import com.njust.helper.compose.material.textColors
 
+@Stable
 class CourseQueryViewModel(
   val onClickHome: () -> Unit,
   val onClickQuery: () -> Unit,
 ) {
-  var courseName = ""
-  var teacher = ""
+  var courseName by mutableStateOf("")
+  var teacher by mutableStateOf("")
   var selectedSection by mutableStateOf(-1)
   var selectedDayOfWeek by mutableStateOf(-1)
 }
@@ -82,10 +80,12 @@ fun CourseQueryScreen(
         .padding(horizontal = 16.dp, vertical = 20.dp),
     ) {
       AndroidTextInputLayout(
+        text = vm.courseName,
         hint = "课程名",
         onTextChanged = { vm.courseName = it },
       )
       AndroidTextInputLayout(
+        text = vm.teacher,
         hint = "教师",
         onTextChanged = { vm.teacher = it },
       )
@@ -159,22 +159,4 @@ private fun DayOfWeekSelectionRadio(
       text = text,
     )
   }
-}
-
-@Composable
-private fun AndroidTextInputLayout(
-  hint: String,
-  onTextChanged: (text: String) -> Unit,
-) {
-  AndroidView(
-    modifier = Modifier.fillMaxWidth(),
-    factory = { context ->
-      val textInputLayout = TextInputLayout(context)
-      val editText = AppCompatEditText(context)
-      editText.hint = hint
-      editText.doAfterTextChanged { onTextChanged(it?.toString().orEmpty()) }
-      textInputLayout.addView(editText)
-      textInputLayout
-    }
-  )
 }
