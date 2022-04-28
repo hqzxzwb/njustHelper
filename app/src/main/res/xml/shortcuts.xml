@@ -20,8 +20,8 @@
             android:shortcutId="exam"
             android:enabled="true"
             android:icon="@drawable/ic_exam_shortcuts"
-            android:shortcutShortLabel="@string/title_activity_exams"
-            android:shortcutLongLabel="@string/title_activity_exams"
+            android:shortcutShortLabel="@string/title_activity_exam"
+            android:shortcutLongLabel="@string/title_activity_exam"
             android:shortcutDisabledMessage="@string/shortcuts_failed_msg">
         <intent
                 android:action="android.intent.action.MAIN"

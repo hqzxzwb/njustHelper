@@ -17,7 +17,7 @@ import com.njust.helper.course.data.CourseDatabase
 import com.njust.helper.classroom.ClassroomActivity
 import com.njust.helper.coursequery.CourseQueryActivity
 import com.njust.helper.databinding.ActivityMainBinding
-import com.njust.helper.grade.ExamsActivity
+import com.njust.helper.exam.ExamActivity
 import com.njust.helper.grade.GradeActivity
 import com.njust.helper.grade.GradeLevelActivity
 import com.njust.helper.library.borrowed.BorrowedBooksActivity
@@ -134,7 +134,7 @@ class MainActivity : BaseActivity(), MainActivityClickHandler, KoinComponent {
   }
 
   override fun openExamsActivity(view: View) {
-    startActivity(ExamsActivity::class.java)
+    startActivity(ExamActivity::class.java)
   }
 
   override fun openGradeActivity(v: View) {

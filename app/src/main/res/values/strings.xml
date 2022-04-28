@@ -52,7 +52,7 @@
     <string name="title_activity_course">课程表</string>
     <string name="title_activity_course_all">全部课表</string>
     <string name="title_activity_cr">自习室查询</string>
-    <string name="title_activity_exams">考试查询</string>
+    <string name="title_activity_exam">考试查询</string>
     <string name="title_activity_exam_detail">考试查询结果</string>
     <string name="title_activity_pj">一键评教</string>
     <string name="title_activity_grade">成绩查询</string>

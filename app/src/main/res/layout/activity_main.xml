@@ -151,7 +151,7 @@
                         style="@style/TextViewHome"
                         android:lines="2"
                         android:onClick="@{vm.clickHandler::openExamsActivity}"
-                        android:text="@string/title_activity_exams"/>
+                        android:text="@string/title_activity_exam"/>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
