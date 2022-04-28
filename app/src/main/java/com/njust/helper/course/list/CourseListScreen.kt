@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.njust.helper.R
 import com.njust.helper.compose.material.DarkActionBarAppCompatTheme
@@ -57,7 +56,7 @@ private fun CourseListItem(course: Course) {
   ) {
     Text(
       text = course.name,
-      color = colorResource(id = R.color.course_name),
+      color = MaterialTheme.colors.primary,
       style = MaterialTheme.typography.subtitle1,
     )
     Spacer(modifier = Modifier.height(4.dp))
