@@ -110,7 +110,7 @@ class GradeVm(
   val onClickHome: () -> Unit,
   val onClickRefresh: () -> Unit,
 ) {
-  val snackbarMessageFlow = MutableSharedFlow<String>()
+  val snackbarMessageFlow = MutableSharedFlow<String>(replay = 1)
 
   var terms: List<GradeTermVm> by mutableStateOf(listOf())
 
