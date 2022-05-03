@@ -1,62 +1,60 @@
 package com.njust.helper.grade
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.njust.helper.BR
 import com.njust.helper.BuildConfig
 import com.njust.helper.R
 import com.njust.helper.account.AccountActivity
-import com.njust.helper.activity.BaseActivity
+import com.njust.helper.shared.api.GradeItem
+import com.njust.helper.shared.api.JwcApi
 import com.njust.helper.shared.api.LoginErrorException
 import com.njust.helper.shared.api.ParseErrorException
 import com.njust.helper.shared.api.ServerErrorException
-import com.njust.helper.shared.api.GradeItem
-import com.njust.helper.databinding.ActivityGradeBinding
-import com.njust.helper.shared.api.JwcApi
 import com.njust.helper.tools.Prefs
-import com.zwb.commonlibs.binding.BaseDataBindingHolder
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.text.DecimalFormat
 
-class GradeActivity : BaseActivity() {
-  private lateinit var binding: ActivityGradeBinding
-  private lateinit var adapter: GradeAdapter
+class GradeActivity : AppCompatActivity() {
+  private val vm = GradeVm(
+    onClickHome = this::finish,
+    onClickRefresh = this::refresh,
+  )
 
-  override fun onPostCreate(savedInstanceState: Bundle?) {
-    super.onPostCreate(savedInstanceState)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
+    setContent {
+      GradeScreen(vm = vm)
+    }
     refresh()
   }
 
   private fun refresh() {
     lifecycleScope.launch {
+      vm.loading = true
       try {
-        val result = JwcApi.grade(Prefs.getId(this@GradeActivity), Prefs.getJwcPwd(this@GradeActivity))
-        onDataReceived(result)
+        val result = JwcApi.grade(
+          Prefs.getId(this@GradeActivity),
+          Prefs.getJwcPwd(this@GradeActivity),
+        )
+        vm.applyGradeData(result)
       } catch (e: Exception) {
         onError(e)
       }
-    }
-  }
-
-  private fun onDataReceived(data: Map<String, List<GradeItem>>) {
-    binding.loading = false
-    if (data.isEmpty()) {
-      showSnack(R.string.message_no_result_exam)
-    } else {
-      adapter.vm = GradeVm(data)
+      vm.loading = false
     }
   }
 
   private fun onError(throwable: Throwable) {
-    binding.loading = false
     when (throwable) {
       is ServerErrorException -> showSnack(R.string.message_server_error)
       is LoginErrorException -> AccountActivity.alertPasswordError(this)
@@ -71,49 +69,9 @@ class GradeActivity : BaseActivity() {
     }
   }
 
-  override fun layout() {
-    val binding = DataBindingUtil.setContentView<ActivityGradeBinding>(this, R.layout.activity_grade)
-    binding.recyclerView.layoutManager = LinearLayoutManager(this)
-    binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-    this.binding = binding
-    GradeAdapter().let {
-      adapter = it
-      binding.recyclerView.adapter = it
-    }
-    binding.swipeRefreshLayout.setOnRefreshListener(this::refresh)
-  }
-}
-
-private class GradeAdapter : RecyclerView.Adapter<BaseDataBindingHolder>() {
-  var vm: GradeVm? = null
-    set(value) {
-      field = value
-      notifyDataSetChanged()
-    }
-
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseDataBindingHolder {
-    val inflater = LayoutInflater.from(parent.context)
-    return BaseDataBindingHolder(DataBindingUtil.inflate(inflater, viewType, parent, false))
-  }
-
-  override fun getItemCount(): Int {
-    return vm.let { if (it == null) 0 else it.terms.size + 1 }
-  }
-
-  override fun onBindViewHolder(holder: BaseDataBindingHolder, position: Int) {
-    val vm = vm ?: return
-    holder.binding.let {
-      it.setVariable(BR.vm, if (position < vm.terms.size) vm.terms[position] else vm.mean)
-      it.executePendingBindings()
-    }
-  }
-
-  override fun getItemViewType(position: Int): Int {
-    val vm = vm ?: return 0
-    return if (position < vm.terms.size) {
-      R.layout.item_grade_term
-    } else {
-      R.layout.item_grade_summary
+  private fun showSnack(messageRes: Int) {
+    lifecycleScope.launch {
+      vm.snackbarMessageFlow.emit(getString(messageRes))
     }
   }
 }
@@ -128,6 +86,7 @@ class MeanGradeValues {
   var requiredGrade = 0.0
 }
 
+@Immutable
 class MeanGradeVm(values: MeanGradeValues) {
   val hasUnrecognizedGrade = values.hasUnrecognizedGrade
   val totalWeight: String = values.totalWeight.roundToString()
@@ -146,14 +105,22 @@ class MeanGradeVm(values: MeanGradeValues) {
   }
 }
 
-class GradeVm(data: Map<String, List<GradeItem>>) {
-  val terms = arrayListOf<GradeTermVm>()
+@Stable
+class GradeVm(
+  val onClickHome: () -> Unit,
+  val onClickRefresh: () -> Unit,
+) {
+  val snackbarMessageFlow = MutableSharedFlow<String>()
 
-  val mean: MeanGradeVm
+  var terms: List<GradeTermVm> by mutableStateOf(listOf())
 
-  init {
+  var totalMean: MeanGradeVm? by mutableStateOf(null)
+
+  var loading by mutableStateOf(false)
+
+  fun applyGradeData(data: Map<String, List<GradeItem>>) {
     val total = MeanGradeValues()
-    val terms = this.terms
+    val terms = arrayListOf<GradeTermVm>()
     data.forEach { entry ->
       val termName = entry.key
       val items = entry.value
@@ -165,7 +132,8 @@ class GradeVm(data: Map<String, List<GradeItem>>) {
       terms += GradeTermVm(items, termName, MeanGradeVm(loop))
     }
     terms.sortByDescending { it.termName }
-    mean = MeanGradeVm(total)
+    this.terms = terms
+    totalMean = MeanGradeVm(total)
   }
 
   private fun foldToTripleDouble(acc: MeanGradeValues, gradeItem: GradeItem) {
@@ -187,10 +155,9 @@ class GradeVm(data: Map<String, List<GradeItem>>) {
   }
 }
 
+@Immutable
 class GradeTermVm(
   val items: List<GradeItem>,
   val termName: String,
   val mean: MeanGradeVm
-) {
-  val brId: Int = BR.vm
-}
+)

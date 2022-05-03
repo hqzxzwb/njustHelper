@@ -84,7 +84,8 @@
         <activity
             android:name=".grade.GradeActivity"
             android:label="@string/title_activity_grade"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".grade.GradeLevelActivity"
             android:label="@string/title_activity_level"
