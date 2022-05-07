@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -80,7 +82,11 @@ fun ExamScreen(
 @Composable
 private fun ExamList(exams: List<Exam>) {
   if (exams.isEmpty()) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+      modifier = Modifier
+      .fillMaxSize()
+      .verticalScroll(rememberScrollState()),
+    ) {
       Text(
         modifier = Modifier.align(Alignment.Center),
         text = stringResource(id = R.string.message_no_result_exam),
