@@ -4,7 +4,7 @@ plugins {
     id("kotlinx-serialization")
     id("dev.icerock.mobile.multiplatform-resources")
     id("com.squareup.sqldelight")
-    id("com.google.devtools.ksp") version "1.6.10-1.0.2"
+    id("com.google.devtools.ksp") version "1.7.10-1.0.6"
 }
 
 multiplatformResources {

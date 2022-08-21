@@ -13,5 +13,5 @@ data class CourseLoc(
   val week2: String? = null,
   val sec1: Int = 0,
   val sec2: Int = 0,
-  val day: Int = 0,
+  val day: Int,
 )
