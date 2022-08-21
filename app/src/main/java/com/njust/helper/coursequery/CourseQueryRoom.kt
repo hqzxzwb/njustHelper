@@ -11,7 +11,7 @@ import androidx.room.RoomDatabase
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.Module
 
-private const val DB_VERSION = 7
+private const val DB_VERSION = 8
 private const val DB_NAME = "course_query"
 private const val TABLE_NAME = "main"
 
