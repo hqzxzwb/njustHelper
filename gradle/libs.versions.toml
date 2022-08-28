@@ -1,6 +1,6 @@
 [versions]
-koin = "3.2.0-beta-1"
-ktor = "2.0.0-beta-1"
+koin = "3.2.0"
+ktor = "2.1.0"
 sqldelight = "1.5.3"
 moko-resources = "0.18.0"
 androidx-core = "1.7.0"

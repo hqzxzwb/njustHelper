@@ -54,13 +54,13 @@ object JwcApi {
       } else if (e is IOException) {
         throw e
       } else {
-        throw ServerErrorException()
+        throw ServerErrorException(cause = e)
       }
     }
     if (string.contains("<html xmlns=\"http://www.w3.org/1999/xhtml\">")) {
       throw LoginErrorException()
     } else if (string != "success") {
-      throw ServerErrorException()
+      throw ServerErrorException("Result: $string")
     }
   }
 

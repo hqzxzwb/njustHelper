@@ -18,24 +18,29 @@ object JwcApi {
 
   private suspend fun login(stuid: String, pwd: String) {
     val string = try {
-      httpClient.get("${BASE_URL}xk/LoginToXk") {
+      val response = httpClient.get("${BASE_URL}xk/LoginToXk") {
         parameter("USERNAME", stuid)
         parameter("PASSWORD", pwd.encodeUtf8().md5().hex().uppercase())
         parameter("method", "verify")
-      }.bodyAsText()
+      }
+      if (response.status.value / 100 == 3) {
+        "success"
+      } else {
+        response.bodyAsText()
+      }
     } catch (e: Exception) {
       if (e is RedirectResponseException) {
         "success"
       } else if (e is IOException) {
         throw e
       } else {
-        throw ServerErrorException()
+        throw ServerErrorException(cause = e)
       }
     }
     if (string.contains("<html xmlns=\"http://www.w3.org/1999/xhtml\">")) {
       throw LoginErrorException()
     } else if (string != "success") {
-      throw ServerErrorException()
+      throw ServerErrorException("Result: $string")
     }
   }
 
