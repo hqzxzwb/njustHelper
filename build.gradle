@@ -2,7 +2,8 @@
 buildscript {
     ext {
         kotlin_version = '1.7.10'
-        compile_sdk_version = 32
+        compile_sdk_version = 33
+        target_sdk_version = 32
         min_sdk_version = 21
     }
     repositories {

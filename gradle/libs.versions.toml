@@ -3,7 +3,8 @@ koin = "3.2.0"
 ktor = "2.1.0"
 sqldelight = "1.5.3"
 moko-resources = "0.18.0"
-androidx-core = "1.7.0"
+androidx-core = "1.9.0"
+androidx-activity = "1.6.1"
 okhttp = "4.9.3"
 okio = "3.0.0"
 compose = "1.2.1"
@@ -42,7 +43,7 @@ compose-appcompat-theme = { module = "com.google.accompanist:accompanist-appcomp
 compose-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "compose-accompanist" }
 compose-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
 compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose-accompanist" }
-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "compose" }
+compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
