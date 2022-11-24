@@ -46,7 +46,6 @@ kotlin {
                 api(libs.koin.core)
                 implementation(libs.sqldelight.coroutine)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
-                implementation("com.github.hqzxzwb:koruksp:0.12.1")
             }
         }
         val commonTest by getting {
@@ -92,11 +91,4 @@ android {
         minSdk = 21
         targetSdk = 31
     }
-}
-
-dependencies {
-    val korukspProcessor = "com.github.hqzxzwb:koruksp-processor:0.12.1"
-    add("kspIosArm64", korukspProcessor)
-    add("kspIosX64", korukspProcessor)
-    add("kspIosSimulatorArm64", korukspProcessor)
 }

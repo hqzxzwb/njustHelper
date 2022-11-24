@@ -1,7 +1,5 @@
 package com.njust.helper.shared.api
 
-import com.futuremind.koruksp.ToNativeClass
-import com.njust.helper.shared.async.MainScopeProvider
 import com.njust.helper.shared.internal.httpClient
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
@@ -12,7 +10,6 @@ import io.ktor.utils.io.errors.*
 import okio.ByteString.Companion.encodeUtf8
 import kotlin.coroutines.cancellation.CancellationException
 
-@ToNativeClass(launchOnScope = MainScopeProvider::class)
 object JwcApi {
   private const val BASE_URL = "http://202.119.81.113:9080/njlgdx/"
 
