@@ -30,6 +30,9 @@ dependencies {
 
     debugRuntimeOnly 'com.squareup.leakcanary:leakcanary-android:2.8.1'
 
+    def composeBom = platform(libs.compose.bom)
+    implementation(composeBom)
+
     implementation libs.compose.activity
     implementation libs.compose.material
     implementation libs.compose.animation
@@ -118,12 +121,18 @@ android {
         freeCompilerArgs += ['-Xjvm-default=all', '-Xlambdas=indy']
     }
 
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging false
+        }
+    }
+
     buildFeatures {
         dataBinding = true
         compose = true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.3.0'
+        kotlinCompilerExtensionVersion '1.3.1'
     }
 }
